@@ -3078,11 +3078,11 @@ html[lang="ko"] {
         <span class="plan-name" data-i18n="plan.free">Free Plan</span>
         <span class="upgrade-btn" onclick="openUpgrade()" data-i18n="plan.upgrade">Upgrade</span>
       </div>
-      <div class="user-row" onclick="openLogin()" style="cursor:pointer;">
-        <div class="user-avatar">G</div>
+      <div class="user-row" id="userRow" onclick="openLogin()" style="cursor:pointer;">
+        <div class="user-avatar" id="userAvatar">G</div>
         <div class="user-info">
-          <div class="user-name" data-i18n="user.guest">Guest</div>
-          <div class="user-status" data-i18n="user.signIn">Sign in</div>
+          <div class="user-name" id="userName" data-i18n="user.guest">Guest</div>
+          <div class="user-status" id="userStatus" data-i18n="user.signIn">Sign in</div>
         </div>
         <div class="user-actions">
           <button class="icon-btn" onclick="openInvite()" title="Invite & Earn Credits">
@@ -6368,17 +6368,32 @@ function logout() {
 }
 
 function updateUIForAuth() {
-  const signInBtn = document.getElementById('signInBtn');
+  const userRow = document.getElementById('userRow');
   const userAvatar = document.getElementById('userAvatar');
+  const userName = document.getElementById('userName');
+  const userStatus = document.getElementById('userStatus');
   if (currentUser) {
-    if (signInBtn) signInBtn.style.display = 'none';
     if (userAvatar) {
-      userAvatar.style.display = 'flex';
       userAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
     }
+    if (userName) {
+      userName.textContent = currentUser.name || currentUser.email || 'User';
+    }
+    if (userStatus) {
+      userStatus.textContent = currentUser.email || '';
+    }
+    if (userRow) {
+      userRow.onclick = null;
+      userRow.style.cursor = 'default';
+    }
   } else {
-    if (signInBtn) signInBtn.style.display = '';
-    if (userAvatar) userAvatar.style.display = 'none';
+    if (userAvatar) userAvatar.textContent = 'G';
+    if (userName) userName.textContent = t('user.guest') || 'Guest';
+    if (userStatus) userStatus.textContent = t('user.signIn') || 'Sign in';
+    if (userRow) {
+      userRow.onclick = openLogin;
+      userRow.style.cursor = 'pointer';
+    }
   }
 }
 
