@@ -73,15 +73,7 @@ async function handleRequest(request) {
     if (path === '/api/auth/login' && method === 'POST') {
       return await handleLogin(request);
     }
-    if (path === '/api/auth/google' && method === 'POST') {
-      return await handleGoogleAuth(request);
-    }
-    if (path === '/api/auth/google/redirect' && method === 'GET') {
-      return await handleGoogleRedirect(request);
-    }
-    if (path === '/api/auth/google/callback' && method === 'GET') {
-      return await handleGoogleCallback(request);
-    }
+    // Google auth routes are handled by functions/api/auth/google/ directory
     if (path === '/api/auth/github' && method === 'POST') {
       return await handleGithubAuth(request);
     }

@@ -17,7 +17,10 @@ async function d1Query(sql, params = []) {
     }
   );
   const data = await res.json();
-  if (!data.success) throw new Error(data.errors?.[0]?.message || 'D1 query failed');
+  if (!data.success) {
+    console.error('D1 error:', JSON.stringify(data.errors));
+    throw new Error(data.errors?.[0]?.message || 'D1 query failed');
+  }
   return data.result;
 }
 
@@ -43,80 +46,89 @@ function jsonResponse(data, status = 200) {
 }
 
 export async function onRequest(context) {
-  if (context.request.method === 'OPTIONS') {
-    return new Response(null, {
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
-    });
-  }
-
-  if (context.request.method !== 'POST') {
-    return jsonResponse({ error: 'Method not allowed' }, 405);
-  }
-
-  const body = await context.request.json();
-  const { idToken, email: bodyEmail, name: bodyName, sub: bodySub } = body;
-
-  if (!idToken) {
-    return jsonResponse({ error: 'Google token is required' }, 400);
-  }
-
-  // Verify token with Google
-  let googleUser;
   try {
-    let res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
-    if (!res.ok) {
-      res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { Authorization: 'Bearer ' + idToken },
+    if (context.request.method === 'OPTIONS') {
+      return new Response(null, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
       });
     }
-    if (!res.ok) {
-      return jsonResponse({ error: 'Invalid Google token' }, 401);
+
+    if (context.request.method !== 'POST') {
+      return jsonResponse({ error: 'Method not allowed' }, 405);
     }
-    googleUser = await res.json();
-  } catch (err) {
-    return jsonResponse({ error: 'Failed to verify Google token' }, 500);
-  }
 
-  const email = googleUser.email || bodyEmail;
-  const name = googleUser.name || bodyName;
-  const googleId = googleUser.sub || bodySub;
+    const body = await context.request.json();
+    const { idToken, email: bodyEmail, name: bodyName, sub: bodySub } = body;
 
-  if (!email) {
-    return jsonResponse({ error: 'Google token does not contain an email' }, 400);
-  }
+    if (!idToken) {
+      return jsonResponse({ error: 'Google token is required' }, 400);
+    }
 
-  // Upsert user
-  const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
-  let userId;
+    // Verify token with Google - try id_token first, then access_token
+    let googleUser;
+    try {
+      // Try as id_token
+      let res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
+      if (!res.ok) {
+        // Try as access_token via userinfo
+        res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: 'Bearer ' + idToken },
+        });
+      }
+      if (!res.ok) {
+        console.error('Google token verification failed:', await res.text());
+        return jsonResponse({ error: 'Invalid Google token' }, 401);
+      }
+      googleUser = await res.json();
+    } catch (err) {
+      console.error('Google verify error:', err.message);
+      return jsonResponse({ error: 'Failed to verify Google token: ' + err.message }, 500);
+    }
 
-  if (existing) {
-    userId = existing.id;
-    const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
-  } else {
-    const now = new Date().toISOString();
-    const result = await d1Run(
-      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-      [email, null, name || null, now, now]
+    const email = googleUser.email || bodyEmail;
+    const name = googleUser.name || bodyName;
+    const googleId = googleUser.sub || bodySub;
+
+    if (!email) {
+      return jsonResponse({ error: 'Google token does not contain an email' }, 400);
+    }
+
+    // Upsert user
+    const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+    let userId;
+
+    if (existing) {
+      userId = existing.id;
+      const now = new Date().toISOString();
+      await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
+    } else {
+      const now = new Date().toISOString();
+      const result = await d1Run(
+        'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
+        [email, null, name || null, now, now]
+      );
+      userId = result.last_row_id;
+    }
+
+    // Create session
+    const token = generateToken();
+    const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
+
+    await d1Run(
+      'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)',
+      [userId, 'google', googleId, token, expiresAt]
     );
-    userId = result.last_row_id;
+
+    return jsonResponse({
+      user: { id: userId, email, name: name || null },
+      token,
+    });
+  } catch (err) {
+    console.error('Google auth error:', err);
+    return jsonResponse({ error: 'Internal error: ' + err.message }, 500);
   }
-
-  // Create session
-  const token = generateToken();
-  const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-
-  await d1Run(
-    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)',
-    [userId, 'google', googleId, token, expiresAt]
-  );
-
-  return jsonResponse({
-    user: { id: userId, email, name: name || null },
-    token,
-  });
 }
