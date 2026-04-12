@@ -4989,17 +4989,18 @@ async function handleGoogleCredential(response) {
     const email = payload.email;
     const name = payload.name;
     const sub = payload.sub;
+    const picture = payload.picture;
     
     const res = await fetch(API_BASE + '/api/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken: response.credential, email, name, sub }),
+      body: JSON.stringify({ idToken: response.credential, email, name, sub, picture }),
     });
     const data = await res.json();
     
     if (data.token) {
       authToken = data.token;
-      currentUser = data.user;
+      currentUser = { ...data.user, picture };
       localStorage.setItem('vibe_token', authToken);
       localStorage.setItem('vibe_user', JSON.stringify(currentUser));
       updateUIForAuth();
@@ -6268,17 +6269,13 @@ window.addEventListener('resize', function() {
 const API_BASE = window.location.origin;
 
 function getStoredAuth() {
-  // Check for OAuth callback params first
-  const urlParams = new URLSearchParams(window.location.search);
-  const authError = urlParams.get('auth_error');
-  const authTokenParam = urlParams.get('auth_token');
   authToken = localStorage.getItem('vibe_token');
   if (authToken) {
     const user = localStorage.getItem('vibe_user');
     if (user) {
       try { currentUser = JSON.parse(user); } catch(e) { currentUser = null; }
     }
-    // Validate token on load
+    updateUIForAuth();
     validateToken();
   }
 }
@@ -6295,12 +6292,11 @@ async function validateToken() {
       localStorage.setItem('vibe_user', JSON.stringify(currentUser));
       updateUIForAuth();
       return true;
-    } else {
-      logout();
-      return false;
     }
+    // If /api/auth/me fails, keep local state (don't logout)
+    return true;
   } catch(e) {
-    return false;
+    return true;
   }
 }
 
@@ -6374,13 +6370,17 @@ function updateUIForAuth() {
   const userStatus = document.getElementById('userStatus');
   if (currentUser) {
     if (userAvatar) {
-      userAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
+      if (currentUser.picture) {
+        userAvatar.innerHTML = '<img src="' + currentUser.picture + '" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';
+      } else {
+        userAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
+      }
     }
     if (userName) {
       userName.textContent = currentUser.name || currentUser.email || 'User';
     }
     if (userStatus) {
-      userStatus.textContent = currentUser.email || '';
+      userStatus.textContent = '';
     }
     if (userRow) {
       userRow.onclick = null;
