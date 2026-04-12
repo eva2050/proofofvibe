@@ -10,9 +10,9 @@ const CF_API_TOKEN = 'cfut_BvXmhFMquHRioW3LEwpabnQvcnabFBnODeHUfkvOee966569';
 
 let env = {};
 
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
+export async function onRequest(context) {
+  return handleRequest(context.request);
+}
 
 // =============================================================================
 // D1 HTTP API helpers
