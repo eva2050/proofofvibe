@@ -1233,6 +1233,70 @@ html[data-theme="dark"] .dna-card {
   transition: color var(--transition-speed);
 }
 
+/* ========== DNA REPORT EXTENSIONS ========== */
+.dna-report-card { max-width: 580px; }
+.dna-report-header { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.dna-report-archetype { font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.3px; }
+.dna-verdict { font-size: 13px; color: var(--text-secondary); font-style: italic; line-height: 1.5; padding: 10px 14px; background: var(--input-bg); border-radius: 10px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
+.dna-whale-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.dna-whale-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); background: var(--input-bg); padding: 3px 8px; border-radius: 4px; }
+.dna-whale-name { font-size: 14px; font-weight: 700; color: var(--accent); }
+.dna-whale-desc { font-size: 12px; color: var(--text-secondary); }
+.dna-spec-section { margin-bottom: 14px; }
+.dna-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 6px; }
+.dna-spec-item { font-size: 12.5px; color: var(--text-primary); line-height: 1.5; padding: 4px 0; padding-left: 20px; position: relative; }
+.dna-spec-num { position: absolute; left: 0; color: var(--accent); font-weight: 700; font-size: 12px; }
+.dna-share-row { text-align: center; margin: 14px 0; }
+.dna-share-btn { display: inline-flex; align-items: center; padding: 8px 18px; background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.dna-share-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.dna-share-card { margin: 12px 0; }
+.dna-share-card-inner { background: var(--input-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+
+/* Collapsible sections */
+.dna-collapsible { border-top: 1px solid var(--border); margin-top: 4px; }
+.dna-collapsible-header { display: flex; align-items: center; gap: 8px; padding: 12px 0; cursor: pointer; user-select: none; }
+.dna-collapsible-icon { font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; display: inline-block; }
+.dna-collapsible.open .dna-collapsible-icon { transform: rotate(90deg); }
+.dna-collapsible-title { font-size: 13px; font-weight: 700; color: var(--text-primary); flex: 1; }
+.dna-collapsible-count { font-size: 11px; color: var(--text-secondary); background: var(--input-bg); padding: 2px 8px; border-radius: 10px; }
+.dna-collapsible-body { display: none; padding-bottom: 14px; }
+.dna-collapsible.open .dna-collapsible-body { display: block; }
+
+/* Pattern items */
+.dna-pattern-item { display: flex; gap: 10px; padding: 10px 0; }
+.dna-tier-badge { font-size: 9px; font-weight: 800; color: #fff; padding: 3px 7px; border-radius: 4px; letter-spacing: 0.5px; flex-shrink: 0; margin-top: 2px; }
+.dna-pattern-content { flex: 1; }
+.dna-pattern-name { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.dna-pattern-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Cognitive mapping */
+.dna-cog-divider { height: 1px; background: var(--border); margin: 14px 0; }
+.dna-cog-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 10px; }
+.dna-cog-section { margin-bottom: 14px; padding: 10px 12px; background: var(--input-bg); border-radius: 8px; }
+.dna-cog-label { font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.dna-cog-sign { font-size: 11px; margin-bottom: 6px; }
+.dna-cog-analysis { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Scenarios */
+.dna-scenario-item { padding: 12px; background: var(--input-bg); border-radius: 8px; margin-bottom: 8px; }
+.dna-scenario-header { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+.dna-age-marker { font-size: 10px; font-weight: 700; color: #EF4444; background: rgba(239,68,68,0.1); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.dna-timing-marker { font-size: 10px; font-weight: 700; color: #22C55E; background: rgba(34,197,94,0.1); padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.dna-scenario-title { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+.dna-scenario-desc { font-size: 12px; color: var(--text-secondary); line-height: 1.5; }
+
+/* Ascension path */
+.dna-asc-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 8px; }
+.dna-asc-command { font-size: 13px; color: var(--text-primary); line-height: 1.6; padding: 12px; background: var(--input-bg); border-radius: 8px; border-left: 3px solid var(--accent); margin-bottom: 14px; }
+.dna-alloc-row { display: flex; flex-direction: column; gap: 10px; }
+.dna-alloc-item { display: flex; align-items: center; gap: 10px; }
+.dna-alloc-label { font-size: 11px; color: var(--text-secondary); width: 140px; flex-shrink: 0; }
+.dna-alloc-bar { flex: 1; height: 8px; background: var(--input-bg); border-radius: 4px; overflow: hidden; border: 1px solid var(--border); }
+.dna-alloc-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; }
+.dna-alloc-fill.beta { background: #3B82F6; }
+.dna-alloc-fill.alpha { background: #8B5CF6; }
+.dna-alloc-pct { font-size: 12px; font-weight: 700; color: var(--text-primary); width: 36px; text-align: right; }
+
 /* ========== TRADING LOG CARD ========== */
 .log-card {
   background: var(--card-bg);
@@ -5718,20 +5782,622 @@ function bookmarkScanner(query, btn) {
   btn.querySelector('span').textContent = t('mod.saved');
 }
 
+// ========== FINANCIAL DNA REPORT ENGINE ==========
+
+function _getPlanet(chart, name) {
+  if (!chart || !chart.planets) return null;
+  return chart.planets.find(function(p) { return p.name === name; });
+}
+
+function _getAspect(chart, p1, p2, type) {
+  if (!chart || !chart.aspects) return null;
+  return chart.aspects.find(function(a) {
+    if (type) return (a.planet1 === p1 && a.planet2 === p2 && a.type === type) ||
+                    (a.planet1 === p2 && a.planet2 === p1 && a.type === type);
+    return (a.planet1 === p1 && a.planet2 === p2) || (a.planet1 === p2 && a.planet2 === p1);
+  });
+}
+
+function _getPlanetSign(chart, name) {
+  var p = _getPlanet(chart, name);
+  return p ? p.sign : null;
+}
+
+function _getPlanetHouse(chart, name) {
+  var p = _getPlanet(chart, name);
+  return p ? p.house : null;
+}
+
+function _isRetrograde(chart, name) {
+  var p = _getPlanet(chart, name);
+  return p ? p.retrograde : false;
+}
+
+function _hasAspect(chart, p1, p2, types) {
+  if (!chart || !chart.aspects) return false;
+  var typeList = Array.isArray(types) ? types : [types];
+  return chart.aspects.some(function(a) {
+    if ((a.planet1 === p1 && a.planet2 === p2) || (a.planet1 === p2 && a.planet2 === p1)) {
+      return typeList.indexOf(a.type) !== -1;
+    }
+    return false;
+  });
+}
+
+function _detectPatterns(chart) {
+  var patterns = [];
+
+  // Tier S patterns
+  if (_hasAspect(chart, 'Jupiter', 'Pluto', ['trine', 'sextile', 'conjunction'])) {
+    patterns.push({ tier: 'S', name: 'Jupiter-Pluto Synergy', code: 'JUP-PLU', desc: 'Capital amplification engine detected. Extreme wealth potential through concentrated bets. The market bends to your conviction — but only when you commit fully.' });
+  }
+  // Grand Trine detection (3 planets 120° apart)
+  if (chart && chart.aspects) {
+    var trinePairs = {};
+    chart.aspects.forEach(function(a) {
+      if (a.type === 'trine') {
+        var key = [a.planet1, a.planet2].sort().join('-');
+        trinePairs[key] = true;
+      }
+    });
+    var planets = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+    for (var i = 0; i < planets.length; i++) {
+      for (var j = i + 1; j < planets.length; j++) {
+        for (var k = j + 1; k < planets.length; k++) {
+          var p1 = [planets[i], planets[j]].sort().join('-');
+          var p2 = [planets[j], planets[k]].sort().join('-');
+          var p3 = [planets[i], planets[k]].sort().join('-');
+          if (trinePairs[p1] && trinePairs[p2] && trinePairs[p3]) {
+            patterns.push({ tier: 'S', name: 'Grand Trine Formation', code: 'GRD-TRI', desc: 'Effortless flow pattern. Wealth arrives through momentum, not force. Your edge: recognizing the current and riding it without resistance.' });
+            break;
+          }
+        }
+        if (patterns.some(function(p) { return p.code === 'GRD-TRI'; })) break;
+      }
+      if (patterns.some(function(p) { return p.code === 'GRD-TRI'; })) break;
+    }
+  }
+  // Grand Cross detection
+  if (chart && chart.aspects) {
+    var sqPairs = {};
+    chart.aspects.forEach(function(a) {
+      if (a.type === 'square') {
+        var key = [a.planet1, a.planet2].sort().join('-');
+        sqPairs[key] = true;
+      }
+    });
+    var sqPlanets = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
+    for (var gi = 0; gi < sqPlanets.length; gi++) {
+      for (var gj = gi + 1; gj < sqPlanets.length; gj++) {
+        for (var gk = gj + 1; gk < sqPlanets.length; gk++) {
+          for (var gl = gk + 1; gl < sqPlanets.length; gl++) {
+            var combo = [sqPlanets[gi], sqPlanets[gj], sqPlanets[gk], sqPlanets[gl]];
+            var allSq = true;
+            for (var ci = 0; ci < combo.length; ci++) {
+              for (var cj = ci + 1; cj < combo.length; cj++) {
+                var skey = [combo[ci], combo[cj]].sort().join('-');
+                if (!sqPairs[skey]) { allSq = false; break; }
+              }
+              if (!allSq) break;
+            }
+            if (allSq) {
+              patterns.push({ tier: 'S', name: 'Grand Cross Formation', code: 'GRD-CRS', desc: 'Maximum tension architecture. You are built for crisis trading. Where others see chaos, you see structure. Volatility is your native language.' });
+              break;
+            }
+          }
+          if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) break;
+        }
+        if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) break;
+      }
+      if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) break;
+    }
+  }
+
+  // Tier A patterns
+  if (_hasAspect(chart, 'Mercury', 'Jupiter', ['trine', 'sextile'])) {
+    patterns.push({ tier: 'A', name: 'Mercury-Jupiter Favorable', code: 'MER-JUP', desc: 'Information arbitrage pattern. You process market data faster than the crowd. Your thesis construction has a natural edge — trust the first read, it is usually right.' });
+  }
+  if (_hasAspect(chart, 'Saturn', 'Mars', ['conjunction', 'square', 'trine']) && _hasAspect(chart, 'Mars', 'Pluto', ['conjunction', 'square', 'trine'])) {
+    patterns.push({ tier: 'A', name: 'Saturn-Mars-Pluto Composite', code: 'SAT-MAR-PLU', desc: 'Pressure-resistant execution engine. You perform under conditions that break others. Drawdown tolerance is abnormally high — but beware: pain tolerance is not the same as risk management.' });
+  }
+  if (_hasAspect(chart, 'Mars', 'Jupiter', ['conjunction', 'trine', 'sextile']) && _hasAspect(chart, 'Jupiter', 'Neptune', ['conjunction', 'trine', 'sextile'])) {
+    patterns.push({ tier: 'A', name: 'Mars-Jupiter-Neptune Composite', code: 'MAR-JUP-NEP', desc: 'Speculative intuition matrix. You can sense market turns before they happen. The risk: you cannot always distinguish intuition from wishful thinking. Discipline is the filter.' });
+  }
+
+  // Tier R patterns
+  if (_hasAspect(chart, 'Mercury', 'Mars', ['square', 'opposition'])) {
+    patterns.push({ tier: 'R', name: 'Mercury-Mars Friction', code: 'MER-MAR', desc: 'Decision-execution gap detected. You know the right move but execute at the wrong time. The gap between analysis and action is where capital leaks.' });
+  }
+  if (_hasAspect(chart, 'Mercury', 'Neptune', ['square', 'opposition'])) {
+    patterns.push({ tier: 'R', name: 'Mercury-Neptune Friction', code: 'MER-NEP', desc: 'Reality distortion field active. You see what you want to see in charts. Confirmation bias is not a cognitive error for you — it is a structural feature.' });
+  }
+
+  return patterns;
+}
+
+function _calcTraits(chart) {
+  var risk = 50, greed = 50, precision = 50, intuition = 50, stamina = 50;
+
+  var jupSign = _getPlanetSign(chart, 'Jupiter');
+  var marSign = _getPlanetSign(chart, 'Mars');
+  var merSign = _getPlanetSign(chart, 'Mercury');
+  var satSign = _getPlanetSign(chart, 'Saturn');
+  var moonSign = _getPlanetSign(chart, 'Moon');
+  var pluHouse = _getPlanetHouse(chart, 'Pluto');
+  var venSign = _getPlanetSign(chart, 'Venus');
+
+  // Risk: Mars sign, Pluto house, Mars-Jupiter aspects
+  if (marSign === 'Aries' || marSign === 'Scorpio') risk += 20;
+  else if (marSign === 'Leo' || marSign === 'Sagittarius') risk += 12;
+  else if (marSign === 'Taurus' || marSign === 'Cancer') risk -= 15;
+  if (pluHouse === 5 || pluHouse === 8) risk += 15;
+  if (_hasAspect(chart, 'Mars', 'Jupiter', ['conjunction', 'trine'])) risk += 15;
+  if (_hasAspect(chart, 'Mars', 'Saturn', ['square', 'opposition'])) risk -= 10;
+  if (_isRetrograde(chart, 'Mars')) risk -= 8;
+
+  // Greed: Jupiter sign, Venus-Jupiter aspects
+  if (jupSign === 'Taurus' || jupSign === 'Libra' || jupSign === 'Pisces') greed += 18;
+  else if (jupSign === 'Scorpio' || jupSign === 'Capricorn') greed += 12;
+  if (_hasAspect(chart, 'Venus', 'Jupiter', ['conjunction', 'trine'])) greed += 15;
+  if (_hasAspect(chart, 'Venus', 'Jupiter', ['square', 'opposition'])) greed += 10;
+  if (venSign === 'Taurus') greed += 8;
+  if (satSign === 'Capricorn' || satSign === 'Aquarius') greed -= 10;
+
+  // Precision: Mercury sign, Mercury-Saturn aspects
+  if (merSign === 'Virgo') precision += 22;
+  else if (merSign === 'Gemini') precision += 14;
+  else if (merSign === 'Pisces' || merSign === 'Sagittarius') precision -= 12;
+  if (_hasAspect(chart, 'Mercury', 'Saturn', ['trine', 'sextile'])) precision += 15;
+  if (_hasAspect(chart, 'Mercury', 'Saturn', ['square', 'opposition'])) precision -= 8;
+  if (_isRetrograde(chart, 'Mercury')) precision -= 10;
+
+  // Intuition: Moon sign, Neptune aspects
+  if (moonSign === 'Pisces' || moonSign === 'Cancer' || moonSign === 'Scorpio') intuition += 18;
+  else if (moonSign === 'Gemini' || moonSign === 'Aquarius') intuition -= 8;
+  if (_hasAspect(chart, 'Moon', 'Neptune', ['trine', 'sextile', 'conjunction'])) intuition += 15;
+  if (_hasAspect(chart, 'Mercury', 'Neptune', ['trine', 'sextile'])) intuition += 10;
+  if (_hasAspect(chart, 'Mercury', 'Neptune', ['square', 'opposition'])) intuition -= 5;
+
+  // Stamina: Saturn sign, Saturn-Mars aspects
+  if (satSign === 'Taurus' || satSign === 'Capricorn') stamina += 18;
+  else if (satSign === 'Aries' || satSign === 'Cancer') stamina -= 10;
+  if (_hasAspect(chart, 'Saturn', 'Mars', ['trine', 'sextile'])) stamina += 12;
+  if (_hasAspect(chart, 'Saturn', 'Mars', ['square', 'opposition'])) stamina += 8;
+  if (_hasAspect(chart, 'Moon', 'Saturn', ['conjunction', 'square'])) stamina += 10;
+
+  // Clamp all values
+  risk = Math.max(15, Math.min(95, risk));
+  greed = Math.max(15, Math.min(95, greed));
+  precision = Math.max(15, Math.min(95, precision));
+  intuition = Math.max(15, Math.min(95, intuition));
+  stamina = Math.max(15, Math.min(95, stamina));
+
+  return {
+    risk: { value: risk, color: '#EF4444' },
+    greed: { value: greed, color: '#F59E0B' },
+    precision: { value: precision, color: '#3B82F6' },
+    intuition: { value: intuition, color: '#8B5CF6' },
+    stamina: { value: stamina, color: '#22C55E' }
+  };
+}
+
+function _calcWealthRating(chart, patterns) {
+  var rating = 2;
+  var sCount = patterns.filter(function(p) { return p.tier === 'S'; }).length;
+  var aCount = patterns.filter(function(p) { return p.tier === 'A'; }).length;
+  var rCount = patterns.filter(function(p) { return p.tier === 'R'; }).length;
+
+  rating += sCount * 1.5;
+  rating += aCount * 0.7;
+  rating -= rCount * 0.5;
+
+  var jupSign = _getPlanetSign(chart, 'Jupiter');
+  if (jupSign === 'Taurus' || jupSign === 'Pisces' || jupSign === 'Cancer') rating += 0.5;
+  if (_hasAspect(chart, 'Jupiter', 'Pluto', ['trine', 'conjunction'])) rating += 0.5;
+  if (_isRetrograde(chart, 'Jupiter')) rating -= 0.3;
+
+  return Math.max(1, Math.min(6, Math.round(rating)));
+}
+
+function _generateArchetype(chart, traits, patterns) {
+  var archetypes = [];
+  var t = traits;
+
+  if (t.risk.value >= 75 && t.intuition.value >= 70) archetypes.push('The Quantum Gambler');
+  if (t.precision.value >= 75 && t.stamina.value >= 70) archetypes.push('The Cold Architect');
+  if (t.greed.value >= 80 && t.risk.value >= 65) archetypes.push('The Insatiable Lever');
+  if (t.intuition.value >= 75 && t.precision.value <= 50) archetypes.push('The Liquidated Poet');
+  if (t.stamina.value >= 80 && t.risk.value <= 45) archetypes.push('The Diamond Vault');
+  if (t.risk.value <= 35 && t.precision.value >= 70) archetypes.push('The Risk Auditor');
+  if (t.greed.value <= 40 && t.intuition.value >= 65) archetypes.push('The Zen Allocator');
+  if (t.risk.value >= 70 && t.stamina.value <= 40) archetypes.push('The Flash Crash');
+  if (t.precision.value >= 65 && t.greed.value >= 65) archetypes.push('The Calculated Predator');
+  if (t.intuition.value >= 70 && t.stamina.value >= 65) archetypes.push('The Tide Rider');
+
+  if (archetypes.length === 0) archetypes.push('The Market Spectator');
+
+  // Check for S-tier pattern modifiers
+  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) archetypes.unshift('The Capital Magnifier');
+  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) archetypes.unshift('The Volatility Alchemist');
+
+  return archetypes[0];
+}
+
+function _generateVerdict(chart, traits, archetype) {
+  var verdicts = {
+    'The Quantum Gambler': 'Your edge is real but your discipline is a myth. One good streak away from ruin, one bad streak away from legend.',
+    'The Cold Architect': 'You build portfolios like a machine. The market respects precision. Your only vulnerability: you underestimate chaos.',
+    'The Insatiable Lever': 'Leverage is your drug, conviction your excuse. The math always wins eventually — the question is whether you survive the equation.',
+    'The Liquidated Poet': 'You feel the market like music but trade it like poetry — beautiful, unstructured, and frequently bankrupt.',
+    'The Diamond Vault': 'You hold until the diamond cracks. Patience is your weapon and your prison.',
+    'The Risk Auditor': 'You see every risk except the one that matters: opportunity cost. Safety is the most expensive illusion.',
+    'The Zen Allocator': 'You have the detachment of a monk and the allocation of a pension fund. Reliable, unexciting, and surprisingly profitable.',
+    'The Flash Crash': 'You enter like lightning and exit like a power outage. Speed without stamina is just expensive motion.',
+    'The Calculated Predator': 'You wait, you observe, you strike. The market is your ecosystem and you are at the top of the food chain.',
+    'The Tide Rider': 'You do not predict the market — you become it. When the current shifts, you shift first. Trust the instinct.',
+    'The Market Spectator': 'You watch more than you trade. Analysis paralysis is not a strategy — it is a diagnosis.',
+    'The Capital Magnifier': 'Money multiplies in your presence. The mechanism is opaque even to you. Do not question the engine — maintain it.',
+    'The Volatility Alchemist': 'You transmute chaos into profit with unsettling consistency. Your gift is wasted on calm markets.'
+  };
+  return verdicts[archetype] || 'Your financial DNA is still decoding. The market has not figured you out either.';
+}
+
+function _matchWhale(chart, traits, patterns) {
+  var whales = [
+    { name: 'Warren Buffett', pattern: 'Value concentration + extreme patience', match: false },
+    { name: 'George Soros', pattern: 'Macro thesis + crisis exploitation', match: false },
+    { name: 'Ray Dalio', pattern: 'Systematic risk parity + radical transparency', match: false },
+    { name: 'Jim Simons', pattern: 'Quantitative pattern recognition', match: false },
+    { name: 'Cathie Wood', pattern: 'Disruptive innovation + high conviction', match: false },
+    { name: 'Carl Icahn', pattern: 'Activist confrontation + forced value extraction', match: false },
+    { name: 'David Tepper', pattern: 'Distressed assets + contrarian timing', match: false },
+    { name: 'Stanley Druckenmiller', pattern: 'Macro directional + aggressive position sizing', match: false }
+  ];
+
+  if (traits.stamina.value >= 75 && traits.greed.value <= 60) whales[0].match = true;
+  if (traits.intuition.value >= 70 && traits.risk.value >= 65 && patterns.some(function(p) { return p.code === 'GRD-CRS'; })) whales[1].match = true;
+  if (traits.precision.value >= 65 && traits.risk.value <= 55) whales[2].match = true;
+  if (traits.precision.value >= 75 && traits.intuition.value >= 60) whales[3].match = true;
+  if (traits.greed.value >= 70 && traits.risk.value >= 60 && traits.intuition.value >= 60) whales[4].match = true;
+  if (traits.risk.value >= 70 && traits.stamina.value >= 60) whales[5].match = true;
+  if (traits.risk.value >= 60 && traits.intuition.value >= 55 && traits.precision.value <= 55) whales[6].match = true;
+  if (traits.risk.value >= 70 && traits.precision.value >= 55 && traits.greed.value >= 65) whales[7].match = true;
+
+  var matched = whales.filter(function(w) { return w.match; });
+  if (matched.length === 0) {
+    // Default match based on dominant trait
+    var dominant = Object.keys(traits).reduce(function(a, b) { return traits[a].value > traits[b].value ? a : b; });
+    if (dominant === 'risk') return whales[7];
+    if (dominant === 'greed') return whales[4];
+    if (dominant === 'precision') return whales[3];
+    if (dominant === 'intuition') return whales[1];
+    return whales[0];
+  }
+  return matched[0];
+}
+
+function _generateSpecTypes(chart, traits, patterns) {
+  var types = [];
+  if (traits.risk.value >= 65 && traits.intuition.value >= 60) types.push('Options volatility selling during earnings compression');
+  if (traits.precision.value >= 65 && traits.stamina.value >= 60) types.push('Long-term value positions with 12-24 month thesis horizons');
+  if (traits.greed.value >= 70 && traits.risk.value >= 60) types.push('Concentrated crypto positions in early-stage protocols');
+  if (traits.intuition.value >= 70 && traits.precision.value <= 55) types.push('Momentum swing trades on 4H-1D timeframes');
+  if (traits.stamina.value >= 70 && traits.risk.value <= 50) types.push('Index fund dollar-cost averaging with rebalancing triggers');
+  if (traits.precision.value >= 60 && traits.risk.value >= 55) types.push('Pairs trading and statistical arbitrage on correlated assets');
+  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) types.push('Crisis alpha: long vol strategies during market dislocations');
+  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) types.push('Private equity-style concentrated bets on asymmetric opportunities');
+
+  if (types.length === 0) types.push('Broad market ETF positions with modest leverage');
+  return types.slice(0, 3);
+}
+
+function _generateCognitiveMap(chart, traits, patterns) {
+  var merSign = _getPlanetSign(chart, 'Mercury') || 'Unknown';
+  var marSign = _getPlanetSign(chart, 'Mars') || 'Unknown';
+  var moonSign = _getPlanetSign(chart, 'Moon') || 'Unknown';
+  var satSign = _getPlanetSign(chart, 'Saturn') || 'Unknown';
+  var merRetro = _isRetrograde(chart, 'Mercury');
+  var marRetro = _isRetrograde(chart, 'Mars');
+
+  var decisionLogic = {
+    label: 'Decision Logic [Mercury]',
+    sign: merSign,
+    retrograde: merRetro,
+    analysis: 'Mercury in ' + merSign + (merRetro ? ' (retrograde)' : '') + ' defines your information processing architecture. '
+  };
+  if (merSign === 'Virgo') decisionLogic.analysis += 'Your analytical engine is surgical — you decompose problems into components before acting. The risk: over-analysis delays execution past the optimal window.';
+  else if (merSign === 'Gemini') decisionLogic.analysis += 'Dual-track processing active. You see multiple scenarios simultaneously, which is an advantage in complex markets. The risk: decision paralysis from competing theses.';
+  else if (merSign === 'Pisces' || merSign === 'Sagittarius') decisionLogic.analysis += 'Your reasoning operates on pattern recognition rather than linear logic. You connect dots others miss. The risk: the dots are not always connected.';
+  else if (merSign === 'Taurus') decisionLogic.analysis += 'Slow, deliberate, and stubborn. Once you form a thesis, you anchor to it. The risk: markets move faster than your conviction updates.';
+  else if (merSign === 'Scorpio') decisionLogic.analysis += 'Penetrating analysis with a bias toward hidden information. You look for what others miss. The risk: conspiracy thinking masquerading as insight.';
+  else decisionLogic.analysis += 'Your decision framework is balanced but lacks a distinctive edge. You process information competently without exceptional speed or depth.';
+  if (merRetro) decisionLogic.analysis += ' Mercury retrograde amplifies second-guessing — your first instinct is usually correct, but you rarely trust it.';
+
+  var executionFeel = {
+    label: 'Execution Feel [Mars]',
+    sign: marSign,
+    retrograde: marRetro,
+    analysis: 'Mars in ' + marSign + (marRetro ? ' (retrograde)' : '') + ' determines your execution signature. '
+  };
+  if (marSign === 'Aries') executionFeel.analysis += 'Instant execution with minimal hesitation. You pull the trigger before the target is fully in frame. The risk: premature entry on incomplete setups.';
+  else if (marSign === 'Taurus') executionFeel.analysis += 'Slow, grinding execution. You build positions methodically. The risk: the opportunity window closes while you are still loading.';
+  else if (marSign === 'Scorpio') executionFeel.analysis += 'Strategic aggression. You strike with precision and intensity. The risk: over-concentration in a single thesis.';
+  else if (marSign === 'Capricorn') executionFeel.analysis += 'Disciplined, structured execution. You follow the plan. The risk: rigidity when the plan needs adjustment.';
+  else executionFeel.analysis += 'Your execution is adequate but lacks a defining characteristic. You neither hesitate nor rush.';
+  if (marRetro) executionFeel.analysis += ' Mars retrograde creates internal friction between intent and action — you know what to do but struggle to do it.';
+
+  var emotionVoid = {
+    label: 'Emotional Black Hole [Moon]',
+    sign: moonSign,
+    analysis: 'Moon in ' + moonSign + ' reveals your emotional vulnerability in markets. '
+  };
+  if (moonSign === 'Cancer') emotionVoid.analysis += 'Deep emotional sensitivity to portfolio fluctuations. Losses feel personal, gains feel undeserved. The risk: revenge trading after drawdowns.';
+  else if (moonSign === 'Scorpio') emotionVoid.analysis += 'Intense emotional relationship with money. Possessive and territorial about positions. The risk: inability to cut losers because admitting defeat triggers emotional crisis.';
+  else if (moonSign === 'Capricorn') emotionVoid.analysis += 'Emotional suppression pattern. You feel the losses but refuse to acknowledge them. The risk: unprocessed emotions accumulate until they explode as catastrophic position liquidation.';
+  else if (moonSign === 'Taurus') emotionVoid.analysis += 'Comfort-driven emotional baseline. You seek stability and resist change. The risk: holding losers too long because selling feels like admitting instability.';
+  else if (moonSign === 'Pisces') emotionVoid.analysis += 'Boundary-less emotional processing. You absorb market sentiment like a sponge. The risk: confusing the market\'s emotions with your own analysis.';
+  else emotionVoid.analysis += 'Your emotional relationship with money is relatively balanced. You neither panic nor euphoriate excessively.';
+
+  var riskBlindspot = {
+    label: 'Risk Blind Spot [Saturn]',
+    sign: satSign,
+    analysis: 'Saturn in ' + satSign + ' exposes your structural risk blind spot. '
+  };
+  if (satSign === 'Aries') riskBlindspot.analysis += 'Impatient risk management. You set stops but move them. You plan exits but ignore them. The risk: your risk framework exists only on paper.';
+  else if (satSign === 'Taurus') riskBlindspot.analysis += 'Overconfidence in stability. You assume the ground will not shift. The risk: tail-risk events destroy portfolios built on permanence assumptions.';
+  else if (satSign === 'Leo') riskBlindspot.analysis += 'Pride-driven risk accumulation. You add to losers to prove the thesis right. The risk: ego is more expensive than any market loss.';
+  else if (satSign === 'Scorpio') riskBlindspot.analysis += 'Secrecy and isolation in risk decisions. You do not seek second opinions. The risk: unchallenged assumptions compound into catastrophic blind spots.';
+  else if (satSign === 'Capricorn') riskBlindspot.analysis += 'Over-reliance on historical precedent. You manage tomorrow\'s risk with yesterday\'s data. The risk: black swans do not read your backtest.';
+  else riskBlindspot.analysis += 'Your risk management is conventional but not rigorous. You follow standard practices without stress-testing their assumptions.';
+
+  return [decisionLogic, executionFeel, emotionVoid, riskBlindspot];
+}
+
+function _generateFailureScenarios(chart, traits, patterns) {
+  var scenarios = [];
+  var marSign = _getPlanetSign(chart, 'Mars') || 'Aries';
+  var moonSign = _getPlanetSign(chart, 'Moon') || 'Taurus';
+  var merSign = _getPlanetSign(chart, 'Mercury') || 'Gemini';
+
+  if (traits.risk.value >= 65) {
+    scenarios.push({
+      age: '28-32',
+      title: 'The Leverage Cascade',
+      desc: 'A concentrated position with 3-5x leverage encounters an adverse move that exceeds your stop distance. Instead of cutting, you add — convinced the thesis is intact while the market disagrees. The position compounds against you until liquidation. Total capital destruction in 48-72 hours. The root cause is not the trade — it is the inability to accept being wrong when conviction is high.'
+    });
+  }
+  if (traits.intuition.value >= 60 && traits.precision.value <= 55) {
+    scenarios.push({
+      age: '33-37',
+      title: 'The Narrative Trap',
+      desc: 'You identify a compelling market narrative and commit capital based on story, not structure. The narrative feels right — your intuition confirms it. But intuition is not analysis, and the story has no support from price action or fundamentals. You hold through deteriorating conditions because selling feels like betrayal of your vision. The loss is slow, grinding, and denial-compounded.'
+    });
+  }
+  if (traits.greed.value >= 70) {
+    scenarios.push({
+      age: '35-40',
+      title: 'The Winner\'s Curse',
+      desc: 'After a significant win, your position sizing increases disproportionately. You attribute success to skill when it was partially luck. The next trade is larger, the conviction is higher, and the market is less cooperative. The win rate does not matter when position sizing is exponential. One loss erases three wins. The cycle repeats until the account does not.'
+    });
+  }
+  if (traits.stamina.value <= 50) {
+    scenarios.push({
+      age: '26-30',
+      title: 'The Premature Exit',
+      desc: 'You enter a correct thesis but exit too early. The position moves in your favor, triggers your mental stop, and you sell for a modest gain. The asset then proceeds to deliver 5-10x returns. You watch from the sidelines, paralyzed by regret. The pattern repeats across multiple opportunities, each time confirming that your timing is right but your holding period is fatally short.'
+    });
+  }
+  if (patterns.some(function(p) { return p.tier === 'R'; })) {
+    scenarios.push({
+      age: '30-35',
+      title: 'The Structural Leak',
+      desc: 'A consistent, low-level capital drain caused by a recurring cognitive error. The loss per incident is small — 2-5% — but the frequency makes it systemic. You identify the pattern intellectually but cannot correct it behaviorally. Over 3-5 years, the cumulative leak exceeds any single catastrophic loss. The danger is that it feels manageable until it is not.'
+    });
+  }
+  if (scenarios.length === 0) {
+    scenarios.push({
+      age: '30-36',
+      title: 'The Complacency Decay',
+      desc: 'A period of moderate success creates a false sense of security. Risk parameters gradually loosen, position sizes slowly increase, and the edge that generated the initial returns erodes unnoticed. The loss is not dramatic — it is a slow, invisible attrition of capital through declining discipline. By the time you recognize the decay, the damage is structural.'
+    });
+  }
+
+  return scenarios.slice(0, 3);
+}
+
+function _generateProfitWindows(chart, traits, patterns) {
+  var windows = [];
+  var jupSign = _getPlanetSign(chart, 'Jupiter') || 'Sagittarius';
+  var venSign = _getPlanetSign(chart, 'Venus') || 'Taurus';
+
+  if (traits.intuition.value >= 65) {
+    windows.push({
+      timing: 'Market regime transitions (bull to bear, risk-on to risk-off)',
+      title: 'The Regime Shift',
+      desc: 'Your strongest profit window opens when the market changes character. While others are anchored to the previous regime, your pattern recognition detects the shift early. Position early, size moderately, and let the new trend confirm your thesis. This is where your intuition becomes quantitative alpha.'
+    });
+  }
+  if (traits.precision.value >= 65 && traits.stamina.value >= 55) {
+    windows.push({
+      timing: 'Post-earnings drift on fundamentally mispriced equities',
+      title: 'The Mispricing Window',
+      desc: 'Within 5-15 trading days after earnings releases, the market frequently misprices companies with complex narratives. Your analytical precision allows you to separate signal from noise. Enter during the emotional overreaction, set a 60-90 day target, and let the fundamentals reassert. This is slow money, but it compounds.'
+    });
+  }
+  if (patterns.some(function(p) { return p.tier === 'S'; })) {
+    windows.push({
+      timing: 'High-volatility events (VIX > 30, flash crashes, geopolitical shocks)',
+      title: 'The Chaos Premium',
+      desc: 'Your chart configuration thrives in disorder. When volatility spikes and the crowd panics, your decision architecture remains functional. This is your natural habitat. Buy the fear, sell the relief. The premium for chaos participation is the highest risk-adjusted return available in markets.'
+    });
+  }
+  if (traits.greed.value >= 60 && traits.risk.value >= 55) {
+    windows.push({
+      timing: 'Early-stage technology adoption cycles and sector rotations',
+      title: 'The Adoption Wave',
+      desc: 'Your appetite for growth aligns with the most profitable phase of technology adoption — the transition from early adopter to early majority. Position in the infrastructure layer before the application layer explodes. This window opens every 7-10 years and lasts 18-36 months.'
+    });
+  }
+  if (traits.stamina.value >= 65) {
+    windows.push({
+      timing: 'Long-duration macro trends (rate cycles, commodity supercycles)',
+      title: 'The Structural Ride',
+      desc: 'Your holding capacity gives you access to returns that short-term traders cannot capture. Identify a macro trend with 2-5 year duration, build a core position, and add on pullbacks. The key discipline: do not check the portfolio daily. Monthly rebalancing is sufficient. Your edge is time, not timing.'
+    });
+  }
+  if (windows.length === 0) {
+    windows.push({
+      timing: 'Broad market recovery phases (6-18 months post-crisis)',
+      title: 'The Recovery Wave',
+      desc: 'Your balanced profile is well-suited for systematic recovery participation. After significant market drawdowns, deploy capital in tranches over 6-12 months using broad market indices. The return is not spectacular, but the risk-adjusted profile is strong. This is the strategy that survives.'
+    });
+  }
+
+  return windows.slice(0, 3);
+}
+
+function _generateAscensionPath(chart, traits, patterns) {
+  var command = '';
+  var beta = 60, alpha = 40;
+
+  if (traits.risk.value >= 70) {
+    command = 'Implement a mandatory 48-hour cooling period between thesis formation and execution. No position may exceed 15% of portfolio. Every trade requires a written exit plan before entry.';
+    beta = 40; alpha = 60;
+  } else if (traits.precision.value >= 70) {
+    command = 'Increase position size by 30% on highest-conviction setups. Your precision is wasted on small positions. The edge demands scale.';
+    beta = 50; alpha = 50;
+  } else if (traits.intuition.value >= 70) {
+    command = 'Backtest every intuitive call against a quantitative framework. If the data does not support the feeling, the feeling is noise. Intuition without verification is gambling.';
+    beta = 55; alpha = 45;
+  } else if (traits.stamina.value >= 70) {
+    command = 'Set calendar-based rebalancing triggers. Your patience is an asset, but it becomes a liability when it prevents necessary portfolio rotation.';
+    beta = 65; alpha = 35;
+  } else if (traits.greed.value >= 70) {
+    command = 'Implement a profit-take system: sell 50% at +20%, move stop to breakeven, let the rest run. Systematic profit extraction prevents winner\'s curse cycles.';
+    beta = 45; alpha = 55;
+  } else {
+    command = 'Define your edge in writing. If you cannot articulate your alpha source in one sentence, you do not have one. Build from clarity, not complexity.';
+    beta = 60; alpha = 40;
+  }
+
+  if (patterns.some(function(p) { return p.tier === 'R'; })) {
+    command += ' Address your Tier R structural leaks first — they will compound faster than any alpha you generate.';
+  }
+
+  return {
+    command: command,
+    beta: beta,
+    alpha: alpha
+  };
+}
+
+function generateFinancialDNA() {
+  var chart = natalChartData;
+
+  // Fallback: generate plausible chart data from birth date if no API data
+  if (!chart || !chart.planets || chart.planets.length === 0) {
+    var bd = localStorage.getItem('vibe_birthDate');
+    if (bd) {
+      chart = _generateFallbackChart(bd);
+    } else {
+      chart = _generateFallbackChart('1990-06-15');
+    }
+  }
+
+  var patterns = _detectPatterns(chart);
+  var traits = _calcTraits(chart);
+  var wealthRating = _calcWealthRating(chart, patterns);
+  var archetype = _generateArchetype(chart, traits, patterns);
+  var verdict = _generateVerdict(chart, traits, archetype);
+  var whale = _matchWhale(chart, traits, patterns);
+  var specTypes = _generateSpecTypes(chart, traits, patterns);
+  var cogMap = _generateCognitiveMap(chart, traits, patterns);
+  var failures = _generateFailureScenarios(chart, traits, patterns);
+  var profits = _generateProfitWindows(chart, traits, patterns);
+  var ascension = _generateAscensionPath(chart, traits, patterns);
+
+  // Update global dnaData for radar chart compatibility
+  dnaData.traits = traits;
+  dnaData.archetype = archetype;
+  dnaData.stars = wealthRating;
+  dnaData.totalStars = 6;
+
+  return {
+    patterns: patterns,
+    traits: traits,
+    wealthRating: wealthRating,
+    archetype: archetype,
+    verdict: verdict,
+    whale: whale,
+    specTypes: specTypes,
+    cognitiveMap: cogMap,
+    failureScenarios: failures,
+    profitWindows: profits,
+    ascension: ascension
+  };
+}
+
+function _generateFallbackChart(dateStr) {
+  var seed = 0;
+  for (var i = 0; i < dateStr.length; i++) seed += dateStr.charCodeAt(i) * (i + 1);
+  seed = seed % 1000;
+
+  function seededRand(offset) {
+    var x = Math.sin(seed + offset) * 10000;
+    return x - Math.floor(x);
+  }
+
+  var signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+  var planets = [
+    { name: 'Sun', sign: signs[Math.floor(seededRand(1) * 12)], degree: Math.floor(seededRand(2) * 30), house: Math.floor(seededRand(3) * 12) + 1, retrograde: false },
+    { name: 'Moon', sign: signs[Math.floor(seededRand(4) * 12)], degree: Math.floor(seededRand(5) * 30), house: Math.floor(seededRand(6) * 12) + 1, retrograde: false },
+    { name: 'Mercury', sign: signs[Math.floor(seededRand(7) * 12)], degree: Math.floor(seededRand(8) * 30), house: Math.floor(seededRand(9) * 12) + 1, retrograde: seededRand(10) > 0.8 },
+    { name: 'Venus', sign: signs[Math.floor(seededRand(11) * 12)], degree: Math.floor(seededRand(12) * 30), house: Math.floor(seededRand(13) * 12) + 1, retrograde: seededRand(14) > 0.9 },
+    { name: 'Mars', sign: signs[Math.floor(seededRand(15) * 12)], degree: Math.floor(seededRand(16) * 30), house: Math.floor(seededRand(17) * 12) + 1, retrograde: seededRand(18) > 0.85 },
+    { name: 'Jupiter', sign: signs[Math.floor(seededRand(19) * 12)], degree: Math.floor(seededRand(20) * 30), house: Math.floor(seededRand(21) * 12) + 1, retrograde: false },
+    { name: 'Saturn', sign: signs[Math.floor(seededRand(22) * 12)], degree: Math.floor(seededRand(23) * 30), house: Math.floor(seededRand(24) * 12) + 1, retrograde: seededRand(25) > 0.7 },
+    { name: 'Uranus', sign: signs[Math.floor(seededRand(26) * 12)], degree: Math.floor(seededRand(27) * 30), house: Math.floor(seededRand(28) * 12) + 1, retrograde: true },
+    { name: 'Neptune', sign: signs[Math.floor(seededRand(29) * 12)], degree: Math.floor(seededRand(30) * 30), house: Math.floor(seededRand(31) * 12) + 1, retrograde: true },
+    { name: 'Pluto', sign: signs[Math.floor(seededRand(32) * 12)], degree: Math.floor(seededRand(33) * 30), house: Math.floor(seededRand(34) * 12) + 1, retrograde: true }
+  ];
+
+  // Generate plausible aspects
+  var aspectTypes = ['conjunction','square','trine','opposition','sextile'];
+  var aspects = [];
+  var aspectPlanets = ['Mercury','Venus','Mars','Jupiter','Saturn','Neptune','Pluto'];
+  for (var ai = 0; ai < aspectPlanets.length; ai++) {
+    for (var aj = ai + 1; aj < aspectPlanets.length; aj++) {
+      if (seededRand(100 + ai * 10 + aj) > 0.4) {
+        aspects.push({
+          planet1: aspectPlanets[ai],
+          planet2: aspectPlanets[aj],
+          type: aspectTypes[Math.floor(seededRand(200 + ai * 10 + aj) * aspectTypes.length)],
+          degree: Math.floor(seededRand(300 + ai * 10 + aj) * 8)
+        });
+      }
+    }
+  }
+
+  return { planets: planets, aspects: aspects, houses: [] };
+}
+
 function addDNACard() {
-  const container = document.getElementById('chatMessages');
-  const msg = document.createElement('div');
+  var report = generateFinancialDNA();
+  var container = document.getElementById('chatMessages');
+  var msg = document.createElement('div');
   msg.className = 'msg ai';
 
-  const traits = dnaData.traits;
-  const traitNames = { risk: t('mod.risk'), greed: t('mod.greed'), precision: t('mod.precision'), intuition: t('mod.intuition'), stamina: t('mod.stamina') };
-  const traitI18nKeys = { risk: 'dna.roast.risk', greed: 'dna.roast.greed', precision: 'dna.roast.precision', intuition: 'dna.roast.intuition', stamina: 'dna.roast.stamina' };
+  var traitNames = { risk: t('mod.risk'), greed: t('mod.greed'), precision: t('mod.precision'), intuition: t('mod.intuition'), stamina: t('mod.stamina') };
+  var traitI18nKeys = { risk: 'dna.roast.risk', greed: 'dna.roast.greed', precision: 'dna.roast.precision', intuition: 'dna.roast.intuition', stamina: 'dna.roast.stamina' };
 
-  let traitsHTML = '';
-  for (const [key, trait] of Object.entries(traits)) {
-    const tier = trait.value >= 70 ? 'high' : trait.value >= 45 ? 'mid' : 'low';
-    const roastKey = traitI18nKeys[key] + '.' + tier;
-    const roast = t(roastKey);
+  // Build trait bars HTML
+  var traitsHTML = '';
+  var reportTraits = report.traits;
+  for (var key in reportTraits) {
+    var trait = reportTraits[key];
+    var tier = trait.value >= 70 ? 'high' : trait.value >= 45 ? 'mid' : 'low';
+    var roastKey = traitI18nKeys[key] + '.' + tier;
+    var roast = t(roastKey);
     traitsHTML += '<div class="dna-trait">' +
       '<span class="trait-name">' + traitNames[key] + '</span>' +
       '<div class="trait-bar-bg"><div class="trait-bar-fill" style="width:' + trait.value + '%;background:' + trait.color + '"></div></div>' +
@@ -5740,26 +6406,197 @@ function addDNACard() {
     '<div class="dna-trait roast"><span class="trait-roast">' + roast + '</span></div>';
   }
 
-  const starsHTML = '★'.repeat(dnaData.stars) + '☆'.repeat(dnaData.totalStars - dnaData.stars);
+  // Stars
+  var starsHTML = '';
+  for (var si = 0; si < report.wealthRating; si++) starsHTML += '\u2B50';
+  for (var si2 = 0; si2 < 6 - report.wealthRating; si2++) starsHTML += '\u2606';
+
+  // Tier badge colors
+  var tierColors = { S: '#EF4444', A: '#F59E0B', R: '#6B7280' };
+  var tierLabels = { S: 'TIER S', A: 'TIER A', R: 'TIER R' };
+
+  // Build patterns HTML
+  var patternsHTML = '';
+  if (report.patterns.length === 0) {
+    patternsHTML = '<div style="padding:12px;color:var(--text-secondary);font-size:13px;font-style:italic;">No dominant patterns detected. Your chart operates below the signal threshold — neither blessed nor cursed, merely average.</div>';
+  } else {
+    report.patterns.forEach(function(p) {
+      patternsHTML += '<div class="dna-pattern-item">' +
+        '<span class="dna-tier-badge" style="background:' + tierColors[p.tier] + '">' + tierLabels[p.tier] + '</span>' +
+        '<div class="dna-pattern-content">' +
+          '<div class="dna-pattern-name">' + escapeHtml(p.name) + ' <span style="color:var(--text-secondary);font-size:11px;">[' + escapeHtml(p.code) + ']</span></div>' +
+          '<div class="dna-pattern-desc">' + escapeHtml(p.desc) + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+  }
+
+  // Build cognitive map HTML
+  var cogHTML = '';
+  report.cognitiveMap.forEach(function(section) {
+    var retroBadge = section.retrograde ? ' <span style="color:#EF4444;font-size:11px;font-weight:600;">[RX]</span>' : '';
+    cogHTML += '<div class="dna-cog-section">' +
+      '<div class="dna-cog-label">' + escapeHtml(section.label) + retroBadge + '</div>' +
+      '<div class="dna-cog-sign" style="color:var(--accent);">Sign: ' + escapeHtml(section.sign) + '</div>' +
+      '<div class="dna-cog-analysis">' + escapeHtml(section.analysis) + '</div>' +
+    '</div>';
+  });
+
+  // Build failure scenarios HTML
+  var failHTML = '';
+  report.failureScenarios.forEach(function(s) {
+    failHTML += '<div class="dna-scenario-item">' +
+      '<div class="dna-scenario-header">' +
+        '<span class="dna-age-marker">Age ' + escapeHtml(s.age) + '</span>' +
+        '<span class="dna-scenario-title">' + escapeHtml(s.title) + '</span>' +
+      '</div>' +
+      '<div class="dna-scenario-desc">' + escapeHtml(s.desc) + '</div>' +
+    '</div>';
+  });
+
+  // Build profit windows HTML
+  var profitHTML = '';
+  report.profitWindows.forEach(function(w) {
+    profitHTML += '<div class="dna-scenario-item dna-profit-item">' +
+      '<div class="dna-scenario-header">' +
+        '<span class="dna-timing-marker">' + escapeHtml(w.timing) + '</span>' +
+        '<span class="dna-scenario-title">' + escapeHtml(w.title) + '</span>' +
+      '</div>' +
+      '<div class="dna-scenario-desc">' + escapeHtml(w.desc) + '</div>' +
+    '</div>';
+  });
+
+  // Build speculation types HTML
+  var specHTML = '';
+  report.specTypes.forEach(function(s, i) {
+    specHTML += '<div class="dna-spec-item"><span class="dna-spec-num">' + (i + 1) + '</span> ' + escapeHtml(s) + '</div>';
+  });
+
+  // Build ascension HTML
+  var ascHTML = '<div class="dna-asc-command">' + escapeHtml(report.ascension.command) + '</div>' +
+    '<div class="dna-alloc-row">' +
+      '<div class="dna-alloc-item">' +
+        '<div class="dna-alloc-label">Beta (Index / Passive)</div>' +
+        '<div class="dna-alloc-bar"><div class="dna-alloc-fill beta" style="width:' + report.ascension.beta + '%"></div></div>' +
+        '<div class="dna-alloc-pct">' + report.ascension.beta + '%</div>' +
+      '</div>' +
+      '<div class="dna-alloc-item">' +
+        '<div class="dna-alloc-label">Alpha (Active / Conviction)</div>' +
+        '<div class="dna-alloc-bar"><div class="dna-alloc-fill alpha" style="width:' + report.ascension.alpha + '%"></div></div>' +
+        '<div class="dna-alloc-pct">' + report.ascension.alpha + '%</div>' +
+      '</div>' +
+    '</div>';
+
+  // Build share card HTML
+  var shareCardId = 'dnaShareCard_' + Date.now();
 
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
-    '<div class="dna-card">' +
-      '<div class="dna-card-header">' +
+    '<div class="dna-card dna-report-card">' +
+
+      // === SECTION 1: Identity Label ===
+      '<div class="dna-report-header">' +
         '<canvas class="dna-radar-canvas" id="dnaRadarCanvas" width="140" height="140"></canvas>' +
         '<div class="dna-info">' +
-          '<div class="archetype">' + escapeHtml(dnaData.archetype) + '</div>' +
+          '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
           '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
-          '<div class="stars">' + starsHTML + '</div>' +
+          '<div class="stars" style="font-size:14px;letter-spacing:1px;">' + starsHTML + '</div>' +
+          '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Wealth Rating: ' + report.wealthRating + '/6</div>' +
         '</div>' +
       '</div>' +
+
+      '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
+
+      '<div class="dna-whale-row">' +
+        '<span class="dna-whale-label">Whale Pattern</span>' +
+        '<span class="dna-whale-name">' + escapeHtml(report.whale.name) + '</span>' +
+        '<span class="dna-whale-desc">' + escapeHtml(report.whale.pattern) + '</span>' +
+      '</div>' +
+
+      '<div class="dna-spec-section">' +
+        '<div class="dna-section-label">Speculation Type</div>' +
+        specHTML +
+      '</div>' +
+
       '<div class="dna-traits">' + traitsHTML + '</div>' +
+
+      '<div class="dna-share-row">' +
+        '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
+          'Share Report' +
+        '</button>' +
+      '</div>' +
+
+      // Share card (hidden by default)
+      '<div id="' + shareCardId + '" class="dna-share-card" style="display:none;">' +
+        '<div class="dna-share-card-inner">' +
+          '<div style="text-align:center;margin-bottom:12px;">' +
+            '<div style="font-size:18px;font-weight:800;color:var(--text-primary);">' + escapeHtml(report.archetype) + '</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Financial DNA Report</div>' +
+            '<div style="font-size:20px;margin-top:6px;">' + starsHTML + '</div>' +
+          '</div>' +
+          '<div style="font-size:12px;color:var(--text-secondary);font-style:italic;text-align:center;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">' + escapeHtml(report.verdict) + '</div>' +
+          '<div style="text-align:center;margin-top:10px;font-size:10px;color:var(--text-secondary);opacity:0.7;">Verified by ProofOfVibe Quantum Astrology Engine</div>' +
+        '</div>' +
+      '</div>' +
+
+      // === SECTION 2: Pattern Autopsy ===
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
+          '<span class="dna-collapsible-icon">\u25B6</span>' +
+          '<span class="dna-collapsible-title">Pattern Autopsy</span>' +
+          '<span class="dna-collapsible-count">' + report.patterns.length + ' pattern' + (report.patterns.length !== 1 ? 's' : '') + '</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          patternsHTML +
+          '<div class="dna-cog-divider"></div>' +
+          '<div class="dna-cog-title">Cognitive Mapping</div>' +
+          cogHTML +
+        '</div>' +
+      '</div>' +
+
+      // === SECTION 3: Failure Scenarios ===
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
+          '<span class="dna-collapsible-icon">\u25B6</span>' +
+          '<span class="dna-collapsible-title">Failure Scenario Backtest</span>' +
+          '<span class="dna-collapsible-count">' + report.failureScenarios.length + ' scenario' + (report.failureScenarios.length !== 1 ? 's' : '') + '</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          failHTML +
+        '</div>' +
+      '</div>' +
+
+      // === SECTION 4: Profit Windows ===
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
+          '<span class="dna-collapsible-icon">\u25B6</span>' +
+          '<span class="dna-collapsible-title">Profit Windows</span>' +
+          '<span class="dna-collapsible-count">' + report.profitWindows.length + ' window' + (report.profitWindows.length !== 1 ? 's' : '') + '</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          profitHTML +
+        '</div>' +
+      '</div>' +
+
+      // === SECTION 5: Ascension Path ===
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
+          '<span class="dna-collapsible-icon">\u25B6</span>' +
+          '<span class="dna-collapsible-title">The Ascension Path</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          '<div class="dna-asc-label">Behavioral Command</div>' +
+          ascHTML +
+        '</div>' +
+      '</div>' +
+
     '</div>' +
   '</div>';
 
   container.appendChild(msg);
 
   // Draw radar chart after DOM update
-  requestAnimationFrame(() => drawRadarChart());
+  requestAnimationFrame(function() { drawRadarChart(); });
 }
 
 function drawRadarChart() {
