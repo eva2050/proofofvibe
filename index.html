@@ -3431,6 +3431,13 @@ html[lang="ko"] {
     <div class="modal-body">
       <!-- Account Tab -->
       <div class="modal-tab-content active" id="tab-account">
+        <div class="form-group" style="text-align:center;margin-bottom:16px;">
+          <div id="settingsAvatar" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#d1d5db,#9ca3af);display:inline-flex;align-items:center;justify-content:center;font-size:28px;color:#fff;font-weight:600;cursor:pointer;position:relative;overflow:hidden;" onclick="document.getElementById('avatarInput').click()">
+            G
+          </div>
+          <input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+          <div style="font-size:12px;color:#888;margin-top:6px;" data-i18n="settings.changeAvatar">Click to change avatar</div>
+        </div>
         <div class="form-group">
           <label data-i18n="settings.accountName">Account Name</label>
           <input type="text" id="accountName" value="Guest" placeholder="Enter your name">
@@ -5123,6 +5130,28 @@ function switchSettingsTab(tab) {
 
 let natalChartData = null;
 
+function handleAvatarUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    showToast('Image too large, max 2MB');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const dataUrl = e.target.result;
+    // Save to localStorage
+    localStorage.setItem('vibe_avatar', dataUrl);
+    if (currentUser) {
+      currentUser.picture = dataUrl;
+      localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+    }
+    updateUIForAuth();
+    showToast('Avatar updated');
+  };
+  reader.readAsDataURL(file);
+}
+
 function saveAccount() {
   const birthDate = document.getElementById('birthDate').value;
   const birthTime = document.getElementById('birthTime').value;
@@ -6369,17 +6398,37 @@ function updateUIForAuth() {
   const userName = document.getElementById('userName');
   const userStatus = document.getElementById('userStatus');
   const accountName = document.getElementById('accountName');
+  const settingsAvatar = document.getElementById('settingsAvatar');
+  
+  // Use custom avatar if set, otherwise Google picture
+  const customAvatar = localStorage.getItem('vibe_avatar');
+  const avatarSrc = customAvatar || (currentUser && currentUser.picture) || null;
+
   if (currentUser) {
+    // Update sidebar avatar
     if (userAvatar) {
-      if (currentUser.picture) {
+      if (avatarSrc) {
         userAvatar.innerHTML = '';
         const img = document.createElement('img');
-        img.src = currentUser.picture;
-        img.referrerPolicy = 'no-referrer';
+        img.src = avatarSrc;
+        if (!customAvatar) img.referrerPolicy = 'no-referrer';
         img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover;';
         userAvatar.appendChild(img);
       } else {
         userAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
+      }
+    }
+    // Update settings avatar
+    if (settingsAvatar) {
+      if (avatarSrc) {
+        settingsAvatar.innerHTML = '';
+        const img = document.createElement('img');
+        img.src = avatarSrc;
+        if (!customAvatar) img.referrerPolicy = 'no-referrer';
+        img.style.cssText = 'width:100%;height:100%;border-radius:50%;object-fit:cover;';
+        settingsAvatar.appendChild(img);
+      } else {
+        settingsAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
       }
     }
     if (userName) {
@@ -6397,6 +6446,7 @@ function updateUIForAuth() {
     }
   } else {
     if (userAvatar) userAvatar.textContent = 'G';
+    if (settingsAvatar) settingsAvatar.textContent = 'G';
     if (userName) userName.textContent = t('user.guest') || 'Guest';
     if (userStatus) userStatus.textContent = t('user.signIn') || 'Sign in';
     if (accountName) accountName.value = 'Guest';
