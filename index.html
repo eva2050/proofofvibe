@@ -978,6 +978,35 @@ html[data-theme="dark"] .result-card {
   box-shadow: 0 2px 12px rgba(0,0,0,0.25), 0 0 1px rgba(255,255,255,0.04);
 }
 
+/* Calendar + Dashboard layout */
+.calendar-layout {
+  display: flex;
+  gap: 0;
+}
+.calendar-main {
+  flex: 1;
+  min-width: 0;
+}
+.calendar-dashboard {
+  width: 260px;
+  flex-shrink: 0;
+  padding: 16px;
+  border-left: 1px solid var(--border);
+  overflow-y: auto;
+  max-height: 80vh;
+}
+@media (max-width: 900px) {
+  .calendar-layout {
+    flex-direction: column;
+  }
+  .calendar-dashboard {
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid var(--border);
+    max-height: none;
+  }
+}
+
 .result-card .card-header {
   display: flex;
   align-items: center;
@@ -3232,7 +3261,7 @@ html[lang="ko"] {
         <span class="header-title" id="headerTitle" data-i18n="nav.scanner">The Scanner</span>
       </div>
       <div class="header-actions">
-        <button class="header-btn" id="togglePanelBtn" onclick="togglePanel()">
+        <button class="header-btn" id="togglePanelBtn" onclick="togglePanel()" style="display:none;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
         </button>
       </div>
@@ -3287,8 +3316,8 @@ html[lang="ko"] {
     </div>
   </main>
 
-  <!-- RIGHT PANEL -->
-  <aside class="right-panel" id="rightPanel">
+  <!-- RIGHT PANEL (hidden globally, embedded in Calendar page) -->
+  <aside class="right-panel" id="rightPanel" style="display:none;">
     <div class="panel-title" data-i18n="panel.title">COSMIC DASHBOARD</div>
 
     <div class="nav-section-label" style="padding-left:0" data-i18n="panel.currentTransits">Current Transits</div>
@@ -6911,29 +6940,78 @@ function addCalendarCard() {
   const transit = ts > 20 ? t('mod.mercury') + ' ☿ ' + t('mod.sextile') + ' ' + t('mod.jupiter') + ' ♃' : ts < -20 ? t('mod.mars') + ' ♂ ' + t('mod.square') + ' ' + t('mod.saturn') + ' ♄' : t('mod.venus') + ' ♀ ' + t('mod.trine') + ' Moon ☽';
   const action = ts > 20 ? 'Execute planned entries. Momentum favors decisive action. Set alerts for take-profit levels.' : ts < -20 ? 'No new positions. Review open trades and tighten stops. Journal your emotional state.' : 'Research day. Screen new candidates, update watchlist. No urgent trades needed.';
 
+  // Dashboard sidebar HTML (from right panel)
+  const dashboardHTML = '<div class="calendar-dashboard">' +
+    '<div class="panel-title" data-i18n="panel.title" style="font-size:13px;">COSMIC DASHBOARD</div>' +
+    '<div class="nav-section-label" style="padding-left:0;font-size:11px;" data-i18n="panel.currentTransits">Current Transits</div>' +
+    '<div class="transit-card intense">' +
+      '<div class="transit-name" style="font-size:12px;">Saturn &#9788; Square Moon</div>' +
+      '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.saturnDesc">Restructuring emotional investments. Tight stops advised.</div>' +
+      '<span class="transit-tag intense" style="font-size:10px;" data-i18n="panel.intense">Intense</span>' +
+    '</div>' +
+    '<div class="transit-card positive">' +
+      '<div class="transit-name" style="font-size:12px;">Jupiter &#9788; Trine Venus</div>' +
+      '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.jupiterDesc">Harmonious wealth flow. Green light for growth positions.</div>' +
+      '<span class="transit-tag positive" style="font-size:10px;" data-i18n="panel.positive">Positive</span>' +
+    '</div>' +
+    '<div class="transit-card">' +
+      '<div class="transit-name" style="font-size:12px;">Mars &#9788; Sextile Mercury</div>' +
+      '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.marsDesc">Sharp mental clarity for quick trades.</div>' +
+      '<span class="transit-tag neutral" style="font-size:10px;" data-i18n="panel.neutral">Neutral</span>' +
+    '</div>' +
+    '<div class="section-divider"></div>' +
+    '<div class="nav-section-label" style="padding-left:0;font-size:11px;" data-i18n="panel.marketVibe">Market Vibe Index</div>' +
+    '<div class="market-vibe-item">' +
+      '<span class="mv-label" style="font-size:11px;" data-i18n="panel.sentiment">Overall Sentiment</span>' +
+      '<span class="mv-value bullish" style="font-size:11px;" data-i18n="panel.bullish">Bullish ↗</span>' +
+    '</div>' +
+    '<div class="market-vibe-item">' +
+      '<span class="mv-label" style="font-size:11px;" data-i18n="panel.volatility">Volatility Forecast</span>' +
+      '<span class="mv-value high" style="font-size:11px;" data-i18n="panel.highVol">High ⚡</span>' +
+    '</div>' +
+    '<div class="market-vibe-item">' +
+      '<span class="mv-label" style="font-size:11px;" data-i18n="panel.mercuryRetro">Mercury Retrograde</span>' +
+      '<span class="mv-value warning" style="font-size:11px;" data-i18n="panel.active">Active ⚠</span>' +
+    '</div>' +
+    '<div class="market-vibe-item">' +
+      '<span class="mv-label" style="font-size:11px;" data-i18n="panel.lunarPhase">Lunar Phase</span>' +
+      '<span class="mv-value" style="font-size:11px;" data-i18n="panel.lunarWaning">Waning Gibbous</span>' +
+    '</div>' +
+    '<div class="section-divider"></div>' +
+    '<div class="nav-section-label" style="padding-left:0;font-size:11px;" data-i18n="panel.quickStats">Quick Stats</div>' +
+    '<div class="quick-stats">' +
+      '<div class="quick-stat"><div class="qs-value">7</div><div class="qs-label" style="font-size:10px;" data-i18n="panel.scansToday">Scans Today</div></div>' +
+      '<div class="quick-stat"><div class="qs-value">78%</div><div class="qs-label" style="font-size:10px;" data-i18n="panel.vibeAccuracy">Vibe Accuracy</div></div>' +
+      '<div class="quick-stat"><div class="qs-value">12</div><div class="qs-label" style="font-size:10px;" data-i18n="panel.streak">Streak</div></div>' +
+    '</div>' +
+  '</div>';
+
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
-    '<div class="result-card">' +
-      '<div style="padding:16px;">' +
-        // Today score
-        '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
-          '<div style="font-size:32px;font-weight:800;letter-spacing:-1px;color:' + (ts > 20 ? '#22C55E' : ts < -20 ? '#EF4444' : 'var(--text-primary)') + ';">' + ts + '</div>' +
-          '<div>' +
-            '<div style="font-size:13px;font-weight:600;color:var(--text-primary);">' + t('mod.todayVibeScore') + '</div>' +
-            '<div style="font-size:11px;color:var(--text-secondary);">' + (ts > 20 ? t('mod.favorable') : ts < -20 ? t('mod.caution') : t('mod.neutral')) + '</div>' +
+    '<div class="result-card" style="max-width:100%;">' +
+      '<div class="calendar-layout">' +
+        '<div class="calendar-main" style="padding:16px;">' +
+          // Today score
+          '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
+            '<div style="font-size:32px;font-weight:800;letter-spacing:-1px;color:' + (ts > 20 ? '#22C55E' : ts < -20 ? '#EF4444' : 'var(--text-primary)') + ';">' + ts + '</div>' +
+            '<div>' +
+              '<div style="font-size:13px;font-weight:600;color:var(--text-primary);">' + t('mod.todayVibeScore') + '</div>' +
+              '<div style="font-size:11px;color:var(--text-secondary);">' + (ts > 20 ? t('mod.favorable') : ts < -20 ? t('mod.caution') : t('mod.neutral')) + '</div>' +
+            '</div>' +
+          '</div>' +
+          // Calendar grid
+          '<div style="padding:14px;border-radius:14px;background:var(--card-bg);border:1px solid var(--border);margin-bottom:14px;">' +
+            calHeader + calBody +
+          '</div>' +
+          // Clusters
+          (clustersHTML ? '<div style="margin-bottom:14px;">' + clustersHTML + '</div>' : '') +
+          // Daily Action
+          '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);border:1px solid var(--border);margin-top:14px;">' +
+            '<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-secondary);padding:4px 10px;border-radius:8px;margin-bottom:6px;">' + t('mod.dailyAction') + '</div>' +
+            '<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">' + transit + '</div>' +
+            '<div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">' + action + '</div>' +
           '</div>' +
         '</div>' +
-        // Calendar grid
-        '<div style="padding:14px;border-radius:14px;background:var(--card-bg);border:1px solid var(--border);margin-bottom:14px;">' +
-          calHeader + calBody +
-        '</div>' +
-        // Clusters
-        (clustersHTML ? '<div style="margin-bottom:14px;">' + clustersHTML + '</div>' : '') +
-        // Daily Action
-        '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);border:1px solid var(--border);margin-top:14px;">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-secondary);padding:4px 10px;border-radius:8px;margin-bottom:6px;">' + t('mod.dailyAction') + '</div>' +
-          '<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">' + transit + '</div>' +
-          '<div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">' + action + '</div>' +
-        '</div>' +
+        dashboardHTML +
       '</div>' +
     '</div>' +
   '</div>';
