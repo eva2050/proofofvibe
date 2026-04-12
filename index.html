@@ -106,15 +106,20 @@ html[data-theme="dark"] .sidebar {
   letter-spacing: -0.5px;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 0px;
   cursor: default;
   transition: color var(--transition-speed);
+}
+
+.sidebar-logo .logo-text {
+  font-weight: 400;
 }
 
 .sidebar-logo .dot {
   color: var(--accent-green);
   font-size: 28px;
   line-height: 1;
+  margin: 0 1px;
 }
 
 .sidebar-actions {
@@ -3022,8 +3027,7 @@ html[lang="ko"] {
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <img src="logo.png" alt="ProofOfVibe" class="logo-light" style="height:27px;display:block;">
-      <img src="logo-white.png" alt="ProofOfVibe" class="logo-dark" style="height:27px;display:none;">
+      <span class="logo-text">Proof</span><span class="dot">.</span><span class="logo-text">of Vibe</span>
     </div>
     <div class="sidebar-actions">
       <button class="sidebar-action-btn" onclick="newChat()" title="New Chat">
