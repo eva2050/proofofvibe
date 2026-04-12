@@ -5152,6 +5152,11 @@ function handleAvatarUpload(event) {
 }
 
 function saveAccount() {
+  if (!authToken || !currentUser) {
+    closeSettings();
+    openLogin();
+    return;
+  }
   const birthDate = document.getElementById('birthDate').value;
   const birthTime = document.getElementById('birthTime').value;
   const birthPlace = document.getElementById('birthPlace').value;
@@ -5171,12 +5176,7 @@ function saveAccount() {
   
   // Fetch natal chart data from API
   fetchNatalChart(birthDate, birthTime, birthPlace);
-  
-  // Sync to cloud only if logged in
-  if (authToken && currentUser) {
-    syncProfileToCloud();
-  }
-  
+  syncProfileToCloud();
   showToast(t('toast.accountSaved'));
 }
 
@@ -5286,6 +5286,10 @@ function switchLibTab(tab) {
 
 function renderLibrary() {
   const list = document.getElementById('libraryList');
+  if (!authToken || !currentUser) {
+    if (list) list.innerHTML = '<div class="library-empty" style="text-align:center;padding:20px;"><button class="btn-primary" onclick="closeSettings();openLogin();" data-i18n="user.signIn">Sign in</button></div>';
+    return;
+  }
   const items = libraryItems.filter(i => i.category === currentLibTab);
   if (items.length === 0) {
     list.innerHTML = '<div class="library-empty">' + t('library.empty') + '</div>';
@@ -5346,9 +5350,15 @@ function deductCredits(amount, desc) {
 }
 
 function renderCreditsTab() {
-  document.getElementById('creditsAmount').textContent = credits;
+  const amountEl = document.getElementById('creditsAmount');
   const logEl = document.getElementById('creditsLog');
-  logEl.innerHTML = creditLog.map(entry => {
+  if (!authToken || !currentUser) {
+    if (amountEl) amountEl.textContent = '--';
+    if (logEl) logEl.innerHTML = '<div class="library-empty" style="text-align:center;padding:20px;"><button class="btn-primary" onclick="closeSettings();openLogin();" data-i18n="user.signIn">Sign in</button></div>';
+    return;
+  }
+  if (amountEl) amountEl.textContent = credits;
+  if (logEl) logEl.innerHTML = creditLog.map(entry => {
     const isNeg = entry.amount.startsWith('-');
     return '<div class="credit-entry">' +
       '<span class="ce-time">' + entry.time + '</span>' +
