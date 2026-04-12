@@ -3394,10 +3394,10 @@ html[lang="ko"] {
       <p style="font-size:13px;color:var(--text-secondary);margin:8px 0 0;" id="authSubtitle" data-i18n="login.subtitle">Sign in to sync your data across devices.</p>
     </div>
     <div style="padding:0 28px 28px;display:flex;flex-direction:column;gap:10px;">
-      <button class="login-btn login-btn-google" onclick="handleGoogleLogin()">
+      <div id="googleBtnContainer" class="login-btn login-btn-google" onclick="handleGoogleLogin()">
         <svg viewBox="0 0 24 24" style="width:18px;height:18px;"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         <span data-i18n="login.google">Continue with Google</span>
-      </button>
+      </div>
       <div style="display:flex;align-items:center;gap:12px;color:var(--text-secondary);font-size:12px;">
         <div style="flex:1;height:1px;background:var(--border);"></div>
         <span data-i18n="login.or">or</span>
@@ -6284,15 +6284,20 @@ async function loginWithGoogle() {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
         script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
         script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
       });
+      // Wait a bit for GSI to initialize
+      await new Promise(r => setTimeout(r, 500));
     }
 
-    // Use Google Identity Services - One Tap / popup (no redirect_uri needed)
+    const CLIENT_ID = '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com';
+
     google.accounts.id.initialize({
-      client_id: '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com',
+      client_id: CLIENT_ID,
       callback: async (response) => {
         if (response.error) {
           showToast('Google login cancelled');
@@ -6321,16 +6326,20 @@ async function loginWithGoogle() {
         }
       }
     });
-    // Prompt One Tap or render button
-    google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        // Fallback: render a Google Sign-In button
-        google.accounts.id.renderButton(
-          document.createElement('div'),
-          { theme: 'outline', size: 'large', text: 'signin_with', width: 300 }
-        );
-      }
-    });
+
+    // Render Google button inside our container
+    const container = document.getElementById('googleBtnContainer');
+    if (container) {
+      container.innerHTML = '';
+      container.onclick = null;
+      google.accounts.id.renderButton(container, {
+        theme: 'outline',
+        size: 'large',
+        text: 'signin_with',
+        width: container.offsetWidth || 280,
+        locale: currentLang === 'zh' ? 'zh_CN' : 'en'
+      });
+    }
   } catch(e) {
     showToast('Google login failed, please use email for now');
   }
