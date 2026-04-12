@@ -6441,8 +6441,8 @@ function updateUIForAuth() {
       accountName.value = currentUser.name;
     }
     if (userRow) {
-      userRow.onclick = null;
-      userRow.style.cursor = 'default';
+      userRow.onclick = function() { openSettings('account'); };
+      userRow.style.cursor = 'pointer';
     }
   } else {
     if (userAvatar) userAvatar.textContent = 'G';
