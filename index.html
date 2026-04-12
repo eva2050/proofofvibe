@@ -6184,8 +6184,6 @@ window.addEventListener('resize', function() {
   }
 });
 
-init();
-
 // ========== AUTH SYSTEM ==========
 const API_BASE = window.location.origin;
 let currentUser = null;
@@ -6484,6 +6482,8 @@ async function loadTradeLogsFromCloud() {
   } catch(e) {}
   return [];
 }
+
+init();
 </script>
 </body>
 </html>
