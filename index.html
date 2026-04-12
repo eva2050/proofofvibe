@@ -1254,13 +1254,10 @@ html[data-theme="dark"] .dna-card {
 
 /* Collapsible sections */
 .dna-collapsible { border-top: 1px solid var(--border); margin-top: 4px; }
-.dna-collapsible-header { display: flex; align-items: center; gap: 8px; padding: 12px 0; cursor: pointer; user-select: none; }
-.dna-collapsible-icon { font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; display: inline-block; }
-.dna-collapsible.open .dna-collapsible-icon { transform: rotate(90deg); }
+.dna-collapsible-header { display: flex; align-items: center; gap: 8px; padding: 12px 0; }
 .dna-collapsible-title { font-size: 13px; font-weight: 700; color: var(--text-primary); flex: 1; }
 .dna-collapsible-count { font-size: 11px; color: var(--text-secondary); background: var(--input-bg); padding: 2px 8px; border-radius: 10px; }
-.dna-collapsible-body { display: none; padding-bottom: 14px; }
-.dna-collapsible.open .dna-collapsible-body { display: block; }
+.dna-collapsible-body { padding-bottom: 14px; }
 
 /* Pattern items */
 .dna-pattern-item { display: flex; gap: 10px; padding: 10px 0; }
@@ -6101,7 +6098,7 @@ function _generateCognitiveMap(chart, traits, patterns) {
   var marRetro = _isRetrograde(chart, 'Mars');
 
   var decisionLogic = {
-    label: 'Decision Logic [Mercury]',
+    label: '决策逻辑 [水星]',
     sign: merSign,
     retrograde: merRetro,
     analysis: 'Mercury in ' + merSign + (merRetro ? ' (retrograde)' : '') + ' defines your information processing architecture. '
@@ -6115,7 +6112,7 @@ function _generateCognitiveMap(chart, traits, patterns) {
   if (merRetro) decisionLogic.analysis += ' Mercury retrograde amplifies second-guessing — your first instinct is usually correct, but you rarely trust it.';
 
   var executionFeel = {
-    label: 'Execution Feel [Mars]',
+    label: '执行手感 [火星]',
     sign: marSign,
     retrograde: marRetro,
     analysis: 'Mars in ' + marSign + (marRetro ? ' (retrograde)' : '') + ' determines your execution signature. '
@@ -6128,7 +6125,7 @@ function _generateCognitiveMap(chart, traits, patterns) {
   if (marRetro) executionFeel.analysis += ' Mars retrograde creates internal friction between intent and action — you know what to do but struggle to do it.';
 
   var emotionVoid = {
-    label: 'Emotional Black Hole [Moon]',
+    label: '情绪黑洞 [月亮]',
     sign: moonSign,
     analysis: 'Moon in ' + moonSign + ' reveals your emotional vulnerability in markets. '
   };
@@ -6140,7 +6137,7 @@ function _generateCognitiveMap(chart, traits, patterns) {
   else emotionVoid.analysis += 'Your emotional relationship with money is relatively balanced. You neither panic nor euphoriate excessively.';
 
   var riskBlindspot = {
-    label: 'Risk Blind Spot [Saturn]',
+    label: '风控盲区 [土星]',
     sign: satSign,
     analysis: 'Saturn in ' + satSign + ' exposes your structural risk blind spot. '
   };
@@ -6477,12 +6474,12 @@ function addDNACard() {
   var ascHTML = '<div class="dna-asc-command">' + escapeHtml(report.ascension.command) + '</div>' +
     '<div class="dna-alloc-row">' +
       '<div class="dna-alloc-item">' +
-        '<div class="dna-alloc-label">Beta (Index / Passive)</div>' +
+        '<div class="dna-alloc-label">Beta (指数/被动仓位)</div>' +
         '<div class="dna-alloc-bar"><div class="dna-alloc-fill beta" style="width:' + report.ascension.beta + '%"></div></div>' +
         '<div class="dna-alloc-pct">' + report.ascension.beta + '%</div>' +
       '</div>' +
       '<div class="dna-alloc-item">' +
-        '<div class="dna-alloc-label">Alpha (Active / Conviction)</div>' +
+        '<div class="dna-alloc-label">Alpha (主动/进攻仓位)</div>' +
         '<div class="dna-alloc-bar"><div class="dna-alloc-fill alpha" style="width:' + report.ascension.alpha + '%"></div></div>' +
         '<div class="dna-alloc-pct">' + report.ascension.alpha + '%</div>' +
       '</div>' +
@@ -6501,20 +6498,20 @@ function addDNACard() {
           '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
           '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
           '<div class="stars" style="font-size:14px;letter-spacing:1px;">' + starsHTML + '</div>' +
-          '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">Wealth Rating: ' + report.wealthRating + '/6</div>' +
+          '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">财富评级: ' + report.wealthRating + '/6</div>' +
         '</div>' +
       '</div>' +
 
       '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
 
       '<div class="dna-whale-row">' +
-        '<span class="dna-whale-label">Whale Pattern</span>' +
+        '<span class="dna-whale-label">鲸鱼模式</span>' +
         '<span class="dna-whale-name">' + escapeHtml(report.whale.name) + '</span>' +
         '<span class="dna-whale-desc">' + escapeHtml(report.whale.pattern) + '</span>' +
       '</div>' +
 
       '<div class="dna-spec-section">' +
-        '<div class="dna-section-label">Speculation Type</div>' +
+        '<div class="dna-section-label">投机方向</div>' +
         specHTML +
       '</div>' +
 
@@ -6523,7 +6520,7 @@ function addDNACard() {
       '<div class="dna-share-row">' +
         '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-          'Share Report' +
+          '分享报告' +
         '</button>' +
       '</div>' +
 
@@ -6532,7 +6529,7 @@ function addDNACard() {
         '<div class="dna-share-card-inner">' +
           '<div style="text-align:center;margin-bottom:12px;">' +
             '<div style="font-size:18px;font-weight:800;color:var(--text-primary);">' + escapeHtml(report.archetype) + '</div>' +
-            '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Financial DNA Report</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Financial DNA 财务基因报告</div>' +
             '<div style="font-size:20px;margin-top:6px;">' + starsHTML + '</div>' +
           '</div>' +
           '<div style="font-size:12px;color:var(--text-secondary);font-style:italic;text-align:center;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">' + escapeHtml(report.verdict) + '</div>' +
@@ -6542,25 +6539,23 @@ function addDNACard() {
 
       // === SECTION 2: Pattern Autopsy ===
       '<div class="dna-collapsible">' +
-        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-          '<span class="dna-collapsible-icon">\u25B6</span>' +
-          '<span class="dna-collapsible-title">Pattern Autopsy</span>' +
-          '<span class="dna-collapsible-count">' + report.patterns.length + ' pattern' + (report.patterns.length !== 1 ? 's' : '') + '</span>' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">财富格局深度鉴定</span>' +
+          '<span class="dna-collapsible-count">' + report.patterns.length + ' 个格局</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           patternsHTML +
           '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">Cognitive Mapping</div>' +
+          '<div class="dna-cog-title">认知映射</div>' +
           cogHTML +
         '</div>' +
       '</div>' +
 
       // === SECTION 3: Failure Scenarios ===
       '<div class="dna-collapsible">' +
-        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-          '<span class="dna-collapsible-icon">\u25B6</span>' +
-          '<span class="dna-collapsible-title">Failure Scenario Backtest</span>' +
-          '<span class="dna-collapsible-count">' + report.failureScenarios.length + ' scenario' + (report.failureScenarios.length !== 1 ? 's' : '') + '</span>' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">典型损钱场景回测</span>' +
+          '<span class="dna-collapsible-count">' + report.failureScenarios.length + ' 个场景</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           failHTML +
@@ -6569,10 +6564,9 @@ function addDNACard() {
 
       // === SECTION 4: Profit Windows ===
       '<div class="dna-collapsible">' +
-        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-          '<span class="dna-collapsible-icon">\u25B6</span>' +
-          '<span class="dna-collapsible-title">Profit Windows</span>' +
-          '<span class="dna-collapsible-count">' + report.profitWindows.length + ' window' + (report.profitWindows.length !== 1 ? 's' : '') + '</span>' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">典型赚钱时机</span>' +
+          '<span class="dna-collapsible-count">' + report.profitWindows.length + ' 个窗口</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           profitHTML +
@@ -6581,12 +6575,11 @@ function addDNACard() {
 
       // === SECTION 5: Ascension Path ===
       '<div class="dna-collapsible">' +
-        '<div class="dna-collapsible-header" onclick="this.parentElement.classList.toggle(\'open\')">' +
-          '<span class="dna-collapsible-icon">\u25B6</span>' +
-          '<span class="dna-collapsible-title">The Ascension Path</span>' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">进阶路径</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
-          '<div class="dna-asc-label">Behavioral Command</div>' +
+          '<div class="dna-asc-label">行为指令</div>' +
           ascHTML +
         '</div>' +
       '</div>' +
@@ -6674,7 +6667,7 @@ function drawRadarChart() {
   }
 
   // Draw labels
-  const labels = ['Risk', 'Greed', 'Prec', 'Intu', 'Stam'];
+  const labels = ['风险', '贪婪', '精准', '直觉', '耐力'];
   ctx.font = '9px DM Sans';
   ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#6B7280';
   ctx.textAlign = 'center';
