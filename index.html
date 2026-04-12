@@ -3408,10 +3408,10 @@ html[lang="ko"] {
         <div style="flex:1;height:1px;background:var(--border);"></div>
       </div>
       <input type="email" class="login-input" id="authEmail" placeholder="your@email.com">
-      <input type="password" class="login-input" id="authPassword" placeholder="••••••••">
+      <input type="password" class="login-input" id="authPassword" placeholder="Password">
       <!-- Register: Confirm password (hidden by default) -->
       <div id="authConfirmField" style="display:none;">
-        <input type="password" class="login-input" id="authConfirmPassword" placeholder="••••••••">
+        <input type="password" class="login-input" id="authConfirmPassword" placeholder="Confirm Password">
       </div>
       <button class="login-btn login-btn-submit" id="authSubmitBtn" onclick="submitAuth()" data-i18n="login.submit">Sign In</button>
       <p style="text-align:center;font-size:11px;color:var(--text-secondary);margin:4px 0 0;" data-i18n="login.terms">By continuing, you agree to our Terms of Service and Privacy Policy.</p>
@@ -6288,36 +6288,64 @@ async function loginWithEmail(email, password) {
 }
 
 async function loginWithGoogle() {
-  // Use Google's popup-based OAuth
   try {
-    const googleClientId = ''; // Will be configured
-    if (!googleClientId) {
-      showToast('Google login coming soon');
-      return;
+    // Load Google Identity Services script if not loaded
+    if (!window.google || !google.accounts) {
+      await new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
     }
-    // Google Identity Services
-    google.accounts.id2.initialize({
-      client_id: googleClientId,
+
+    // Use OAuth2 popup flow
+    const tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com',
+      scope: 'openid email profile',
       callback: async (response) => {
-        const res = await fetch(API_BASE + '/api/auth/google', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ idToken: response.credential })
-        });
-        const data = await res.json();
-        if (res.ok) {
-          authToken = data.token;
-          currentUser = data.user;
-          localStorage.setItem('vibe_token', authToken);
-          localStorage.setItem('vibe_user', JSON.stringify(currentUser));
-          updateUIForAuth();
-          closeLoginModal();
+        if (response.error) {
+          showToast('Google login cancelled');
+          return;
+        }
+        // Get user info with access token
+        try {
+          const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { 'Authorization': 'Bearer ' + response.access_token }
+          });
+          const userInfo = await userInfoRes.json();
+          
+          const res = await fetch(API_BASE + '/api/auth/google', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              idToken: response.access_token,
+              email: userInfo.email,
+              name: userInfo.name,
+              sub: userInfo.sub
+            })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            authToken = data.token;
+            currentUser = data.user;
+            localStorage.setItem('vibe_token', authToken);
+            localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+            updateUIForAuth();
+            closeLoginModal();
+            showToast(t('toast.accountSaved') || 'Welcome!');
+          } else {
+            showToast(data.error || 'Google login failed');
+          }
+        } catch(e) {
+          showToast('Google login failed');
         }
       }
     });
-    google.accounts.id2.prompt();
+    tokenClient.requestAccessToken();
   } catch(e) {
-    showToast('Google login coming soon');
+    showToast('Google login is being configured, please use email for now');
   }
 }
 

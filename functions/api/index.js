@@ -326,19 +326,24 @@ async function handleLogin(request) {
 
 async function handleGoogleAuth(request) {
   const body = await readBody(request);
-  const { idToken } = body;
+  const { idToken, email: bodyEmail, name: bodyName, sub: bodySub } = body;
 
   if (!idToken) {
-    return withCors(jsonResponse({ error: 'Google ID token is required' }, 400), request);
+    return withCors(jsonResponse({ error: 'Google token is required' }, 400), request);
   }
 
-  // Verify token with Google
+  // Verify token with Google - try both id_token and access_token
   let googleUser;
   try {
-    const res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
+    // First try id_token verification
+    let res = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
     if (!res.ok) {
-      const errText = await res.text();
-      console.error('Google token verification failed:', errText);
+      // If id_token fails, try as access_token via userinfo endpoint
+      res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { 'Authorization': 'Bearer ' + idToken }
+      });
+    }
+    if (!res.ok) {
       return withCors(jsonResponse({ error: 'Invalid Google token' }, 401), request);
     }
     googleUser = await res.json();
@@ -347,7 +352,9 @@ async function handleGoogleAuth(request) {
     return withCors(jsonResponse({ error: 'Failed to verify Google token' }, 500), request);
   }
 
-  const { email, name, sub: googleId } = googleUser;
+  const email = googleUser.email || bodyEmail;
+  const name = googleUser.name || bodyName;
+  const googleId = googleUser.sub || bodySub;
   if (!email) {
     return withCors(jsonResponse({ error: 'Google token does not contain an email' }, 400), request);
   }
