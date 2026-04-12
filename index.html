@@ -4931,84 +4931,80 @@ function updateAuthUI() {
 }
 
 function handleGoogleLogin() {
-  doGooglePopupLogin();
+  loadGoogleGIS();
 }
 
-function doGooglePopupLogin() {
-  const GOOGLE_CLIENT_ID = '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com';
-  const origin = window.location.origin;
-  const redirectUri = `${origin}/api/auth/google/callback`;
+function loadGoogleGIS() {
+  const CLIENT_ID = '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com';
   
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams({
-    client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: redirectUri,
-    response_type: 'token',
-    scope: 'openid email profile',
-    prompt: 'consent',
-  }).toString()}`;
-  
-  const popup = window.open(authUrl, 'google_login', 'width=500,height=600,scrollbars=yes');
-  
-  if (!popup) {
-    showToast('Popup blocked, please allow popups');
+  if (window.google && google.accounts && google.accounts.id) {
+    googleGISLogin(CLIENT_ID);
     return;
   }
   
-  // Listen for postMessage from popup callback
-  function handleMessage(event) {
-    if (event.origin !== origin) return;
-    
-    if (event.data.type === 'google_auth_success') {
-      window.removeEventListener('message', handleMessage);
-      const accessToken = event.data.access_token;
-      
-      fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-        headers: { 'Authorization': 'Bearer ' + accessToken }
-      })
-      .then(res => res.json())
-      .then(userInfo => {
-        return fetch(API_BASE + '/api/auth/google', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            idToken: accessToken,
-            email: userInfo.email,
-            name: userInfo.name,
-            sub: userInfo.sub
-          })
+  const script = document.createElement('script');
+  script.src = 'https://accounts.google.com/gsi/client';
+  script.async = true;
+  script.onload = () => googleGISLogin(CLIENT_ID);
+  script.onerror = () => showToast('Failed to load Google login');
+  document.head.appendChild(script);
+}
+
+function googleGISLogin(CLIENT_ID) {
+  google.accounts.id.initialize({
+    client_id: CLIENT_ID,
+    callback: handleGoogleCredential,
+    auto_select: false,
+    cancel_on_tap_outside: true,
+  });
+  
+  // Use the popup/one-tap prompt
+  google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fallback: render button
+      const container = document.getElementById('googleBtnContainer');
+      if (container) {
+        container.innerHTML = '';
+        container.onclick = null;
+        google.accounts.id.renderButton(container, {
+          theme: 'outline',
+          size: 'large',
+          text: 'signin_with',
+          width: container.offsetWidth || 280,
         });
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.token) {
-          authToken = data.token;
-          currentUser = data.user;
-          localStorage.setItem('vibe_token', authToken);
-          localStorage.setItem('vibe_user', JSON.stringify(currentUser));
-          updateUIForAuth();
-          closeLoginModal();
-          showToast(t('toast.accountSaved') || 'Welcome!');
-        } else {
-          showToast(data.error || 'Google login failed');
-        }
-      })
-      .catch(() => showToast('Google login failed'));
+      }
     }
-    
-    if (event.data.type === 'google_auth_error') {
-      window.removeEventListener('message', handleMessage);
-      showToast('Google login failed: ' + event.data.error);
-    }
+  });
+}
+
+async function handleGoogleCredential(response) {
+  if (response.error) {
+    showToast('Google login cancelled');
+    return;
   }
   
-  window.addEventListener('message', handleMessage);
-  
-  const checkClosed = setInterval(() => {
-    if (popup.closed) {
-      clearInterval(checkClosed);
-      window.removeEventListener('message', handleMessage);
+  try {
+    const res = await fetch(API_BASE + '/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken: response.credential }),
+    });
+    const data = await res.json();
+    
+    if (data.token) {
+      authToken = data.token;
+      currentUser = data.user;
+      localStorage.setItem('vibe_token', authToken);
+      localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+      updateUIForAuth();
+      closeLoginModal();
+      showToast(t('toast.accountSaved') || 'Welcome!');
+    } else {
+      showToast(data.error || 'Google login failed');
     }
-  }, 1000);
+  } catch (e) {
+    showToast('Google login failed');
+  }
 }
 
 function submitAuth() {
@@ -6270,40 +6266,6 @@ function getStoredAuth() {
   const urlParams = new URLSearchParams(window.location.search);
   const authError = urlParams.get('auth_error');
   const authTokenParam = urlParams.get('auth_token');
-  const googleLogin = urlParams.get('google_login');
-  
-  if (authError) {
-    showToast('Google login failed: ' + authError);
-    window.history.replaceState({}, '', window.location.pathname);
-    return;
-  }
-  
-  if (authTokenParam) {
-    const userId = urlParams.get('user_id');
-    const userEmail = urlParams.get('user_email');
-    const userName = urlParams.get('user_name');
-    
-    authToken = authTokenParam;
-    currentUser = { id: userId, email: userEmail, name: userName };
-    
-    localStorage.setItem('vibe_token', authToken);
-    localStorage.setItem('vibe_user', JSON.stringify(currentUser));
-    
-    updateUIForAuth();
-    showToast(t('toast.accountSaved') || 'Welcome!');
-    
-    window.history.replaceState({}, '', window.location.pathname);
-    return;
-  }
-  
-  // Handle Google login redirect from backend
-  if (googleLogin === '1') {
-    window.history.replaceState({}, '', window.location.pathname);
-    // Try Google popup-based login
-    setTimeout(() => doGooglePopupLogin(), 500);
-    return;
-  }
-  
   authToken = localStorage.getItem('vibe_token');
   if (authToken) {
     const user = localStorage.getItem('vibe_user');
@@ -6387,74 +6349,6 @@ async function loginWithEmail(email, password) {
   } catch(e) {
     showToast('Network error');
     return false;
-  }
-}
-
-async function loginWithGoogle() {
-  try {
-    // Load Google Identity Services script if not loaded
-    if (!window.google || !google.accounts) {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = 'https://accounts.google.com/gsi/client';
-        script.async = true;
-        script.defer = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-      // Wait a bit for GSI to initialize
-      await new Promise(r => setTimeout(r, 500));
-    }
-
-    const CLIENT_ID = '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com';
-
-    google.accounts.id.initialize({
-      client_id: CLIENT_ID,
-      callback: async (response) => {
-        if (response.error) {
-          showToast('Google login cancelled');
-          return;
-        }
-        try {
-          const res = await fetch(API_BASE + '/api/auth/google', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ idToken: response.credential })
-          });
-          const data = await res.json();
-          if (res.ok) {
-            authToken = data.token;
-            currentUser = data.user;
-            localStorage.setItem('vibe_token', authToken);
-            localStorage.setItem('vibe_user', JSON.stringify(currentUser));
-            updateUIForAuth();
-            closeLoginModal();
-            showToast(t('toast.accountSaved') || 'Welcome!');
-          } else {
-            showToast(data.error || 'Google login failed');
-          }
-        } catch(e) {
-          showToast('Google login failed');
-        }
-      }
-    });
-
-    // Render Google button inside our container
-    const container = document.getElementById('googleBtnContainer');
-    if (container) {
-      container.innerHTML = '';
-      container.onclick = null;
-      google.accounts.id.renderButton(container, {
-        theme: 'outline',
-        size: 'large',
-        text: 'signin_with',
-        width: container.offsetWidth || 280,
-        locale: currentLang === 'zh' ? 'zh_CN' : 'en'
-      });
-    }
-  } catch(e) {
-    showToast('Google login failed, please use email for now');
   }
 }
 
