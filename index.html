@@ -6300,31 +6300,19 @@ async function loginWithGoogle() {
       });
     }
 
-    // Use OAuth2 popup flow
-    const tokenClient = google.accounts.oauth2.initTokenClient({
+    // Use Google Identity Services - One Tap / popup (no redirect_uri needed)
+    google.accounts.id.initialize({
       client_id: '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com',
-      scope: 'openid email profile',
       callback: async (response) => {
         if (response.error) {
           showToast('Google login cancelled');
           return;
         }
-        // Get user info with access token
         try {
-          const userInfoRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-            headers: { 'Authorization': 'Bearer ' + response.access_token }
-          });
-          const userInfo = await userInfoRes.json();
-          
           const res = await fetch(API_BASE + '/api/auth/google', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              idToken: response.access_token,
-              email: userInfo.email,
-              name: userInfo.name,
-              sub: userInfo.sub
-            })
+            body: JSON.stringify({ idToken: response.credential })
           });
           const data = await res.json();
           if (res.ok) {
@@ -6343,9 +6331,18 @@ async function loginWithGoogle() {
         }
       }
     });
-    tokenClient.requestAccessToken();
+    // Prompt One Tap or render button
+    google.accounts.id.prompt((notification) => {
+      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+        // Fallback: render a Google Sign-In button
+        google.accounts.id.renderButton(
+          document.createElement('div'),
+          { theme: 'outline', size: 'large', text: 'signin_with', width: 300 }
+        );
+      }
+    });
   } catch(e) {
-    showToast('Google login is being configured, please use email for now');
+    showToast('Google login failed, please use email for now');
   }
 }
 
