@@ -5156,6 +5156,14 @@ function saveAccount() {
   const birthTime = document.getElementById('birthTime').value;
   const birthPlace = document.getElementById('birthPlace').value;
   
+  // Save account name
+  const accountName = document.getElementById('accountName').value;
+  if (accountName && currentUser) {
+    currentUser.name = accountName;
+    localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+    updateUIForAuth();
+  }
+  
   // Save to localStorage
   localStorage.setItem('vibe_birthDate', birthDate);
   localStorage.setItem('vibe_birthTime', birthTime);
@@ -5163,7 +5171,12 @@ function saveAccount() {
   
   // Fetch natal chart data from API
   fetchNatalChart(birthDate, birthTime, birthPlace);
-  syncProfileToCloud();
+  
+  // Sync to cloud only if logged in
+  if (authToken && currentUser) {
+    syncProfileToCloud();
+  }
+  
   showToast(t('toast.accountSaved'));
 }
 
