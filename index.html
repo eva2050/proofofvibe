@@ -3508,17 +3508,40 @@ html[lang="ko"] {
         </div>
         <div class="form-group">
           <label data-i18n="settings.birthTime">Birth Time</label>
-          <input type="time" id="birthTime" value="14:30">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <input type="time" id="birthTime" value="14:30" step="60" style="flex:1;">
+            <select id="birthTimeUnknown" style="width:auto;padding:6px 8px;border:1px solid var(--border);border-radius:8px;background:var(--input-bg);color:var(--text-primary);font-size:13px;">
+              <option value="known">时间已知</option>
+              <option value="unknown">时间未知</option>
+            </select>
+          </div>
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;" id="birthTimeHint">精确到分钟可获得最准确的星盘数据</div>
         </div>
         <div class="form-group">
           <label data-i18n="settings.birthPlace">Birth Place</label>
-          <input type="text" id="birthPlace" value="New York, NY" placeholder="City, Country">
+          <input type="text" id="birthPlace" value="New York, NY" placeholder="e.g. Beijing, China / New York, US" autocomplete="off">
+          <div style="font-size:11px;color:var(--text-secondary);margin-top:4px;">输入城市名，系统将自动匹配经纬度和时区</div>
+        </div>
+        <div class="form-group">
+          <label>宫位系统</label>
+          <div style="display:flex;gap:8px;">
+            <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;color:var(--text-primary);">
+              <input type="radio" name="houseSystem" value="Placidus" checked> Placidus
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;color:var(--text-primary);">
+              <input type="radio" name="houseSystem" value="Whole Sign"> Whole Sign
+            </label>
+            <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;color:var(--text-primary);">
+              <input type="radio" name="houseSystem" value="Koch"> Koch
+            </label>
+          </div>
         </div>
         <div class="form-warning">
           <span>&#9888;&#65039;</span>
           <span data-i18n="settings.birthWarning">Modifying birth data will recalculate all Vibe data.</span>
         </div>
         <button class="btn-primary" onclick="saveAccount()" data-i18n="settings.save">Save</button>
+        <button id="logoutBtn" class="btn-primary" style="display:none;background:transparent;color:var(--text-secondary);border:1px solid var(--border);margin-top:8px;" onclick="doLogout()" data-i18n="settings.logout">Sign Out</button>
       </div>
 
       <!-- Appearance Tab -->
@@ -4846,6 +4869,7 @@ function applyI18n() {
 
 function changeLang(lang) {
   currentLang = lang;
+  localStorage.setItem('vibe_lang', lang);
   document.documentElement.setAttribute('lang', lang);
   // Update lang-grid active state
   document.querySelectorAll('.lang-option').forEach(el => {
@@ -5231,8 +5255,10 @@ function saveAccount() {
     return;
   }
   const birthDate = document.getElementById('birthDate').value;
-  const birthTime = document.getElementById('birthTime').value;
+  const birthTimeUnknown = document.getElementById('birthTimeUnknown').value;
+  const birthTime = birthTimeUnknown === 'unknown' ? '12:00' : document.getElementById('birthTime').value;
   const birthPlace = document.getElementById('birthPlace').value;
+  const houseSystem = document.querySelector('input[name="houseSystem"]:checked')?.value || 'Placidus';
   
   // Save account name
   const accountName = document.getElementById('accountName').value;
@@ -5245,18 +5271,23 @@ function saveAccount() {
   // Save to localStorage
   localStorage.setItem('vibe_birthDate', birthDate);
   localStorage.setItem('vibe_birthTime', birthTime);
+  localStorage.setItem('vibe_birthTimeUnknown', birthTimeUnknown);
   localStorage.setItem('vibe_birthPlace', birthPlace);
+  localStorage.setItem('vibe_houseSystem', houseSystem);
   
   // Fetch natal chart data from API
-  fetchNatalChart(birthDate, birthTime, birthPlace);
+  fetchNatalChart(birthDate, birthTime, birthPlace, houseSystem, birthTimeUnknown === 'unknown');
   syncProfileToCloud();
   showToast(t('toast.accountSaved'));
 }
 
-async function fetchNatalChart(dateStr, timeStr, place) {
+async function fetchNatalChart(dateStr, timeStr, place, houseSystem, timeUnknown) {
   try {
     const [year, month, day] = dateStr.split('-').map(Number);
-    const [hour, minute] = timeStr.split(':').map(Number);
+    let hour = 12, minute = 0;
+    if (!timeUnknown && timeStr) {
+      [hour, minute] = timeStr.split(':').map(Number);
+    }
     
     // Default coordinates (New York) - will be improved with geocoding
     let latitude = 40.7128;
@@ -5313,7 +5344,7 @@ async function fetchNatalChart(dateStr, timeStr, place) {
           longitude: longitude,
           timezone: timezone
         },
-        house_system: 'placidus',
+        house_system: (houseSystem || 'placidus').toLowerCase(),
         include_svg: false
       })
     });
@@ -5341,10 +5372,17 @@ function loadNatalChart() {
   // Restore form values
   const bd = localStorage.getItem('vibe_birthDate');
   const bt = localStorage.getItem('vibe_birthTime');
+  const btu = localStorage.getItem('vibe_birthTimeUnknown');
   const bp = localStorage.getItem('vibe_birthPlace');
+  const hs = localStorage.getItem('vibe_houseSystem');
   if (bd) document.getElementById('birthDate').value = bd;
   if (bt) document.getElementById('birthTime').value = bt;
+  if (btu) document.getElementById('birthTimeUnknown').value = btu;
   if (bp) document.getElementById('birthPlace').value = bp;
+  if (hs) {
+    const radio = document.querySelector('input[name="houseSystem"][value="' + hs + '"]');
+    if (radio) radio.checked = true;
+  }
   loadProfileFromCloud();
 }
 
@@ -7121,6 +7159,12 @@ function escapeHtml(str) {
 
 // ========== INIT ==========
 function init() {
+  // Restore saved language
+  const savedLang = localStorage.getItem('vibe_lang');
+  if (savedLang) {
+    currentLang = savedLang;
+    document.documentElement.setAttribute('lang', savedLang);
+  }
   generateAstroCards();
   applyI18n();
   getStoredAuth();
@@ -7271,6 +7315,11 @@ function logout() {
   showToast('Logged out');
 }
 
+function doLogout() {
+  logout();
+  closeSettings();
+}
+
 function updateUIForAuth() {
   const userRow = document.getElementById('userRow');
   const userAvatar = document.getElementById('userAvatar');
@@ -7278,6 +7327,7 @@ function updateUIForAuth() {
   const userStatus = document.getElementById('userStatus');
   const accountName = document.getElementById('accountName');
   const settingsAvatar = document.getElementById('settingsAvatar');
+  const logoutBtn = document.getElementById('logoutBtn');
   
   // Use custom avatar if set, otherwise Google picture
   const customAvatar = localStorage.getItem('vibe_avatar');
@@ -7323,6 +7373,7 @@ function updateUIForAuth() {
       userRow.onclick = function() { openSettings('account'); };
       userRow.style.cursor = 'pointer';
     }
+    if (logoutBtn) logoutBtn.style.display = '';
   } else {
     if (userAvatar) userAvatar.textContent = 'G';
     if (settingsAvatar) settingsAvatar.textContent = 'G';
@@ -7333,6 +7384,7 @@ function updateUIForAuth() {
       userRow.onclick = openLogin;
       userRow.style.cursor = 'pointer';
     }
+    if (logoutBtn) logoutBtn.style.display = 'none';
   }
 }
 
