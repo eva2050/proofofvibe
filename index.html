@@ -7255,6 +7255,9 @@ function init() {
   if (savedLang) {
     currentLang = savedLang;
     document.documentElement.setAttribute('lang', savedLang);
+    document.querySelectorAll('.lang-option').forEach(el => {
+      el.classList.toggle('active', el.getAttribute('data-lang') === savedLang);
+    });
   }
   generateAstroCards();
   applyI18n();
