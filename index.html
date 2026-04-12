@@ -3524,7 +3524,7 @@ html[lang="ko"] {
         </div>
         <div class="form-group">
           <label>宫位系统</label>
-          <div style="display:flex;gap:8px;">
+          <div style="display:flex;gap:16px;flex-wrap:wrap;">
             <label style="display:flex;align-items:center;gap:4px;font-size:13px;cursor:pointer;color:var(--text-primary);">
               <input type="radio" name="houseSystem" value="Placidus" checked> Placidus
             </label>
@@ -3540,8 +3540,8 @@ html[lang="ko"] {
           <span>&#9888;&#65039;</span>
           <span data-i18n="settings.birthWarning">Modifying birth data will recalculate all Vibe data.</span>
         </div>
-        <button class="btn-primary" onclick="saveAccount()" data-i18n="settings.save">Save</button>
-        <button id="logoutBtn" class="btn-primary" style="display:none;background:transparent;color:var(--text-secondary);border:1px solid var(--border);margin-top:8px;" onclick="doLogout()" data-i18n="settings.logout">Sign Out</button>
+        <button class="btn-primary" onclick="saveAccount()" data-i18n="settings.save" style="width:100%;">Save</button>
+        <button id="logoutBtn" class="btn-primary" style="display:none;background:transparent;color:var(--text-secondary);border:1px solid var(--border);margin-top:8px;width:100%;" onclick="doLogout()">Log out</button>
       </div>
 
       <!-- Appearance Tab -->
@@ -3597,7 +3597,6 @@ html[lang="ko"] {
             <div class="cb-amount" id="creditsAmount">100</div>
             <div class="cb-label" data-i18n="credits.balance">Credits Remaining</div>
           </div>
-          <div class="credits-countdown" id="creditsCountdown" data-i18n="credits.resetsIn">Resets in 24:00:00</div>
           <div class="credits-log" id="creditsLog"></div>
         </div>
         <div id="creditsGuestView" style="display:none;text-align:center;padding:16px 0 8px;">
@@ -4185,7 +4184,7 @@ const i18n = {
     'settings.birthDate': '出生日期',
     'settings.birthTime': '出生时间',
     'settings.birthPlace': '出生地点',
-    'settings.birthWarning': '⚠️ 修改出生信息将重新计算所有 Vibe 数据',
+    'settings.birthWarning': '修改出生信息将重新计算所有 Vibe 数据',
     'settings.save': '保存',
     'settings.language': '语言',
     'settings.theme': '主题',
@@ -4468,7 +4467,7 @@ const i18n = {
     'settings.accountName': '帳戶名稱',
     'settings.birthDate': '出生日期',
     'settings.birthPlace': '出生地點',
-    'settings.birthWarning': '⚠️ 修改出生資料將重新計算所有 Vibe 資料',
+    'settings.birthWarning': '修改出生資料將重新計算所有 Vibe 資料',
     'settings.save': '儲存',
     'settings.language': '語言',
     'settings.theme': '主題',
@@ -4629,7 +4628,7 @@ const i18n = {
     'settings.accountName': 'アカウント名',
     'settings.birthDate': '生年月日',
     'settings.birthPlace': '出生地',
-    'settings.birthWarning': '⚠️ 出生データを変更すると全Vibeデータが再計算されます',
+    'settings.birthWarning': '出生データを変更すると全Vibeデータが再計算されます',
     'settings.save': '保存',
     'settings.language': '言語',
     'settings.theme': 'テーマ',
@@ -4790,7 +4789,7 @@ const i18n = {
     'settings.accountName': '계정 이름',
     'settings.birthDate': '생년월일',
     'settings.birthPlace': '출생지',
-    'settings.birthWarning': '⚠️ 출생 데이터를 수정하면 모든 Vibe 데이터가 재계산됩니다',
+    'settings.birthWarning': '출생 데이터를 수정하면 모든 Vibe 데이터가 재계산됩니다',
     'settings.save': '저장',
     'settings.language': '언어',
     'settings.theme': '테마',
@@ -5494,26 +5493,17 @@ function copyCreditsInviteLink() {
   }
 }
 
-// Credits countdown
+// Credits daily reset (silent, no countdown display)
 setInterval(() => {
   const remaining = creditsResetTime - Date.now();
   if (remaining <= 0) {
     credits = 100;
     creditsResetTime = Date.now() + 24 * 60 * 60 * 1000;
     creditLog.unshift({ time: '00:00', desc: t('credits.dailyReset'), amount: '+100' });
-    document.getElementById('creditsAmount').textContent = credits;
+    const amountEl = document.getElementById('creditsAmount');
+    if (amountEl) amountEl.textContent = credits;
   }
-  const h = Math.floor(remaining / 3600000);
-  const m = Math.floor((remaining % 3600000) / 60000);
-  const s = Math.floor((remaining % 60000) / 1000);
-  const countdownEl = document.getElementById('creditsCountdown');
-  if (countdownEl) {
-    countdownEl.textContent = t('credits.resetsIn') + ' ' +
-      h.toString().padStart(2, '0') + ':' +
-      m.toString().padStart(2, '0') + ':' +
-      s.toString().padStart(2, '0');
-  }
-}, 1000);
+}, 60000);
 
 // ========== TOAST ==========
 function showToast(message) {
