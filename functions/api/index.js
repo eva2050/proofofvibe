@@ -15,11 +15,14 @@ export async function onRequest(context) {
 // =============================================================================
 
 async function handleRequest(request) {
-  // ── Auto-create tables ──────────────────────────────────────────────────
-  if (env.DB) {
-    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS users (email TEXT PRIMARY KEY, password_hash TEXT, name TEXT, created_at TEXT, updated_at TEXT)`).run();
-    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, provider TEXT, provider_id TEXT, access_token TEXT, expires_at TEXT)`).run();
+  // ── Check DB binding ───────────────────────────────────────────────────
+  if (!env.DB) {
+    return jsonResponse({ error: 'Database not configured. Please bind D1 in Cloudflare Dashboard.' }, 500);
   }
+
+  // ── Auto-create tables ──────────────────────────────────────────────────
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS users (email TEXT PRIMARY KEY, password_hash TEXT, name TEXT, created_at TEXT, updated_at TEXT)`).run();
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, provider TEXT, provider_id TEXT, access_token TEXT, expires_at TEXT)`).run();
 
   const url = new URL(request.url);
   const path = url.pathname;

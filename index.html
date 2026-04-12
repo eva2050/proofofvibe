@@ -5865,7 +5865,7 @@ function _detectPatterns(chart) {
 
   // Tier S patterns
   if (_hasAspect(chart, 'Jupiter', 'Pluto', ['trine', 'sextile', 'conjunction'])) {
-    patterns.push({ tier: 'S', name: 'Jupiter-Pluto Synergy', code: 'JUP-PLU', desc: 'Capital amplification engine detected. Extreme wealth potential through concentrated bets. The market bends to your conviction — but only when you commit fully.' });
+    patterns.push({ tier: 'S', name: '木冥合相', code: 'JUP-PLU', desc: '资本放大引擎已激活。通过集中押注实现极端财富潜能。市场会向你的信念屈服——但前提是你必须全力投入。' });
   }
   // Grand Trine detection (3 planets 120° apart)
   if (chart && chart.aspects) {
@@ -5884,7 +5884,7 @@ function _detectPatterns(chart) {
           var p2 = [planets[j], planets[k]].sort().join('-');
           var p3 = [planets[i], planets[k]].sort().join('-');
           if (trinePairs[p1] && trinePairs[p2] && trinePairs[p3]) {
-            patterns.push({ tier: 'S', name: 'Grand Trine Formation', code: 'GRD-TRI', desc: 'Effortless flow pattern. Wealth arrives through momentum, not force. Your edge: recognizing the current and riding it without resistance.' });
+            patterns.push({ tier: 'S', name: '大三角', code: 'GRD-TRI', desc: '无阻力流动模式。财富通过势能而非蛮力到来。你的优势：识别趋势并顺势而为，不加抵抗。' });
             break;
           }
         }
@@ -5917,7 +5917,7 @@ function _detectPatterns(chart) {
               if (!allSq) break;
             }
             if (allSq) {
-              patterns.push({ tier: 'S', name: 'Grand Cross Formation', code: 'GRD-CRS', desc: 'Maximum tension architecture. You are built for crisis trading. Where others see chaos, you see structure. Volatility is your native language.' });
+              patterns.push({ tier: 'S', name: '大十字', code: 'GRD-CRS', desc: '极限张力架构。你天生为危机交易而生。别人看到混乱，你看到结构。波动率是你的母语。' });
               break;
             }
           }
@@ -5931,21 +5931,21 @@ function _detectPatterns(chart) {
 
   // Tier A patterns
   if (_hasAspect(chart, 'Mercury', 'Jupiter', ['trine', 'sextile'])) {
-    patterns.push({ tier: 'A', name: 'Mercury-Jupiter Favorable', code: 'MER-JUP', desc: 'Information arbitrage pattern. You process market data faster than the crowd. Your thesis construction has a natural edge — trust the first read, it is usually right.' });
+    patterns.push({ tier: 'A', name: '水木吉相', code: 'MER-JUP', desc: '信息套利模式。你处理市场数据的速度超过大众。你的论点构建具有天然优势——相信第一直觉，它通常是对的。' });
   }
   if (_hasAspect(chart, 'Saturn', 'Mars', ['conjunction', 'square', 'trine']) && _hasAspect(chart, 'Mars', 'Pluto', ['conjunction', 'square', 'trine'])) {
-    patterns.push({ tier: 'A', name: 'Saturn-Mars-Pluto Composite', code: 'SAT-MAR-PLU', desc: 'Pressure-resistant execution engine. You perform under conditions that break others. Drawdown tolerance is abnormally high — but beware: pain tolerance is not the same as risk management.' });
+    patterns.push({ tier: 'A', name: '土火冥复合结构', code: 'SAT-MAR-PLU', desc: '抗压执行引擎。你在击溃他人的条件下依然能正常运作。回撤容忍度异常高——但注意：疼痛耐受不等于风险管理。' });
   }
   if (_hasAspect(chart, 'Mars', 'Jupiter', ['conjunction', 'trine', 'sextile']) && _hasAspect(chart, 'Jupiter', 'Neptune', ['conjunction', 'trine', 'sextile'])) {
-    patterns.push({ tier: 'A', name: 'Mars-Jupiter-Neptune Composite', code: 'MAR-JUP-NEP', desc: 'Speculative intuition matrix. You can sense market turns before they happen. The risk: you cannot always distinguish intuition from wishful thinking. Discipline is the filter.' });
+    patterns.push({ tier: 'A', name: '火木海复合结构', code: 'MAR-JUP-NEP', desc: '投机直觉矩阵。你能感知市场转折，在它发生之前。风险：你无法总是区分直觉与一厢情愿。纪律是唯一的过滤器。' });
   }
 
   // Tier R patterns
   if (_hasAspect(chart, 'Mercury', 'Mars', ['square', 'opposition'])) {
-    patterns.push({ tier: 'R', name: 'Mercury-Mars Friction', code: 'MER-MAR', desc: 'Decision-execution gap detected. You know the right move but execute at the wrong time. The gap between analysis and action is where capital leaks.' });
+    patterns.push({ tier: 'R', name: '水火刑', code: 'MER-MAR', desc: '决策-执行缺口已检测。你知道正确的操作，但执行时机错误。分析与行动之间的缝隙，就是资本泄漏的地方。' });
   }
   if (_hasAspect(chart, 'Mercury', 'Neptune', ['square', 'opposition'])) {
-    patterns.push({ tier: 'R', name: 'Mercury-Neptune Friction', code: 'MER-NEP', desc: 'Reality distortion field active. You see what you want to see in charts. Confirmation bias is not a cognitive error for you — it is a structural feature.' });
+    patterns.push({ tier: 'R', name: '水海刑', code: 'MER-NEP', desc: '现实扭曲场已激活。你在图表中看到你想看到的东西。确认偏差对你而言不是认知错误——它是结构性特征。' });
   }
 
   return patterns;
@@ -6039,55 +6039,55 @@ function _generateArchetype(chart, traits, patterns) {
   var archetypes = [];
   var t = traits;
 
-  if (t.risk.value >= 75 && t.intuition.value >= 70) archetypes.push('The Quantum Gambler');
-  if (t.precision.value >= 75 && t.stamina.value >= 70) archetypes.push('The Cold Architect');
-  if (t.greed.value >= 80 && t.risk.value >= 65) archetypes.push('The Insatiable Lever');
-  if (t.intuition.value >= 75 && t.precision.value <= 50) archetypes.push('The Liquidated Poet');
-  if (t.stamina.value >= 80 && t.risk.value <= 45) archetypes.push('The Diamond Vault');
-  if (t.risk.value <= 35 && t.precision.value >= 70) archetypes.push('The Risk Auditor');
-  if (t.greed.value <= 40 && t.intuition.value >= 65) archetypes.push('The Zen Allocator');
-  if (t.risk.value >= 70 && t.stamina.value <= 40) archetypes.push('The Flash Crash');
-  if (t.precision.value >= 65 && t.greed.value >= 65) archetypes.push('The Calculated Predator');
-  if (t.intuition.value >= 70 && t.stamina.value >= 65) archetypes.push('The Tide Rider');
+  if (t.risk.value >= 75 && t.intuition.value >= 70) archetypes.push('量子赌徒');
+  if (t.precision.value >= 75 && t.stamina.value >= 70) archetypes.push('冷酷建筑师');
+  if (t.greed.value >= 80 && t.risk.value >= 65) archetypes.push('贪婪杠杆');
+  if (t.intuition.value >= 75 && t.precision.value <= 50) archetypes.push('爆仓诗人');
+  if (t.stamina.value >= 80 && t.risk.value <= 45) archetypes.push('钻石金库');
+  if (t.risk.value <= 35 && t.precision.value >= 70) archetypes.push('风险审计师');
+  if (t.greed.value <= 40 && t.intuition.value >= 65) archetypes.push('禅意配置者');
+  if (t.risk.value >= 70 && t.stamina.value <= 40) archetypes.push('闪崩');
+  if (t.precision.value >= 65 && t.greed.value >= 65) archetypes.push('精密猎手');
+  if (t.intuition.value >= 70 && t.stamina.value >= 65) archetypes.push('潮汐骑手');
 
-  if (archetypes.length === 0) archetypes.push('The Market Spectator');
+  if (archetypes.length === 0) archetypes.push('市场旁观者');
 
   // Check for S-tier pattern modifiers
-  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) archetypes.unshift('The Capital Magnifier');
-  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) archetypes.unshift('The Volatility Alchemist');
+  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) archetypes.unshift('资本放大器');
+  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) archetypes.unshift('波动率炼金术士');
 
   return archetypes[0];
 }
 
 function _generateVerdict(chart, traits, archetype) {
   var verdicts = {
-    'The Quantum Gambler': 'Your edge is real but your discipline is a myth. One good streak away from ruin, one bad streak away from legend.',
-    'The Cold Architect': 'You build portfolios like a machine. The market respects precision. Your only vulnerability: you underestimate chaos.',
-    'The Insatiable Lever': 'Leverage is your drug, conviction your excuse. The math always wins eventually — the question is whether you survive the equation.',
-    'The Liquidated Poet': 'You feel the market like music but trade it like poetry — beautiful, unstructured, and frequently bankrupt.',
-    'The Diamond Vault': 'You hold until the diamond cracks. Patience is your weapon and your prison.',
-    'The Risk Auditor': 'You see every risk except the one that matters: opportunity cost. Safety is the most expensive illusion.',
-    'The Zen Allocator': 'You have the detachment of a monk and the allocation of a pension fund. Reliable, unexciting, and surprisingly profitable.',
-    'The Flash Crash': 'You enter like lightning and exit like a power outage. Speed without stamina is just expensive motion.',
-    'The Calculated Predator': 'You wait, you observe, you strike. The market is your ecosystem and you are at the top of the food chain.',
-    'The Tide Rider': 'You do not predict the market — you become it. When the current shifts, you shift first. Trust the instinct.',
-    'The Market Spectator': 'You watch more than you trade. Analysis paralysis is not a strategy — it is a diagnosis.',
-    'The Capital Magnifier': 'Money multiplies in your presence. The mechanism is opaque even to you. Do not question the engine — maintain it.',
-    'The Volatility Alchemist': 'You transmute chaos into profit with unsettling consistency. Your gift is wasted on calm markets.'
+    '量子赌徒': '你的优势是真实的，但你的纪律是个神话。离毁灭只有一波好行情，离传奇只有一波坏行情。',
+    '冷酷建筑师': '你像机器一样构建组合。市场尊重精密。你唯一的弱点：你低估了混沌。',
+    '贪婪杠杆': '杠杆是你的毒品，信念是你的借口。数学最终总会赢——问题是你能否在等式中幸存。',
+    '爆仓诗人': '你像感受音乐一样感受市场，却像写诗一样交易——优美、无序、且频繁破产。',
+    '钻石金库': '你持有直到钻石碎裂。耐心是你的武器，也是你的牢笼。',
+    '风险审计师': '你看到了每一个风险，除了最重要的那个：机会成本。安全是最昂贵的幻觉。',
+    '禅意配置者': '你有僧侣的超脱和养老基金的配置。可靠、无趣、且出人意料地盈利。',
+    '闪崩': '你入场如闪电，出场如断电。没有耐力的速度只是昂贵的运动。',
+    '精密猎手': '你等待、观察、出击。市场是你的生态系统，而你处于食物链顶端。',
+    '潮汐骑手': '你不预测市场——你成为它。当潮流转向，你先转向。相信本能。',
+    '市场旁观者': '你观察多于交易。分析瘫痪不是策略——它是诊断结果。',
+    '资本放大器': '金钱在你面前自我繁殖。连你自己都不清楚其中的机制。不要质疑引擎——维护它。',
+    '波动率炼金术士': '你以令人不安的一致性将混沌转化为利润。你的天赋在平静的市场中被浪费了。'
   };
-  return verdicts[archetype] || 'Your financial DNA is still decoding. The market has not figured you out either.';
+  return verdicts[archetype] || '你的金融DNA仍在解码中。市场也还没看透你。';
 }
 
 function _matchWhale(chart, traits, patterns) {
   var whales = [
-    { name: 'Warren Buffett', pattern: 'Value concentration + extreme patience', match: false },
-    { name: 'George Soros', pattern: 'Macro thesis + crisis exploitation', match: false },
-    { name: 'Ray Dalio', pattern: 'Systematic risk parity + radical transparency', match: false },
-    { name: 'Jim Simons', pattern: 'Quantitative pattern recognition', match: false },
-    { name: 'Cathie Wood', pattern: 'Disruptive innovation + high conviction', match: false },
-    { name: 'Carl Icahn', pattern: 'Activist confrontation + forced value extraction', match: false },
-    { name: 'David Tepper', pattern: 'Distressed assets + contrarian timing', match: false },
-    { name: 'Stanley Druckenmiller', pattern: 'Macro directional + aggressive position sizing', match: false }
+    { name: '沃伦·巴菲特', pattern: '价值集中 + 极致耐心', match: false },
+    { name: '乔治·索罗斯', pattern: '宏观论点 + 危机套利', match: false },
+    { name: '瑞·达利欧', pattern: '系统性风险平价 + 极度透明', match: false },
+    { name: '吉姆·西蒙斯', pattern: '量化模式识别', match: false },
+    { name: '凯瑟琳·伍德', pattern: '颠覆性创新 + 高信念押注', match: false },
+    { name: '卡尔·伊坎', pattern: '激进主义对抗 + 强制价值提取', match: false },
+    { name: '大卫·泰珀', pattern: '困境资产 + 逆向时机', match: false },
+    { name: '斯坦利·德鲁肯米勒', pattern: '宏观方向性 + 激进仓位管理', match: false }
   ];
 
   if (traits.stamina.value >= 75 && traits.greed.value <= 60) whales[0].match = true;
@@ -6114,16 +6114,16 @@ function _matchWhale(chart, traits, patterns) {
 
 function _generateSpecTypes(chart, traits, patterns) {
   var types = [];
-  if (traits.risk.value >= 65 && traits.intuition.value >= 60) types.push('Options volatility selling during earnings compression');
-  if (traits.precision.value >= 65 && traits.stamina.value >= 60) types.push('Long-term value positions with 12-24 month thesis horizons');
-  if (traits.greed.value >= 70 && traits.risk.value >= 60) types.push('Concentrated crypto positions in early-stage protocols');
-  if (traits.intuition.value >= 70 && traits.precision.value <= 55) types.push('Momentum swing trades on 4H-1D timeframes');
-  if (traits.stamina.value >= 70 && traits.risk.value <= 50) types.push('Index fund dollar-cost averaging with rebalancing triggers');
-  if (traits.precision.value >= 60 && traits.risk.value >= 55) types.push('Pairs trading and statistical arbitrage on correlated assets');
-  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) types.push('Crisis alpha: long vol strategies during market dislocations');
-  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) types.push('Private equity-style concentrated bets on asymmetric opportunities');
+  if (traits.risk.value >= 65 && traits.intuition.value >= 60) types.push('财报压缩期期权波动率卖出');
+  if (traits.precision.value >= 65 && traits.stamina.value >= 60) types.push('12-24个月论点周期的长期价值持仓');
+  if (traits.greed.value >= 70 && traits.risk.value >= 60) types.push('早期协议的集中加密货币仓位');
+  if (traits.intuition.value >= 70 && traits.precision.value <= 55) types.push('4H-1D时间框架动量波段交易');
+  if (traits.stamina.value >= 70 && traits.risk.value <= 50) types.push('带再平衡触发器的指数基金定投');
+  if (traits.precision.value >= 60 && traits.risk.value >= 55) types.push('相关性资产的配对交易与统计套利');
+  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) types.push('危机Alpha：市场失灵期间做多波动率策略');
+  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) types.push('私募股权式非对称机会集中押注');
 
-  if (types.length === 0) types.push('Broad market ETF positions with modest leverage');
+  if (types.length === 0) types.push('适度杠杆的宽基ETF持仓');
   return types.slice(0, 3);
 }
 
@@ -6139,52 +6139,52 @@ function _generateCognitiveMap(chart, traits, patterns) {
     label: '决策逻辑 [水星]',
     sign: merSign,
     retrograde: merRetro,
-    analysis: 'Mercury in ' + merSign + (merRetro ? ' (retrograde)' : '') + ' defines your information processing architecture. '
+    analysis: '水星[Mercury]位于' + merSign + (merRetro ? '（逆行）' : '') + '定义了你的信息处理架构。'
   };
-  if (merSign === 'Virgo') decisionLogic.analysis += 'Your analytical engine is surgical — you decompose problems into components before acting. The risk: over-analysis delays execution past the optimal window.';
-  else if (merSign === 'Gemini') decisionLogic.analysis += 'Dual-track processing active. You see multiple scenarios simultaneously, which is an advantage in complex markets. The risk: decision paralysis from competing theses.';
-  else if (merSign === 'Pisces' || merSign === 'Sagittarius') decisionLogic.analysis += 'Your reasoning operates on pattern recognition rather than linear logic. You connect dots others miss. The risk: the dots are not always connected.';
-  else if (merSign === 'Taurus') decisionLogic.analysis += 'Slow, deliberate, and stubborn. Once you form a thesis, you anchor to it. The risk: markets move faster than your conviction updates.';
-  else if (merSign === 'Scorpio') decisionLogic.analysis += 'Penetrating analysis with a bias toward hidden information. You look for what others miss. The risk: conspiracy thinking masquerading as insight.';
-  else decisionLogic.analysis += 'Your decision framework is balanced but lacks a distinctive edge. You process information competently without exceptional speed or depth.';
-  if (merRetro) decisionLogic.analysis += ' Mercury retrograde amplifies second-guessing — your first instinct is usually correct, but you rarely trust it.';
+  if (merSign === 'Virgo') decisionLogic.analysis += '你的分析引擎是手术刀级别的——你在行动前将问题拆解为组件。风险：过度分析导致执行延误，错过最优窗口。';
+  else if (merSign === 'Gemini') decisionLogic.analysis += '双轨处理模式已激活。你同时看到多种情景，这在复杂市场中是优势。风险：竞争性论点导致决策瘫痪。';
+  else if (merSign === 'Pisces' || merSign === 'Sagittarius') decisionLogic.analysis += '你的推理基于模式识别而非线性逻辑。你能连接别人忽略的点。风险：这些点并不总是真正相连的。';
+  else if (merSign === 'Taurus') decisionLogic.analysis += '缓慢、审慎、固执。一旦形成论点，你就会锚定。风险：市场变动快于你的信念更新。';
+  else if (merSign === 'Scorpio') decisionLogic.analysis += '具有隐藏信息偏好的穿透性分析。你寻找别人忽略的东西。风险：阴谋论伪装成洞察。';
+  else decisionLogic.analysis += '你的决策框架均衡但缺乏显著优势。你处理信息的能力合格，但没有超常的速度或深度。';
+  if (merRetro) decisionLogic.analysis += ' 水星逆行放大了自我怀疑——你的第一直觉通常是正确的，但你很少信任它。';
 
   var executionFeel = {
     label: '执行手感 [火星]',
     sign: marSign,
     retrograde: marRetro,
-    analysis: 'Mars in ' + marSign + (marRetro ? ' (retrograde)' : '') + ' determines your execution signature. '
+    analysis: '火星[Mars]位于' + marSign + (marRetro ? '（逆行）' : '') + '决定了你的执行签名。'
   };
-  if (marSign === 'Aries') executionFeel.analysis += 'Instant execution with minimal hesitation. You pull the trigger before the target is fully in frame. The risk: premature entry on incomplete setups.';
-  else if (marSign === 'Taurus') executionFeel.analysis += 'Slow, grinding execution. You build positions methodically. The risk: the opportunity window closes while you are still loading.';
-  else if (marSign === 'Scorpio') executionFeel.analysis += 'Strategic aggression. You strike with precision and intensity. The risk: over-concentration in a single thesis.';
-  else if (marSign === 'Capricorn') executionFeel.analysis += 'Disciplined, structured execution. You follow the plan. The risk: rigidity when the plan needs adjustment.';
-  else executionFeel.analysis += 'Your execution is adequate but lacks a defining characteristic. You neither hesitate nor rush.';
-  if (marRetro) executionFeel.analysis += ' Mars retrograde creates internal friction between intent and action — you know what to do but struggle to do it.';
+  if (marSign === 'Aries') executionFeel.analysis += '即时执行，极少犹豫。你在目标完全进入视野之前就扣动扳机。风险：在未完成的形态上过早入场。';
+  else if (marSign === 'Taurus') executionFeel.analysis += '缓慢、磨砺式的执行。你有条不紊地建仓。风险：机会窗口在你还在加载时关闭。';
+  else if (marSign === 'Scorpio') executionFeel.analysis += '战略性进攻。你以精确和强度出击。风险：在单一论点上过度集中。';
+  else if (marSign === 'Capricorn') executionFeel.analysis += '纪律严明、结构化的执行。你遵循计划。风险：当计划需要调整时过于僵化。';
+  else executionFeel.analysis += '你的执行合格但缺乏标志性特征。你既不犹豫也不冲动。';
+  if (marRetro) executionFeel.analysis += ' 火星逆行在意图与行动之间制造内部摩擦——你知道该做什么，但难以付诸实践。';
 
   var emotionVoid = {
     label: '情绪黑洞 [月亮]',
     sign: moonSign,
-    analysis: 'Moon in ' + moonSign + ' reveals your emotional vulnerability in markets. '
+    analysis: '月亮[Moon]位于' + moonSign + '揭示了你在市场中的情绪脆弱性。'
   };
-  if (moonSign === 'Cancer') emotionVoid.analysis += 'Deep emotional sensitivity to portfolio fluctuations. Losses feel personal, gains feel undeserved. The risk: revenge trading after drawdowns.';
-  else if (moonSign === 'Scorpio') emotionVoid.analysis += 'Intense emotional relationship with money. Possessive and territorial about positions. The risk: inability to cut losers because admitting defeat triggers emotional crisis.';
-  else if (moonSign === 'Capricorn') emotionVoid.analysis += 'Emotional suppression pattern. You feel the losses but refuse to acknowledge them. The risk: unprocessed emotions accumulate until they explode as catastrophic position liquidation.';
-  else if (moonSign === 'Taurus') emotionVoid.analysis += 'Comfort-driven emotional baseline. You seek stability and resist change. The risk: holding losers too long because selling feels like admitting instability.';
-  else if (moonSign === 'Pisces') emotionVoid.analysis += 'Boundary-less emotional processing. You absorb market sentiment like a sponge. The risk: confusing the market\'s emotions with your own analysis.';
-  else emotionVoid.analysis += 'Your emotional relationship with money is relatively balanced. You neither panic nor euphoriate excessively.';
+  if (moonSign === 'Cancer') emotionVoid.analysis += '对组合波动有深层情绪敏感。亏损感觉是个人性的，盈利感觉是不应得的。风险：回撤后的复仇交易。';
+  else if (moonSign === 'Scorpio') emotionVoid.analysis += '与金钱的强烈情绪关系。对持仓有占有欲和领地意识。风险：无法止损，因为承认失败会引发情绪危机。';
+  else if (moonSign === 'Capricorn') emotionVoid.analysis += '情绪抑制模式。你感受到了亏损但拒绝承认。风险：未被处理的情绪不断累积，直到以灾难性清仓的形式爆发。';
+  else if (moonSign === 'Taurus') emotionVoid.analysis += '舒适驱动的情绪基线。你追求稳定，抗拒变化。风险：持有亏损太久，因为卖出感觉像承认不稳定。';
+  else if (moonSign === 'Pisces') emotionVoid.analysis += '无边界的情绪处理。你像海绵一样吸收市场情绪。风险：将市场的情绪与自己的分析混淆。';
+  else emotionVoid.analysis += '你与金钱的情绪关系相对均衡。你既不会恐慌也不会过度狂热。';
 
   var riskBlindspot = {
     label: '风控盲区 [土星]',
     sign: satSign,
-    analysis: 'Saturn in ' + satSign + ' exposes your structural risk blind spot. '
+    analysis: '土星[Saturn]位于' + satSign + '暴露了你的结构性风控盲区。'
   };
-  if (satSign === 'Aries') riskBlindspot.analysis += 'Impatient risk management. You set stops but move them. You plan exits but ignore them. The risk: your risk framework exists only on paper.';
-  else if (satSign === 'Taurus') riskBlindspot.analysis += 'Overconfidence in stability. You assume the ground will not shift. The risk: tail-risk events destroy portfolios built on permanence assumptions.';
-  else if (satSign === 'Leo') riskBlindspot.analysis += 'Pride-driven risk accumulation. You add to losers to prove the thesis right. The risk: ego is more expensive than any market loss.';
-  else if (satSign === 'Scorpio') riskBlindspot.analysis += 'Secrecy and isolation in risk decisions. You do not seek second opinions. The risk: unchallenged assumptions compound into catastrophic blind spots.';
-  else if (satSign === 'Capricorn') riskBlindspot.analysis += 'Over-reliance on historical precedent. You manage tomorrow\'s risk with yesterday\'s data. The risk: black swans do not read your backtest.';
-  else riskBlindspot.analysis += 'Your risk management is conventional but not rigorous. You follow standard practices without stress-testing their assumptions.';
+  if (satSign === 'Aries') riskBlindspot.analysis += '不耐烦的风险管理。你设了止损但会移动它。你计划了退出但会忽略它。风险：你的风控框架只存在于纸上。';
+  else if (satSign === 'Taurus') riskBlindspot.analysis += '对稳定性的过度自信。你假设地面不会移动。风险：尾部风险事件摧毁建立在永恒假设上的组合。';
+  else if (satSign === 'Leo') riskBlindspot.analysis += '自尊驱动的风险累积。你加仓亏损以证明论点正确。风险：自尊比任何市场亏损都昂贵。';
+  else if (satSign === 'Scorpio') riskBlindspot.analysis += '风险决策中的秘密和孤立。你不寻求第二意见。风险：未被质疑的假设复合成灾难性盲区。';
+  else if (satSign === 'Capricorn') riskBlindspot.analysis += '过度依赖历史先例。你用昨天的数据管理明天的风险。风险：黑天鹅不读你的回测报告。';
+  else riskBlindspot.analysis += '你的风险管理是常规的但不够严格。你遵循标准实践，但没有对假设进行压力测试。';
 
   return [decisionLogic, executionFeel, emotionVoid, riskBlindspot];
 }
@@ -6197,44 +6197,44 @@ function _generateFailureScenarios(chart, traits, patterns) {
 
   if (traits.risk.value >= 65) {
     scenarios.push({
-      age: '28-32',
-      title: 'The Leverage Cascade',
-      desc: 'A concentrated position with 3-5x leverage encounters an adverse move that exceeds your stop distance. Instead of cutting, you add — convinced the thesis is intact while the market disagrees. The position compounds against you until liquidation. Total capital destruction in 48-72 hours. The root cause is not the trade — it is the inability to accept being wrong when conviction is high.'
+      age: '28-32岁',
+      title: '杠杆级联崩塌',
+      desc: '一个3-5倍杠杆的集中仓位遭遇超出止损距离的不利波动。你没有止损，反而加仓——坚信论点完好，而市场不同意。仓位不断恶化直到被强平。48-72小时内资本全部毁灭。根本原因不是交易本身——而是在信念强烈时无法接受自己错了。'
     });
   }
   if (traits.intuition.value >= 60 && traits.precision.value <= 55) {
     scenarios.push({
-      age: '33-37',
-      title: 'The Narrative Trap',
-      desc: 'You identify a compelling market narrative and commit capital based on story, not structure. The narrative feels right — your intuition confirms it. But intuition is not analysis, and the story has no support from price action or fundamentals. You hold through deteriorating conditions because selling feels like betrayal of your vision. The loss is slow, grinding, and denial-compounded.'
+      age: '33-37岁',
+      title: '叙事陷阱',
+      desc: '你识别了一个引人入胜的市场叙事，并基于故事而非结构投入资本。叙事感觉是对的——你的直觉确认了它。但直觉不是分析，故事没有价格行为或基本面的支撑。你在不断恶化的条件下持有，因为卖出感觉像背叛你的愿景。亏损是缓慢的、磨砺的、由否认驱动的。'
     });
   }
   if (traits.greed.value >= 70) {
     scenarios.push({
-      age: '35-40',
-      title: 'The Winner\'s Curse',
-      desc: 'After a significant win, your position sizing increases disproportionately. You attribute success to skill when it was partially luck. The next trade is larger, the conviction is higher, and the market is less cooperative. The win rate does not matter when position sizing is exponential. One loss erases three wins. The cycle repeats until the account does not.'
+      age: '35-40岁',
+      title: '赢家诅咒',
+      desc: '一次重大胜利后，你的仓位规模不成比例地增加。你将成功归因于技术，而部分是运气。下一笔交易更大，信念更高，市场却不太配合。当仓位规模呈指数增长时，胜率已不重要。一次亏损抹去三次盈利。循环重复，直到账户归零。'
     });
   }
   if (traits.stamina.value <= 50) {
     scenarios.push({
-      age: '26-30',
-      title: 'The Premature Exit',
-      desc: 'You enter a correct thesis but exit too early. The position moves in your favor, triggers your mental stop, and you sell for a modest gain. The asset then proceeds to deliver 5-10x returns. You watch from the sidelines, paralyzed by regret. The pattern repeats across multiple opportunities, each time confirming that your timing is right but your holding period is fatally short.'
+      age: '26-30岁',
+      title: '过早退出',
+      desc: '你入场了一个正确的论点但退出太早。仓位朝你有利的方向移动，触发了你的心理止损，你卖出获得了微薄的利润。然后该资产继续实现了5-10倍的回报。你在场边观看，被后悔麻痹。这个模式在多个机会中重复，每次都确认你的时机是对的，但持有期是致命的短。'
     });
   }
   if (patterns.some(function(p) { return p.tier === 'R'; })) {
     scenarios.push({
-      age: '30-35',
-      title: 'The Structural Leak',
-      desc: 'A consistent, low-level capital drain caused by a recurring cognitive error. The loss per incident is small — 2-5% — but the frequency makes it systemic. You identify the pattern intellectually but cannot correct it behaviorally. Over 3-5 years, the cumulative leak exceeds any single catastrophic loss. The danger is that it feels manageable until it is not.'
+      age: '30-35岁',
+      title: '结构性泄漏',
+      desc: '由反复出现的认知错误导致的持续低级别资本流失。每次事件的损失很小——2-5%——但频率使其成为系统性问题。你在理智上识别了这个模式，但在行为上无法纠正。3-5年内，累积泄漏超过任何单一灾难性损失。危险在于它感觉可控，直到不再可控。'
     });
   }
   if (scenarios.length === 0) {
     scenarios.push({
-      age: '30-36',
-      title: 'The Complacency Decay',
-      desc: 'A period of moderate success creates a false sense of security. Risk parameters gradually loosen, position sizes slowly increase, and the edge that generated the initial returns erodes unnoticed. The loss is not dramatic — it is a slow, invisible attrition of capital through declining discipline. By the time you recognize the decay, the damage is structural.'
+      age: '30-36岁',
+      title: '自满衰减',
+      desc: '一段适度成功期创造了虚假的安全感。风险参数逐渐放松，仓位规模缓慢增加，产生初始回报的优势在不知不觉中侵蚀。损失不是戏剧性的——它是通过纪律下降导致的缓慢、不可见的资本损耗。当你认识到衰减时，损害已经是结构性的。'
     });
   }
 
@@ -6248,44 +6248,44 @@ function _generateProfitWindows(chart, traits, patterns) {
 
   if (traits.intuition.value >= 65) {
     windows.push({
-      timing: 'Market regime transitions (bull to bear, risk-on to risk-off)',
-      title: 'The Regime Shift',
-      desc: 'Your strongest profit window opens when the market changes character. While others are anchored to the previous regime, your pattern recognition detects the shift early. Position early, size moderately, and let the new trend confirm your thesis. This is where your intuition becomes quantitative alpha.'
+      timing: '市场体制转换期（牛转熊、避险转风险偏好）',
+      title: '体制转换',
+      desc: '你最强的盈利窗口在市场改变性质时打开。当其他人锚定于前一个体制时，你的模式识别提前检测到转变。提前建仓，适度仓位，让新趋势确认你的论点。这是你的直觉变为量化Alpha的地方。'
     });
   }
   if (traits.precision.value >= 65 && traits.stamina.value >= 55) {
     windows.push({
-      timing: 'Post-earnings drift on fundamentally mispriced equities',
-      title: 'The Mispricing Window',
-      desc: 'Within 5-15 trading days after earnings releases, the market frequently misprices companies with complex narratives. Your analytical precision allows you to separate signal from noise. Enter during the emotional overreaction, set a 60-90 day target, and let the fundamentals reassert. This is slow money, but it compounds.'
+      timing: '财报发布后，基本面错定价股票的漂移期',
+      title: '错价窗口',
+      desc: '在财报发布后的5-15个交易日内，市场经常错定价具有复杂叙事的公司。你的分析精度使你能分离信号与噪音。在情绪过度反应期间入场，设定60-90天目标，让基本面重新确立。这是慢钱，但它会复利。'
     });
   }
   if (patterns.some(function(p) { return p.tier === 'S'; })) {
     windows.push({
-      timing: 'High-volatility events (VIX > 30, flash crashes, geopolitical shocks)',
-      title: 'The Chaos Premium',
-      desc: 'Your chart configuration thrives in disorder. When volatility spikes and the crowd panics, your decision architecture remains functional. This is your natural habitat. Buy the fear, sell the relief. The premium for chaos participation is the highest risk-adjusted return available in markets.'
+      timing: '高波动率事件（VIX > 30、闪崩、地缘政治冲击）',
+      title: '混沌溢价',
+      desc: '你的星盘配置在混乱中如鱼得水。当波动率飙升、人群恐慌时，你的决策架构依然运转正常。这是你的天然栖息地。买入恐惧，卖出缓解。混沌参与的溢价是市场中可获得的最高的风险调整回报。'
     });
   }
   if (traits.greed.value >= 60 && traits.risk.value >= 55) {
     windows.push({
-      timing: 'Early-stage technology adoption cycles and sector rotations',
-      title: 'The Adoption Wave',
-      desc: 'Your appetite for growth aligns with the most profitable phase of technology adoption — the transition from early adopter to early majority. Position in the infrastructure layer before the application layer explodes. This window opens every 7-10 years and lasts 18-36 months.'
+      timing: '早期技术采用周期和板块轮动',
+      title: '采用浪潮',
+      desc: '你对增长的胃口与科技采用最具盈利的阶段完美契合——从早期采用者到早期多数的过渡。在应用层爆发之前，布局基础设施层。这个窗口每7-10年打开一次，持续18-36个月。'
     });
   }
   if (traits.stamina.value >= 65) {
     windows.push({
-      timing: 'Long-duration macro trends (rate cycles, commodity supercycles)',
-      title: 'The Structural Ride',
-      desc: 'Your holding capacity gives you access to returns that short-term traders cannot capture. Identify a macro trend with 2-5 year duration, build a core position, and add on pullbacks. The key discipline: do not check the portfolio daily. Monthly rebalancing is sufficient. Your edge is time, not timing.'
+      timing: '长期宏观趋势（利率周期、大宗商品超级周期）',
+      title: '结构性长线',
+      desc: '你的持有能力使你能获得短期交易者无法捕获的回报。识别一个2-5年持续期的宏观趋势，建立核心仓位，在回调时加仓。关键纪律：不要每天查看组合。月度再平衡足矣。你的优势是时间，不是择时。'
     });
   }
   if (windows.length === 0) {
     windows.push({
-      timing: 'Broad market recovery phases (6-18 months post-crisis)',
-      title: 'The Recovery Wave',
-      desc: 'Your balanced profile is well-suited for systematic recovery participation. After significant market drawdowns, deploy capital in tranches over 6-12 months using broad market indices. The return is not spectacular, but the risk-adjusted profile is strong. This is the strategy that survives.'
+      timing: '宽基市场恢复期（危机后6-18个月）',
+      title: '恢复浪潮',
+      desc: '你的均衡配置非常适合系统性恢复参与。在重大市场回撤后，通过6-12个月的时间分批部署资本到宽基指数。回报不是惊人的，但风险调整后表现强劲。这是能存活下来的策略。'
     });
   }
 
@@ -6297,27 +6297,27 @@ function _generateAscensionPath(chart, traits, patterns) {
   var beta = 60, alpha = 40;
 
   if (traits.risk.value >= 70) {
-    command = 'Implement a mandatory 48-hour cooling period between thesis formation and execution. No position may exceed 15% of portfolio. Every trade requires a written exit plan before entry.';
+    command = '在论点形成与执行之间强制执行48小时冷静期。任何仓位不得超过组合的15%。每笔交易在入场前必须书面规划退出方案。';
     beta = 40; alpha = 60;
   } else if (traits.precision.value >= 70) {
-    command = 'Increase position size by 30% on highest-conviction setups. Your precision is wasted on small positions. The edge demands scale.';
+    command = '在最高信念的形态上将仓位规模增加30%。你的精度在小仓位上被浪费了。优势需要规模。';
     beta = 50; alpha = 50;
   } else if (traits.intuition.value >= 70) {
-    command = 'Backtest every intuitive call against a quantitative framework. If the data does not support the feeling, the feeling is noise. Intuition without verification is gambling.';
+    command = '将每一次直觉判断放入量化框架回测。如果数据不支持感觉，那感觉就是噪音。未经验证的直觉就是赌博。';
     beta = 55; alpha = 45;
   } else if (traits.stamina.value >= 70) {
-    command = 'Set calendar-based rebalancing triggers. Your patience is an asset, but it becomes a liability when it prevents necessary portfolio rotation.';
+    command = '设定基于日历的再平衡触发器。你的耐心是资产，但当它阻止必要的组合轮动时就变成了负债。';
     beta = 65; alpha = 35;
   } else if (traits.greed.value >= 70) {
-    command = 'Implement a profit-take system: sell 50% at +20%, move stop to breakeven, let the rest run. Systematic profit extraction prevents winner\'s curse cycles.';
+    command = '实施止盈系统：+20%卖出50%，止损移至盈亏平衡，让剩余部分运行。系统化的利润提取防止赢家诅咒循环。';
     beta = 45; alpha = 55;
   } else {
-    command = 'Define your edge in writing. If you cannot articulate your alpha source in one sentence, you do not have one. Build from clarity, not complexity.';
+    command = '用文字定义你的优势。如果你不能用一句话阐明你的Alpha来源，那你就没有。从清晰开始，而非复杂。';
     beta = 60; alpha = 40;
   }
 
   if (patterns.some(function(p) { return p.tier === 'R'; })) {
-    command += ' Address your Tier R structural leaks first — they will compound faster than any alpha you generate.';
+    command += ' 首先处理你的Tier R结构性泄漏——它们复合的速度比你产生Alpha的速度更快。';
   }
 
   return {
