@@ -3508,15 +3508,27 @@ html[lang="ko"] {
 
       <!-- Credits Tab -->
       <div class="modal-tab-content" id="tab-credits">
-        <div class="credits-balance">
-          <div class="cb-amount" id="creditsAmount">100</div>
-          <div class="cb-label" data-i18n="credits.balance">Credits Remaining</div>
+        <div id="creditsLoggedIn">
+          <div class="credits-balance">
+            <div class="cb-amount" id="creditsAmount">100</div>
+            <div class="cb-label" data-i18n="credits.balance">Credits Remaining</div>
+          </div>
+          <div class="credits-countdown" id="creditsCountdown" data-i18n="credits.resetsIn">Resets in 24:00:00</div>
+          <div class="credits-log" id="creditsLog"></div>
         </div>
-        <div class="credits-countdown" id="creditsCountdown" data-i18n="credits.resetsIn">Resets in 24:00:00</div>
-        <div class="credits-log" id="creditsLog"></div>
+        <div id="creditsGuestView" style="display:none;text-align:center;padding:20px 0;">
+          <div style="font-size:48px;margin-bottom:12px;">🎁</div>
+          <p style="color:#888;margin-bottom:16px;" data-i18n="credits.guestHint">Sign in to get free daily credits and unlock all features!</p>
+        </div>
         <div class="invite-section">
-          <button class="btn-primary" onclick="showToast(t('toast.copied'))" data-i18n="credits.invite">Invite Friends</button>
-          <div class="invite-link">https://proofofvibe.xyz/ref/guest42</div>
+          <button class="btn-primary" onclick="openInvite()" data-i18n="credits.invite">Invite Friends</button>
+          <div class="invite-link-row" style="margin-top:8px;">
+            <input type="text" class="invite-link-input" id="creditsInviteLink" value="https://proofofvibe.xyz/ref/guest42" readonly style="flex:1;">
+            <button class="invite-copy-btn" onclick="copyCreditsInviteLink()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span data-i18n="invite.copyBtn">Copy Link</span>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -5350,13 +5362,17 @@ function deductCredits(amount, desc) {
 }
 
 function renderCreditsTab() {
+  const loggedIn = document.getElementById('creditsLoggedIn');
+  const guestView = document.getElementById('creditsGuestView');
   const amountEl = document.getElementById('creditsAmount');
   const logEl = document.getElementById('creditsLog');
   if (!authToken || !currentUser) {
-    if (amountEl) amountEl.textContent = '--';
-    if (logEl) logEl.innerHTML = '<div class="library-empty" style="text-align:center;padding:20px;"><button class="btn-primary" onclick="closeSettings();openLogin();" data-i18n="user.signIn">Sign in</button></div>';
+    if (loggedIn) loggedIn.style.display = 'none';
+    if (guestView) guestView.style.display = '';
     return;
   }
+  if (loggedIn) loggedIn.style.display = '';
+  if (guestView) guestView.style.display = 'none';
   if (amountEl) amountEl.textContent = credits;
   if (logEl) logEl.innerHTML = creditLog.map(entry => {
     const isNeg = entry.amount.startsWith('-');
@@ -5366,6 +5382,17 @@ function renderCreditsTab() {
       '<span class="ce-amount ' + (isNeg ? 'negative' : 'positive') + '">' + entry.amount + '</span>' +
     '</div>';
   }).join('');
+}
+
+function copyCreditsInviteLink() {
+  const input = document.getElementById('creditsInviteLink');
+  if (input) {
+    navigator.clipboard.writeText(input.value).then(() => showToast(t('toast.copied'))).catch(() => {
+      input.select();
+      document.execCommand('copy');
+      showToast(t('toast.copied'));
+    });
+  }
 }
 
 // Credits countdown
