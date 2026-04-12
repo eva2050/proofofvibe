@@ -888,7 +888,7 @@ html[data-theme="dark"] .astro-arrow {
 }
 
 .msg.ai {
-  align-self: flex-start;
+  align-self: stretch;
 }
 
 .msg-bubble {
@@ -896,6 +896,10 @@ html[data-theme="dark"] .astro-arrow {
   border-radius: 16px;
   font-size: 14px;
   line-height: 1.6;
+}
+
+.msg.ai .msg-bubble {
+  width: 100%;
 }
 
 .msg.user .msg-bubble {
@@ -989,7 +993,7 @@ html[data-theme="dark"] .result-card {
   min-width: 0;
 }
 .calendar-dashboard {
-  width: 260px;
+  width: 300px;
   flex-shrink: 0;
   padding: 16px;
   border-left: 1px solid var(--border);
