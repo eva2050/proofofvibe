@@ -30,7 +30,6 @@
   --accent-yellow: #FF9F0A;
   --accent-purple: #AF52DE;
   --sidebar-width: 260px;
-  --panel-width: 320px;
   --header-height: 56px;
   --transition-speed: 0.3s;
 }
@@ -518,7 +517,7 @@ html[data-theme="dark"] .welcome-title {
 .welcome-subtitle {
   font-size: 15px;
   color: var(--text-secondary);
-  max-width: 460px;
+  max-width: 600px;
   line-height: 1.6;
   margin-bottom: 32px;
   transition: color var(--transition-speed);
@@ -546,6 +545,7 @@ html[data-theme="dark"] .welcome-title {
 .astro-card {
   flex-shrink: 0;
   width: calc(33.333% - 11px);
+  max-width: 300px;
   min-width: 240px;
   background: var(--card-bg);
   border: 1px solid var(--border);
@@ -873,7 +873,7 @@ html[data-theme="dark"] .astro-arrow {
 
 .msg {
   display: flex;
-  max-width: 680px;
+  max-width: 900px;
   animation: msgIn 0.3s ease;
 }
 
@@ -947,7 +947,7 @@ html[data-theme="dark"] .astro-arrow {
   border-radius: 16px;
   padding: 20px;
   width: 100%;
-  max-width: 520px;
+  max-width: 720px;
   transition: background var(--transition-speed), border-color var(--transition-speed);
 }
 
@@ -966,7 +966,7 @@ html[data-theme="dark"] .scanner-card {
   border-radius: 16px;
   overflow: hidden;
   width: 100%;
-  max-width: 640px;
+  max-width: 860px;
   transition: background var(--transition-speed), border-color var(--transition-speed);
 }
 
@@ -1161,7 +1161,7 @@ html[data-theme="dark"] .result-card {
   border-radius: 16px;
   padding: 20px;
   width: 100%;
-  max-width: 520px;
+  max-width: 680px;
   transition: background var(--transition-speed), border-color var(--transition-speed);
 }
 
@@ -1265,7 +1265,7 @@ html[data-theme="dark"] .dna-card {
 }
 
 /* ========== DNA REPORT EXTENSIONS ========== */
-.dna-report-card { max-width: 580px; }
+.dna-report-card { max-width: 760px; }
 .dna-report-header { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 .dna-report-archetype { font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.3px; }
 .dna-verdict { font-size: 13px; color: var(--text-secondary); font-style: italic; line-height: 1.5; padding: 10px 14px; background: var(--input-bg); border-radius: 10px; margin-bottom: 14px; border-left: 3px solid var(--accent); }
@@ -1332,7 +1332,7 @@ html[data-theme="dark"] .dna-card {
   border-radius: 16px;
   padding: 20px;
   width: 100%;
-  max-width: 520px;
+  max-width: 680px;
   transition: background var(--transition-speed), border-color var(--transition-speed);
 }
 
@@ -1442,25 +1442,7 @@ html[data-theme="dark"] .input-wrapper:focus-within {
   color: var(--bg);
 }
 
-/* ========== RIGHT PANEL ========== */
-.right-panel {
-  width: var(--panel-width);
-  min-width: var(--panel-width);
-  background: var(--sidebar-bg);
-  border-left: 1px solid var(--border);
-  overflow-y: auto;
-  padding: 20px 16px;
-  transition: background var(--transition-speed), border-color var(--transition-speed);
-}
-
-.right-panel::-webkit-scrollbar {
-  width: 4px;
-}
-
-.right-panel::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 2px;
-}
+/* ========== PANEL COMPONENTS ========== */
 
 .panel-title {
   font-size: 11px;
@@ -2882,7 +2864,6 @@ html[data-theme="dark"] .pricing-card:hover {
 @media (max-width: 1024px) {
   :root {
     --sidebar-width: 220px;
-    --panel-width: 280px;
   }
   .sidebar-logo {
     font-size: 20px;
@@ -2904,11 +2885,11 @@ html[data-theme="dark"] .pricing-card:hover {
     padding: 8px 10px;
   }
   .scanner-card {
-    max-width: 460px;
+    max-width: 600px;
     padding: 16px;
   }
   .dna-card {
-    max-width: 460px;
+    max-width: 600px;
   }
   .dna-report-card {
     max-width: 100%;
@@ -2918,25 +2899,6 @@ html[data-theme="dark"] .pricing-card:hover {
   }
   .welcome-title {
     font-size: 34px;
-  }
-  /* Right panel becomes drawer on tablet */
-  .right-panel {
-    position: fixed;
-    right: -300px;
-    top: 0;
-    bottom: 0;
-    width: 300px;
-    z-index: 20;
-    transition: right 0.3s ease;
-    box-shadow: none;
-    min-width: 0;
-  }
-  .right-panel.open {
-    right: 0;
-    box-shadow: -4px 0 24px rgba(0,0,0,0.1);
-  }
-  html[data-theme="dark"] .right-panel.open {
-    box-shadow: -4px 0 24px rgba(0,0,0,0.4);
   }
 }
 
@@ -2957,9 +2919,6 @@ html[data-theme="dark"] .pricing-card:hover {
   }
   .sidebar.open {
     left: 0;
-  }
-  .right-panel {
-    width: 320px;
   }
   .main-header {
     padding: 0 12px;
