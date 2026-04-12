@@ -4929,8 +4929,90 @@ function updateAuthUI() {
 }
 
 function handleGoogleLogin() {
-  // Simple redirect to OAuth2 flow
-  window.location.href = API_BASE + '/api/auth/google/redirect';
+  doGooglePopupLogin();
+}
+
+function doGooglePopupLogin() {
+  const GOOGLE_CLIENT_ID = '95818577395-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com';
+  const origin = window.location.origin;
+  const redirectUri = `${origin}/api/auth/google/callback`;
+  
+  // Open Google auth in popup
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${new URLSearchParams({
+    client_id: GOOGLE_CLIENT_ID,
+    redirect_uri: redirectUri,
+    response_type: 'token',
+    scope: 'openid email profile',
+    prompt: 'consent',
+  }).toString()}`;
+  
+  const popup = window.open(authUrl, 'google_login', 'width=500,height=600,scrollbars=yes');
+  
+  if (!popup) {
+    showToast('Popup blocked, please allow popups');
+    return;
+  }
+  
+  // Poll for popup closure
+  const checkPopup = setInterval(() => {
+    try {
+      if (popup.closed) {
+        clearInterval(checkPopup);
+        return;
+      }
+      // Check if popup URL contains access_token (implicit flow returns in fragment)
+      const popupUrl = popup.location.href;
+      if (popupUrl.includes('access_token') || popupUrl.includes('id_token')) {
+        clearInterval(checkPopup);
+        popup.close();
+        
+        // Parse token from URL
+        const hash = popupUrl.split('#')[1] || '';
+        const params = new URLSearchParams(hash);
+        const accessToken = params.get('access_token');
+        
+        if (accessToken) {
+          // Get user info with access token, then send to our backend
+          fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+            headers: { 'Authorization': 'Bearer ' + accessToken }
+          })
+          .then(res => res.json())
+          .then(userInfo => {
+            return fetch(API_BASE + '/api/auth/google', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                idToken: accessToken,
+                email: userInfo.email,
+                name: userInfo.name,
+                sub: userInfo.sub
+              })
+            });
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.token) {
+              authToken = data.token;
+              currentUser = data.user;
+              localStorage.setItem('vibe_token', authToken);
+              localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+              updateUIForAuth();
+              closeLoginModal();
+              showToast(t('toast.accountSaved') || 'Welcome!');
+            } else {
+              showToast(data.error || 'Google login failed');
+            }
+          })
+          .catch(() => showToast('Google login failed'));
+        }
+      }
+    } catch(e) {
+      // Cross-origin error is expected while popup is on Google's domain
+    }
+  }, 500);
+  
+  // Timeout after 5 minutes
+  setTimeout(() => clearInterval(checkPopup), 300000);
 }
 
 function submitAuth() {
@@ -6194,10 +6276,10 @@ function getStoredAuth() {
   const urlParams = new URLSearchParams(window.location.search);
   const authError = urlParams.get('auth_error');
   const authTokenParam = urlParams.get('auth_token');
+  const googleLogin = urlParams.get('google_login');
   
   if (authError) {
     showToast('Google login failed: ' + authError);
-    // Clean URL
     window.history.replaceState({}, '', window.location.pathname);
     return;
   }
@@ -6216,8 +6298,15 @@ function getStoredAuth() {
     updateUIForAuth();
     showToast(t('toast.accountSaved') || 'Welcome!');
     
-    // Clean URL
     window.history.replaceState({}, '', window.location.pathname);
+    return;
+  }
+  
+  // Handle Google login redirect from backend
+  if (googleLogin === '1') {
+    window.history.replaceState({}, '', window.location.pathname);
+    // Try Google popup-based login
+    setTimeout(() => doGooglePopupLogin(), 500);
     return;
   }
   
