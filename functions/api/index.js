@@ -6,7 +6,7 @@
 
 const CF_ACCOUNT_ID = '6683cf8753f914c98020e7e03b543623';
 const CF_DATABASE_ID = '1f70c071-3549-45aa-b4a1-db998ba0b8e3';
-const CF_API_TOKEN = 'cfut_7cL1qULjxEVJZsPsxnyh3zfCm6Ifuee2R0dEOtkob15cc55f';
+const CF_API_TOKEN = 'cfut_haUp8Z0bTEVl20ddUwGKGDQtarWZqfSeyfjnUA2S4ab36d7d';
 
 let env = {};
 
