@@ -3316,65 +3316,6 @@ html[lang="ko"] {
     </div>
   </main>
 
-  <!-- RIGHT PANEL (hidden globally, embedded in Calendar page) -->
-  <aside class="right-panel" id="rightPanel" style="display:none;">
-    <div class="panel-title" data-i18n="panel.title">COSMIC DASHBOARD</div>
-
-    <div class="nav-section-label" style="padding-left:0" data-i18n="panel.currentTransits">Current Transits</div>
-    <div class="transit-card intense">
-      <div class="transit-name">Saturn &#9788; Square Moon</div>
-      <div class="transit-desc" data-i18n="panel.saturnDesc">Restructuring emotional investments. Tight stops advised.</div>
-      <span class="transit-tag intense" data-i18n="panel.intense">Intense</span>
-    </div>
-    <div class="transit-card positive">
-      <div class="transit-name">Jupiter &#9788; Trine Venus</div>
-      <div class="transit-desc" data-i18n="panel.jupiterDesc">Harmonious wealth flow. Green light for growth positions.</div>
-      <span class="transit-tag positive" data-i18n="panel.positive">Positive</span>
-    </div>
-    <div class="transit-card">
-      <div class="transit-name">Mars &#9788; Sextile Mercury</div>
-      <div class="transit-desc" data-i18n="panel.marsDesc">Sharp mental clarity for quick trades.</div>
-      <span class="transit-tag neutral" data-i18n="panel.neutral">Neutral</span>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="nav-section-label" style="padding-left:0" data-i18n="panel.marketVibe">Market Vibe Index</div>
-    <div class="market-vibe-item">
-      <span class="mv-label" data-i18n="panel.sentiment">Overall Sentiment</span>
-      <span class="mv-value bullish" data-i18n="panel.bullish">Bullish ↗</span>
-    </div>
-    <div class="market-vibe-item">
-      <span class="mv-label" data-i18n="panel.volatility">Volatility Forecast</span>
-      <span class="mv-value high" data-i18n="panel.highVol">High ⚡</span>
-    </div>
-    <div class="market-vibe-item">
-      <span class="mv-label" data-i18n="panel.mercuryRetro">Mercury Retrograde</span>
-      <span class="mv-value warning" data-i18n="panel.active">Active ⚠</span>
-    </div>
-    <div class="market-vibe-item">
-      <span class="mv-label" data-i18n="panel.lunarPhase">Lunar Phase</span>
-      <span class="mv-value" data-i18n="panel.lunarWaning">Waning Gibbous</span>
-    </div>
-
-    <div class="section-divider"></div>
-
-    <div class="nav-section-label" style="padding-left:0" data-i18n="panel.quickStats">Quick Stats</div>
-    <div class="quick-stats">
-      <div class="quick-stat">
-        <div class="qs-value">7</div>
-        <div class="qs-label" data-i18n="panel.scansToday">Scans Today</div>
-      </div>
-      <div class="quick-stat">
-        <div class="qs-value">78%</div>
-        <div class="qs-label" data-i18n="panel.vibeAccuracy">Vibe Accuracy</div>
-      </div>
-      <div class="quick-stat">
-        <div class="qs-value">12</div>
-        <div class="qs-label" data-i18n="panel.streak">Streak</div>
-      </div>
-    </div>
-  </aside>
 </div>
 
 <!-- HISTORY MODAL -->
@@ -5335,18 +5276,8 @@ function closeMobileSidebar() {
 
 document.getElementById('sidebarOverlay').addEventListener('click', closeMobileSidebar);
 
-// ========== PANEL TOGGLE ==========
-function togglePanel() {
-  const panel = document.getElementById('rightPanel');
-  panelVisible = !panelVisible;
-  if (window.innerWidth <= 768) {
-    panel.classList.toggle('open', panelVisible);
-    panel.style.display = '';
-  } else {
-    panel.classList.remove('open');
-    panel.style.display = panelVisible ? '' : 'none';
-  }
-}
+// ========== PANEL TOGGLE (removed - panel embedded in Calendar) ==========
+function togglePanel() { return; }
 
 // ========== SETTINGS MODAL ==========
 function openSettings(tab) {
@@ -7359,11 +7290,6 @@ function init() {
   applyI18n();
   getStoredAuth();
   loadNatalChart();
-  // Mobile: hide panel by default
-  if (window.innerWidth <= 768) {
-    panelVisible = false;
-    document.getElementById('rightPanel').style.display = '';
-  }
 }
 
 // Close modal on overlay click
@@ -7398,13 +7324,9 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Handle resize: reset panel mode when crossing breakpoint
+// Handle resize
 window.addEventListener('resize', function() {
-  const panel = document.getElementById('rightPanel');
-  if (window.innerWidth > 768) {
-    panel.classList.remove('open');
-    if (panelVisible) panel.style.display = '';
-  }
+  // Panel removed from global layout
 });
 
 // ========== AUTH SYSTEM ==========
