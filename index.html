@@ -3535,6 +3535,9 @@ html[lang="ko"] {
 let currentLang = 'en';
 let currentTheme = 'light';
 let currentNav = 'scanner';
+let authToken = null;
+let currentUser = null;
+let authMode = 'login';
 let credits = 100;
 let creditsResetTime = Date.now() + 24 * 60 * 60 * 1000;
 let panelVisible = true;
@@ -4902,7 +4905,6 @@ function toggleBilling() {
 }
 
 // ========== LOGIN MODAL ==========
-let authMode = 'login';
 
 function openLogin() {
   authMode = 'login';
@@ -6262,8 +6264,6 @@ window.addEventListener('resize', function() {
 
 // ========== AUTH SYSTEM ==========
 const API_BASE = window.location.origin;
-let currentUser = null;
-let authToken = null;
 
 function getStoredAuth() {
   // Check for OAuth callback params first
