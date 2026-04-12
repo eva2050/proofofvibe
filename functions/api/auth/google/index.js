@@ -30,23 +30,21 @@ export async function onRequest(context) {
     }
 
     // Auto-create tables if not exist
-    await DB.exec(`
-      CREATE TABLE IF NOT EXISTS users (
-        email TEXT PRIMARY KEY,
-        password_hash TEXT,
-        name TEXT,
-        created_at TEXT,
-        updated_at TEXT
-      );
-      CREATE TABLE IF NOT EXISTS sessions (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER NOT NULL,
-        provider TEXT,
-        provider_id TEXT,
-        access_token TEXT,
-        expires_at TEXT
-      );
-    `);
+    await DB.prepare(`CREATE TABLE IF NOT EXISTS users (
+      email TEXT PRIMARY KEY,
+      password_hash TEXT,
+      name TEXT,
+      created_at TEXT,
+      updated_at TEXT
+    )`).run();
+    await DB.prepare(`CREATE TABLE IF NOT EXISTS sessions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      provider TEXT,
+      provider_id TEXT,
+      access_token TEXT,
+      expires_at TEXT
+    )`).run();
 
     const body = await context.request.json();
     const { idToken, email, name, sub } = body;
