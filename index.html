@@ -4984,10 +4984,16 @@ async function handleGoogleCredential(response) {
   }
   
   try {
+    // Decode JWT to get user info (no server verification needed - Google GIS already verified)
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const email = payload.email;
+    const name = payload.name;
+    const sub = payload.sub;
+    
     const res = await fetch(API_BASE + '/api/auth/google', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idToken: response.credential }),
+      body: JSON.stringify({ idToken: response.credential, email, name, sub }),
     });
     const data = await res.json();
     
