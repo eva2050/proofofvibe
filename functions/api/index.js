@@ -1,54 +1,13 @@
 // =============================================================================
 // Cloudflare Worker API Backend — ProofOfVibe
-// D1 HTTP API (no binding required)
-// Database ID: 1f70c071-3549-45aa-b4a1-db998ba0b8e3
+// D1 binding (configured as `DB` in Cloudflare Dashboard)
 // =============================================================================
-
-const CF_ACCOUNT_ID = '6683cf8753f914c98020e7e03b543623';
-const CF_DATABASE_ID = '1f70c071-3549-45aa-b4a1-db998ba0b8e3';
-const CF_API_TOKEN = 'cfut_7cL1qULjxEVJZsPsxnyh3zfCm6Ifuee2R0dEOtkob15cc55f';
 
 let env = {};
 
 export async function onRequest(context) {
+  env.DB = context.env.DB;
   return handleRequest(context.request);
-}
-
-// =============================================================================
-// D1 HTTP API helpers
-// =============================================================================
-
-async function d1Query(sql, params = []) {
-  const token = CF_API_TOKEN;
-  const res = await fetch(
-    `https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/d1/database/${CF_DATABASE_ID}/query`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ sql, params }),
-    }
-  );
-  const data = await res.json();
-  if (!data.success) throw new Error(data.errors?.[0]?.message || 'D1 query failed');
-  return data.result; // array of result objects
-}
-
-async function d1First(sql, params = []) {
-  const results = await d1Query(sql, params);
-  return results[0]?.results?.[0] || null;
-}
-
-async function d1All(sql, params = []) {
-  const results = await d1Query(sql, params);
-  return results[0]?.results || [];
-}
-
-async function d1Run(sql, params = []) {
-  const results = await d1Query(sql, params);
-  return results[0]?.meta || {};
 }
 
 // =============================================================================
@@ -56,6 +15,12 @@ async function d1Run(sql, params = []) {
 // =============================================================================
 
 async function handleRequest(request) {
+  // ── Auto-create tables ──────────────────────────────────────────────────
+  if (env.DB) {
+    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS users (email TEXT PRIMARY KEY, password_hash TEXT, name TEXT, created_at TEXT, updated_at TEXT)`).run();
+    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS sessions (id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL, provider TEXT, provider_id TEXT, access_token TEXT, expires_at TEXT)`).run();
+  }
+
   const url = new URL(request.url);
   const path = url.pathname;
   const method = request.method;
@@ -201,15 +166,14 @@ async function withAuth(request, handler) {
     return withCors(jsonResponse({ error: 'Missing authorization token' }, 401), request);
   }
 
-  const session = await d1First(
+  const session = await env.DB.prepare(
     `SELECT s.*, u.id as user_id, u.email, u.name, u.password_hash, u.birth_date,
             u.birth_time, u.birth_place, u.natal_chart, u.language, u.theme,
             u.created_at, u.updated_at
      FROM sessions s
      JOIN users u ON s.user_id = u.id
-     WHERE s.access_token = ? AND s.expires_at > datetime('now')`,
-    [token]
-  );
+     WHERE s.access_token = ? AND s.expires_at > datetime('now')`
+  ).bind(token).first();
 
   if (!session) {
     return withCors(jsonResponse({ error: 'Invalid or expired token' }, 401), request);
@@ -229,10 +193,9 @@ async function createSession(userId) {
   // Session expires in 30 days
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  await d1Run(
-    'INSERT INTO sessions (user_id, provider, access_token, expires_at) VALUES (?, ?, ?, ?)',
-    [userId, 'email', token, expiresAt]
-  );
+  await env.DB.prepare(
+    'INSERT INTO sessions (user_id, provider, access_token, expires_at) VALUES (?, ?, ?, ?)'
+  ).bind(userId, 'email', token, expiresAt).run();
 
   return token;
 }
@@ -259,7 +222,7 @@ async function handleSignup(request) {
   }
 
   // Check if user already exists
-  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
+  const existing = await env.DB.prepare('SELECT rowid as id FROM users WHERE email = ?').bind(email).first();
   if (existing) {
     return withCors(jsonResponse({ error: 'Email already registered' }, 409), request);
   }
@@ -267,12 +230,11 @@ async function handleSignup(request) {
   const passwordHash = await hashPassword(password);
   const now = new Date().toISOString();
 
-  const result = await d1Run(
-    'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-    [email, passwordHash, name || null, now, now]
-  );
+  const result = await env.DB.prepare(
+    'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+  ).bind(email, passwordHash, name || null, now, now).run();
 
-  const userId = result.last_row_id;
+  const userId = result.meta.last_row_id;
 
   const token = await createSession(userId);
 
@@ -293,7 +255,7 @@ async function handleGoogleRedirect(request) {
   const url = new URL(request.url);
   const origin = url.origin;
   const redirectUri = `${origin}/api/auth/google/callback`;
-  
+
   const params = new URLSearchParams({
     client_id: '958185773795-8rv61j4ek3595adk5qas4bqjk0jm2o7o.apps.googleusercontent.com',
     redirect_uri: redirectUri,
@@ -302,9 +264,9 @@ async function handleGoogleRedirect(request) {
     access_type: 'offline',
     prompt: 'consent',
   });
-  
+
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`;
-  
+
   return Response.redirect(authUrl, 302);
 }
 
@@ -316,19 +278,19 @@ async function handleGoogleCallback(request) {
   const url = new URL(request.url);
   const code = url.searchParams.get('code');
   const error = url.searchParams.get('error');
-  
+
   if (error) {
     return Response.redirect(`${url.origin}/?auth_error=${error}`, 302);
   }
-  
+
   if (!code) {
     return Response.redirect(`${url.origin}/?auth_error=no_code`, 302);
   }
-  
+
   // Exchange code for tokens
   const origin = url.origin;
   const redirectUri = `${origin}/api/auth/google/callback`;
-  
+
   let tokenRes;
   try {
     tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -345,16 +307,16 @@ async function handleGoogleCallback(request) {
   } catch (err) {
     return Response.redirect(`${origin}/?auth_error=token_exchange_failed`, 302);
   }
-  
+
   if (!tokenRes.ok) {
     const errText = await tokenRes.text();
     console.error('Token exchange failed:', errText);
     return Response.redirect(`${origin}/?auth_error=token_exchange_failed`, 302);
   }
-  
+
   const tokenData = await tokenRes.json();
   const idToken = tokenData.id_token;
-  
+
   // Get user info from id_token
   let googleUser;
   try {
@@ -366,41 +328,39 @@ async function handleGoogleCallback(request) {
   } catch (err) {
     return Response.redirect(`${origin}/?auth_error=token_verify_failed`, 302);
   }
-  
+
   const email = googleUser.email;
   const name = googleUser.name;
   const googleId = googleUser.sub;
-  
+
   if (!email) {
     return Response.redirect(`${origin}/?auth_error=no_email`, 302);
   }
-  
+
   // Upsert user
-  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
+  const existing = await env.DB.prepare('SELECT rowid as id FROM users WHERE email = ?').bind(email).first();
   let userId;
-  
+
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
+    await env.DB.prepare('UPDATE users SET updated_at = ? WHERE rowid = ?').bind(now, userId).run();
   } else {
     const now = new Date().toISOString();
-    const result = await d1Run(
-      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-      [email, null, name || null, now, now]
-    );
-    userId = result.last_row_id;
+    const result = await env.DB.prepare(
+      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+    ).bind(email, null, name || null, now, now).run();
+    userId = result.meta.last_row_id;
   }
-  
+
   // Create session
   const token = generateToken();
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
-  
-  await d1Run(
-    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)',
-    [userId, 'google', googleId, token, expiresAt]
-  );
-  
+
+  await env.DB.prepare(
+    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)'
+  ).bind(userId, 'google', googleId, token, expiresAt).run();
+
   // Redirect back to frontend with token
   return Response.redirect(`${origin}/?auth_token=${token}&user_id=${userId}&user_email=${encodeURIComponent(email)}&user_name=${encodeURIComponent(name || '')}`, 302);
 }
@@ -417,7 +377,7 @@ async function handleLogin(request) {
     return withCors(jsonResponse({ error: 'Email and password are required' }, 400), request);
   }
 
-  const user = await d1First('SELECT * FROM users WHERE email = ?', [email]);
+  const user = await env.DB.prepare('SELECT * FROM users WHERE email = ?').bind(email).first();
   if (!user) {
     return withCors(jsonResponse({ error: 'Invalid email or password' }, 401), request);
   }
@@ -478,30 +438,28 @@ async function handleGoogleAuth(request) {
   }
 
   // Upsert user
-  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
+  const existing = await env.DB.prepare('SELECT rowid as id FROM users WHERE email = ?').bind(email).first();
   let userId;
 
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
+    await env.DB.prepare('UPDATE users SET updated_at = ? WHERE rowid = ?').bind(now, userId).run();
   } else {
     const now = new Date().toISOString();
-    const result = await d1Run(
-      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-      [email, null, name || null, now, now]
-    );
-    userId = result.last_row_id;
+    const result = await env.DB.prepare(
+      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+    ).bind(email, null, name || null, now, now).run();
+    userId = result.meta.last_row_id;
   }
 
   // Create or update session with provider info
   const token = generateToken();
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  await d1Run(
-    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)',
-    [userId, 'google', googleId, token, expiresAt]
-  );
+  await env.DB.prepare(
+    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)'
+  ).bind(userId, 'google', googleId, token, expiresAt).run();
 
   return withCors(
     jsonResponse({
@@ -587,30 +545,28 @@ async function handleGithubAuth(request) {
   const name = githubUser.name || githubUser.login;
 
   // Upsert user
-  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
+  const existing = await env.DB.prepare('SELECT rowid as id FROM users WHERE email = ?').bind(email).first();
   let userId;
 
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
+    await env.DB.prepare('UPDATE users SET updated_at = ? WHERE rowid = ?').bind(now, userId).run();
   } else {
     const now = new Date().toISOString();
-    const result = await d1Run(
-      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)',
-      [email, null, name, now, now]
-    );
-    userId = result.last_row_id;
+    const result = await env.DB.prepare(
+      'INSERT INTO users (email, password_hash, name, created_at, updated_at) VALUES (?, ?, ?, ?, ?)'
+    ).bind(email, null, name, now, now).run();
+    userId = result.meta.last_row_id;
   }
 
   // Create session
   const token = generateToken();
   const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  await d1Run(
-    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)',
-    [userId, 'github', githubId, token, expiresAt]
-  );
+  await env.DB.prepare(
+    'INSERT INTO sessions (user_id, provider, provider_id, access_token, expires_at) VALUES (?, ?, ?, ?, ?)'
+  ).bind(userId, 'github', githubId, token, expiresAt).run();
 
   return withCors(
     jsonResponse({
@@ -634,7 +590,7 @@ async function handleGetMe(request, ctx) {
 // =============================================================================
 
 async function handleLogout(request, ctx) {
-  await d1Run('DELETE FROM sessions WHERE access_token = ?', [ctx.token]);
+  await env.DB.prepare('DELETE FROM sessions WHERE access_token = ?').bind(ctx.token).run();
 
   return jsonResponse({ message: 'Logged out successfully' });
 }
@@ -644,7 +600,7 @@ async function handleLogout(request, ctx) {
 // =============================================================================
 
 async function handleGetProfile(request, ctx) {
-  const user = await d1First('SELECT * FROM users WHERE rowid = ?', [ctx.user.user_id]);
+  const user = await env.DB.prepare('SELECT * FROM users WHERE rowid = ?').bind(ctx.user.user_id).first();
 
   if (!user) {
     return jsonResponse({ error: 'User not found' }, 404);
@@ -678,10 +634,10 @@ async function handleUpdateProfile(request, ctx) {
   values.push(new Date().toISOString());
   values.push(ctx.user.user_id);
 
-  await d1Run(`UPDATE users SET ${updates.join(', ')} WHERE rowid = ?`, values);
+  await env.DB.prepare(`UPDATE users SET ${updates.join(', ')} WHERE rowid = ?`).bind(...values).run();
 
   // Return updated user
-  const user = await d1First('SELECT * FROM users WHERE rowid = ?', [ctx.user.user_id]);
+  const user = await env.DB.prepare('SELECT * FROM users WHERE rowid = ?').bind(ctx.user.user_id).first();
 
   return jsonResponse({ user: sanitizeUser(user) });
 }
@@ -699,14 +655,13 @@ async function handleCreateTradeLog(request, ctx) {
   }
 
   const now = new Date().toISOString();
-  const result = await d1Run(
-    'INSERT INTO trade_logs (user_id, date, symbol, sentiment, notes, amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)',
-    [ctx.user.user_id, date, symbol, sentiment || null, notes || null, amount || null, now]
-  );
+  const result = await env.DB.prepare(
+    'INSERT INTO trade_logs (user_id, date, symbol, sentiment, notes, amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+  ).bind(ctx.user.user_id, date, symbol, sentiment || null, notes || null, amount || null, now).run();
 
   return jsonResponse({
     trade_log: {
-      id: result.last_row_id,
+      id: result.meta.last_row_id,
       user_id: ctx.user.user_id,
       date,
       symbol,
@@ -723,12 +678,11 @@ async function handleCreateTradeLog(request, ctx) {
 // =============================================================================
 
 async function handleGetTradeLogs(request, ctx) {
-  const results = await d1All(
-    'SELECT * FROM trade_logs WHERE user_id = ? ORDER BY date DESC, created_at DESC',
-    [ctx.user.user_id]
-  );
+  const result = await env.DB.prepare(
+    'SELECT * FROM trade_logs WHERE user_id = ? ORDER BY date DESC, created_at DESC'
+  ).bind(ctx.user.user_id).all();
 
-  return jsonResponse({ trade_logs: results || [] });
+  return jsonResponse({ trade_logs: result.results || [] });
 }
 
 // =============================================================================
@@ -744,16 +698,15 @@ async function handleDeleteTradeLog(request, ctx) {
   }
 
   // Ensure the trade log belongs to the current user
-  const existing = await d1First(
-    'SELECT id FROM trade_logs WHERE rowid = ? AND user_id = ?',
-    [id, ctx.user.user_id]
-  );
+  const existing = await env.DB.prepare(
+    'SELECT id FROM trade_logs WHERE rowid = ? AND user_id = ?'
+  ).bind(id, ctx.user.user_id).first();
 
   if (!existing) {
     return jsonResponse({ error: 'Trade log not found' }, 404);
   }
 
-  await d1Run('DELETE FROM trade_logs WHERE rowid = ? AND user_id = ?', [id, ctx.user.user_id]);
+  await env.DB.prepare('DELETE FROM trade_logs WHERE rowid = ? AND user_id = ?').bind(id, ctx.user.user_id).run();
 
   return jsonResponse({ message: 'Trade log deleted' });
 }
@@ -771,14 +724,13 @@ async function handleCreateBookmark(request, ctx) {
   }
 
   const now = new Date().toISOString();
-  const result = await d1Run(
-    'INSERT INTO bookmarks (user_id, entity_type, entity_name, entity_symbol, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)',
-    [ctx.user.user_id, entity_type, entity_name, entity_symbol || null, notes || null, now]
-  );
+  const result = await env.DB.prepare(
+    'INSERT INTO bookmarks (user_id, entity_type, entity_name, entity_symbol, notes, created_at) VALUES (?, ?, ?, ?, ?, ?)'
+  ).bind(ctx.user.user_id, entity_type, entity_name, entity_symbol || null, notes || null, now).run();
 
   return jsonResponse({
     bookmark: {
-      id: result.last_row_id,
+      id: result.meta.last_row_id,
       user_id: ctx.user.user_id,
       entity_type,
       entity_name,
@@ -794,12 +746,11 @@ async function handleCreateBookmark(request, ctx) {
 // =============================================================================
 
 async function handleGetBookmarks(request, ctx) {
-  const results = await d1All(
-    'SELECT * FROM bookmarks WHERE user_id = ? ORDER BY created_at DESC',
-    [ctx.user.user_id]
-  );
+  const result = await env.DB.prepare(
+    'SELECT * FROM bookmarks WHERE user_id = ? ORDER BY created_at DESC'
+  ).bind(ctx.user.user_id).all();
 
-  return jsonResponse({ bookmarks: results || [] });
+  return jsonResponse({ bookmarks: result.results || [] });
 }
 
 // =============================================================================
@@ -815,16 +766,15 @@ async function handleDeleteBookmark(request, ctx) {
   }
 
   // Ensure the bookmark belongs to the current user
-  const existing = await d1First(
-    'SELECT id FROM bookmarks WHERE rowid = ? AND user_id = ?',
-    [id, ctx.user.user_id]
-  );
+  const existing = await env.DB.prepare(
+    'SELECT id FROM bookmarks WHERE rowid = ? AND user_id = ?'
+  ).bind(id, ctx.user.user_id).first();
 
   if (!existing) {
     return jsonResponse({ error: 'Bookmark not found' }, 404);
   }
 
-  await d1Run('DELETE FROM bookmarks WHERE rowid = ? AND user_id = ?', [id, ctx.user.user_id]);
+  await env.DB.prepare('DELETE FROM bookmarks WHERE rowid = ? AND user_id = ?').bind(id, ctx.user.user_id).run();
 
   return jsonResponse({ message: 'Bookmark deleted' });
 }
