@@ -98,13 +98,13 @@ export async function onRequest(context) {
     }
 
     // Upsert user
-    const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+    const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
     let userId;
 
     if (existing) {
       userId = existing.id;
       const now = new Date().toISOString();
-      await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
+      await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
     } else {
       const now = new Date().toISOString();
       const result = await d1Run(

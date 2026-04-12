@@ -259,7 +259,7 @@ async function handleSignup(request) {
   }
 
   // Check if user already exists
-  const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
   if (existing) {
     return withCors(jsonResponse({ error: 'Email already registered' }, 409), request);
   }
@@ -376,13 +376,13 @@ async function handleGoogleCallback(request) {
   }
   
   // Upsert user
-  const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
   let userId;
   
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
+    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
   } else {
     const now = new Date().toISOString();
     const result = await d1Run(
@@ -478,13 +478,13 @@ async function handleGoogleAuth(request) {
   }
 
   // Upsert user
-  const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
   let userId;
 
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
+    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
   } else {
     const now = new Date().toISOString();
     const result = await d1Run(
@@ -587,13 +587,13 @@ async function handleGithubAuth(request) {
   const name = githubUser.name || githubUser.login;
 
   // Upsert user
-  const existing = await d1First('SELECT id FROM users WHERE email = ?', [email]);
+  const existing = await d1First('SELECT rowid as id FROM users WHERE email = ?', [email]);
   let userId;
 
   if (existing) {
     userId = existing.id;
     const now = new Date().toISOString();
-    await d1Run('UPDATE users SET updated_at = ? WHERE id = ?', [now, userId]);
+    await d1Run('UPDATE users SET updated_at = ? WHERE rowid = ?', [now, userId]);
   } else {
     const now = new Date().toISOString();
     const result = await d1Run(
@@ -644,7 +644,7 @@ async function handleLogout(request, ctx) {
 // =============================================================================
 
 async function handleGetProfile(request, ctx) {
-  const user = await d1First('SELECT * FROM users WHERE id = ?', [ctx.user.user_id]);
+  const user = await d1First('SELECT * FROM users WHERE rowid = ?', [ctx.user.user_id]);
 
   if (!user) {
     return jsonResponse({ error: 'User not found' }, 404);
@@ -678,10 +678,10 @@ async function handleUpdateProfile(request, ctx) {
   values.push(new Date().toISOString());
   values.push(ctx.user.user_id);
 
-  await d1Run(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, values);
+  await d1Run(`UPDATE users SET ${updates.join(', ')} WHERE rowid = ?`, values);
 
   // Return updated user
-  const user = await d1First('SELECT * FROM users WHERE id = ?', [ctx.user.user_id]);
+  const user = await d1First('SELECT * FROM users WHERE rowid = ?', [ctx.user.user_id]);
 
   return jsonResponse({ user: sanitizeUser(user) });
 }
@@ -745,7 +745,7 @@ async function handleDeleteTradeLog(request, ctx) {
 
   // Ensure the trade log belongs to the current user
   const existing = await d1First(
-    'SELECT id FROM trade_logs WHERE id = ? AND user_id = ?',
+    'SELECT id FROM trade_logs WHERE rowid = ? AND user_id = ?',
     [id, ctx.user.user_id]
   );
 
@@ -753,7 +753,7 @@ async function handleDeleteTradeLog(request, ctx) {
     return jsonResponse({ error: 'Trade log not found' }, 404);
   }
 
-  await d1Run('DELETE FROM trade_logs WHERE id = ? AND user_id = ?', [id, ctx.user.user_id]);
+  await d1Run('DELETE FROM trade_logs WHERE rowid = ? AND user_id = ?', [id, ctx.user.user_id]);
 
   return jsonResponse({ message: 'Trade log deleted' });
 }
@@ -816,7 +816,7 @@ async function handleDeleteBookmark(request, ctx) {
 
   // Ensure the bookmark belongs to the current user
   const existing = await d1First(
-    'SELECT id FROM bookmarks WHERE id = ? AND user_id = ?',
+    'SELECT id FROM bookmarks WHERE rowid = ? AND user_id = ?',
     [id, ctx.user.user_id]
   );
 
@@ -824,7 +824,7 @@ async function handleDeleteBookmark(request, ctx) {
     return jsonResponse({ error: 'Bookmark not found' }, 404);
   }
 
-  await d1Run('DELETE FROM bookmarks WHERE id = ? AND user_id = ?', [id, ctx.user.user_id]);
+  await d1Run('DELETE FROM bookmarks WHERE rowid = ? AND user_id = ?', [id, ctx.user.user_id]);
 
   return jsonResponse({ message: 'Bookmark deleted' });
 }
