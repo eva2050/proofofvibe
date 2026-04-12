@@ -4933,7 +4933,7 @@ function updateAuthUI() {
 }
 
 function handleGoogleLogin() {
-  showToast(t('toast.comingSoon'));
+  loginWithGoogle();
 }
 
 function submitAuth() {
@@ -4954,8 +4954,10 @@ function submitAuth() {
       showToast(t('toast.passwordMismatch') || 'Passwords do not match');
       return;
     }
+    signupWithEmail(email, pass, name);
+  } else {
+    loginWithEmail(email, pass);
   }
-  showToast(t('toast.comingSoon'));
 }
 
 function copyInviteLink() {
@@ -5060,6 +5062,7 @@ function saveAccount() {
   
   // Fetch natal chart data from API
   fetchNatalChart(birthDate, birthTime, birthPlace);
+  syncProfileToCloud();
   showToast(t('toast.accountSaved'));
 }
 
@@ -5155,6 +5158,7 @@ function loadNatalChart() {
   if (bd) document.getElementById('birthDate').value = bd;
   if (bt) document.getElementById('birthTime').value = bt;
   if (bp) document.getElementById('birthPlace').value = bp;
+  loadProfileFromCloud();
 }
 
 // ========== LIBRARY ==========
@@ -6138,6 +6142,7 @@ function escapeHtml(str) {
 function init() {
   generateAstroCards();
   applyI18n();
+  getStoredAuth();
   loadNatalChart();
   // Mobile: hide panel by default
   if (window.innerWidth <= 768) {
@@ -6188,6 +6193,240 @@ window.addEventListener('resize', function() {
 });
 
 init();
+
+// ========== AUTH SYSTEM ==========
+const API_BASE = 'https://vibeclaw-api.eva2050.workers.dev';
+let currentUser = null;
+let authToken = null;
+
+function getStoredAuth() {
+  authToken = localStorage.getItem('vibe_token');
+  if (authToken) {
+    const user = localStorage.getItem('vibe_user');
+    if (user) {
+      try { currentUser = JSON.parse(user); } catch(e) { currentUser = null; }
+    }
+    // Validate token on load
+    validateToken();
+  }
+}
+
+async function validateToken() {
+  if (!authToken) return false;
+  try {
+    const res = await fetch(API_BASE + '/api/auth/me', {
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      currentUser = data.user;
+      localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+      updateUIForAuth();
+      return true;
+    } else {
+      logout();
+      return false;
+    }
+  } catch(e) {
+    return false;
+  }
+}
+
+async function signupWithEmail(email, password, name) {
+  try {
+    const res = await fetch(API_BASE + '/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      authToken = data.token;
+      currentUser = data.user;
+      localStorage.setItem('vibe_token', authToken);
+      localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+      updateUIForAuth();
+      closeLoginModal();
+      showToast(t('toast.accountSaved'));
+      return true;
+    } else {
+      showToast(data.error || 'Signup failed');
+      return false;
+    }
+  } catch(e) {
+    showToast('Network error');
+    return false;
+  }
+}
+
+async function loginWithEmail(email, password) {
+  try {
+    const res = await fetch(API_BASE + '/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      authToken = data.token;
+      currentUser = data.user;
+      localStorage.setItem('vibe_token', authToken);
+      localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+      updateUIForAuth();
+      closeLoginModal();
+      showToast(t('toast.accountSaved'));
+      return true;
+    } else {
+      showToast(data.error || 'Login failed');
+      return false;
+    }
+  } catch(e) {
+    showToast('Network error');
+    return false;
+  }
+}
+
+async function loginWithGoogle() {
+  // Use Google's popup-based OAuth
+  try {
+    const googleClientId = ''; // Will be configured
+    if (!googleClientId) {
+      showToast('Google login coming soon');
+      return;
+    }
+    // Google Identity Services
+    google.accounts.id2.initialize({
+      client_id: googleClientId,
+      callback: async (response) => {
+        const res = await fetch(API_BASE + '/api/auth/google', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: response.credential })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          authToken = data.token;
+          currentUser = data.user;
+          localStorage.setItem('vibe_token', authToken);
+          localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+          updateUIForAuth();
+          closeLoginModal();
+        }
+      }
+    });
+    google.accounts.id2.prompt();
+  } catch(e) {
+    showToast('Google login coming soon');
+  }
+}
+
+function logout() {
+  authToken = null;
+  currentUser = null;
+  localStorage.removeItem('vibe_token');
+  localStorage.removeItem('vibe_user');
+  updateUIForAuth();
+  showToast('Logged out');
+}
+
+function updateUIForAuth() {
+  const signInBtn = document.getElementById('signInBtn');
+  const userAvatar = document.getElementById('userAvatar');
+  if (currentUser) {
+    if (signInBtn) signInBtn.style.display = 'none';
+    if (userAvatar) {
+      userAvatar.style.display = 'flex';
+      userAvatar.textContent = (currentUser.name || currentUser.email || 'U').charAt(0).toUpperCase();
+    }
+  } else {
+    if (signInBtn) signInBtn.style.display = '';
+    if (userAvatar) userAvatar.style.display = 'none';
+  }
+}
+
+function closeLoginModal() {
+  const modal = document.getElementById('loginModal');
+  if (modal) modal.style.display = 'none';
+}
+
+function openLoginModal() {
+  const modal = document.getElementById('loginModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+// Cloud sync functions
+async function syncProfileToCloud() {
+  if (!authToken || !currentUser) return;
+  const birthDate = document.getElementById('birthDate')?.value;
+  const birthTime = document.getElementById('birthTime')?.value;
+  const birthPlace = document.getElementById('birthPlace')?.value;
+  const natalChart = localStorage.getItem('vibe_natalChart');
+  
+  try {
+    await fetch(API_BASE + '/api/user/profile', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authToken
+      },
+      body: JSON.stringify({
+        birth_date: birthDate,
+        birth_time: birthTime,
+        birth_place: birthPlace,
+        natal_chart: natalChart,
+        language: currentLang,
+        theme: document.documentElement.getAttribute('data-theme') || 'dark'
+      })
+    });
+  } catch(e) {}
+}
+
+async function loadProfileFromCloud() {
+  if (!authToken) return;
+  try {
+    const res = await fetch(API_BASE + '/api/user/profile', {
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const p = data.user;
+      if (p.birth_date) document.getElementById('birthDate').value = p.birth_date;
+      if (p.birth_time) document.getElementById('birthTime').value = p.birth_time;
+      if (p.birth_place) document.getElementById('birthPlace').value = p.birth_place;
+      if (p.natal_chart) {
+        natalChartData = JSON.parse(p.natal_chart);
+        localStorage.setItem('vibe_natalChart', p.natal_chart);
+      }
+      if (p.language && p.language !== currentLang) switchLang(p.language);
+      if (p.theme) setTheme(p.theme);
+    }
+  } catch(e) {}
+}
+
+async function saveTradeLogToCloud(sentiment, symbol, notes, amount) {
+  if (!authToken) return;
+  try {
+    await fetch(API_BASE + '/api/trade-logs', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + authToken
+      },
+      body: JSON.stringify({ sentiment, symbol, notes, amount, date: new Date().toISOString() })
+    });
+  } catch(e) {}
+}
+
+async function loadTradeLogsFromCloud() {
+  if (!authToken) return [];
+  try {
+    const res = await fetch(API_BASE + '/api/trade-logs', {
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+    if (res.ok) return await res.json();
+  } catch(e) {}
+  return [];
+}
 </script>
 </body>
 </html>

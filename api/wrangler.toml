@@ -1,0 +1,15 @@
+name = "vibeclaw-api"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "vibeclaw-db"
+database_id = "1f70c071-3549-45aa-b4a1-db998ba0b8e3"
+
+[vars]
+GOOGLE_CLIENT_ID = ""
+
+[secrets]
+GITHUB_CLIENT_ID = ""
+GITHUB_CLIENT_SECRET = ""
