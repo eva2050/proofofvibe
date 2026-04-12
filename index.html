@@ -4929,7 +4929,8 @@ function updateAuthUI() {
 }
 
 function handleGoogleLogin() {
-  loginWithGoogle();
+  // Simple redirect to OAuth2 flow
+  window.location.href = API_BASE + '/api/auth/google/redirect';
 }
 
 function submitAuth() {
@@ -6191,6 +6192,37 @@ let currentUser = null;
 let authToken = null;
 
 function getStoredAuth() {
+  // Check for OAuth callback params first
+  const urlParams = new URLSearchParams(window.location.search);
+  const authError = urlParams.get('auth_error');
+  const authTokenParam = urlParams.get('auth_token');
+  
+  if (authError) {
+    showToast('Google login failed: ' + authError);
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+    return;
+  }
+  
+  if (authTokenParam) {
+    const userId = urlParams.get('user_id');
+    const userEmail = urlParams.get('user_email');
+    const userName = urlParams.get('user_name');
+    
+    authToken = authTokenParam;
+    currentUser = { id: userId, email: userEmail, name: userName };
+    
+    localStorage.setItem('vibe_token', authToken);
+    localStorage.setItem('vibe_user', JSON.stringify(currentUser));
+    
+    updateUIForAuth();
+    showToast(t('toast.accountSaved') || 'Welcome!');
+    
+    // Clean URL
+    window.history.replaceState({}, '', window.location.pathname);
+    return;
+  }
+  
   authToken = localStorage.getItem('vibe_token');
   if (authToken) {
     const user = localStorage.getItem('vibe_user');
