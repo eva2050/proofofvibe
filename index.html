@@ -3179,6 +3179,10 @@ html[lang="ko"] {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         <span data-i18n="nav.pulse">Pulse Monitor</span>
       </div>
+      <div class="nav-item" data-nav="transits" onclick="switchNav('transits')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span data-i18n="nav.transits">Global Transits</span>
+      </div>
       <div class="nav-section-label" data-i18n="nav.personal">PERSONAL</div>
       <div class="nav-item" data-nav="dna" onclick="switchNav('dna')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
@@ -4946,7 +4950,8 @@ const navTitles = {
   dna: 'nav.dna',
   calendar: 'nav.calendar',
   log: 'nav.log',
-  pulse: 'nav.pulse'
+  pulse: 'nav.pulse',
+  transits: 'nav.transits'
 };
 
 function switchNav(nav) {
@@ -4966,6 +4971,7 @@ function switchNav(nav) {
     calendar: () => addCalendarCard(),
     log: () => addTradingLogPrompt(),
     pulse: () => addPulseCard(),
+    transits: () => { /* placeholder */ },
     watchlist: () => addWatchlistCard()
   };
   if (actions[nav]) actions[nav]();
