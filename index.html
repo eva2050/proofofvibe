@@ -968,21 +968,21 @@ html[data-theme="dark"] .scanner-card {
 
 /* ========== RESULT CARD (Module Cards) ========== */
 .result-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
   width: 100%;
   max-width: 100%;
-  transition: background var(--transition-speed), border-color var(--transition-speed);
+  transition: none;
 }
 
 html[data-theme="light"] .result-card {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05), 0 0 1px rgba(0,0,0,0.06);
+  box-shadow: none;
 }
 
 html[data-theme="dark"] .result-card {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.25), 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: none;
 }
 
 /* Calendar + Dashboard layout */
