@@ -7098,6 +7098,7 @@ function addDNACard() {
             '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
             '<div class="stars" style="font-size:16px;letter-spacing:1px;">' + starsHTML + '</div>' +
             '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">财富评级: ' + report.wealthRating + '/6</div>' +
+            '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
             '<div class="dna-share-row-inline">' +
               '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
@@ -7106,7 +7107,6 @@ function addDNACard() {
             '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
         '<div class="dna-traits">' + traitsHTML + '</div>' +
       '</div>' +
 
