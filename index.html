@@ -3179,10 +3179,6 @@ html[lang="ko"] {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         <span data-i18n="nav.pulse">Pulse Monitor</span>
       </div>
-      <div class="nav-item" data-nav="transits" onclick="switchNav('transits')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        <span data-i18n="nav.transits">Global Transits</span>
-      </div>
       <div class="nav-section-label" data-i18n="nav.personal">PERSONAL</div>
       <div class="nav-item" data-nav="dna" onclick="switchNav('dna')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
@@ -4950,8 +4946,7 @@ const navTitles = {
   dna: 'nav.dna',
   calendar: 'nav.calendar',
   log: 'nav.log',
-  pulse: 'nav.pulse',
-  transits: 'nav.transits'
+  pulse: 'nav.pulse'
 };
 
 function switchNav(nav) {
@@ -4971,7 +4966,6 @@ function switchNav(nav) {
     calendar: () => addCalendarCard(),
     log: () => addTradingLogPrompt(),
     pulse: () => addPulseCard(),
-    transits: () => addTransitsCard(),
     watchlist: () => addWatchlistCard()
   };
   if (actions[nav]) actions[nav]();
@@ -5677,12 +5671,12 @@ function handleSearch() {
       addDNACard();
     } else if (lowerQuery === 'trading log' || lowerQuery === '交易日志' || lowerQuery === '交易日誌' || lowerQuery === 'トレードログ' || lowerQuery === '트레이딩 로그') {
       addTradingLogPrompt();
-    } else if (lowerQuery === 'market pulse' || lowerQuery === 'pulse monitor' || lowerQuery === '市场脉搏' || lowerQuery === 'パルスモニター' || lowerQuery === '시장 펄스') {
+    } else if (lowerQuery === 'market pulse' || lowerQuery === 'pulse monitor' || lowerQuery === '市场脉搏' || lowerQuery === 'パルスモニター' || lowerQuery === '시장 펄스' || lowerQuery === '星象水温' || lowerQuery === '宏观天象') {
       if (!deductCredits(5, 'Market Pulse')) return;
       addPulseCard();
-    } else if (lowerQuery === 'global transits' || lowerQuery === '全球行运' || lowerQuery === 'グローバルトランジット' || lowerQuery === '글로벌 트랜짓') {
-      if (!deductCredits(5, 'Global Transits')) return;
-      addTransitsCard();
+    } else if (lowerQuery === 'global transits' || lowerQuery === '全球行运' || lowerQuery === 'グローバルトランジット' || lowerQuery === '글로벌 트랜짓' || lowerQuery === '宏观天象') {
+      if (!deductCredits(5, 'Market Pulse')) return;
+      addPulseCard();
     } else if (lowerQuery.match(/lost|止损|郁闷|最悪|힘들|亏损|損失|損切り|손실/)) {
       if (!deductCredits(5, 'Log Entry')) return;
       addTradingLogCard('negative');
@@ -7087,14 +7081,53 @@ function addPulseCard() {
   const msg = document.createElement('div');
   msg.className = 'msg ai';
 
-  // Market Tension Index
+  // === Market Tension Index (always visible) ===
   const tension = 67;
   const tensionColor = tension > 70 ? '#EF4444' : tension > 40 ? '#F59E0B' : '#22C55E';
   const tensionLabel = tension > 70 ? t('mod.highPressure') : tension > 40 ? t('mod.moderateTension') : t('mod.lowPressure');
   const tensionCirc = 2 * Math.PI * 40;
   const tensionOffset = tensionCirc - (tension / 100) * tensionCirc;
 
-  // Planetary Stations
+  const tensionHTML = '<div style="display:flex;align-items:center;gap:16px;padding:14px;border-radius:14px;background:var(--hover-bg);margin-bottom:16px;">' +
+    '<div style="position:relative;width:56px;height:56px;flex-shrink:0;">' +
+      '<svg width="56" height="56" viewBox="0 0 56 56">' +
+        '<circle cx="28" cy="28" r="22" fill="none" stroke="var(--border)" stroke-width="4"/>' +
+        '<circle cx="28" cy="28" r="22" fill="none" stroke="' + tensionColor + '" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + tensionCirc + '" stroke-dashoffset="' + tensionOffset + '" style="transition:stroke-dashoffset 1s ease" transform="rotate(-90 28 28)"/>' +
+      '</svg>' +
+      '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:' + tensionColor + ';">' + tension + '</div>' +
+    '</div>' +
+    '<div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--text-primary);">' + t('mod.marketTension') + '</div>' +
+      '<div style="font-size:12px;color:' + tensionColor + ';font-weight:600;">' + tensionLabel + '</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">' + t('mod.tensionDesc') + '</div>' +
+    '</div>' +
+  '</div>';
+
+  // === Macro Cycles (collapsible) ===
+  const cycles = [
+    { name: t('mod.saturnNeptune'), phase: t('mod.waningSquare'), color: '#EF4444', icon: '♄♆', desc: t('mod.saturnNeptuneDesc'), impact: t('mod.impactHigh') },
+    { name: t('mod.jupiterUranus'), phase: t('mod.conjunction'), color: '#22C55E', icon: '♃♅', desc: t('mod.jupiterUranusDesc'), impact: t('mod.impactHigh') },
+    { name: t('mod.plutoAquarius'), phase: t('mod.entryPhase'), color: '#8B5CF6', icon: '♇♒', desc: t('mod.plutoAquariusDesc'), impact: t('mod.impactTransformative') },
+  ];
+
+  let cyclesContentHTML = '';
+  cycles.forEach(c => {
+    cyclesContentHTML += '<div style="padding:12px;border-radius:12px;border:1px solid var(--border);margin-bottom:8px;">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
+        '<span style="font-size:16px;">' + c.icon + '</span>' +
+        '<span style="font-size:13px;font-weight:700;color:var(--text-primary);flex:1;">' + c.name + '</span>' +
+        '<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:' + c.color + '15;color:' + c.color + ';">' + c.phase.toUpperCase() + '</span>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">' + c.desc + '</div>' +
+    '</div>';
+  });
+
+  const cyclesSection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.cycleIdentification') + '</span></div>' +
+    '<div class="dna-collapsible-body">' + cyclesContentHTML + '</div>' +
+  '</div>';
+
+  // === Planetary Stations (collapsible) ===
   const stations = [
     { planet: t('mod.mercury'), status: t('mod.retrograde'), icon: '☿', color: '#EF4444', desc: t('mod.mercuryRetroDesc') },
     { planet: t('mod.venus'), status: t('mod.direct'), icon: '♀', color: '#22C55E', desc: t('mod.venusDirectDesc') },
@@ -7117,93 +7150,12 @@ function addPulseCard() {
     '</div>';
   });
 
-  // Elemental Balance
-  const elements = [
-    { name: t('mod.fire'), symbol: '🔥', pct: 30, color: '#EF4444', desc: t('mod.fireDesc') },
-    { name: t('mod.earth'), symbol: '🌍', pct: 25, color: '#22C55E', desc: t('mod.earthDesc') },
-    { name: t('mod.air'), symbol: '💨', pct: 25, color: '#3B82F6', desc: t('mod.airDesc') },
-    { name: t('mod.water'), symbol: '🌊', pct: 20, color: '#8B5CF6', desc: t('mod.waterDesc') },
-  ];
-
-  let elementsHTML = '<div style="display:flex;gap:4px;height:10px;border-radius:5px;overflow:hidden;margin-bottom:8px;">';
-  elements.forEach(e => {
-    elementsHTML += '<div style="width:' + e.pct + '%;background:' + e.color + ';border-radius:2px;" title="' + e.name + ': ' + e.pct + '%"></div>';
-  });
-  elementsHTML += '</div>';
-  elementsHTML += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">';
-  elements.forEach(e => {
-    elementsHTML += '<div style="display:flex;align-items:center;gap:6px;font-size:11px;">' +
-      '<span>' + e.symbol + '</span>' +
-      '<span style="font-weight:600;color:var(--text-primary);">' + e.name + '</span>' +
-      '<span style="color:var(--text-secondary);">' + e.pct + '%</span>' +
-    '</div>';
-  });
-  elementsHTML += '</div>';
-
-  msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
-    '<div class="result-card">' +
-      '<div style="padding:16px;">' +
-        // Market Tension Index
-        '<div style="display:flex;align-items:center;gap:16px;padding:14px;border-radius:14px;background:var(--hover-bg);margin-bottom:16px;">' +
-          '<div style="position:relative;width:56px;height:56px;flex-shrink:0;">' +
-            '<svg width="56" height="56" viewBox="0 0 56 56">' +
-              '<circle cx="28" cy="28" r="22" fill="none" stroke="var(--border)" stroke-width="4"/>' +
-              '<circle cx="28" cy="28" r="22" fill="none" stroke="' + tensionColor + '" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + tensionCirc + '" stroke-dashoffset="' + tensionOffset + '" style="transition:stroke-dashoffset 1s ease" transform="rotate(-90 28 28)"/>' +
-            '</svg>' +
-            '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:' + tensionColor + ';">' + tension + '</div>' +
-          '</div>' +
-          '<div>' +
-            '<div style="font-size:14px;font-weight:700;color:var(--text-primary);">' + t('mod.marketTension') + '</div>' +
-            '<div style="font-size:12px;color:' + tensionColor + ';font-weight:600;">' + tensionLabel + '</div>' +
-            '<div style="font-size:11px;color:var(--text-secondary);margin-top:2px;">' + t('mod.tensionDesc') + '</div>' +
-          '</div>' +
-        '</div>' +
-        // Planetary Stations
-        '<div style="margin-bottom:16px;">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-secondary);margin-bottom:8px;">' + t('mod.planetaryStations') + '</div>' +
-          '<div style="display:flex;flex-direction:column;gap:6px;">' + stationsHTML + '</div>' +
-        '</div>' +
-        // Elemental Balance
-        '<div>' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-secondary);margin-bottom:8px;">' + t('mod.elementalBalance') + '</div>' +
-          '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);">' +
-            elementsHTML +
-            '<div style="font-size:11px;color:var(--text-secondary);margin-top:8px;line-height:1.4;">' + t('mod.fireDominant') + '</div>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
+  const stationsSection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.planetaryStations') + '</span></div>' +
+    '<div class="dna-collapsible-body"><div style="display:flex;flex-direction:column;gap:6px;">' + stationsHTML + '</div></div>' +
   '</div>';
 
-  container.appendChild(msg);
-  scrollChatTop();
-}
-
-function addTransitsCard() {
-  const container = document.getElementById('chatMessages');
-  const msg = document.createElement('div');
-  msg.className = 'msg ai';
-
-  // Cycle Identification
-  const cycles = [
-    { name: t('mod.saturnNeptune'), phase: t('mod.waningSquare'), color: '#EF4444', icon: '♄♆', desc: t('mod.saturnNeptuneDesc'), impact: t('mod.impactHigh') },
-    { name: t('mod.jupiterUranus'), phase: t('mod.conjunction'), color: '#22C55E', icon: '♃♅', desc: t('mod.jupiterUranusDesc'), impact: t('mod.impactHigh') },
-    { name: t('mod.plutoAquarius'), phase: t('mod.entryPhase'), color: '#8B5CF6', icon: '♇♒', desc: t('mod.plutoAquariusDesc'), impact: t('mod.impactTransformative') },
-  ];
-
-  let cyclesHTML = '';
-  cycles.forEach(c => {
-    cyclesHTML += '<div style="padding:12px;border-radius:12px;border:1px solid var(--border);margin-bottom:8px;">' +
-      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">' +
-        '<span style="font-size:16px;">' + c.icon + '</span>' +
-        '<span style="font-size:13px;font-weight:700;color:var(--text-primary);flex:1;">' + c.name + '</span>' +
-        '<span style="font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:' + c.color + '15;color:' + c.color + ';">' + c.phase.toUpperCase() + '</span>' +
-      '</div>' +
-      '<div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">' + c.desc + '</div>' +
-    '</div>';
-  });
-
-  // Asset Class Ratings
+  // === Asset Class Ratings (collapsible) ===
   const assets = [
     { name: t('mod.crypto'), score: 85, color: '#22C55E', reason: t('mod.cryptoReason') },
     { name: t('mod.aiTech'), score: 82, color: '#22C55E', reason: t('mod.aiTechReason') },
@@ -7224,7 +7176,12 @@ function addTransitsCard() {
     '</div>';
   });
 
-  // Risk Milestones (timeline)
+  const assetsSection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.assetClassRating') + '</span></div>' +
+    '<div class="dna-collapsible-body"><div style="padding:12px;border-radius:12px;background:var(--hover-bg);">' + assetsHTML + '</div></div>' +
+  '</div>';
+
+  // === Risk Milestones (collapsible) ===
   const milestones = [
     { date: 'Apr 14', event: 'Jupiter Station Direct', risk: 'medium', icon: '♃' },
     { date: 'Apr 20', event: 'Sun enters Taurus', risk: 'low', icon: '☉' },
@@ -7248,35 +7205,62 @@ function addTransitsCard() {
   });
   milestonesHTML += '</div>';
 
-  // Macro Strategy
+  const milestonesSection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.riskMilestones') + '</span></div>' +
+    '<div class="dna-collapsible-body">' + milestonesHTML + '</div>' +
+  '</div>';
+
+  // === Elemental Balance (collapsible) ===
+  const elements = [
+    { name: t('mod.fire'), symbol: '🔥', pct: 30, color: '#EF4444', desc: t('mod.fireDesc') },
+    { name: t('mod.earth'), symbol: '🌍', pct: 25, color: '#22C55E', desc: t('mod.earthDesc') },
+    { name: t('mod.air'), symbol: '💨', pct: 25, color: '#3B82F6', desc: t('mod.airDesc') },
+    { name: t('mod.water'), symbol: '🌊', pct: 20, color: '#8B5CF6', desc: t('mod.waterDesc') },
+  ];
+
+  let elementsHTML = '<div style="display:flex;gap:4px;height:10px;border-radius:5px;overflow:hidden;margin-bottom:8px;">';
+  elements.forEach(e => {
+    elementsHTML += '<div style="width:' + e.pct + '%;background:' + e.color + ';border-radius:2px;" title="' + e.name + ': ' + e.pct + '%"></div>';
+  });
+  elementsHTML += '</div>';
+  elementsHTML += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">';
+  elements.forEach(e => {
+    elementsHTML += '<div style="display:flex;align-items:center;gap:6px;font-size:11px;">' +
+      '<span>' + e.symbol + '</span>' +
+      '<span style="font-weight:600;color:var(--text-primary);">' + e.name + '</span>' +
+      '<span style="color:var(--text-secondary);">' + e.pct + '%</span>' +
+    '</div>';
+  });
+  elementsHTML += '</div>';
+
+  const elementsSection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.elementalBalance') + '</span></div>' +
+    '<div class="dna-collapsible-body"><div style="padding:12px;border-radius:12px;background:var(--hover-bg);">' +
+      elementsHTML +
+      '<div style="font-size:11px;color:var(--text-secondary);margin-top:8px;line-height:1.4;">' + t('mod.fireDominant') + '</div>' +
+    '</div></div>' +
+  '</div>';
+
+  // === Macro Strategy (collapsible) ===
   const strategy = t('mod.macroStrategyText');
 
-  msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
-    '<div class="result-card">' +
-      '<div style="padding:16px;">' +
-        // Cycles
-        '<div style="margin-bottom:16px;">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-secondary);margin-bottom:8px;">' + t('mod.cycleIdentification') + '</div>' +
-          cyclesHTML +
-        '</div>' +
-        // Asset Class Ratings
-        '<div style="margin-bottom:16px;">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-secondary);margin-bottom:8px;">' + t('mod.assetClassRating') + '</div>' +
-          '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);">' + assetsHTML + '</div>' +
-        '</div>' +
-        // Risk Milestones
-        '<div style="margin-bottom:16px;">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1.2px;color:var(--text-secondary);margin-bottom:8px;">' + t('mod.riskMilestones') + '</div>' +
-          milestonesHTML +
-        '</div>' +
-        // Macro Strategy
-        '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);border:1px solid var(--border);">' +
-          '<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-secondary);margin-bottom:6px;">' + t('mod.macroStrategy') + '</div>' +
-          '<div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">' + strategy + '</div>' +
-        '</div>' +
-      '</div>' +
-    '</div>' +
+  const strategySection = '<div class="dna-collapsible">' +
+    '<div class="dna-collapsible-header"><span class="dna-collapsible-title">' + t('mod.macroStrategy') + '</span></div>' +
+    '<div class="dna-collapsible-body"><div style="padding:12px;border-radius:12px;background:var(--hover-bg);border:1px solid var(--border);">' +
+      '<div style="font-size:12px;color:var(--text-secondary);line-height:1.6;">' + strategy + '</div>' +
+    '</div></div>' +
   '</div>';
+
+  msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
+    '<div class="result-card"><div style="padding:16px;">' +
+    tensionHTML +
+    cyclesSection +
+    stationsSection +
+    assetsSection +
+    milestonesSection +
+    elementsSection +
+    strategySection +
+    '</div></div></div>';
 
   container.appendChild(msg);
   scrollChatTop();
