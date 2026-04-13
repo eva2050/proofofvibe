@@ -1189,6 +1189,13 @@ html[data-theme="dark"] .dna-card {
   flex-shrink: 0;
 }
 
+.dna-archetype-emoji {
+  font-size: 56px;
+  line-height: 1;
+  text-align: center;
+  flex-shrink: 0;
+}
+
 .dna-info { flex: 1; }
 
 .dna-info .archetype {
@@ -7086,13 +7093,22 @@ function addDNACard() {
   // Build share card HTML
   var shareCardId = 'dnaShareCard_' + Date.now();
 
+  // Archetype emoji
+  var archetypeEmojis = {
+    '量子赌徒': '🎲', '冷酷建筑师': '🏗️', '贪婪杠杆': '💰', '爆仓诗人': '💫',
+    '钻石金库': '💎', '风险审计师': '🛡️', '禅意配置者': '🧘', '闪崩': '⚡',
+    '精密猎手': '🎯', '潮汐骑手': '🌊', '市场旁观者': '👁️', '资本放大器': '🚀',
+    '波动率炼金术士': '⚗️'
+  };
+  var archEmoji = archetypeEmojis[report.archetype] || '🔮';
+
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="dna-card dna-report-card">' +
 
       // === SECTION 1: Identity Label + Traits ===
       '<div class="dna-identity-row">' +
         '<div class="dna-report-header">' +
-          '<canvas class="dna-radar-canvas" id="dnaRadarCanvas" width="140" height="140"></canvas>' +
+          '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
           '<div class="dna-info">' +
             '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
             '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
