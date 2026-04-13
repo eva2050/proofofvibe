@@ -1276,6 +1276,7 @@ html[data-theme="dark"] .dna-card {
 .dna-whale-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); background: var(--input-bg); padding: 3px 8px; border-radius: 4px; }
 .dna-whale-name { font-size: 15px; font-weight: 700; color: var(--accent); }
 .dna-whale-desc { font-size: 13px; color: var(--text-secondary); }
+.dna-whale-bio { font-size: 13.5px; color: var(--text-primary); line-height: 1.7; padding: 10px 0; }
 .dna-spec-section { margin-bottom: 18px; }
 .dna-section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 6px; }
 .dna-spec-item { font-size: 14px; color: var(--text-primary); line-height: 1.5; padding: 4px 0; padding-left: 20px; position: relative; }
@@ -6113,14 +6114,30 @@ function _generateVerdict(chart, traits, archetype) {
 
 function _matchWhale(chart, traits, patterns) {
   var whales = [
-    { name: '沃伦·巴菲特', pattern: '价值集中 + 极致耐心', match: false },
-    { name: '乔治·索罗斯', pattern: '宏观论点 + 危机套利', match: false },
-    { name: '瑞·达利欧', pattern: '系统性风险平价 + 极度透明', match: false },
-    { name: '吉姆·西蒙斯', pattern: '量化模式识别', match: false },
-    { name: '凯瑟琳·伍德', pattern: '颠覆性创新 + 高信念押注', match: false },
-    { name: '卡尔·伊坎', pattern: '激进主义对抗 + 强制价值提取', match: false },
-    { name: '大卫·泰珀', pattern: '困境资产 + 逆向时机', match: false },
-    { name: '斯坦利·德鲁肯米勒', pattern: '宏观方向性 + 激进仓位管理', match: false }
+    { name: '沃伦·巴菲特', pattern: '价值集中 + 极致耐心', match: false,
+      bio: '伯克希尔·哈撒韦创始人，被誉为"奥马哈先知"。以长期价值投资闻名，持仓周期通常以十年计。核心理念：在别人贪婪时恐惧，在别人恐惧时贪婪。',
+      style: '寻找被市场低估的优质企业，以安全边际为护城河，极度集中持仓，忽略短期波动。' },
+    { name: '乔治·索罗斯', pattern: '宏观论点 + 危机套利', match: false,
+      bio: '量子基金创始人，"打垮英格兰银行的人"。以宏观趋势交易和反身性理论闻名。1992年做空英镑获利10亿美元。',
+      style: '基于宏观经济失衡建立大规模方向性仓位，在市场拐点附近激进加仓，善于利用杠杆放大收益。' },
+    { name: '瑞·达利欧', pattern: '系统性风险平价 + 极度透明', match: false,
+      bio: '桥水基金创始人，管理全球最大的对冲基金。以"原则"驱动的系统化投资框架闻名。',
+      style: '将投资分解为可量化的因子，通过风险平价分散配置，极度重视分散化和压力测试。' },
+    { name: '吉姆·西蒙斯', pattern: '量化模式识别', match: false,
+      bio: '文艺复兴科技创始人，大奖章基金管理者。数学家出身，以量化交易创造了史上最高的持续回报率。',
+      style: '纯粹依赖数学模型和算法交易，寻找市场中的微观统计异常，高频交易积少成多。' },
+    { name: '凯瑟琳·伍德', pattern: '颠覆性创新 + 高信念押注', match: false,
+      bio: 'ARK Invest创始人，以投资颠覆性科技创新闻名。特斯拉、比特币的早期坚定看多者。',
+      style: '聚焦于颠覆性技术趋势，高集中度押注，愿意承受高波动以换取超额回报。' },
+    { name: '卡尔·伊坎', pattern: '激进主义对抗 + 强制价值提取', match: false,
+      bio: '伊坎企业的创始人，华尔街最著名的激进投资者。以收购大量股份后逼迫公司变革闻名。',
+      style: '寻找被低估且管理层低效的公司，通过大量持股获取话语权，强制推动股东价值释放。' },
+    { name: '大卫·泰珀', pattern: '困境资产 + 逆向时机', match: false,
+      bio: '阿帕卢萨管理公司创始人，以在市场恐慌时大胆买入困境资产闻名。2009年金融危机期间重仓银行股获利丰厚。',
+      style: '在极端恐惧时刻逆向买入被抛售的资产，善于评估困境企业的真实价值与市场定价之间的差距。' },
+    { name: '斯坦利·德鲁肯米勒', pattern: '宏观方向性 + 激进仓位管理', match: false,
+      bio: '杜肯资本管理创始人，索罗斯的得力搭档。以宏观方向性交易和激进的仓位管理闻名，善于在趋势早期重仓介入。',
+      style: '基于宏观经济判断建立方向性仓位，趋势确认后激进加仓，止损果断，追求非对称风险收益比。' }
   ];
 
   if (traits.stamina.value >= 75 && traits.greed.value <= 60) whales[0].match = true;
@@ -6134,7 +6151,6 @@ function _matchWhale(chart, traits, patterns) {
 
   var matched = whales.filter(function(w) { return w.match; });
   if (matched.length === 0) {
-    // Default match based on dominant trait
     var dominant = Object.keys(traits).reduce(function(a, b) { return traits[a].value > traits[b].value ? a : b; });
     if (dominant === 'risk') return whales[7];
     if (dominant === 'greed') return whales[4];
@@ -6142,7 +6158,62 @@ function _matchWhale(chart, traits, patterns) {
     if (dominant === 'intuition') return whales[1];
     return whales[0];
   }
-  return matched[0];
+
+  var whale = matched[0];
+
+  // Generate chart-synced analysis
+  var sunSign = _getPlanetSign(chart, 'Sun') || 'Unknown';
+  var moonSign = _getPlanetSign(chart, 'Moon') || 'Unknown';
+  var marSign = _getPlanetSign(chart, 'Mars') || 'Unknown';
+  var merSign = _getPlanetSign(chart, 'Mercury') || 'Unknown';
+  var jupSign = _getPlanetSign(chart, 'Jupiter') || 'Unknown';
+  var satSign = _getPlanetSign(chart, 'Saturn') || 'Unknown';
+
+  var signCN = {
+    'Aries':'白羊座','Taurus':'金牛座','Gemini':'双子座','Cancer':'巨蟹座',
+    'Leo':'狮子座','Virgo':'处女座','Libra':'天秤座','Scorpio':'天蝎座',
+    'Sagittarius':'射手座','Capricorn':'摩羯座','Aquarius':'水瓶座','Pisces':'双鱼座'
+  };
+
+  var syncAnalysis = '你的太阳落入' + (signCN[sunSign] || sunSign) + '，赋予你' +
+    (sunSign === 'Taurus' || sunSign === 'Capricorn' ? '与生俱来的耐心和纪律性' :
+     sunSign === 'Aries' || sunSign === 'Leo' ? '强烈的自信和行动力' :
+     sunSign === 'Gemini' || sunSign === 'Aquarius' ? '独立思考和快速适应能力' :
+     sunSign === 'Scorpio' || sunSign === 'Pisces' ? '敏锐的直觉和对深层规律的洞察' :
+     sunSign === 'Cancer' ? '对安全感的敏感和对周期的直觉把握' :
+     sunSign === 'Libra' ? '对平衡和时机的天然感知' :
+     sunSign === 'Sagittarius' ? '宏观视野和对大趋势的捕捉能力' :
+     '独特的市场视角') + '，这与' + whale.name + '的交易哲学高度契合。';
+
+  syncAnalysis += '月亮在' + (signCN[moonSign] || moonSign) +
+    (moonSign === 'Taurus' || moonSign === 'Capricorn' ? '让你在市场恐慌时保持冷静，这是价值投资者的核心素质' :
+     moonSign === 'Aries' ? '赋予你快速的情绪恢复力，适合高频率的交易节奏' :
+     moonSign === 'Scorpio' ? '带来强烈的直觉和洞察力，你能感知到市场表面之下的暗流' :
+     moonSign === 'Gemini' ? '让你能同时处理多个市场信号，信息吞吐量惊人' :
+     moonSign === 'Cancer' ? '使你对市场情绪变化极其敏感，善于捕捉群体心理的转折点' :
+     moonSign === 'Leo' ? '赋予你强烈的信念感，敢于在共识相反的方向建立仓位' :
+     moonSign === 'Virgo' ? '让你对细节极度敏感，善于发现市场定价中的微小错误' :
+     moonSign === 'Libra' ? '让你天然追求风险收益的平衡，善于构建对冲组合' :
+     moonSign === 'Sagittarius' ? '带来乐观的风险偏好和对大机会的敏锐嗅觉' :
+     moonSign === 'Aquarius' ? '让你能跳出群体思维，看到别人忽略的非共识机会' :
+     moonSign === 'Pisces' ? '赋予你超强的共情能力，你能感受到市场参与者的集体情绪' :
+     '影响着你的情绪交易模式') + '。';
+
+  syncAnalysis += '火星在' + (signCN[marSign] || marSign) +
+    (marSign === 'Aries' ? '意味着你的执行力极强，看到机会就会果断出手' :
+     marSign === 'Taurus' ? '说明你的执行节奏偏慢但稳健，一旦建仓就会坚定持有' :
+     marSign === 'Scorpio' ? '赋予你精准的时机把握能力和战略性的进攻风格' :
+     marSign === 'Capricorn' ? '意味着你的交易高度纪律化，严格遵循交易系统' :
+     marSign === 'Gemini' ? '让你善于快速切换交易策略，适应不同市场环境' :
+     '塑造了你的执行风格') + '。';
+
+  if (patterns.length > 0) {
+    syncAnalysis += '你的星盘中检测到' + patterns.length + '个财富格局，其中' +
+      patterns[0].name + '尤为突出，进一步强化了你与' + whale.name + '模式的共振。';
+  }
+
+  whale.syncAnalysis = syncAnalysis;
+  return whale;
 }
 
 function _generateSpecTypes(chart, traits, patterns) {
@@ -6626,10 +6697,20 @@ function addDNACard() {
 
       '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
 
-      '<div class="dna-whale-row">' +
-        '<span class="dna-whale-label">鲸鱼模式</span>' +
-        '<span class="dna-whale-name">' + escapeHtml(report.whale.name) + '</span>' +
-        '<span class="dna-whale-desc">' + escapeHtml(report.whale.pattern) + '</span>' +
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">鲸鱼模式：' + escapeHtml(report.whale.name) + '</span>' +
+          '<span class="dna-collapsible-count">' + escapeHtml(report.whale.pattern) + '</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          '<div class="dna-whale-bio">' + escapeHtml(report.whale.bio) + '</div>' +
+          '<div class="dna-cog-divider"></div>' +
+          '<div class="dna-cog-title">交易风格</div>' +
+          '<div class="dna-cog-analysis">' + escapeHtml(report.whale.style) + '</div>' +
+          '<div class="dna-cog-divider"></div>' +
+          '<div class="dna-cog-title">星盘共振分析</div>' +
+          '<div class="dna-cog-analysis">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
+        '</div>' +
       '</div>' +
 
       '<div class="dna-spec-section">' +
