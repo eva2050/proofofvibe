@@ -3597,6 +3597,44 @@ html[lang="ja"] {
 html[lang="ko"] {
   font-family: 'Noto Sans KR', 'DM Sans', sans-serif;
 }
+
+/* ========== MOD DAILY ACTION ========== */
+.mod-daily-action {
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  margin-top: 14px;
+}
+
+.mod-daily-action-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  background: var(--accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-secondary, var(--accent)));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+.mod-daily-action-transit {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+.mod-daily-action-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -7606,10 +7644,10 @@ function addCalendarCard() {
           // Clusters
           (clustersHTML ? '<div style="margin-bottom:14px;">' + clustersHTML + '</div>' : '') +
           // Daily Action
-          '<div style="padding:12px;border-radius:12px;background:var(--hover-bg);border:1px solid var(--border);margin-top:14px;">' +
-            '<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text-secondary);padding:4px 10px;border-radius:8px;margin-bottom:6px;">' + t('mod.dailyAction') + '</div>' +
-            '<div style="font-size:12px;font-weight:600;color:var(--text-primary);margin-bottom:4px;">' + transit + '</div>' +
-            '<div style="font-size:12px;color:var(--text-secondary);line-height:1.5;">' + action + '</div>' +
+          '<div class="mod-daily-action">' +
+            '<div class="mod-daily-action-tag">' + t('mod.dailyAction') + '</div>' +
+            '<div class="mod-daily-action-transit">' + transit + '</div>' +
+            '<div class="mod-daily-action-desc">' + action + '</div>' +
           '</div>' +
         '</div>' +
         dashboardHTML +
