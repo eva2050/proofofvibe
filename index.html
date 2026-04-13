@@ -1313,14 +1313,16 @@ html[data-theme="dark"] .dna-card {
   color: var(--text-secondary);
   font-style: italic;
   line-height: 1.7;
-  padding: 20px 28px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  margin-bottom: 16px;
+  padding: 16px 0 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
   text-align: center;
   position: relative;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
 }
 .dna-verdict::before {
   content: '"';
@@ -7073,9 +7075,8 @@ function addDNACard() {
           '</div>' +
         '</div>' +
         '<div class="dna-traits">' + traitsHTML + '</div>' +
+        '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
       '</div>' +
-
-      '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
 
       '<div class="dna-grid-2col">' +
 
