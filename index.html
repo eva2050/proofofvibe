@@ -6541,6 +6541,57 @@ function addDNACard() {
     specHTML += '<div class="dna-spec-item"><span class="dna-spec-num">' + (i + 1) + '</span> ' + escapeHtml(s) + '</div>';
   });
 
+  // Build natal chart details HTML (from API data)
+  var natalHTML = '';
+  var chart = natalChartData;
+  if (chart && chart.planets && chart.planets.length > 0) {
+    var signNames = {
+      'Aries': '白羊座', 'Taurus': '金牛座', 'Gemini': '双子座', 'Cancer': '巨蟹座',
+      'Leo': '狮子座', 'Virgo': '处女座', 'Libra': '天秤座', 'Scorpio': '天蝎座',
+      'Sagittarius': '射手座', 'Capricorn': '摩羯座', 'Aquarius': '水瓶座', 'Pisces': '双鱼座'
+    };
+    var planetNames = {
+      'Sun': '太阳', 'Moon': '月亮', 'Mercury': '水星', 'Venus': '金星', 'Mars': '火星',
+      'Jupiter': '木星', 'Saturn': '土星', 'Uranus': '天王星', 'Neptune': '海王星', 'Pluto': '冥王星'
+    };
+    var planetOrder = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'];
+    
+    natalHTML = '<div class="natal-planets-grid">';
+    planetOrder.forEach(function(pName) {
+      var planet = chart.planets.find(function(p) { return p.name === pName; });
+      if (planet) {
+        var cnName = planetNames[planet.name] || planet.name;
+        var cnSign = signNames[planet.sign] || planet.sign;
+        var retroBadge = planet.retrograde ? ' <span style="color:#EF4444;font-size:10px;">逆行</span>' : '';
+        natalHTML += '<div class="natal-planet-item">' +
+          '<span class="natal-planet-name">' + cnName + '</span>' +
+          '<span class="natal-planet-sign">' + cnSign + ' ' + (planet.degree || 0).toFixed(1) + '°' + retroBadge + '</span>' +
+          '<span class="natal-planet-house">第' + (planet.house || '-') + '宫</span>' +
+        '</div>';
+      }
+    });
+    natalHTML += '</div>';
+    
+    // Add major aspects
+    if (chart.aspects && chart.aspects.length > 0) {
+      var aspectNames = { 'conjunction': '合相', 'square': '四分', 'trine': '三分', 'opposition': '对分', 'sextile': '六分' };
+      var majorAspects = chart.aspects.filter(function(a) { return a.degree <= 3; }).slice(0, 8);
+      if (majorAspects.length > 0) {
+        natalHTML += '<div class="dna-cog-divider"></div><div class="natal-aspects-title">主要相位</div>';
+        natalHTML += '<div class="natal-aspects-grid">';
+        majorAspects.forEach(function(a) {
+          var p1 = planetNames[a.planet1] || a.planet1;
+          var p2 = planetNames[a.planet2] || a.planet2;
+          var aspName = aspectNames[a.type] || a.type;
+          natalHTML += '<div class="natal-aspect-item">' + p1 + ' ' + aspName + ' ' + p2 + '</div>';
+        });
+        natalHTML += '</div>';
+      }
+    }
+  } else {
+    natalHTML = '<div style="padding:12px;color:var(--text-secondary);font-size:13px;font-style:italic;">请在设置中填写出生信息以获取完整星盘数据。</div>';
+  }
+
   // Build ascension HTML
   var ascHTML = '<div class="dna-asc-command">' + escapeHtml(report.ascension.command) + '</div>' +
     '<div class="dna-alloc-row">' +
@@ -6608,7 +6659,17 @@ function addDNACard() {
         '</div>' +
       '</div>' +
 
-      // === SECTION 2: Pattern Autopsy ===
+      // === SECTION 2: Natal Chart Details ===
+      '<div class="dna-collapsible">' +
+        '<div class="dna-collapsible-header">' +
+          '<span class="dna-collapsible-title">星盘详情</span>' +
+        '</div>' +
+        '<div class="dna-collapsible-body">' +
+          natalHTML +
+        '</div>' +
+      '</div>' +
+
+      // === SECTION 3: Pattern Autopsy ===
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-title">财富格局深度鉴定</span>' +
@@ -6644,7 +6705,7 @@ function addDNACard() {
         '</div>' +
       '</div>' +
 
-      // === SECTION 5: Ascension Path ===
+      // === SECTION 6: Ascension Path ===
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-title">进阶路径</span>' +
