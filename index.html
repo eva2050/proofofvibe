@@ -1277,7 +1277,7 @@ html[data-theme="dark"] .dna-card {
 
 .dna-identity-row {
   display: flex;
-  gap: 40px;
+  gap: 48px;
   align-items: center;
   margin-bottom: 32px;
 }
@@ -1307,7 +1307,7 @@ html[data-theme="dark"] .dna-card {
   background: transparent;
   border: none;
   border-radius: 0;
-  margin-bottom: 28px;
+  margin-bottom: 32px;
   text-align: center;
   position: relative;
 }
@@ -1354,7 +1354,12 @@ html[data-theme="dark"] .dna-card {
   padding: 8px 0;
 }
 
-.dna-spec-section { margin-bottom: 24px; }
+.dna-spec-section {
+  padding: 16px 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
 
 .dna-section-label {
   font-size: 10px;
@@ -1467,6 +1472,16 @@ html[data-theme="dark"] .dna-card {
 
 .dna-collapsible-body {
   padding: 0 20px 20px;
+}
+
+.dna-grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+.dna-grid-2col .dna-collapsible {
+  margin-top: 0;
 }
 
 /* ========== PATTERNS ========== */
@@ -2900,6 +2915,9 @@ html[data-theme="dark"] .login-btn-google {
   .login-modal {
     border-radius: 16px 16px 0 0;
   }
+  .dna-grid-2col {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ========== UPGRADE MODAL ========== */
@@ -3376,6 +3394,9 @@ html[data-theme="dark"] .pricing-card:hover {
   .dna-collapsible-title { font-size: 12px; }
   .dna-collapsible-header { padding: 14px 16px; }
   .dna-collapsible-body { padding: 0 16px 16px; }
+  .dna-grid-2col {
+    grid-template-columns: 1fr;
+  }
   .dna-grid {
     gap: 8px;
   }
@@ -7037,6 +7058,8 @@ function addDNACard() {
 
       '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
 
+      '<div class="dna-grid-2col">' +
+
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
@@ -7057,6 +7080,8 @@ function addDNACard() {
       '<div class="dna-spec-section">' +
         '<div class="dna-section-label">投机方向</div>' +
         specHTML +
+      '</div>' +
+
       '</div>' +
 
       '<div class="dna-share-row">' +
@@ -7105,6 +7130,8 @@ function addDNACard() {
         '</div>' +
       '</div>' +
 
+      '<div class="dna-grid-2col">' +
+
       // === SECTION 3: Failure Scenarios ===
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
@@ -7127,6 +7154,8 @@ function addDNACard() {
         '<div class="dna-collapsible-body">' +
           profitHTML +
         '</div>' +
+      '</div>' +
+
       '</div>' +
 
       // === SECTION 6: Ascension Path ===
