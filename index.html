@@ -5023,6 +5023,7 @@ function closeHistory() {
 
 // ========== INVITE MODAL ==========
 function openInvite() {
+  if (!authToken || !currentUser) { openLogin(); return; }
   document.getElementById('inviteModal').classList.add('active');
 }
 
