@@ -1196,7 +1196,7 @@ html[data-theme="dark"] .dna-card {
   flex-shrink: 0;
 }
 
-.dna-info { flex: 1; }
+.dna-info { flex: 1; text-align: center; }
 
 .dna-info .archetype {
   font-size: 13px;
@@ -1210,6 +1210,33 @@ html[data-theme="dark"] .dna-card {
   color: var(--accent-yellow);
   font-size: 18px;
   letter-spacing: 2px;
+}
+
+.dna-info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.dna-info-stars {
+  font-size: 18px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.dna-info-rating {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.dna-info-rating-num {
+  font-weight: 800;
+  color: var(--accent);
+  font-size: 14px;
 }
 
 /* ========== DNA TRAITS ========== */
@@ -7111,9 +7138,9 @@ function addDNACard() {
           '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
           '<div class="dna-info">' +
             '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
-            '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
-            '<div class="stars" style="font-size:16px;letter-spacing:1px;">' + starsHTML + '</div>' +
-            '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">财富评级: ' + report.wealthRating + '/6</div>' +
+            '<div class="dna-info-label">' + t('dna.archetype') + '</div>' +
+            '<div class="dna-info-stars">' + starsHTML + '</div>' +
+            '<div class="dna-info-rating">财富评级 <span class="dna-info-rating-num">' + report.wealthRating + '</span>/6</div>' +
             '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
             '<div class="dna-share-row-inline">' +
               '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
