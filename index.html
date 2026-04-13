@@ -1190,22 +1190,22 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-archetype-emoji {
-  font-size: 52px;
+  font-size: 48px;
   line-height: 1;
   text-align: center;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
+  opacity: 0.9;
 }
 
 .dna-info { flex: 1; text-align: center; }
 
 .dna-info-title {
-  font-size: 9px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 3px;
   color: var(--text-secondary);
   margin-bottom: 2px;
+  text-transform: uppercase;
 }
 
 .dna-info .archetype {
@@ -1223,9 +1223,10 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-info-stars {
-  font-size: 16px;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
+  font-size: 14px;
+  letter-spacing: 3px;
+  margin-bottom: 6px;
+  opacity: 0.85;
 }
 
 .dna-info-rating {
@@ -1242,40 +1243,41 @@ html[data-theme="dark"] .dna-card {
 
 .dna-identity-whale {
   flex: 1;
-  padding: 0 0 0 20px;
+  padding: 0 0 0 24px;
   background: transparent;
-  border-radius: 0;
   border: none;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
 }
 
 .dna-identity-whale-name {
-  font-size: 15px;
-  font-weight: 800;
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  font-weight: 400;
   color: var(--text-primary);
   margin-bottom: 2px;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
 }
 
 .dna-identity-whale-pattern {
   font-size: 9px;
   color: var(--accent);
-  font-weight: 700;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
-  margin-bottom: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
 }
 
 /* ========== DNA TRAITS ========== */
 .dna-traits {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
-  padding: 12px 0 0;
+  padding: 14px 0 0;
   border-top: 1px solid var(--border);
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .dna-trait {
@@ -1285,16 +1287,17 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-trait .trait-name {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--text-secondary);
-  width: 48px;
+  width: 44px;
   flex-shrink: 0;
+  letter-spacing: 0.5px;
 }
 
 .dna-trait .trait-bar-bg {
   flex: 1;
-  height: 4px;
+  height: 3px;
   background: var(--input-bg);
   border-radius: 2px;
   overflow: hidden;
@@ -1303,16 +1306,17 @@ html[data-theme="dark"] .dna-card {
 .dna-trait .trait-bar-fill {
   height: 100%;
   border-radius: 2px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dna-trait .trait-value {
   font-size: 11px;
-  font-weight: 700;
-  width: 30px;
+  font-weight: 600;
+  width: 32px;
   text-align: right;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
 }
 
 .dna-trait .trait-roast {
@@ -1320,9 +1324,9 @@ html[data-theme="dark"] .dna-card {
   color: var(--text-secondary);
   font-style: italic;
   margin-top: 0;
-  padding-left: 56px;
+  padding-left: 52px;
   line-height: 1.3;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 /* ========== DNA REPORT CARD ========== */
@@ -1340,10 +1344,10 @@ html[data-theme="dark"] .dna-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 1;
   min-width: 0;
-  padding-right: 20px;
+  padding-right: 24px;
   border-right: 1px solid var(--border);
 }
 
@@ -1351,12 +1355,12 @@ html[data-theme="dark"] .dna-card {
   display: flex;
   gap: 0;
   align-items: stretch;
-  margin-bottom: 12px;
-  padding: 24px;
+  margin-bottom: 8px;
+  padding: 32px 28px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .dna-identity-row .dna-traits {
@@ -1367,27 +1371,31 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-report-archetype {
-  font-size: 26px;
-  font-weight: 800;
+  font-family: 'Instrument Serif', serif;
+  font-size: 36px;
+  font-weight: 400;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   letter-spacing: -0.5px;
-  line-height: 1.1;
+  line-height: 1.05;
 }
 
 .dna-verdict {
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-style: normal;
-  font-weight: 500;
+  font-family: 'Instrument Serif', serif;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-style: italic;
+  font-weight: 400;
   line-height: 1.6;
-  padding: 8px 14px;
-  background: var(--hover-bg);
-  border-radius: 8px;
-  margin: 4px 0 0;
-  text-align: center;
+  padding: 12px 0;
+  background: transparent;
+  border-radius: 0;
+  margin: 8px 0 0;
+  text-align: left;
   border: none;
   box-shadow: none;
+  border-top: 1px solid var(--border);
+  opacity: 0.8;
 }
 
 .dna-whale-row { display: none; }
@@ -1417,24 +1425,24 @@ html[data-theme="dark"] .dna-card {
 .dna-whale-bio {
   font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
   padding: 0;
 }
 
 .dna-spec-section {
-  padding: 16px 20px;
+  padding: 18px 20px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-  margin-top: 12px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  margin-top: 8px;
 }
 
 .dna-section-label {
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 2.5px;
   color: var(--text-secondary);
   margin-bottom: 10px;
 }
@@ -1442,14 +1450,15 @@ html[data-theme="dark"] .dna-card {
 .dna-spec-item {
   font-size: 13px;
   color: var(--text-primary);
-  line-height: 1.6;
+  line-height: 1.5;
   padding: 10px 0;
-  padding-left: 22px;
+  padding-left: 24px;
   position: relative;
   border-bottom: 1px solid var(--border);
 }
 .dna-spec-item:last-child {
   border-bottom: none;
+  padding-bottom: 0;
 }
 
 .dna-spec-num {
@@ -1458,12 +1467,13 @@ html[data-theme="dark"] .dna-card {
   color: var(--accent);
   font-weight: 800;
   font-size: 11px;
+  font-variant-numeric: tabular-nums;
 }
 
 .dna-spec-content { flex: 1; }
 
 .dna-spec-name {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 2px;
@@ -1472,7 +1482,7 @@ html[data-theme="dark"] .dna-card {
 .dna-spec-desc {
   font-size: 11px;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 /* ========== SHARE ========== */
@@ -1481,26 +1491,27 @@ html[data-theme="dark"] .dna-card {
 }
 .dna-share-row-inline {
   margin-top: auto;
-  padding-top: 10px;
-  text-align: center;
+  padding-top: 12px;
+  text-align: left;
 }
 
 .dna-share-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 14px;
+  gap: 5px;
+  padding: 7px 16px;
   font-size: 11px;
   font-weight: 600;
   color: var(--text-secondary);
-  background: var(--hover-bg);
+  background: transparent;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  letter-spacing: 0.3px;
 }
 .dna-share-btn:hover {
-  background: var(--border);
+  border-color: var(--text-secondary);
   color: var(--text-primary);
 }
 
@@ -1515,11 +1526,11 @@ html[data-theme="dark"] .dna-card {
 /* ========== COLLAPSIBLE ========== */
 .dna-collapsible {
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  margin-top: 12px;
+  margin-top: 8px;
   background: var(--card-bg);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
   transition: border-color 0.2s;
 }
 .dna-collapsible:hover {
@@ -1530,8 +1541,7 @@ html[data-theme="dark"] .dna-card {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 16px 20px;
-  background: transparent;
+  padding: 14px 18px;
   cursor: pointer;
   user-select: none;
   transition: background 0.15s;
@@ -1553,19 +1563,20 @@ html[data-theme="dark"] .dna-card {
   font-weight: 700;
   color: var(--text-primary);
   flex: 1;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.1px;
 }
 
 .dna-collapsible-count {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text-secondary);
   background: var(--hover-bg);
-  padding: 2px 10px;
-  border-radius: 10px;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-variant-numeric: tabular-nums;
 }
 
 .dna-collapsible-body {
-  padding: 0 20px 20px;
+  padding: 0 18px 18px;
 }
 
 .dna-grid-2col {
@@ -1618,14 +1629,14 @@ html[data-theme="dark"] .dna-card {
 .dna-cog-divider {
   height: 1px;
   background: var(--border);
-  margin: 10px 0;
+  margin: 12px 0;
 }
 
 .dna-cog-title {
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 2px;
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
@@ -1651,7 +1662,7 @@ html[data-theme="dark"] .dna-card {
 .dna-cog-analysis {
   font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.7;
 }
 
 /* ========== SCENARIOS ========== */
@@ -3483,10 +3494,13 @@ html[data-theme="dark"] .pricing-card:hover {
     border-radius: 12px;
   }
   .dna-report-card { padding: 20px; }
-  .dna-report-archetype { font-size: 24px; }
+  .dna-report-archetype { font-size: 28px; }
   .dna-identity-row { flex-direction: column; align-items: stretch; gap: 0; }
-  .dna-report-header { flex-direction: column; align-items: center; text-align: center; padding-right: 0; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
-  .dna-identity-whale { padding: 16px 0 0; }
+  .dna-report-header { flex-direction: column; align-items: center; text-align: center; padding-right: 0; border-right: none; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+  .dna-identity-whale { padding: 20px 0 0; }
+  .dna-identity-whale-name { font-size: 18px; }
+  .dna-verdict { text-align: center; }
+  .dna-share-row-inline { text-align: center; }
   .dna-collapsible-title { font-size: 12px; }
   .dna-collapsible-header { padding: 14px 16px; }
   .dna-collapsible-body { padding: 0 16px 16px; }
