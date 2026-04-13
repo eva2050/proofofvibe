@@ -1240,10 +1240,11 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-identity-whale {
-  text-align: center;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-  margin-top: 16px;
+  flex: 1;
+  padding: 20px;
+  background: var(--hover-bg);
+  border-radius: 16px;
+  border: 1px solid var(--border);
 }
 
 .dna-identity-whale-name {
@@ -1332,6 +1333,8 @@ html[data-theme="dark"] .dna-card {
   gap: 16px;
   margin-bottom: 0;
   flex-shrink: 0;
+  flex: 1;
+  min-width: 0;
 }
 
 .dna-identity-row {
@@ -7205,7 +7208,7 @@ function addDNACard() {
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="dna-card dna-report-card">' +
 
-      // === SECTION 1: Identity Label + Traits ===
+      // === SECTION 1: Identity Label + Whale ===
       '<div class="dna-identity-row">' +
         '<div class="dna-report-header">' +
           '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
@@ -7221,24 +7224,13 @@ function addDNACard() {
                 '分享报告' +
               '</button>' +
             '</div>' +
+            '<div class="dna-traits">' + traitsHTML + '</div>' +
           '</div>' +
         '</div>' +
         '<div class="dna-identity-whale">' +
           '<div class="dna-identity-whale-name">' + escapeHtml(report.whale.name) + '</div>' +
           '<div class="dna-identity-whale-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
-        '</div>' +
-      '</div>' +
-
-      '<div class="dna-traits">' + traitsHTML + '</div>' +
-
-      '<div class="dna-grid-2col">' +
-
-      '<div class="dna-collapsible">' +
-        '<div class="dna-collapsible-header">' +
-          '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">鲸鱼模式详情</span>' +
-        '</div>' +
-        '<div class="dna-collapsible-body">' +
+          '<div class="dna-cog-divider"></div>' +
           '<div class="dna-whale-bio">' + escapeHtml(report.whale.bio) + '</div>' +
           '<div class="dna-cog-divider"></div>' +
           '<div class="dna-cog-title">交易风格</div>' +
@@ -7252,8 +7244,6 @@ function addDNACard() {
       '<div class="dna-spec-section">' +
         '<div class="dna-section-label">投机方向</div>' +
         specHTML +
-      '</div>' +
-
       '</div>' +
 
       // Share card (hidden by default)
