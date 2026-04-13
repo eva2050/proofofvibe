@@ -1269,7 +1269,9 @@ html[data-theme="dark"] .dna-card {
 
 /* ========== DNA REPORT EXTENSIONS ========== */
 .dna-report-card { max-width: 100%; }
-.dna-report-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
+.dna-report-header { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; flex-shrink: 0; }
+.dna-identity-row { display: flex; gap: 24px; align-items: flex-start; margin-bottom: 18px; }
+.dna-identity-row .dna-traits { flex: 1; margin-top: 0; padding-top: 0; border-top: none; }
 .dna-report-archetype { font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.3px; }
 .dna-verdict { font-size: 15px; color: var(--text-secondary); font-style: italic; line-height: 1.5; padding: 14px 18px; background: var(--input-bg); border-radius: 10px; margin-bottom: 18px; border-left: 3px solid var(--accent); }
 .dna-whale-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -3099,6 +3101,10 @@ html[data-theme="dark"] .pricing-card:hover {
     flex-direction: column;
     align-items: center;
     text-align: center;
+  }
+  .dna-identity-row {
+    flex-direction: column;
+    align-items: center;
   }
   .dna-collapsible-title {
     font-size: 12px;
@@ -6684,15 +6690,18 @@ function addDNACard() {
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="dna-card dna-report-card">' +
 
-      // === SECTION 1: Identity Label ===
-      '<div class="dna-report-header">' +
-        '<canvas class="dna-radar-canvas" id="dnaRadarCanvas" width="140" height="140"></canvas>' +
-        '<div class="dna-info">' +
-          '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
-          '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
-          '<div class="stars" style="font-size:16px;letter-spacing:1px;">' + starsHTML + '</div>' +
-          '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">财富评级: ' + report.wealthRating + '/6</div>' +
+      // === SECTION 1: Identity Label + Traits ===
+      '<div class="dna-identity-row">' +
+        '<div class="dna-report-header">' +
+          '<canvas class="dna-radar-canvas" id="dnaRadarCanvas" width="140" height="140"></canvas>' +
+          '<div class="dna-info">' +
+            '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);margin-bottom:4px;">' + t('dna.archetype') + '</div>' +
+            '<div class="stars" style="font-size:16px;letter-spacing:1px;">' + starsHTML + '</div>' +
+            '<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">财富评级: ' + report.wealthRating + '/6</div>' +
+          '</div>' +
         '</div>' +
+        '<div class="dna-traits">' + traitsHTML + '</div>' +
       '</div>' +
 
       '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
@@ -6717,8 +6726,6 @@ function addDNACard() {
         '<div class="dna-section-label">投机方向</div>' +
         specHTML +
       '</div>' +
-
-      '<div class="dna-traits">' + traitsHTML + '</div>' +
 
       '<div class="dna-share-row">' +
         '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
