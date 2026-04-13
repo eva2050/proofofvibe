@@ -1190,20 +1190,22 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-archetype-emoji {
-  font-size: 48px;
+  font-size: 52px;
   line-height: 1;
   text-align: center;
   flex-shrink: 0;
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.1));
 }
 
 .dna-info { flex: 1; text-align: center; }
 
 .dna-info-title {
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   color: var(--text-secondary);
-  letter-spacing: 1px;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .dna-info .archetype {
@@ -1220,19 +1222,10 @@ html[data-theme="dark"] .dna-card {
   letter-spacing: 2px;
 }
 
-.dna-info-label {
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-}
-
 .dna-info-stars {
-  font-size: 18px;
+  font-size: 16px;
   letter-spacing: 2px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .dna-info-rating {
@@ -1261,28 +1254,28 @@ html[data-theme="dark"] .dna-card {
   font-size: 15px;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
   letter-spacing: -0.2px;
 }
 
 .dna-identity-whale-pattern {
-  font-size: 10px;
+  font-size: 9px;
   color: var(--accent);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 /* ========== DNA TRAITS ========== */
 .dna-traits {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  padding: 14px 0 0;
+  padding: 12px 0 0;
   border-top: 1px solid var(--border);
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .dna-trait {
@@ -1301,15 +1294,15 @@ html[data-theme="dark"] .dna-card {
 
 .dna-trait .trait-bar-bg {
   flex: 1;
-  height: 5px;
+  height: 4px;
   background: var(--input-bg);
-  border-radius: 3px;
+  border-radius: 2px;
   overflow: hidden;
 }
 
 .dna-trait .trait-bar-fill {
   height: 100%;
-  border-radius: 3px;
+  border-radius: 2px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -1336,35 +1329,33 @@ html[data-theme="dark"] .dna-card {
 .dna-report-card {
   max-width: 960px;
   margin: 0 auto;
-  padding: 24px;
-  background: transparent !important;
-  border: none !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .dna-report-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 0;
-  flex-shrink: 0;
+  gap: 10px;
   flex: 1;
   min-width: 0;
-  padding-right: 16px;
+  padding-right: 20px;
   border-right: 1px solid var(--border);
 }
 
 .dna-identity-row {
   display: flex;
-  gap: 16px;
+  gap: 0;
   align-items: stretch;
-  margin-bottom: 16px;
-  padding: 28px;
+  margin-bottom: 12px;
+  padding: 24px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 
@@ -1376,11 +1367,11 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-report-archetype {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 4px;
-  letter-spacing: -0.8px;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
   line-height: 1.1;
 }
 
@@ -1393,9 +1384,8 @@ html[data-theme="dark"] .dna-card {
   padding: 8px 14px;
   background: var(--hover-bg);
   border-radius: 8px;
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   text-align: center;
-  position: relative;
   border: none;
   box-shadow: none;
 }
@@ -1436,47 +1426,53 @@ html[data-theme="dark"] .dna-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  margin-top: 12px;
 }
 
 .dna-section-label {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--text-secondary);
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .dna-spec-item {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-primary);
   line-height: 1.6;
-  padding: 8px 0;
-  padding-left: 20px;
+  padding: 10px 0;
+  padding-left: 22px;
   position: relative;
+  border-bottom: 1px solid var(--border);
+}
+.dna-spec-item:last-child {
+  border-bottom: none;
 }
 
 .dna-spec-num {
   position: absolute;
   left: 0;
   color: var(--accent);
-  font-weight: 700;
-  font-size: 12px;
+  font-weight: 800;
+  font-size: 11px;
 }
 
 .dna-spec-content { flex: 1; }
 
 .dna-spec-name {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 3px;
+  margin-bottom: 2px;
 }
 
 .dna-spec-desc {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 /* ========== SHARE ========== */
@@ -1485,27 +1481,27 @@ html[data-theme="dark"] .dna-card {
 }
 .dna-share-row-inline {
   margin-top: auto;
-  padding-top: 12px;
+  padding-top: 10px;
   text-align: center;
 }
 
 .dna-share-btn {
   display: inline-flex;
   align-items: center;
-  padding: 8px 20px;
-  background: transparent;
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  gap: 4px;
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
   color: var(--text-secondary);
-  font-size: 12px;
-  font-weight: 500;
+  background: var(--hover-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
 }
 .dna-share-btn:hover {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
+  background: var(--border);
+  color: var(--text-primary);
 }
 
 .dna-share-card { margin: 12px 0; border-radius: 16px; }
@@ -1626,12 +1622,12 @@ html[data-theme="dark"] .dna-card {
 }
 
 .dna-cog-title {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--text-secondary);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .dna-cog-section {
