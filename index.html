@@ -3645,6 +3645,47 @@ html[lang="ko"] {
   color: var(--text-secondary);
   line-height: 1.6;
 }
+
+/* ========== GLOBAL VIBES ========== */
+.gv-container { padding: 0; }
+.gv-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 0; }
+.gv-tab {
+  padding: 10px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  user-select: none;
+}
+.gv-tab:hover { color: var(--text-primary); }
+.gv-tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); }
+.gv-tab .gv-tab-count { font-size: 10px; font-weight: 500; color: var(--text-secondary); margin-left: 4px; }
+.gv-search { width: 100%; padding: 10px 14px; font-size: 13px; border: none; border-bottom: 1px solid rgba(0,0,0,0.08); background: transparent; color: var(--text-primary); outline: none; font-family: 'DM Sans', sans-serif; }
+.gv-search::placeholder { color: var(--text-secondary); opacity: 0.5; }
+.gv-table { width: 100%; border-collapse: collapse; }
+.gv-table thead th { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-secondary); padding: 8px 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.08); position: sticky; top: 0; background: var(--card-bg); z-index: 1; }
+.gv-table thead th:last-child { text-align: right; }
+.gv-table tbody tr { border-bottom: 1px solid rgba(0,0,0,0.04); transition: background 0.15s; cursor: default; }
+.gv-table tbody tr:hover { background: rgba(0,0,0,0.03); }
+.gv-table tbody td { padding: 10px 12px; font-size: 12px; color: var(--text-primary); vertical-align: top; }
+.gv-table .gv-name { font-weight: 700; font-size: 13px; white-space: nowrap; }
+.gv-table .gv-ticker { font-size: 10px; color: var(--text-secondary); font-weight: 500; margin-left: 6px; }
+.gv-table .gv-narrative { color: var(--text-secondary); font-size: 11px; line-height: 1.5; max-width: 300px; }
+.gv-table .gv-date { font-size: 11px; color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gv-table .gv-verdict { font-size: 11px; color: var(--text-secondary); line-height: 1.5; max-width: 280px; font-style: italic; opacity: 0.8; }
+.gv-table .gv-status { text-align: right; white-space: nowrap; }
+.gv-status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.gv-status-dot.active { background: #22C55E; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+.gv-status-dot.dormant { background: rgba(0,0,0,0.15); }
+.gv-status-text { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); }
+.gv-scroll { max-height: 600px; overflow-y: auto; }
+.gv-empty { padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
+.gv-count-bar { padding: 8px 12px; font-size: 10px; color: var(--text-secondary); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; }
+.gv-count-bar span { font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -4153,6 +4194,1735 @@ let creditLog = [
   { time: '10:35', desc: 'Scan $NVDA', amount: '-5' },
   { time: '10:42', desc: 'Scan @ElonMusk', amount: '-5' }
 ];
+// === GLOBAL VIBES DATA ===
+var architectEntitiesData = [
+  // ===== TECH GIANTS =====
+  { name: "Apple Inc.", ticker: "AAPL", type: "institution", category: "institution", narrative: "以设计哲学重塑消费电子版图，将硬件生态铸成不可逾越的护城河", inception: "1980-12-12", verdict: "射手座的无远弗届赋予了其跨越周期的产品信仰与品牌溢价", status: "active" },
+  { name: "Microsoft Corporation", ticker: "MSFT", type: "institution", category: "institution", narrative: "以操作系统为基石构建全球软件帝国，云转型重塑企业数字化基础设施", inception: "1986-03-13", verdict: "双鱼座的深邃直觉赋予了其在AI浪潮中精准押注的先知之力", status: "active" },
+  { name: "Alphabet Inc.", ticker: "GOOGL", type: "institution", category: "institution", narrative: "以信息索引统治全球认知入口，广告引擎成为数字经济的隐形税收系统", inception: "2004-08-19", verdict: "狮子座的王者光芒赋予了其统治信息宇宙的绝对权威", status: "dormant" },
+  { name: "Amazon.com Inc.", ticker: "AMZN", type: "institution", category: "institution", narrative: "以无限扩张的飞轮效应吞噬零售版图，AWS成为云计算的底层操作系统", inception: "1997-05-15", verdict: "金牛座的坚韧不拔赋予了其长期主义复利增长的无限耐心", status: "active" },
+  { name: "Meta Platforms Inc.", ticker: "META", type: "institution", category: "institution", narrative: "以社交图谱编织全球人类连接网络，元宇宙叙事开辟虚拟世界的第二增长曲线", inception: "2012-05-18", verdict: "金牛座的固执执念赋予了其在虚拟现实领域不计代价的豪赌勇气", status: "active" },
+  { name: "NVIDIA Corporation", ticker: "NVDA", type: "institution", category: "institution", narrative: "以GPU算力引爆AI革命，成为人工智能时代的算力霸主与芯片教父", inception: "1999-01-22", verdict: "水瓶座的颠覆基因赋予了其定义下一代计算范式的先知远见", status: "active" },
+  { name: "Tesla Inc.", ticker: "TSLA", type: "institution", category: "institution", narrative: "以电动车颠覆百年汽车工业，能源生态闭环构建可持续未来的商业蓝图", inception: "2010-06-29", verdict: "巨蟹座的守护本能赋予了其重塑人类出行与能源体系的使命感", status: "dormant" },
+  { name: "Intel Corporation", ticker: "INTC", type: "institution", category: "institution", narrative: "以x86架构定义PC时代芯片标准，半导体制造的先驱与守成者", inception: "1971-10-13", verdict: "天秤座的秩序追求赋予了其建立行业标准的制衡之力", status: "dormant" },
+  { name: "Adobe Inc.", ticker: "ADBE", type: "institution", category: "institution", narrative: "以创意软件垄断数字内容生产工具链，SaaS转型打造永恒订阅收入流", inception: "1986-08-20", verdict: "狮子座的创造热情赋予了其统治数字创意王国的艺术霸权", status: "active" },
+  { name: "Salesforce Inc.", ticker: "CRM", type: "institution", category: "institution", narrative: "以SaaS模式开创企业软件云时代，CRM生态成为商业关系的数字中枢", inception: "2004-06-23", verdict: "巨蟹座的情感智慧赋予了其连接企业与客户深层需求的共情力", status: "active" },
+  { name: "Oracle Corporation", ticker: "ORCL", type: "institution", category: "institution", narrative: "以数据库统治企业数据基础设施，从软件巨头向云基础设施全面进化", inception: "1986-03-12", verdict: "双鱼座的深层感知赋予了其洞察数据海洋底层逻辑的直觉力", status: "dormant" },
+  { name: "IBM", ticker: "IBM", type: "institution", category: "institution", narrative: "以百年技术积淀穿越计算范式更迭，从硬件巨头蜕变为AI与混合云的战略智库", inception: "1911-06-16", verdict: "双子座的多维智慧赋予了其在技术变革中不断重生的适应力", status: "active" },
+  { name: "Samsung Electronics", ticker: "005930", type: "institution", category: "institution", narrative: "以垂直整合的半导体制造与消费电子双引擎，掌控全球科技供应链的关键节点", inception: "1969-01-13", verdict: "摩羯座的纪律严明赋予了其从存储芯片到智能手机全产业链的统治意志", status: "active" },
+  { name: "Taiwan Semiconductor Manufacturing", ticker: "TSM", type: "institution", category: "institution", narrative: "以晶圆代工模式定义全球芯片制造分工，成为地缘科技博弈的战略制高点", inception: "1994-09-05", verdict: "处女座的极致精密赋予了其在纳米级工艺上追求完美的匠人精神", status: "active" },
+  { name: "Sony Group Corporation", ticker: "SONY", type: "institution", category: "institution", narrative: "以娱乐与技术的跨界融合构建文化科技帝国，PlayStation生态统治游戏世界", inception: "1958-12-01", verdict: "射手座的冒险精神赋予了其横跨硬件、内容与金融的多元帝国版图", status: "dormant" },
+  { name: "SAP SE", ticker: "SAP", type: "institution", category: "institution", narrative: "以ERP系统嵌入全球企业运营神经中枢，成为工业4.0时代的数字化骨架", inception: "1988-11-04", verdict: "天蝎座的深度渗透赋予了其掌控企业运营命脉的隐秘力量", status: "active" },
+  { name: "Advanced Micro Devices", ticker: "AMD", type: "institution", category: "institution", narrative: "以Chiplet架构逆袭芯片霸主，在CPU与GPU双赛道挑战行业天花板", inception: "1972-03-17", verdict: "双鱼座的逆袭韧性赋予了其在绝境中浴火重生的技术浪漫主义", status: "active" },
+  { name: "Cisco Systems Inc.", ticker: "CSCO", type: "institution", category: "institution", narrative: "以网络基础设施编织全球互联网骨架，路由器与交换机成为数字世界的血管系统", inception: "1990-02-16", verdict: "水瓶座的连接愿景赋予了其构建全球信息高速公路的先知使命", status: "dormant" },
+  { name: "Broadcom Inc.", ticker: "AVGO", type: "institution", category: "institution", narrative: "以半导体并购帝国整合芯片产业链，从无线通信到数据中心的全栈布局", inception: "2009-08-25", verdict: "处女座的精密算计赋予了其在并购整合中榨取每一分协同效应的能力", status: "active" },
+  { name: "Netflix Inc.", ticker: "NFLX", type: "institution", category: "institution", narrative: "以流媒体颠覆传统影视发行体系，算法驱动的内容工厂重新定义娱乐消费", inception: "2002-05-23", verdict: "双子座的多变天赋赋予了其在内容与科技之间自由切换的双面灵魂", status: "dormant" },
+
+  // ===== FINANCIAL INSTITUTIONS =====
+  { name: "BlackRock Inc.", ticker: "BLK", type: "institution", category: "institution", narrative: "以十万亿资产管理规模成为全球资本市场的隐形中央银行，Aladdin系统统治投资决策基础设施", inception: "1999-10-01", verdict: "天秤座的平衡法则赋予了其执掌全球资本配置天平的审判之力", status: "active" },
+  { name: "Vanguard Group", ticker: "VANG", type: "institution", category: "institution", narrative: "以指数基金革命颠覆主动投资范式，所有者结构使其成为金融民主化的终极推手", inception: "1975-05-01", verdict: "金牛座的稳健信仰赋予了其以被动投资哲学征服华尔街的定力", status: "active" },
+  { name: "Citadel LLC", ticker: "CITD", type: "institution", category: "institution", narrative: "以量化交易与做市商双引擎统治市场微观结构，成为华尔街最隐秘的利润机器", inception: "1990-11-01", verdict: "天蝎座的隐秘锋芒赋予了其在市场暗流中精准猎杀的量化本能", status: "active" },
+  { name: "Goldman Sachs Group Inc.", ticker: "GS", type: "institution", category: "institution", narrative: "以政府旋转门与资本杠杆编织全球权力网络，投行之王的美誉背后是制度套利的终极艺术", inception: "1999-05-04", verdict: "金牛座的财富嗅觉赋予了其在权力与资本交汇处精准布局的贪婪智慧", status: "active" },
+  { name: "JPMorgan Chase & Co.", ticker: "JPM", type: "institution", category: "institution", narrative: "以全能银行模式统治全球金融版图，每一次危机都成为其扩张帝国的战略跳板", inception: "1964-03-23", verdict: "白羊座的冲锋本性赋予了其在金融危机中逆势扩张的王者勇气", status: "active" },
+  { name: "Morgan Stanley", ticker: "MS", type: "institution", category: "institution", narrative: "以精英投行文化塑造华尔街的权力美学，财富管理版图覆盖全球顶级资本", inception: "1986-03-24", verdict: "白羊座的先锋精神赋予了其在资本市场开疆拓土的进攻性基因", status: "dormant" },
+  { name: "Bridgewater Associates", ticker: "BWFG", type: "institution", category: "institution", narrative: "以宏观对冲与原则驱动构建全球最大对冲基金，风险平价策略重新定义资产配置", inception: "1975-06-01", verdict: "双子座的思辨天赋赋予了其将经济规律转化为投资算法的哲学智慧", status: "active" },
+  { name: "KKR & Co. Inc.", ticker: "KKR", type: "institution", category: "institution", narrative: "以杠杆收购开创私募股权时代，管理层收购模式成为华尔街的财富炼金术", inception: "2010-07-15", verdict: "巨蟹座的孵化本能赋予了其在企业重组中唤醒沉睡价值的治愈之力", status: "dormant" },
+  { name: "Fidelity Investments", ticker: "FID", type: "institution", category: "institution", narrative: "以散户服务起家成长为资产管理巨兽，2.5万亿美元资产守护美国中产阶级的财富信仰", inception: "1946-09-08", verdict: "处女座的忠诚守护赋予了其数十年如一日服务散户的金融匠人精神", status: "active" },
+  { name: "State Street Corporation", ticker: "STT", type: "institution", category: "institution", narrative: "以托管银行身份掌控全球资产后台命脉，SPDR开创ETF革命的先河", inception: "1999-01-29", verdict: "水瓶座的前瞻视野赋予了其以ETF工具重塑资产流动性的制度创新力", status: "dormant" },
+  { name: "UBS Group AG", ticker: "UBS", type: "institution", category: "institution", narrative: "以全球财富管理皇冠上的明珠自居，瑞士银行保密传统背后的资本庇护所", inception: "1862-07-01", verdict: "巨蟹座的庇护本能赋予了其为全球富豪守护财富秘密的信任壁垒", status: "active" },
+  { name: "HSBC Holdings plc", ticker: "HSBC", type: "institution", category: "institution", narrative: "以东西方桥梁定位横跨全球金融脉络，从香港到伦敦的资本动脉连接欧亚经济", inception: "1865-03-03", verdict: "双鱼座的流动智慧赋予了其在不同文明与货币体系间自由穿行的适应力", status: "dormant" },
+  { name: "Bank of America Corporation", ticker: "BAC", type: "institution", category: "institution", narrative: "以全美最大零售银行网络触达每一个美国社区，消费金融的毛细血管系统", inception: "1998-09-30", verdict: "天秤座的普惠理念赋予了其将金融服务下沉至每个街角的平衡艺术", status: "active" },
+  { name: "Wells Fargo & Company", ticker: "WFC", type: "institution", category: "institution", narrative: "以驿站马车精神穿越美国金融史，零售银行与社区金融的百年活化石", inception: "1852-03-18", verdict: "双鱼座的忍耐韧性赋予了其穿越百年金融风暴依然屹立不倒的生命力", status: "dormant" },
+  { name: "Citigroup Inc.", ticker: "C", type: "institution", category: "institution", narrative: "以全球银行蓝图构建跨国金融超市，新兴市场布局使其成为美元霸权的触角", inception: "1998-10-08", verdict: "天秤座的全球化视野赋予了其在100多个国家编织金融网络的制衡智慧", status: "active" },
+  { name: "Credit Suisse", ticker: "CSGN", type: "institution", category: "institution", narrative: "以瑞士金融贵族身份历经百年沉浮，从私人银行到投行的华丽转身与悲壮落幕", inception: "1856-07-05", verdict: "巨蟹座的情感执念赋予了其在财富管理中建立深层客户羁绊的黏性力量", status: "dormant" },
+  { name: "Renaissance Technologies", ticker: "RENT", type: "institution", category: "institution", narrative: "以数学天才军团打造文艺复兴 Medallion 基金，量化投资的圣杯守护者", inception: "1982-01-01", verdict: "摩羯座的严谨秩序赋予了其将混沌市场转化为数学公式的理性信仰", status: "active" },
+  { name: "Two Sigma", ticker: "TSG", type: "institution", category: "institution", narrative: "以AI与大数据驱动量化投资新范式，技术信仰重新定义对冲基金的未来形态", inception: "2001-07-01", verdict: "巨蟹座的直觉感知赋予了其在海量数据中捕捉市场情绪脉搏的第六感", status: "active" },
+  { name: "D. E. Shaw & Co.", ticker: "DESC", type: "institution", category: "institution", narrative: "以计算金融先驱身份孵化无数科技独角兽，量化与风投的跨界奇才", inception: "1988-02-01", verdict: "水瓶座的天才 eccentricity 赋予了其在算法世界中发现非共识机会的叛逆直觉", status: "dormant" },
+  { name: "Elliott Management", ticker: "ELLM", type: "institution", category: "institution", narrative: "以激进股东主义重塑公司治理规则，秃鹫投资者的法律武器与资本杠杆", inception: "1977-08-01", verdict: "狮子座的王者意志赋予了其在董事会中强行推动变革的支配性力量", status: "active" },
+
+  // ===== CENTRAL BANKS & SOVEREIGN =====
+  { name: "Federal Reserve System", ticker: "FED", type: "institution", category: "institution", narrative: "以美元霸权锚定全球货币体系，利率决议成为驱动全球资本流动的终极引擎", inception: "1913-12-23", verdict: "摩羯座的制度权威赋予了其掌控全球流动性命脉的至高统治权", status: "active" },
+  { name: "European Central Bank", ticker: "ECB", type: "institution", category: "institution", narrative: "以欧元捍卫欧洲经济一体化理想，量化宽松重塑了主权债务市场的游戏规则", inception: "1998-06-01", verdict: "双子座的多重身份赋予了其在多元经济体间维持货币统一的平衡智慧", status: "active" },
+  { name: "Bank of Japan", ticker: "BOJ", type: "institution", category: "institution", narrative: "以无限量宽松政策开创现代货币实验的先河，收益率曲线控制成为央行工具箱的极端武器", inception: "1882-10-10", verdict: "天秤座的极端平衡术赋予了其在通缩深渊中维持经济不坠的微操之力", status: "dormant" },
+  { name: "People's Bank of China", ticker: "PBOC", type: "institution", category: "institution", narrative: "以人民币国际化重塑全球货币权力格局，数字货币DCEP开辟主权货币的新纪元", inception: "1948-12-01", verdict: "射手座的远大抱负赋予了其推动人民币走向全球储备货币的使命驱动", status: "active" },
+  { name: "Bank of England", ticker: "BOE", type: "institution", category: "institution", narrative: "以三百余年央行历史定义现代货币制度的原型，从金本位到通胀目标制的制度演进标杆", inception: "1694-07-27", verdict: "狮子座的皇家血统赋予了其作为央行始祖的永恒威严与制度正统性", status: "active" },
+
+  // ===== EXCHANGES =====
+  { name: "New York Stock Exchange", ticker: "NYSE", type: "institution", category: "institution", narrative: "以华尔街铜牛为图腾象征全球资本主义的信仰中心，上市公司总市值占全球近半壁江山", inception: "1792-05-17", verdict: "金牛座的物质崇拜赋予了其作为全球财富圣殿的永恒吸引力", status: "active" },
+  { name: "NASDAQ", ticker: "NDQ", type: "institution", category: "institution", narrative: "以电子化交易革命颠覆传统交易所模式，科技股的摇篮与硅谷通往华尔街的桥梁", inception: "1971-02-08", verdict: "水瓶座的科技叛逆赋予了其以电子化交易解构华尔街旧秩序的革命精神", status: "active" },
+  { name: "CME Group Inc.", ticker: "CME", type: "institution", category: "institution", narrative: "以衍生品帝国统治全球风险管理基础设施，利率期货与期权成为金融体系的压力阀门", inception: "2002-12-03", verdict: "射手座的扩张野心赋予了其将风险转化为可交易商品的金融炼金术", status: "dormant" },
+  { name: "London Stock Exchange Group", ticker: "LSEG", type: "institution", category: "institution", narrative: "以三百年金融交易历史承载大英帝国的资本荣光，Refinitiv收购打造数据与交易的超级平台", inception: "1801-03-03", verdict: "双鱼座的流动智慧赋予了其在英镑与全球化浪潮中保持金融中心地位的柔韧力", status: "active" },
+  { name: "Hong Kong Exchanges and Clearing", ticker: "HKEX", type: "institution", category: "institution", narrative: "以东西方资本交汇枢纽定位连接中国与世界，互联互通机制重塑跨境资本流动格局", inception: "2000-03-06", verdict: "双鱼座的桥梁天赋赋予了其在资本主义的东方前哨站连接两个金融世界的使命", status: "dormant" },
+
+  // ===== PAYMENT PROCESSORS =====
+  { name: "Visa Inc.", ticker: "V", type: "institution", category: "institution", narrative: "以全球支付网络覆盖200多个国家和地区，成为现代商业交易的底层神经系统", inception: "2008-03-19", verdict: "双鱼座的流动本质赋予了其在全球货币洪流中充当万能管道的渗透力", status: "active" },
+  { name: "Mastercard Incorporated", ticker: "MA", type: "institution", category: "institution", narrative: "以无现金社会愿景驱动全球支付革命，数据智能将每一次交易转化为商业洞察", inception: "2006-05-25", verdict: "双子座的信息天赋赋予了其将支付数据转化为商业智能的解码能力", status: "active" },
+  { name: "PayPal Holdings Inc.", ticker: "PYPL", type: "institution", category: "institution", narrative: "以数字钱包开启互联网支付民主化进程，成为跨境电商与个人转账的基础设施", inception: "2015-07-06", verdict: "巨蟹座的普惠关怀赋予了其为全球数十亿人提供金融入口的守护使命", status: "dormant" },
+  { name: "Stripe Inc.", ticker: "STRP", type: "institution", category: "institution", narrative: "以开发者友好的API设计重新定义互联网支付基础设施，成为数字经济的隐形支付层", inception: "2010-01-01", verdict: "摩羯座的架构美学赋予了其以极简代码征服全球互联网支付的工程信仰", status: "active" },
+  { name: "Block Inc.", ticker: "SQ", type: "institution", category: "institution", narrative: "以Square终端武装中小商户，Cash App开创金融民主化的新范式与比特币普及之路", inception: "2015-11-19", verdict: "天蝎座的变革锋芒赋予了其在传统金融体系裂缝中植入去中心化种子的颠覆力", status: "dormant" },
+
+  // ===== CONGLOMERATES =====
+  { name: "Berkshire Hathaway Inc.", ticker: "BRK.A", type: "institution", category: "institution", narrative: "以巴菲特的复利信仰构建价值投资帝国，保险浮存金成为永不停歇的资本引擎", inception: "1976-12-31", verdict: "摩羯座的纪律信仰赋予了其以复利魔法穿越牛熊周期的永恒耐心", status: "active" },
+  { name: "SoftBank Group Corp.", ticker: "SFTBY", type: "institution", category: "institution", narrative: "以愿景基金重塑全球科技投资版图，孙正义的豪赌哲学成为独角兽孵化器的终极杠杆", inception: "1994-12-22", verdict: "摩羯座的远见卓识赋予了其在科技周期低谷中重仓押注的极端耐心与信念", status: "dormant" },
+  { name: "3G Capital", ticker: "3GC", type: "institution", category: "institution", narrative: "以零基预算与极致效率重塑消费品牌运营逻辑，汉堡王与百威的幕后操盘手", inception: "2004-01-01", verdict: "摩羯座的铁腕纪律赋予了其在企业运营中榨取每一分利润的严酷执行力", status: "active" },
+  { name: "Temasek Holdings", ticker: "TEMK", type: "institution", category: "institution", narrative: "以新加坡主权财富基金身份布局全球科技与金融资产，成为亚洲资本的隐形巨手", inception: "1974-06-25", verdict: "巨蟹座的守护本能赋予了其以国家资本力量守护新加坡经济命脉的忠诚使命", status: "active" },
+  { name: "Mubadala Investment Company", ticker: "MUBD", type: "institution", category: "institution", narrative: "以阿布扎比主权财富驱动全球科技投资，石油资本向未来产业的战略转型先锋", inception: "2002-10-18", verdict: "天秤座的战略平衡赋予了其在化石能源与未来科技之间优雅切换的投资艺术", status: "dormant" },
+
+  // ===== PHARMA =====
+  { name: "Pfizer Inc.", ticker: "PFE", type: "institution", category: "institution", narrative: "以mRNA疫苗改写全球公共卫生史，百年制药巨头在生物科技浪潮中焕发新生", inception: "1942-06-22", verdict: "巨蟹座的治愈使命赋予了其以科学力量守护人类健康的神圣责任感", status: "active" },
+  { name: "Johnson & Johnson", ticker: "JNJ", type: "institution", category: "institution", narrative: "以多元化医疗健康版图覆盖药品、器械与消费品三大领域，成为全球最信任的 healthcare 品牌", inception: "1944-01-16", verdict: "摩羯座的稳健根基赋予了其以百年信条穿越医疗行业周期波动的持久力", status: "dormant" },
+  { name: "Moderna Inc.", ticker: "MRNA", type: "institution", category: "institution", narrative: "以mRNA技术平台开创生物制药新纪元，从新冠疫苗到癌症疫苗的科技跨越", inception: "2018-12-07", verdict: "射手座的探索激情赋予了其在未知生物前沿领域大胆押注的冒险精神", status: "active" },
+  { name: "Roche Holding AG", ticker: "ROG", type: "institution", category: "institution", narrative: "以精准医疗与诊断双轮驱动统治全球肿瘤学领域，瑞士制药的隐形冠军", inception: "1896-01-01", verdict: "摩羯座的深耕执念赋予了其在肿瘤药物研发中追求极致精准的科学信仰", status: "active" },
+  { name: "Novartis AG", ticker: "NVS", type: "institution", category: "institution", narrative: "以基因与细胞疗法引领制药行业前沿革命，从化学制药到生物科技的华丽蜕变", inception: "1996-03-29", verdict: "白羊角的先锋锐气赋予了其在基因疗法无人区中率先冲锋的创新勇气", status: "dormant" },
+
+  // ===== ENERGY =====
+  { name: "ExxonMobil Corporation", ticker: "XOM", type: "institution", category: "institution", narrative: "以化石能源帝国统治全球石油天然气供应链，地缘政治博弈中的终极权力玩家", inception: "1999-11-30", verdict: "射手座的扩张野心赋予了其在全球能源版图中开疆拓土的帝国意志", status: "active" },
+  { name: "Chevron Corporation", ticker: "CVX", type: "institution", category: "institution", narrative: "以垂直整合的能源产业链掌控从油井到加油站的每一个利润节点，石油寡头的经典范本", inception: "1879-09-10", verdict: "处女座的精细运营赋予了其在能源产业链每个环节榨取最大效率的工程能力", status: "dormant" },
+  { name: "Saudi Aramco", ticker: "2222", type: "institution", category: "institution", narrative: "以全球最大原油储量与最低开采成本定义石油行业的成本底线，沙特王权的经济基石", inception: "2019-12-11", verdict: "射手座的无限富足赋予了其以石油之泉浇灌全球经济命脉的馈赠之力", status: "active" },
+  { name: "Shell plc", ticker: "SHEL", type: "institution", category: "institution", narrative: "以百年石油巨头身份向新能源转型，天然气与可再生能源的混合战略引领能源过渡", inception: "1907-02-01", verdict: "水瓶座的变革愿景赋予了其在化石能源黄昏中拥抱绿色未来的转型勇气", status: "active" },
+  { name: "BP plc", ticker: "BP", type: "institution", category: "institution", narrative: "以Beyond Petroleum战略宣告石油时代的自我颠覆，在深水地平线灾难后重生为能源转型先锋", inception: "1909-04-14", verdict: "白羊座的涅槃勇气赋予了其在灾难废墟中重新定义自我的重生之力", status: "dormant" },
+
+  // ===== CONSULTING =====
+  { name: "McKinsey & Company", ticker: "MCK", type: "institution", category: "institution", narrative: "以精英咨询文化渗透全球企业决策层，成为CEO们最信赖的战略外脑与权力幕僚", inception: "1926-01-01", verdict: "摩羯座的权威气场赋予了其在企业最高决策殿堂中指点江山的战略统治力", status: "active" },
+  { name: "Boston Consulting Group", ticker: "BCG", type: "institution", category: "institution", narrative: "以矩阵管理与增长份额矩阵重塑商业战略思维框架，管理咨询界的思想灯塔", inception: "1963-07-01", verdict: "巨蟹座的洞察深度赋予了其穿透企业复杂组织迷雾的战略直觉", status: "active" },
+  { name: "Bain & Company", ticker: "BAIN", type: "institution", category: "institution", narrative: "以结果导向的咨询哲学与私募股权联盟打造独特竞争力，从战略到执行的闭环操盘手", inception: "1973-07-01", verdict: "巨蟹座的务实本能赋予了其将战略蓝图转化为真实股东回报的执行力", status: "dormant" },
+  { name: "Deloitte", ticker: "DLT", type: "institution", category: "institution", narrative: "以全球最大专业服务网络覆盖审计、咨询与税务全链条，四大会计师事务所之首", inception: "1845-01-01", verdict: "摩羯座的严谨传统赋予了其为全球资本市场提供信任基石的守门人角色", status: "active" },
+  { name: "PricewaterhouseCoopers", ticker: "PWC", type: "institution", category: "institution", narrative: "以审计公信力守护全球资本市场的信任底线，专业服务的百年金字招牌", inception: "1998-07-01", verdict: "巨蟹座的信任守护赋予了其为上市公司财务真实性背书的神圣职责", status: "dormant" },
+
+  // ===== OTHER INFLUENTIAL ENTITIES =====
+  { name: "SpaceX", ticker: "SPCE", type: "institution", category: "institution", narrative: "以可回收火箭颠覆航天产业成本结构，星链计划构建太空互联网的全球覆盖", inception: "2002-05-06", verdict: "金牛星的物质征服欲赋予了其将人类文明推向星际空间的野心与执着", status: "active" },
+  { name: "OpenAI", ticker: "OAI", type: "institution", category: "institution", narrative: "以大语言模型引爆生成式AI革命，ChatGPT成为人类与机器智能交互的里程碑", inception: "2015-12-11", verdict: "射手座的远见卓识赋予了其开启通用人工智能潘多拉魔盒的先驱使命", status: "active" },
+  { name: "Alibaba Group", ticker: "BABA", type: "institution", category: "institution", narrative: "以电商生态统治中国数字消费市场，蚂蚁集团试图重构金融基础设施的底层逻辑", inception: "2014-09-19", verdict: "处女座的生态精密赋予了其从电商到云计算到金融的全链路商业帝国构建力", status: "dormant" },
+  { name: "Tencent Holdings", ticker: "TCEHY", type: "institution", category: "institution", narrative: "以微信生态编织十二亿人的数字生活基础设施，社交与游戏的超级入口", inception: "2004-06-16", verdict: "双子座的社交天赋赋予了其连接中国数字社会每一个神经末梢的黏性力量", status: "active" },
+  { name: "Walmart Inc.", ticker: "WMT", type: "institution", category: "institution", narrative: "以全球最大零售网络与供应链效率统治消费市场，电商反击战重塑零售竞争格局", inception: "1972-08-25", verdict: "处女座的效率信仰赋予了其在零售供应链中追求极致成本控制的运营艺术", status: "active" },
+  { name: "Procter & Gamble Co.", ticker: "PG", type: "institution", category: "institution", narrative: "以品牌矩阵统治全球日用消费品心智，从洗发水到纸尿裤的消费帝国无处不在", inception: "1890-01-01", verdict: "摩羯座的品牌信仰赋予了其将日用品转化为消费者情感依赖的营销魔法", status: "dormant" },
+  { name: "Coca-Cola Company", ticker: "KO", type: "institution", category: "institution", narrative: "以一瓶碳酸饮料征服全球200个国家，品牌价值成为商业史上最持久的护城河", inception: "1919-09-05", verdict: "处女角的配方执念赋予了其将一种饮料转化为全球文化符号的品牌炼金术", status: "active" },
+  { name: "The Walt Disney Company", ticker: "DIS", type: "institution", category: "institution", narrative: "以IP帝国统治全球娱乐消费，从米老鼠到漫威的内容宇宙构建永恒的快乐工厂", inception: "1957-11-12", verdict: "天蝎座的情感操控赋予了其将故事转化为数十亿美元IP帝国的叙事魔力", status: "active" },
+  { name: "Nike Inc.", ticker: "NKE", type: "institution", category: "institution", narrative: "以Just Do It精神将运动鞋转化为全球文化符号，品牌溢价超越产品本身的价值", inception: "1980-12-02", verdict: "射手角的运动激情赋予了其将体育精神转化为消费信仰的品牌感召力", status: "dormant" },
+  { name: "Toyota Motor Corporation", ticker: "TM", type: "institution", category: "institution", narrative: "以精益生产与氢能源双战略统治全球汽车制造业，TPS成为工业管理的圣经", inception: "1999-05-10", verdict: "金牛角的精益信仰赋予了其在制造工艺中消除一切浪费的极致追求", status: "active" },
+  { name: "LVMH Moët Hennessy", ticker: "MC", type: "institution", category: "institution", narrative: "以75个奢侈品牌构建全球最大的奢侈品帝国，从LV到Dior的欲望制造机", inception: "1987-06-04", verdict: "双子座的品味天赋赋予了其将奢侈转化为全球通用货币的商业直觉", status: "active" },
+  { name: "Nestlé SA", ticker: "NESN", type: "institution", category: "institution", narrative: "以食品饮料版图覆盖全球每个家庭的餐桌，从咖啡到婴儿奶粉的消费必需品帝国", inception: "1866-01-01", verdict: "摩羯角的务实根基赋予了其以基础消费品征服全球味蕾的持久耐心", status: "dormant" },
+  { name: "Lockheed Martin Corporation", ticker: "LMT", type: "institution", category: "institution", narrative: "以隐形战斗机与导弹防御系统统治全球军工产业链，地缘冲突中的终极受益者", inception: "1995-03-16", verdict: "双鱼角的战略直觉赋予了其在地缘博弈中精准布局军工订单的预见力", status: "active" },
+  { name: "RTX Corporation", ticker: "RTX", type: "institution", category: "institution", narrative: "以航空发动机与国防电子双引擎统治军工科技，从商用航空到导弹系统的全栈覆盖", inception: "1922-07-01", verdict: "巨蟹角的守护本能赋予了其以军工科技为国家筑起安全屏障的使命感", status: "dormant" },
+  { name: "Palantir Technologies Inc.", ticker: "PLTR", type: "institution", category: "institution", narrative: "以大数据分析平台渗透全球情报与国防体系，成为监控资本主义的技术代名词", inception: "2020-09-30", verdict: "天秤角的情报天平赋予了其在数据洪流中识别威胁与机遇的算法正义", status: "active" },
+  { name: "Coinbase Global Inc.", ticker: "COIN", type: "institution", category: "institution", narrative: "以合规加密货币交易所身份成为Web3世界的传统金融入口，连接法币与加密资产的关键桥梁", inception: "2021-04-14", verdict: "白羊角的开拓勇气赋予了其在监管迷雾中为加密货币争取合法地位的先锋精神", status: "dormant" },
+  { name: "Binance", ticker: "BNB", type: "institution", category: "institution", narrative: "以全球最大加密货币交易量定义去中心化金融的新秩序，从交易所到公链的加密帝国", inception: "2017-07-14", verdict: "巨蟹角的庇护本能赋予了其为全球加密用户提供金融避风港的去中心化使命", status: "active" },
+  { name: "Ant Group Co. Ltd.", ticker: "ANT", type: "institution", category: "institution", narrative: "以支付宝重塑中国数字支付基础设施，金融科技独角兽的巅峰与监管转折的寓言", inception: "2014-10-16", verdict: "天秤角的普惠愿景赋予了其以技术力量降低金融服务门槛的社会理想", status: "dormant" },
+  { name: "Tether Limited", ticker: "USDT", type: "institution", category: "institution", narrative: "以稳定币锚定法币成为加密世界的流动性基石，争议与规模并存的影子银行", inception: "2014-07-03", verdict: "巨蟹角的锚定本能赋予了其在加密货币狂潮中维持价值稳定的定海神针之力", status: "active" },
+  { name: "World Economic Forum", ticker: "WEF", type: "institution", category: "institution", narrative: "以达沃斯论坛汇聚全球政商精英，成为塑造全球经济议程的超级思想平台", inception: "1971-01-24", verdict: "水瓶座的世界公民理念赋予了其将全球精英凝聚在达沃斯雪峰之上的愿景感召力", status: "active" },
+  { name: "International Monetary Fund", ticker: "IMF", type: "institution", category: "institution", narrative: "以全球金融最后贷款人身份维护国际货币体系稳定，SDR成为超主权货币的雏形", inception: "1944-07-22", verdict: "巨蟹角的全球守护使命赋予了其在金融危机中为脆弱经济体提供生命线的治愈之力", status: "dormant" },
+  { name: "World Bank Group", ticker: "WB", type: "institution", category: "institution", narrative: "以发展融资重塑全球南方经济格局，基础设施投资成为消除贫困的战略武器", inception: "1944-07-22", verdict: "巨蟹角的滋养本能赋予了其为发展中国家注入经济生命力的全球关怀", status: "active" },
+  { name: "SWIFT", ticker: "SWFT", type: "institution", category: "institution", narrative: "以跨境支付报文系统统治全球金融通信网络，成为美元霸权的技术执行层", inception: "1973-05-01", verdict: "金牛角的坚固基石赋予了其作为全球金融信息高速公路的不可替代性", status: "active" },
+  { name: "DTCC", ticker: "DTCC", type: "institution", category: "institution", narrative: "以证券清算与结算基础设施支撑全球数千万亿美元交易的后台命脉，金融体系的隐形脊梁", inception: "1999-09-30", verdict: "天秤角的清算天平赋予了其在每一笔金融交易背后维持市场信任的平衡之力", status: "dormant" },
+  { name: "Caisse de dépôt et placement du Québec", ticker: "CDPQ", type: "institution", category: "institution", narrative: "以加拿大最大养老基金身份布局全球基础设施与私募股权，长期资本的力量典范", inception: "1965-07-15", verdict: "巨蟹角的代际守护赋予了其以长期资本为未来世代守护财富的跨期责任感", status: "active" }
+];;
+var archetypeTitansData = [
+  { name: "Warren Buffett", ticker: null, type: "titan", category: "titan", narrative: "奥马哈先知以复利为信仰，将价值投资升华为一种近乎宗教的资本哲学，半个世纪来定义了理性投资的终极范式。", inception: "1930-08-30", verdict: "处女座的精准与纪律赋予了其穿越牛熊的永恒智慧，土星回归之际铸就了价值投资的圣杯", status: "active" },
+  { name: "Ray Dalio", ticker: null, type: "titan", category: "titan", narrative: "桥水基金创始人以宏观周期为棋盘，用原则驱动的方法论重新定义了全球宏观对冲的边界。", inception: "1949-08-01", verdict: "狮子座的王者气概赋予了其洞悉经济机器运转规律的宏大视野，太阳拱木星铸就了宏观对冲的帝国", status: "active" },
+  { name: "George Soros", ticker: null, type: "titan", category: "titan", narrative: "量子基金传奇以反身性理论为武器，曾单日击溃英镑央行，成为市场博弈论的最高化身。", inception: "1930-08-12", verdict: "狮子座的勇气与野心赋予了其撕裂市场秩序的力量，天王星冲冥王星铸就了金融炼金术士的传奇", status: "active" },
+  { name: "Jim Simons", ticker: null, type: "titan", category: "titan", narrative: "文艺复兴科技创始人将数学密码引入混沌市场，以量化革命缔造了人类金融史上最持久的超额收益神话。", inception: "1938-09-25", verdict: "天秤座追求均衡的天性赋予了其在随机性中寻找秩序的天赋，水星合智神星铸就了量化投资的永恒算法", status: "active" },
+  { name: "Jamie Dimon", ticker: null, type: "titan", category: "titan", narrative: "摩根大通掌舵人以铁腕统治华尔街最大银行帝国，在每一次金融危机中逆势扩张，成为美国金融体系的定海神针。", inception: "1956-03-13", verdict: "双鱼座的直觉与共情赋予了其在金融风暴中驾驭巨轮的深海之力，海王星入庙铸就了银行帝国的守护者", status: "active" },
+  { name: "Janet Yellen", ticker: null, type: "titan", category: "titan", narrative: "从美联储主席到财政部长，她以学者之姿执掌全球最大经济体的金融命脉，成为战后最具影响力的女性经济决策者。", inception: "1946-08-13", verdict: "狮子座的威严与仁慈赋予了其调和通胀与就业的央行艺术，太阳拱土星铸就了货币政策的女性标杆", status: "active" },
+  { name: "Jerome Powell", ticker: null, type: "titan", category: "titan", narrative: "美联储主席在疫情与通胀的双重风暴中掌舵全球货币体系，其每一次讲话都足以令万亿资本重新定价。", inception: "1953-02-04", verdict: "水瓶座的革新与冷静赋予了其重构全球流动性版图的超然定力，天王星入庙铸就了利率之神的权杖", status: "active" },
+  { name: "Christine Lagarde", ticker: null, type: "titan", category: "titan", narrative: "从IMF到欧洲央行，她以优雅外交手腕统御欧元区货币政策，在全球金融治理中编织着跨大西洋的权力网络。", inception: "1956-12-29", verdict: "摩羯座的坚毅与远见赋予了其在欧债废墟上重建货币秩序的使命，土星入庙铸就了欧元守护者的铁腕与优雅", status: "active" },
+  { name: "Abigail Johnson", ticker: null, type: "titan", category: "titan", narrative: "富达投资第三代掌门人以万亿资产为疆域，将家族金融王朝推向数字化资管的新纪元。", inception: "1961-12-19", verdict: "射手座的自由与扩张赋予了其打破资管传统的冒险精神，木星入庙铸就了万亿资管帝国的女继承者", status: "active" },
+  { name: "Ken Griffin", ticker: null, type: "titan", category: "titan", narrative: "城堡投资创始人以多策略霸权统治对冲基金世界，将信息优势与速度优势熔炼为不可复制的交易帝国。", inception: "1968-10-15", verdict: "天秤座的战略平衡赋予了其在多空之间游刃有余的优雅，金星拱冥王星铸就了城堡投资的永恒壁垒", status: "active" },
+  { name: "Elon Musk", ticker: null, type: "titan", category: "titan", narrative: "从特斯拉到SpaceX再到X，他以第一性原理为剑，在电动车、航天、社交媒体和AI四条战线上同时颠覆人类文明的运行逻辑。", inception: "1971-06-28", verdict: "巨蟹座的直觉与保护欲赋予了其构建多行星文明的深层驱动力，月亮合天王星铸就了跨星际商业的先知", status: "active" },
+  { name: "Sam Altman", ticker: null, type: "titan", category: "titan", narrative: "OpenAI掌舵人以通用人工智能为终极信仰，正在重新定义人类与机器智能的权力边界，成为AI时代最具影响力的技术先知。", inception: "1985-04-06", verdict: "白羊座的先锋精神赋予了其点燃AGI火种的勇气，火星入庙铸就了人工智能时代的普罗米修斯", status: "active" },
+  { name: "Mark Zuckerberg", ticker: null, type: "titan", category: "titan", narrative: "Meta创始人以社交图谱为帝国根基，掌控全球近半数人口的数字生活，正以元宇宙之名重塑人类交互的底层协议。", inception: "1984-05-14", verdict: "金牛座的固执与占有欲赋予了其构建数字帝国的不动摇意志，金星入庙铸就了社交图谱的永恒霸主", status: "active" },
+  { name: "Satya Nadella", ticker: null, type: "titan", category: "titan", narrative: "微软CEO以云为先、AI为魂的战略转型，将一个濒临黄昏的软件帝国重新锻造为市值三万亿的科技巨兽。", inception: "1967-08-19", verdict: "狮子座的王者风范赋予了其重塑微软灵魂的领袖魅力，太阳拱木星铸就了云计算帝国的复兴者", status: "active" },
+  { name: "Jensen Huang", ticker: null, type: "titan", category: "titan", narrative: "英伟达CEO以GPU为万能芯片，从游戏显卡到AI算力霸权，成为这场人工智能革命最核心的硬件教父。", inception: "1963-02-17", verdict: "水瓶座的远见与颠覆赋予了其预见AI算力大爆炸的超前视野，天王星拱土星铸就了算力时代的芯片沙皇", status: "active" },
+  { name: "Tim Cook", ticker: null, type: "titan", category: "titan", narrative: "苹果CEO以精密供应链管理和极致产品哲学，将三万亿市值的消费电子帝国推向前所未有的商业巅峰。", inception: "1960-11-01", verdict: "天蝎座的深度与掌控欲赋予了其在暗处精密布局的耐心，冥王星入庙铸就了消费电子帝国的隐形操控者", status: "active" },
+  { name: "Sundar Pichai", ticker: null, type: "titan", category: "titan", narrative: "谷歌CEO以搜索与AI双轮驱动，掌控全球信息流动的命脉，成为数字时代最沉默的权力中枢。", inception: "1972-06-10", verdict: "双子座的信息掌控力赋予了其统御全球知识流动的天赋，水星入庙铸就了信息帝国的沉默守门人", status: "active" },
+  { name: "Jeff Bezos", ticker: null, type: "titan", category: "titan", narrative: "亚马逊创始人以长期主义为信仰，从电商到云计算到太空，构建了一个渗透人类生活每一个毛孔的商业生态圈。", inception: "1964-01-12", verdict: "摩羯石的野心与耐力赋予了其从零到万亿的帝国建造力，土星拱冥王星铸就了长期主义的商业神殿", status: "active" },
+  { name: "Bill Gates", ticker: null, type: "titan", category: "titan", narrative: "微软联合创始人以操作系统垄断了个人电脑时代，退休后以慈善重塑全球公共卫生格局，成为技术权力与人文关怀的矛盾统一体。", inception: "1955-10-28", verdict: "天蝎座的洞察与转化力赋予了其从代码到慈善的权力变奏，冥王星入庙铸就了软件帝国的永恒幽灵", status: "active" },
+  { name: "Vitalik Buterin", ticker: null, type: "titan", category: "titan", narrative: "以太坊创始人以智能合约重新定义了信任的底层协议，创造了去中心化金融的整个平行宇宙。", inception: "1994-01-31", verdict: "水瓶座的天才与叛逆赋予了其重构全球信任机制的超凡想象力，天王星入庙铸就了去中心化世界的年轻造物主", status: "active" },
+  { name: "Satoshi Nakamoto", ticker: null, type: "titan", category: "titan", narrative: "比特币的匿名创造者以一篇白皮书和一个创世区块，点燃了去中心化货币的革命火种，随后消失于虚无，成为金融史上最伟大的幽灵。", inception: "1975-04-05", verdict: "白羊座的创世冲动赋予了其从零构建去中心化货币宇宙的原始力量，火星合天王星铸就了加密世界的无名创世神", status: "active" },
+  { name: "Changpeng Zhao", ticker: null, type: "titan", category: "titan", narrative: "币安创始人以速度和野心将一家加密交易所打造为全球交易量最大的数字资产平台，成为加密世界最具争议的流量之王。", inception: "1977-09-01", verdict: "处女座的精密与执行力赋予了其在混沌加密市场中建立秩序的工匠精神，水星拱火星铸就了交易所帝国的极速建造者", status: "active" },
+  { name: "Arthur Hayes", ticker: null, type: "titan", category: "titan", narrative: "BitMEX创始人以永续合约颠覆了加密衍生品市场，其犀利的市场评论和大胆的交易哲学使他成为DeFi时代的精神图腾。", inception: "1985-01-01", verdict: "摩羯石的野心与纪律赋予了其在监管灰色地带建立衍生品帝国的冷酷意志，土星入庙铸就了加密衍生品的黑暗骑士", status: "dormant" },
+  { name: "Michael Saylor", ticker: null, type: "titan", category: "titan", narrative: "MicroStrategy创始人将公司全部资产负债表押注比特币，以企业级信仰将加密货币从投机工具升华为数字黄金的终极叙事。", inception: "1965-02-04", verdict: "水瓶座的先知气质赋予了其将比特币奉为数字宗教的传道热情，天王星拱海王星铸就了比特币的企业级先知", status: "active" },
+  { name: "Larry Fink", ticker: null, type: "titan", category: "titan", narrative: "贝莱德CEO以十万亿美元资产为权力基石，通过ESG叙事重塑全球资本流向，成为华尔街真正的影子国王。", inception: "1952-11-02", verdict: "天蝎座的深度与掌控欲赋予了其在暗处引导全球资本潮汐的权力，冥王星拱土星铸就了十万亿资管帝国的暗影之王", status: "active" },
+  { name: "Carl Icahn", ticker: null, type: "titan", category: "titan", narrative: "激进投资之王以股东激进主义为武器，数十年间在董事会战场上攻城略地，成为企业治理变革的永恒催化剂。", inception: "1936-02-16", verdict: "水瓶座的叛逆与独立赋予了其挑战企业权力结构的无畏精神，天王星冲冥王星铸就了激进投资的永恒斗士", status: "active" },
+  { name: "David Tepper", ticker: null, type: "titan", category: "titan", narrative: "阿帕卢萨管理公司创始人以逆向投资为信仰，在市场恐慌中贪婪买入，成为困境资产投资的不朽传奇。", inception: "1957-09-11", verdict: "处女座的逆向分析力赋予了其在废墟中发现钻石的精准眼光，水星拱土星铸就了困境资产猎手的永恒直觉", status: "active" },
+  { name: "Paul Tudor Jones", ticker: null, type: "titan", category: "titan", narrative: "都铎投资创始人以技术分析与宏观直觉的完美融合，在1987年股灾中一战封神，成为市场择时艺术的最高典范。", inception: "1954-09-28", verdict: "天秤市的平衡美感赋予了其在混沌K线中捕捉市场韵律的艺术直觉，金星拱天王星铸就了交易艺术的永恒大师", status: "active" },
+  { name: "Stanley Druckenmiller", ticker: null, type: "titan", category: "titan", narrative: "传奇宏观交易员以集中押注和果断止损闻名，三十年间在汇率、利率和股指的战场上创造了无与伦比的风险调整收益。", inception: "1953-06-14", verdict: "双子座的信息处理天赋赋予了其在宏观变量中建立因果链条的超凡能力，水星拱木星铸就了宏观交易的终极大脑", status: "active" },
+  { name: "John Paulson", ticker: null, type: "titan", category: "titan", narrative: "在2008年次贷危机中通过做空CDO赚取150亿美元，完成了金融史上最伟大的单笔交易，成为逆势投机的永恒标杆。", inception: "1955-12-21", verdict: "射手座的远见与胆识赋予了其在全民狂热中独嗅危机的先知直觉，木星冲冥王星铸就了做空传奇的末日先知", status: "dormant" },
+  { name: "Steve Schwarzman", ticker: null, type: "titan", category: "titan", narrative: "黑石集团联合创始人以私募股权重塑了全球企业并购的游戏规则，将华尔街的杠杆艺术推向了主权财富级别。", inception: "1947-02-14", verdict: "水瓶座的宏大愿景赋予了其构建私募股权帝国的超凡格局，天王星拱土星铸就了杠杆收购之王的不朽王朝", status: "active" },
+  { name: "Howard Marks", ticker: null, type: "titan", category: "titan", narrative: "橡树资本创始人以周期思维和风险控制为信仰，其投资备忘录成为一代金融从业者的圣经级读物。", inception: "1946-04-23", verdict: "金牛石的稳健与耐心赋予了其在信贷周期中穿越迷雾的哲学深度，金星拱土星铸就了风险控制的永恒导师", status: "active" },
+  { name: "Mario Draghi", ticker: null, type: "titan", category: "titan", narrative: "前欧洲央行行长以'不惜一切代价'的三个词拯救了欧元，成为欧洲货币一体化进程中不可替代的守护者。", inception: "1947-09-03", verdict: "处女石的精密与责任感赋予了其在欧元解体边缘力挽狂澜的冷静，水星拱土星铸就了欧元的终极守护神", status: "dormant" },
+  { name: "Ben Bernanke", ticker: null, type: "titan", category: "titan", narrative: "前美联储主席以大萧条学者的身份执掌央行，在2008年金融危机中用量化宽松重新定义了央行的最后贷款人角色。", inception: "1953-12-13", verdict: "射手座的学术视野赋予了其将理论转化为政策工具的非凡能力，木星拱土星铸就了量化宽松之父的历史地位", status: "dormant" },
+  { name: "Bill Ackman", ticker: null, type: "titan", category: "titan", narrative: "Pershing Square创始人以激进股东 activism 和高调做空闻名，其每一次公开喊话都足以引发目标公司股价的剧烈震荡。", inception: "1966-05-11", verdict: "金牛石的固执与信念赋予了其在市场逆风中坚持到底的钢铁意志，金星拱火星铸就了激进投资的永恒斗牛士", status: "active" },
+  { name: "Michael Burry", ticker: null, type: "titan", category: "titan", narrative: "Scion Capital创始人以独到的数据挖掘能力预见次贷危机，成为金融史上最著名的逆向投资者，其持仓披露至今仍具有市场风向标意义。", inception: "1971-06-19", verdict: "双子座的深度分析力赋予了其在数据废墟中发掘真相的侦探天赋，水星合土星铸就了末日预言家的清醒之眼", status: "active" },
+  { name: "David Einhorn", ticker: null, type: "titan", category: "titan", narrative: "绿光资本创始人以价值投资与做空研究的完美结合闻名，其年度演讲是投资界最受期待的思想盛宴之一。", inception: "1966-11-20", verdict: "天蝎座的洞察与批判力赋予了其穿透企业财报迷雾的X光之眼，冥王星拱水星铸就了做空研究的永恒侦探", status: "dormant" },
+  { name: "Leon Cooperman", ticker: null, type: "titan", category: "titan", narrative: "Omega Advisors创始人以数十年华尔街经验积累了深厚的价值投资智慧，是纽约证券交易所交易大厅时代的活化石。", inception: "1947-04-25", verdict: "金牛石的忠诚与坚守赋予了其在华尔街数十年风雨中不变的信念，金星入庙铸就了价值投资的永恒守望者", status: "dormant" },
+  { name: "Seth Klarman", ticker: null, type: "titan", category: "titan", narrative: "Baupost Group创始人以安全边际为信仰，其著作《安全边际》成为价值投资者追捧的稀缺圣经，基金长期拒绝新投资者。", inception: "1957-05-21", verdict: "双子座的求知欲与沟通力赋予了其将价值投资哲学传播为信仰的力量，水星拱金星铸就了安全边际的永恒布道者", status: "dormant" },
+  { name: "Jim Chanos", ticker: null, type: "titan", category: "titan", narrative: "Kynikos Associates创始人以做空为毕生信仰，是最早公开质疑安然和恒大等巨头的先驱，成为金融诚信的永恒守夜人。", inception: "1957-12-31", verdict: "摩羯石的严谨与怀疑精神赋予了其在繁荣表象下嗅出欺诈的警犬直觉，土星冲冥王星铸就了做空先驱的不屈之魂", status: "dormant" },
+  { name: "Cathie Wood", ticker: null, type: "titan", category: "titan", narrative: "ARK Invest创始人以颠覆性创新为投资信仰，在电动车、基因编辑和区块链等前沿赛道上重仓押注，成为散户投资者的精神领袖。", inception: "1955-11-26", verdict: "射手座的远见与乐观赋予了其在技术变革前夜重仓押注的先知胆识，木星拱天王星铸就了颠覆性投资的永恒女先知", status: "active" },
+  { name: "Lloyd Blankfein", ticker: null, type: "titan", category: "titan", narrative: "前高盛CEO将这家百年投行推向了商品交易和自营业务的巅峰，成为2008年后华尔街权力结构的核心象征。", inception: "1954-09-20", verdict: "处女石的精密与野心赋予了其在投行丛林中步步为营的战略耐心，水星拱冥王星铸就了高盛帝国的永恒建筑师", status: "dormant" },
+  { name: "David Solomon", ticker: null, type: "titan", category: "titan", narrative: "高盛CEO在投行业务转型与文化变革中掌舵华尔街最具影响力的金融机构，同时以DJ身份定义了金融界的新酷形象。", inception: "1962-11-10", verdict: "天蝎座的深度与变革力赋予了其在投行黄昏中重塑高盛灵魂的暗夜勇气，冥王星入庙铸就了华尔街的夜行DJ与权力操盘手", status: "active" },
+  { name: "James Gorman", ticker: null, type: "titan", category: "titan", narrative: "摩根士丹利CEO以稳健的手腕引导这家华尔街巨头穿越金融危机后的监管风暴，成功将业务重心转向财富管理。", inception: "1958-07-14", verdict: "巨蟹座的保护与滋养赋予了其在金融风暴中守护摩根士丹利帝国的母性力量，月亮拱土星铸就了华尔街的稳健舵手", status: "dormant" },
+  { name: "Larry Page", ticker: null, type: "titan", category: "titan", narrative: "谷歌联合创始人以PageRank算法重新定义了人类获取信息的方式，其技术远见至今仍在塑造Alphabet的战略方向。", inception: "1973-03-26", verdict: "白羊座的创新冲动赋予了其从车库构建信息帝国的原始能量，火星入庙铸就了搜索算法的永恒创世者", status: "dormant" },
+  { name: "Sergey Brin", ticker: null, type: "titan", category: "titan", narrative: "谷歌联合创始人以数学天才和冒险精神推动了从搜索到自动驾驶的技术版图，是Alphabet隐秘的战略灵魂。", inception: "1973-08-21", verdict: "狮子座的创造力与表现欲赋予了其将算法升华为帝国的王者天赋，太阳入庙铸就了谷歌帝国的隐形共治者", status: "dormant" },
+  { name: "Jack Ma", ticker: null, type: "titan", category: "titan", narrative: "阿里巴巴创始人以草根逆袭的传奇故事定义了中国互联网创业的精神图腾，构建了全球最大的电子商务生态系统。", inception: "1964-09-10", verdict: "处女石的务实与完美主义赋予了其从英语教师到商业帝王的蜕变之力，水星拱木星铸就了中国电商的永恒教父", status: "dormant" },
+  { name: "Pony Ma", ticker: null, type: "titan", category: "titan", narrative: "腾讯创始人以微信为超级入口，构建了覆盖社交、游戏、支付的数字生活帝国，成为中国互联网生态的终极守门人。", inception: "1971-10-29", verdict: "天蝎座的深度与隐忍赋予了其在沉默中构建数字帝国的暗夜力量，冥王星入庙铸就了社交生态的永恒暗王", status: "active" },
+  { name: "Mukesh Ambani", ticker: null, type: "titan", category: "titan", narrative: "信实工业掌门人以能源为根基向数字化全面进军，在印度14亿人口的市场上构建了从石油到5G的垂直帝国。", inception: "1957-04-19", verdict: "白羊石的开拓精神赋予了其在印度次大陆上构建商业帝国的征服者能量，火星入庙铸就了印度商业的永恒霸主", status: "active" },
+  { name: "Bernard Arnault", ticker: null, type: "titan", category: "titan", narrative: "LVMH集团CEO以奢侈品为信仰，通过精准并购构建了涵盖75个品牌的全球最大奢侈品帝国，成为法国商业的至高象征。", inception: "1949-03-05", verdict: "双鱼石的审美直觉赋予了其将奢侈升华为信仰的艺术感知力，海王星拱金星铸就了奢侈品帝国的永恒美学家", status: "active" },
+  { name: "Andy Jassy", ticker: null, type: "titan", category: "titan", narrative: "亚马逊CEO从AWS云计算的缔造者成长为全球最大电商和云服务帝国的掌舵人，正在定义后贝zos时代的亚马逊战略。", inception: "1968-01-13", verdict: "摩羯石的纪律与执行力赋予了其将云计算从概念变为万亿产业的建造力，土星入庙铸就了云端帝国的沉默工程师", status: "active" },
+  { name: "Lisa Su", ticker: null, type: "titan", category: "titan", narrative: "AMD CEO以芯片架构的深厚功底和战略魄力，将一家濒临破产的半导体公司打造成了英伟达最强大的竞争对手。", inception: "1969-07-01", verdict: "巨蟹座的直觉与坚韧赋予了其在芯片战场上绝地反击的深层力量，月亮拱火星铸就了半导体复兴的永恒女战神", status: "active" },
+  { name: "Reid Hoffman", ticker: null, type: "titan", category: "titan", narrative: "LinkedIn联合创始人以社交网络重塑了全球职业生态，作为硅谷最活跃的天使投资人，其人脉网络本身就是一种货币。", inception: "1967-08-05", verdict: "狮子座的慷慨与领导力赋予了其将人脉转化为资本的社交魔法，太阳拱木星铸就了硅谷人脉帝国的永恒编织者", status: "active" },
+  { name: "Marc Andreessen", ticker: null, type: "titan", category: "titan", narrative: "a16z联合创始人以'软件正在吞噬世界'的预言定义了一个时代，其风投帝国正在AI、Crypto和生物科技的交叉领域全面布局。", inception: "1971-07-09", verdict: "巨蟹座的直觉与保护欲赋予了其在技术浪潮中识别下一个巨头的母性洞察，月亮拱天王星铸就了风投帝国的技术先知", status: "active" },
+  { name: "Peter Thiel", ticker: null, type: "titan", category: "titan", narrative: "PayPal联合创始人以反共识为投资哲学，从Facebook的最早投资人到Palantir的构建者，其思想影响力远超资本本身。", inception: "1967-10-11", verdict: "天秤石的辩证思维赋予了其在群体狂热中保持清醒的反共识能力，金星拱冥王星铸就了硅谷哲人王的永恒悖论", status: "active" },
+  { name: "Travis Kalanick", ticker: null, type: "titan", category: "titan", narrative: "Uber创始人以破坏性创新颠覆了全球出行行业，其激进的增长哲学重新定义了硅谷对监管的态度。", inception: "1976-08-06", verdict: "狮子座的狂妄与勇气赋予了其碾碎一切障碍的增长引擎，太阳冲冥王星铸就了共享经济时代的永恒叛逆者", status: "dormant" },
+  { name: "Larry Ellison", ticker: null, type: "titan", category: "titan", narrative: "甲骨文创始人以数据库帝国奠定了企业软件的基石，其竞争哲学和对日本文化的痴迷使他成为硅谷最具戏剧性的技术暴君。", inception: "1944-08-17", verdict: "狮子座的戏剧性与统治欲赋予了其在企业软件领域建立永恒王朝的帝王之气，太阳入庙铸就了数据库帝国的永恒沙皇", status: "active" },
+  { name: "Sheryl Sandberg", ticker: null, type: "titan", category: "titan", narrative: "前Meta COO以'向前一步'成为全球职业女性的精神偶像，将Facebook从一家社交网站打造为千亿美元广告帝国。", inception: "1969-08-28", verdict: "处女石的执行力与完美主义赋予了其将社交网络变现为广告帝国的精密手腕，水星拱火星铸就了硅谷女性力量的永恒标杆", status: "dormant" },
+  { name: "Bob Iger", ticker: null, type: "titan", category: "titan", narrative: "迪士尼CEO以皮克斯、漫威、卢卡斯影业和21世纪福克斯的史诗级并购，构建了全球娱乐产业的终极内容帝国。", inception: "1951-02-10", verdict: "水瓶石的远见与创新赋予了其在流媒体时代重塑娱乐版图的超凡想象力，天王星拱木星铸就了快乐帝国的永恒魔术师", status: "active" },
+  { name: "Jack Dorsey", ticker: null, type: "titan", category: "titan", narrative: "Twitter和Square联合创始人以极简主义哲学同时驾驭社交媒体和金融科技两条战线，成为硅谷最古怪的连续创业者。", inception: "1976-11-19", verdict: "天蝎座的深度与神秘赋予了其在社交媒体和区块链之间架设桥梁的暗夜直觉，冥王星入庙铸就了数字言论广场的永恒守门人", status: "active" },
+  { name: "Pavel Durov", ticker: null, type: "titan", category: "titan", narrative: "Telegram创始人以加密通信和去中心化理念打造了全球最具影响力的隐私社交平台，成为数字自由主义的标志性人物。", inception: "1984-10-10", verdict: "天秤石的平衡与正义感赋予了其在监控时代捍卫数字隐私的理想主义，金星拱天王星铸就了加密通信的永恒守护者", status: "active" },
+  { name: "Brian Chesky", ticker: null, type: "titan", category: "titan", narrative: "Airbnb联合创始人以共享经济的理念重新定义了旅行住宿，将信任机制转化为万亿市值的商业奇迹。", inception: "1981-08-29", verdict: "处女石的细节敏感与同理心赋予了其将陌生人客厅变为全球酒店网络的信任魔法，水星拱金星铸就了共享经济的永恒空间魔法师", status: "active" },
+  { name: "Tobi Lutke", ticker: null, type: "titan", category: "titan", narrative: "Shopify创始人以赋能中小企业为使命，构建了全球最大的电商基础设施平台，成为去中心化商业运动的领袖。", inception: "1981-09-25", verdict: "天秤石的和谐与公正赋予了其为百万商家构建公平商业生态的理想主义，金星拱木星铸就了电商基础设施的永恒建筑师", status: "active" },
+  { name: "Daniel Ek", ticker: null, type: "titan", category: "titan", narrative: "Spotify创始人以流媒体模式重塑了全球音乐产业，在苹果和亚马逊的夹缝中捍卫了独立音乐平台的生存空间。", inception: "1983-02-21", verdict: "双鱼石的感性艺术赋予了其将音乐流媒体化为全球听觉神经的浪漫愿景，海王星入庙铸就了流媒体音乐的永恒吟游诗人", status: "active" },
+  { name: "Patrick Collison", ticker: null, type: "titan", category: "titan", narrative: "Stripe联合创始人以优雅的API设计重新定义了互联网支付基础设施，成为全球开发者社区最信赖的金融科技平台。", inception: "1988-09-09", verdict: "处女石的精密与审美赋予了其将支付基础设施化为代码之美的工匠精神，水星入庙铸就了互联网经济的永恒支付管道", status: "active" },
+  { name: "Brian Armstrong", ticker: null, type: "titan", category: "titan", narrative: "Coinbase创始人以合规化和机构化为路径，将加密货币交易所打造为主流金融体系认可的上市企业，成为加密行业通往传统金融的桥梁。", inception: "1982-01-25", verdict: "水瓶座的前瞻与革新赋予了其在监管迷雾中为加密货币开辟合法路径的远见，天王星入庙铸就了加密合规化的永恒桥梁建造者", status: "active" },
+  { name: "Brad Garlinghouse", ticker: null, type: "titan", category: "titan", narrative: "Ripple CEO以跨境支付为使命，在SEC诉讼的炮火中捍卫XRP的合法性，成为加密行业与监管博弈的标志性人物。", inception: "1971-07-21", verdict: "巨蟹座的坚韧与保护欲赋予了其在监管风暴中守护Ripple生态的母性力量，月亮拱冥王星铸就了跨境支付的永恒航海家", status: "active" },
+  { name: "Charles Hoskinson", ticker: null, type: "titan", category: "titan", narrative: "Cardano创始人以学术化方法构建第三代区块链，其数学驱动的哲学使Cardano成为最具争议也最受瞩目的公链项目之一。", inception: "1987-11-05", verdict: "天蝎座的深度与执着赋予了其以数学证明替代信任机制的学术信仰，冥王星拱水星铸就了学术区块链的永恒哲学家", status: "dormant" },
+  { name: "Barry Silbert", ticker: null, type: "titan", category: "titan", narrative: "Digital Currency Group创始人以加密生态系统的全方位布局，构建了从灰度到CoinDesk的加密帝国版图。", inception: "1976-09-15", verdict: "处女石的系统性思维赋予了其在加密荒野中构建生态帝国的精密布局能力，水星拱土星铸就了加密帝国的永恒生态建筑师", status: "dormant" },
+  { name: "Cameron Winklevoss", ticker: null, type: "titan", category: "titan", narrative: "Gemini联合创始人从Facebook诉讼的受害者转型为加密货币的布道者，以双子星交易所推动着加密资产的机构化进程。", inception: "1982-08-21", verdict: "狮子座的竞争精神赋予了其从社交战场转向加密货币赛道的王者转型力，太阳入庙铸就了加密合规交易的永恒双子星", status: "dormant" },
+  { name: "Tyler Winklevoss", ticker: null, type: "titan", category: "titan", narrative: "与兄弟Cameron共同创立Gemini交易所，以奥运赛艇选手的纪律性将比特币从赛博朋克亚文化推向华尔街主流。", inception: "1982-08-21", verdict: "狮子座的荣耀与竞争赋予了其将比特币从暗网推向纽交所的奥运精神，太阳入庙铸就了加密资产主流化的永恒先锋", status: "dormant" },
+  { name: "Justin Sun", ticker: null, type: "titan", category: "titan", narrative: "波场TRON创始人以营销天才和争议性并存的风格，在加密世界中构建了一个覆盖公链、DeFi和稳定币的庞大生态。", inception: "1990-07-10", verdict: "巨蟹座的情感共鸣力赋予了其在加密社区中激发狂热追随的营销天赋，月亮拱木星铸就了加密营销的永恒魔术师", status: "dormant" },
+  { name: "Hayden Adams", ticker: null, type: "titan", category: "titan", narrative: "Uniswap创始人以自动做市商协议(AMM)开创了去中心化交易的新范式，成为DeFi运动中最具影响力的技术创造者之一。", inception: "1992-02-20", verdict: "双鱼石的直觉与创造力赋予了其在以太坊荒原上发明AMM机制的梦幻灵感，海王星拱天王星铸就了DeFi创新的永恒炼金术士", status: "dormant" },
+  { name: "Mike Novogratz", ticker: null, type: "titan", category: "titan", narrative: "Galaxy Digital创始人从华尔街对冲基金大佬转型为加密货币最响亮的布道者，以机构级视角推动着加密资产的主流化进程。", inception: "1958-11-26", verdict: "射手座的冒险与乐观赋予了其从传统金融纵身跃入加密宇宙的先知胆识，木星冲天王星铸就了加密投资的永恒星际航海家", status: "active" },
+  { name: "Naval Ravikant", ticker: null, type: "titan", category: "titan", narrative: "AngelList联合创始人以哲学级思维重新定义了财富创造和杠杆的本质，其推文和播客成为硅谷创业者的思想圣经。", inception: "1974-11-15", verdict: "天蝎座的深度洞察赋予了其穿透财富本质的哲学之眼，冥王星拱水星铸就了硅谷思想帝国的永恒哲人", status: "active" },
+  { name: "Nassim Taleb", ticker: null, type: "titan", category: "titan", narrative: "反脆弱理论创始人以黑天鹅概念改变了人类对风险和不确定性的认知，成为金融危机后最具影响力的思想者之一。", inception: "1960-09-12", verdict: "处女石的批判性思维赋予了其在正态分布的谎言中识别极端风险的不屈之眼，水星冲天王星铸就了反脆弱哲学的永恒先知", status: "active" },
+  { name: "Michael Bloomberg", ticker: null, type: "titan", category: "titan", narrative: "彭博社创始人以金融数据终端统治了全球交易员的桌面，从华尔街到纽约市政厅，其影响力横跨商业、媒体和政治三大领域。", inception: "1942-02-14", verdict: "水瓶座的天才与革新赋予了其将金融信息变为帝国的超凡洞察，天王星拱土星铸就了金融数据终端的永恒信息沙皇", status: "dormant" },
+  { name: "Rupert Murdoch", ticker: null, type: "titan", category: "titan", narrative: "新闻集团创始人以媒体帝国塑造了全球政治舆论的走向，从福克斯新闻到华尔街日报，其影响力渗透了西方社会的认知框架。", inception: "1931-03-11", verdict: "双鱼石的渗透力与影响力赋予了其在全球舆论场中编织叙事的深海之力，海王星冲冥王星铸就了媒体帝国的永恒舆论操控者", status: "dormant" },
+  { name: "Paul Krugman", ticker: null, type: "titan", category: "titan", narrative: "诺贝尔经济学奖得主以凯恩斯主义信仰和犀利的专栏文章，成为全球最具影响力的公共知识分子之一，其观点深刻影响着政策辩论。", inception: "1953-02-28", verdict: "双鱼石的理想主义赋予了其为政府干预辩护的学术热情，海王星拱木星铸就了凯恩斯经济学的永恒布道者", status: "dormant" },
+  { name: "Nouriel Roubini", ticker: null, type: "titan", category: "titan", narrative: "以'末日博士'之称准确预言2008年金融危机，此后持续对全球资产泡沫发出警告，成为金融世界最著名的悲观主义者。", inception: "1958-03-29", verdict: "白羊石的直言不讳赋予了其在繁荣盛宴中敲响警钟的先知勇气，火星冲冥王星铸就了末日预言的永恒守夜人", status: "dormant" },
+  { name: "Mohamed El-Erian", ticker: null, type: "titan", category: "titan", narrative: "前PIMCO CEO以全球宏观视野和优雅的学术表达，成为连接华尔街与学术界的桥梁，其'新常态'概念定义了后危机时代的经济格局。", inception: "1958-08-19", verdict: "狮子座的表达力与领袖气质赋予了其将复杂宏观叙事转化为市场共识的能力，太阳拱水星铸就了全球宏观叙事的永恒诠释者", status: "dormant" },
+  { name: "Robert Kiyosaki", ticker: null, type: "titan", category: "titan", narrative: "《富爸爸穷爸爸》作者以财务教育的通俗化叙事影响了全球数千万人的金钱观，将资产与负债的概念植入了一代人的认知基因。", inception: "1947-04-08", verdict: "白羊石的开拓精神赋予了其打破传统财商教育壁垒的革命勇气，火星入庙铸就了财务自由运动的永恒启蒙者", status: "dormant" },
+  { name: "Oprah Winfrey", ticker: null, type: "titan", category: "titan", narrative: "媒体女王以个人品牌为杠杆构建了横跨电视、杂志、影视和投资的商业帝国，其影响力足以让任何一本书登上畅销榜榜首。", inception: "1954-01-29", verdict: "水瓶座的博爱与革新赋予了其将媒体影响力转化为精神力量的超凡魅力，天王星拱月亮铸就了媒体帝国的永恒精神领袖", status: "dormant" },
+  { name: "Joseph Stiglitz", ticker: null, type: "titan", category: "titan", narrative: "诺贝尔经济学奖得主以信息不对称理论重塑了微观经济学，其对全球化不平等的批判深刻影响了进步主义经济政策。", inception: "1943-02-09", verdict: "水瓶座的人道主义与革新精神赋予了其为经济公平发声的学术勇气，天王星拱土星铸就了进步主义经济学的永恒守护者", status: "dormant" },
+  { name: "Andrew Bailey", ticker: null, type: "titan", category: "titan", narrative: "英格兰银行行长在脱欧后的经济动荡和全球通胀风暴中执掌英国货币政策，成为英镑和英国金融体系的终极守护者。", inception: "1959-03-30", verdict: "白羊石的果断与行动力赋予了其在通胀风暴中果断加息的决策勇气，火星入庙铸就了英镑货币体系的永恒守卫者", status: "dormant" },
+  { name: "Haruhiko Kuroda", ticker: null, type: "titan", category: "titan", narrative: "前日本央行行长以史无前例的量化宽松和收益率曲线控制政策，将日本货币政策推向了人类货币实验的极限边界。", inception: "1944-10-25", verdict: "天蝎座的深度与坚持赋予了其在通缩深渊中坚持无限宽松的暗夜毅力，冥王星拱土星铸就了日本货币实验的永恒暗黑骑士", status: "dormant" },
+  { name: "Alan Greenspan", ticker: null, type: "titan", category: "titan", narrative: "前美联储主席以长达18年的任期定义了格林斯潘时代，其低利率政策既催生了大稳健也埋下了次贷危机的种子。", inception: "1926-03-06", verdict: "双鱼石的模糊与神秘赋予了其用晦涩语言操控市场预期的艺术，海王星入庙铸就了央行沟通术的永恒迷宫建造者", status: "dormant" },
+  { name: "Mario Gabelli", ticker: null, type: "titan", category: "titan", narrative: "Gamco Investors创始人以价值投资和媒体行业专长闻名，数十年间在有线电视和广播行业的并购浪潮中精准套利。", inception: "1942-06-19", verdict: "双子座的信息敏锐度赋予了其在媒体并购中捕捉价值的超凡嗅觉，水星拱金星铸就了媒体价值投资的永恒猎手", status: "dormant" },
+  { name: "Jim Rogers", ticker: null, type: "titan", category: "titan", narrative: "量子基金联合创始人以大宗商品牛市和新兴市场投资闻名，其环球旅行投资记成为全球宏观投资的经典叙事。", inception: "1942-10-19", verdict: "天秤石的全球视野与平衡感赋予了其在新兴市场中发现价值的旅行者直觉，金星拱木星铸就了商品牛市的永恒环球旅行家", status: "dormant" },
+  { name: "Marc Faber", ticker: null, type: "titan", category: "titan", narrative: "以'末日博士'的搭档身份闻名，其Gloom, Boom & Doom报告数十年如一日地警告着全球资产泡沫，成为逆势投资的永恒参照系。", inception: "1946-02-28", verdict: "双鱼石的直觉与悲观赋予了其在泡沫狂欢中保持清醒的末日预感，海王星冲土星铸就了逆势警告的永恒悲观主义者", status: "dormant" },
+  { name: "Kyle Bass", ticker: null, type: "titan", category: "titan", narrative: "Hayman Capital创始人以做空次贷和押注日元贬值闻名，其宏观地缘政治视角为对冲基金行业注入了独特的战略维度。", inception: "1969-09-22", verdict: "处女石的精密分析力赋予了其在宏观地缘棋局中发现不对称机会的猎手直觉，水星拱冥王星铸就了地缘宏观交易的永恒战略家", status: "dormant" },
+  { name: "Dan Loeb", ticker: null, type: "titan", category: "titan", narrative: "Third Point创始人以激进股东 activism 和犀利的信件闻名，其尖锐的企业治理批评使CEO们闻风丧胆。", inception: "1961-12-18", verdict: "射手座的直言与哲学深度赋予了其在企业治理战场上的思想锋芒，木星冲冥王星铸就了激进投资的永恒哲学家战士", status: "dormant" },
+  { name: "Mark Cuban", ticker: null, type: "titan", category: "titan", narrative: "从Broadcast.com到达拉斯独行侠再到Shark Tank，他以多元投资组合和直率的公众形象定义了新时代商业明星的标准模板。", inception: "1958-07-31", verdict: "狮子座的表演欲与慷慨赋予了其将投资变为娱乐秀的非凡魅力，太阳入庙铸就了商业娱乐化的永恒舞台之王", status: "dormant" },
+  { name: "Charlie Munger", ticker: null, type: "titan", category: "titan", narrative: "伯克希尔副董事长以多元思维模型和跨学科智慧成为价值投资运动的永恒灯塔，其智慧箴言影响了数代投资者。", inception: "1924-01-01", verdict: "摩羯石的智慧与耐心赋予了其跨越一个世纪的理性投资哲学，土星入庙铸就了多元思维模型的永恒圣贤", status: "dormant" },
+  { name: "John Bogle", ticker: null, type: "titan", category: "titan", narrative: "先锋集团创始人以指数基金革命彻底改变了普通人的投资方式，其'不要在干草堆中找针'的哲学为数亿投资者节省了万亿费用。", inception: "1929-05-08", verdict: "金牛石的务实与坚韧赋予了其对抗华尔街收费模式的不可动摇信念，金星入庙铸就了指数基金的永恒平民英雄", status: "dormant" },
+  { name: "John Templeton", ticker: null, type: "titan", category: "titan", narrative: "全球投资先驱以逆向投资和全球分散化策略开创了国际投资的先河，其'在最悲观时买入'的哲学成为价值投资的永恒信条。", inception: "1912-11-29", verdict: "射手座的全球视野与乐观赋予了其在战后废墟中寻找投资机会的先知直觉，木星入庙铸就了全球投资的永恒乐观主义者", status: "dormant" },
+  { name: "Anthony Scaramucci", ticker: null, type: "titan", category: "titan", narrative: "SkyBridge Capital创始人以华尔街社交之王的身份连接对冲基金与政治权力，其短暂的白宫任期成为金融与政治交叉的标志性事件。", inception: "1964-01-06", verdict: "摩羯石的政治野心与社交天赋赋予了其在华尔街与华盛顿之间架设桥梁的权力嗅觉，土星拱木星铸就了金融政治交叉领域的永恒掮客", status: "dormant" },
+  { name: "Chamath Palihapitiya", ticker: null, type: "titan", category: "titan", narrative: "Social Capital创始人以SPAC热潮重新定义了散户投资的时代精神，其直言不讳的风格使他成为华尔街建制派最头疼的搅局者。", inception: "1976-09-03", verdict: "处女石的批判性分析力赋予了其拆解传统IPO叙事的犀利眼光，水星冲天王星铸就了SPAC革命的永恒搅局者", status: "dormant" },
+  { name: "Balaji Srinivasan", ticker: null, type: "titan", category: "titan", narrative: "前Coinbase CTO以网络国家和技术乐观主义为信仰，其关于加密货币、AI和去中心化未来的激进预言正在重塑技术精英的世界观。", inception: "1980-05-24", verdict: "双子座的传播天赋与技术洞察赋予了其将网络国家概念植入全球技术精英认知的思想病毒，水星拱天王星铸就了技术去中心化的永恒先知", status: "dormant" },
+  { name: "Agustin Carstens", ticker: null, type: "titan", category: "titan", narrative: "国际清算银行总经理以全球央行之央行的身份，正在主导CBDC和全球金融监管框架的设计，成为传统金融体系对抗加密革命的总指挥。", inception: "1958-06-20", verdict: "双子座的沟通与协调能力赋予了其在全球央行之间建立共识的外交天赋，水星入庙铸就了全球货币体系的永恒协调者", status: "dormant" }
+];;
+var capitalOrbitsData = [
+  {
+    "name": "Apple",
+    "ticker": "AAPL",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "重塑人类交互界面的科技霸主",
+    "inception": "1980-12-12",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Microsoft",
+    "ticker": "MSFT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "统治企业级软件与云基础设施的帝国",
+    "inception": "1986-03-13",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Alphabet",
+    "ticker": "GOOGL",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "掌控全球信息流与AI算力的搜索引擎巨头",
+    "inception": "2004-08-19",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Amazon",
+    "ticker": "AMZN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "吞噬一切零售边界的无限扩张机器",
+    "inception": "1997-05-15",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Meta Platforms",
+    "ticker": "META",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "连接全球30亿人的社交元宇宙帝国",
+    "inception": "2012-05-18",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "NVIDIA",
+    "ticker": "NVDA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "GPU算力霸主，AI革命的底层引擎",
+    "inception": "1999-01-22",
+    "verdict": "水瓶座的颠覆创新与去中心化意志赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Tesla",
+    "ticker": "TSLA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "颠覆百年汽车工业的电动化先锋",
+    "inception": "2010-06-29",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "ARM Holdings",
+    "ticker": "ARM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "移动芯片架构的绝对垄断者",
+    "inception": "2023-09-14",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Palantir",
+    "ticker": "PLTR",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "大数据情报分析的军工级AI平台",
+    "inception": "2020-09-30",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Super Micro Computer",
+    "ticker": "SMCI",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "AI服务器定制化浪潮的硬件加速器",
+    "inception": "2007-03-16",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "BigBear.ai",
+    "ticker": "AI",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "AI决策自动化与边缘计算的新锐力量",
+    "inception": "2021-12-08",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "SoundHound AI",
+    "ticker": "SOUN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "语音AI交互的下一代人机接口",
+    "inception": "2022-04-28",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Upstart Holdings",
+    "ticker": "UPST",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "AI驱动的下一代信用评估革命者",
+    "inception": "2020-12-16",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "AMD",
+    "ticker": "AMD",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "挑战芯片霸权的算力反叛军",
+    "inception": "1979-03-17",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Intel",
+    "ticker": "INTC",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "半导体工业的开创者与困兽",
+    "inception": "1971-10-13",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Broadcom",
+    "ticker": "AVGO",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "芯片与基础设施的并购整合怪兽",
+    "inception": "2009-08-14",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Qualcomm",
+    "ticker": "QCOM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "移动通信基带芯片的专利收割者",
+    "inception": "1991-12-16",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "TSMC",
+    "ticker": "TSM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球芯片代工的绝对产能霸主",
+    "inception": "1994-09-05",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Micron",
+    "ticker": "MU",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "存储芯片周期的波动性博弈者",
+    "inception": "1984-06-01",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Lam Research",
+    "ticker": "LRCX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "半导体制造设备的精密工艺掌控者",
+    "inception": "1984-11-15",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "ASML Holding",
+    "ticker": "ASML",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "EUV光刻机的唯一垄断者",
+    "inception": "1995-03-15",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Block",
+    "ticker": "SQ",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "加密货币与移动支付的融合实验场",
+    "inception": "2015-11-19",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "PayPal",
+    "ticker": "PYPL",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "数字支付的全球基础设施",
+    "inception": "2002-02-15",
+    "verdict": "水瓶座的颠覆创新与去中心化意志赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Coinbase",
+    "ticker": "COIN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "加密资产合规交易的最大入口",
+    "inception": "2021-04-14",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Affirm",
+    "ticker": "AFRM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "先买后付的BNPL赛道领军者",
+    "inception": "2021-01-13",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Amgen",
+    "ticker": "AMGN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "生物制药的长期复利增长引擎",
+    "inception": "1987-06-17",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Gilead Sciences",
+    "ticker": "GILD",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "抗病毒药物领域的奇迹制造者",
+    "inception": "1992-01-22",
+    "verdict": "水瓶座的颠覆创新与去中心化意志赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Regeneron",
+    "ticker": "REGN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "抗体工程与精准医疗的科研先锋",
+    "inception": "1991-06-05",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Vertex Pharmaceuticals",
+    "ticker": "VRTX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "囊性纤维化药物的绝对垄断者",
+    "inception": "1991-07-15",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Moderna",
+    "ticker": "MRNA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "mRNA技术平台的疫苗革命先锋",
+    "inception": "2018-12-07",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Rivian",
+    "ticker": "RIVN",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "电动皮卡与亚马逊配送的绑定赌注",
+    "inception": "2021-11-10",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Lucid Group",
+    "ticker": "LCID",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "高端电动车的奢华技术实验",
+    "inception": "2021-07-26",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "NIO",
+    "ticker": "NIO",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "中国智能电动车的用户社区模式",
+    "inception": "2018-09-12",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "XPeng",
+    "ticker": "XPEV",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "自动驾驶与智能座舱的技术激进派",
+    "inception": "2020-08-27",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Salesforce",
+    "ticker": "CRM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "SaaS CRM云软件的开创者与整合者",
+    "inception": "2004-06-23",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "ServiceNow",
+    "ticker": "NOW",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "企业IT服务自动化的云端引擎",
+    "inception": "2012-06-22",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Snowflake",
+    "ticker": "SNOW",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "云数据仓库的跨平台数据共享层",
+    "inception": "2020-09-16",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Datadog",
+    "ticker": "DDOG",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "云原生可观测性的全方位监控平台",
+    "inception": "2019-09-19",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Cloudflare",
+    "ticker": "NET",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球CDN与边缘计算的互联网护盾",
+    "inception": "2019-09-13",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "MongoDB",
+    "ticker": "MDB",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "NoSQL数据库的文档存储革命者",
+    "inception": "2017-10-19",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Zscaler",
+    "ticker": "ZS",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "零信任安全架构的云原生守护者",
+    "inception": "2018-03-16",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Lockheed Martin",
+    "ticker": "LMT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球最大国防承包商与军工复合体",
+    "inception": "1995-03-16",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "RTX Corp",
+    "ticker": "RTX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "航空发动机与导弹系统的军工巨头",
+    "inception": "2013-07-01",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Northrop Grumman",
+    "ticker": "NOC",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "隐身技术与太空系统的暗黑军工",
+    "inception": "1985-12-31",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Palantir",
+    "ticker": "PAL",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "AI国防与情报分析的战略级平台",
+    "inception": "2020-09-30",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Lululemon",
+    "ticker": "LULU",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "运动休闲品类的品牌溢价统治者",
+    "inception": "2007-07-27",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Nike",
+    "ticker": "NKE",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球运动品牌的文化符号与供应链帝国",
+    "inception": "1980-12-02",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Starbucks",
+    "ticker": "SBUX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "第三空间咖啡文化的全球复制机器",
+    "inception": "1992-06-26",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Costco",
+    "ticker": "COST",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "会员制仓储零售的极致效率模型",
+    "inception": "1985-12-14",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Walmart",
+    "ticker": "WMT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球零售规模的无敌压路机",
+    "inception": "1970-08-25",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Target",
+    "ticker": "TGT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "大众时尚零售的差异化竞争者",
+    "inception": "1967-04-15",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Home Depot",
+    "ticker": "HD",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "DIY家装零售的品类杀手",
+    "inception": "1981-09-22",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "ExxonMobil",
+    "ticker": "XOM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "化石能源帝国的最后一个巨人",
+    "inception": "1980-11-05",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Chevron",
+    "ticker": "CVX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "能源转型的保守派与现金流机器",
+    "inception": "1980-01-02",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "ConocoPhillips",
+    "ticker": "COP",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "独立油气勘探的周期博弈者",
+    "inception": "2002-12-18",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "First Solar",
+    "ticker": "FSLR",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "薄膜太阳能技术的清洁能源先锋",
+    "inception": "2006-11-17",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Enphase Energy",
+    "ticker": "ENPH",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "分布式光伏逆变器的微型化革命者",
+    "inception": "2012-03-22",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "MicroStrategy",
+    "ticker": "MSTR",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "软件公司变身比特币巨鲸的金融实验",
+    "inception": "1998-06-11",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Riot Platforms",
+    "ticker": "RIOT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "比特币挖矿的算力军备竞赛参与者",
+    "inception": "2003-07-18",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "CleanSpark",
+    "ticker": "CLSK",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "比特币挖矿的绿色能源转型者",
+    "inception": "2014-11-05",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Uber",
+    "ticker": "UBER",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球出行与配送平台的垄断野心家",
+    "inception": "2019-05-10",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Lyft",
+    "ticker": "LYFT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "共享出行的美国第二大幸存者",
+    "inception": "2019-03-29",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Roblox",
+    "ticker": "RBLX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "元宇宙UGC游戏平台的Z世代入口",
+    "inception": "2021-03-10",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Robinhood",
+    "ticker": "HOOD",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "散户民主化交易的零佣金革命者",
+    "inception": "2021-07-29",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "SoFi Technologies",
+    "ticker": "SOFI",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "一站式数字金融超市的新物种",
+    "inception": "2021-06-01",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Walt Disney",
+    "ticker": "DIS",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球娱乐IP帝国的永恒内容引擎",
+    "inception": "1957-11-12",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Netflix",
+    "ticker": "NFLX",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "流媒体革命的内容垄断者",
+    "inception": "2002-05-23",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Comcast",
+    "ticker": "CMCSA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "电缆与流媒体的宽带基础设施",
+    "inception": "1988-06-29",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Boeing",
+    "ticker": "BA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "航空航天工业的困境巨头",
+    "inception": "1978-01-02",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Caterpillar",
+    "ticker": "CAT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球工程机械与矿业设备的周期之王",
+    "inception": "1929-10-05",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Deere",
+    "ticker": "DE",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "精准农业与智能农机的历史级变革者",
+    "inception": "1958-03-14",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "General Electric",
+    "ticker": "GE",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "工业帝国的解构与重生实验",
+    "inception": "1892-04-15",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "IBM",
+    "ticker": "IBM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "百年科技巨象的AI转型赌注",
+    "inception": "1915-11-11",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Oracle",
+    "ticker": "ORCL",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "企业数据库与云基础设施的守门人",
+    "inception": "1986-03-12",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Adobe",
+    "ticker": "ADBE",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "创意软件SaaS化的绝对垄断者",
+    "inception": "1986-08-20",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Visa",
+    "ticker": "V",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球电子支付网络的收费站",
+    "inception": "2008-03-19",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Mastercard",
+    "ticker": "MA",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球支付网络的二号收费站",
+    "inception": "2006-05-25",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "JPMorgan Chase",
+    "ticker": "JPM",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "华尔街最后的全能银行堡垒",
+    "inception": "1984-12-31",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Bank of America",
+    "ticker": "BAC",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "美国零售银行的规模之王",
+    "inception": "1965-11-10",
+    "verdict": "天蝎座的深层洞察与暗流操控力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Wells Fargo",
+    "ticker": "WFC",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "美国零售银行的十字路口困兽",
+    "inception": "1989-07-31",
+    "verdict": "狮子座的王者霸气与品牌统治力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Goldman Sachs",
+    "ticker": "GS",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球投行业务的权力中枢",
+    "inception": "1999-05-04",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Morgan Stanley",
+    "ticker": "MS",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球财富管理与投行的双引擎",
+    "inception": "1986-03-03",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Berkshire Hathaway",
+    "ticker": "BRK.B",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "巴菲特的保险浮存金复利帝国",
+    "inception": "1996-05-17",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "UnitedHealth",
+    "ticker": "UNH",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "美国医疗保险的利润收割机",
+    "inception": "1984-10-16",
+    "verdict": "天秤座的平衡美学与战略联盟力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Johnson & Johnson",
+    "ticker": "JNJ",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球医疗健康消费品的三驾马车",
+    "inception": "1944-01-03",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Pfizer",
+    "ticker": "PFE",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球疫苗与特效药的制药巨头",
+    "inception": "1942-06-22",
+    "verdict": "巨蟹座的周期直觉与安全护城河赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Thermo Fisher",
+    "ticker": "TMO",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "科学服务与生命仪器的并购整合者",
+    "inception": "1980-05-15",
+    "verdict": "金牛座的稳健积累与物质掌控力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Eli Lilly",
+    "ticker": "LLY",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "GLP-1减肥药浪潮的最大受益者",
+    "inception": "1952-01-02",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Abbott Labs",
+    "ticker": "ABT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "医疗器械与诊断测试的多元化巨头",
+    "inception": "1964-01-03",
+    "verdict": "摩羯座的长期主义与结构性霸权赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "PepsiCo",
+    "ticker": "PEP",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "零食与饮料的全球消费帝国",
+    "inception": "1919-12-18",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Coca-Cola",
+    "ticker": "KO",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球饮料品牌的永恒护城河",
+    "inception": "1919-09-05",
+    "verdict": "处女座的精准风控与极致优化力赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  },
+  {
+    "name": "Procter & Gamble",
+    "ticker": "PG",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "消费品品牌的百年复利机器",
+    "inception": "1890-03-16",
+    "verdict": "双鱼座的集体情绪操控与趋势感知力赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Altria",
+    "ticker": "MO",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "烟草现金流的股东回报引擎",
+    "inception": "1985-06-16",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "CrowdStrike",
+    "ticker": "CRWD",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "终端安全云化的网络安全独角兽",
+    "inception": "2019-06-12",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Shopify",
+    "ticker": "SHOP",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "电商SaaS化的中小商户赋能平台",
+    "inception": "2015-05-21",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Spotify",
+    "ticker": "SPOT",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "全球音频流媒体的订阅经济先锋",
+    "inception": "2018-04-03",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Airbnb",
+    "ticker": "ABNB",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "颠覆全球住宿业的共享经济平台",
+    "inception": "2020-12-10",
+    "verdict": "射手座的扩张野心与全球化视野赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Etsy",
+    "ticker": "ETSY",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "手工艺品电商的利基市场统治者",
+    "inception": "2015-04-16",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "AppLovin",
+    "ticker": "APP",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "移动广告AI化的高增长黑马",
+    "inception": "2021-04-15",
+    "verdict": "白羊座的开创冲动与先锋攻击性赋予了其不可复制的市场DNA。",
+    "status": "active"
+  },
+  {
+    "name": "Philips",
+    "ticker": "PHG",
+    "type": "equity",
+    "category": "equity",
+    "narrative": "健康科技转型的百年欧洲巨头",
+    "inception": "1997-06-16",
+    "verdict": "双子座的信息敏捷与双面博弈术赋予了其不可复制的市场DNA。",
+    "status": "dormant"
+  }
+];;
+var onChainFrequenciesData = [
+  {
+    name: "Bitcoin",
+    ticker: "BTC",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为区块链的创世资产，比特币奠定了去中心化价值存储的链上基石",
+    inception: "2009-01-03",
+    verdict: "摩羯座的坚韧与纪律赋予了其不可动摇的链上数字黄金地位",
+    status: "active"
+  },
+  {
+    name: "Ethereum",
+    ticker: "ETH",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为智能合约先驱，以太坊构建了去中心化应用与DeFi的链上世界计算机",
+    inception: "2015-07-30",
+    verdict: "狮子座的王者气魄与创造力赋予了其智能合约之王的链上霸权",
+    status: "active"
+  },
+  {
+    name: "BNB",
+    ticker: "BNB",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为币安生态的核心代币，BNB驱动着全球最大加密交易所的链上燃料系统",
+    inception: "2017-07-25",
+    verdict: "狮子座的自信与领导力赋予了其全球最大交易所生态的链上统治力",
+    status: "active"
+  },
+  {
+    name: "Solana",
+    ticker: "SOL",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为高性能公链代表，Solana以并行处理架构实现了毫秒级链上交易确认",
+    inception: "2020-03-16",
+    verdict: "双鱼座的直觉与创造力赋予了其高性能并行计算的链上灵动之美",
+    status: "active"
+  },
+  {
+    name: "XRP",
+    ticker: "XRP",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为跨境支付先锋，XRP致力于消除国际汇款的链上摩擦与时间延迟",
+    inception: "2012-06-02",
+    verdict: "双子座的多变与沟通天赋赋予了其跨境支付的链上桥梁角色",
+    status: "active"
+  },
+  {
+    name: "Cardano",
+    ticker: "ADA",
+    type: "crypto",
+    category: "crypto",
+    narrative: "以学术同行评审驱动开发的Cardano，构建了分层架构的链上可持续生态",
+    inception: "2017-09-29",
+    verdict: "天秤座的平衡与公正赋予了其学术严谨与链上治理的和谐之道",
+    status: "active"
+  },
+  {
+    name: "Avalanche",
+    ticker: "AVAX",
+    type: "crypto",
+    category: "crypto",
+    narrative: "凭借子网架构，Avalanche实现了高度可定制的链上多链并行运行环境",
+    inception: "2020-09-21",
+    verdict: "处女座的精密与分析力赋予了其子网架构的链上工程完美主义",
+    status: "active"
+  },
+  {
+    name: "Polkadot",
+    ticker: "DOT",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为跨链互操作性协议，Polkadot通过中继链连接异构链上的平行世界",
+    inception: "2020-08-21",
+    verdict: "狮子座的慷慨与远见赋予了其跨链互操作性的链上联邦领袖气质",
+    status: "active"
+  },
+  {
+    name: "Polygon",
+    ticker: "MATIC",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为以太坊Layer2扩容方案，Polygon为大规模链上应用提供了低成本高吞吐方案",
+    inception: "2020-06-16",
+    verdict: "双子座的好奇与适应力赋予了其以太坊Layer2扩展的链上灵活身段",
+    status: "active"
+  },
+  {
+    name: "Chainlink",
+    ticker: "LINK",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为去中心化预言机网络，Chainlink将链下真实数据安全地桥接至链上智能合约",
+    inception: "2017-09-16",
+    verdict: "处女座的精密与服务精神赋予了其预言机数据桥梁的链上守护者使命",
+    status: "active"
+  },
+  {
+    name: "Uniswap",
+    ticker: "UNI",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为AMM机制的发明者，Uniswap开创了自动化做市商的链上交易范式",
+    inception: "2020-09-16",
+    verdict: "处女座的完美主义赋予了其去中心化交易所治理的链上秩序之美",
+    status: "active"
+  },
+  {
+    name: "Aave",
+    ticker: "AAVE",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为DeFi借贷协议龙头，Aave引入了闪电贷与多链借贷的链上金融创新",
+    inception: "2020-01-08",
+    verdict: "摩羯座的务实与野心赋予了其去中心化借贷协议的链上金融帝国基石",
+    status: "active"
+  },
+  {
+    name: "Cosmos",
+    ticker: "ATOM",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为区块链互联网的基石，Cosmos通过IBC协议实现了独立链间的链上无缝通信",
+    inception: "2019-03-14",
+    verdict: "双鱼座的共情与连接力赋予了其跨链通信枢纽的链上宇宙融合之能",
+    status: "active"
+  },
+  {
+    name: "Filecoin",
+    ticker: "FIL",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为去中心化存储网络，Filecoin通过复制证明与时空证明激励链上数据永久存储",
+    inception: "2020-10-15",
+    verdict: "天秤座的和谐与美学赋予了其去中心化存储网络的链上数据平衡之道",
+    status: "active"
+  },
+  {
+    name: "Arweave",
+    ticker: "AR",
+    type: "crypto",
+    category: "crypto",
+    narrative: "凭借一次性付费永久存储的模型，Arweave构建了链上不可篡改的数据记忆层",
+    inception: "2020-06-08",
+    verdict: "双子座的好奇与表达力赋予了其永久存储的链上记忆编年史使命",
+    status: "active"
+  },
+  {
+    name: "Optimism",
+    ticker: "OP",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为以太坊Optimistic Rollup方案，Optimism通过超级链愿景扩展链上计算边界",
+    inception: "2022-05-31",
+    verdict: "双子座的多变与灵活性赋予了其以太坊Layer2扩容的链上敏捷身姿",
+    status: "active"
+  },
+  {
+    name: "Arbitrum",
+    ticker: "ARB",
+    type: "crypto",
+    category: "crypto",
+    narrative: "基于Optimistic Rollup技术，Arbitrum通过Orbit链构建了繁荣的链上L2生态",
+    inception: "2023-03-23",
+    verdict: "白羊座的勇气与开拓精神赋予了其链上Arbitrum Orbit生态的先锋气质",
+    status: "active"
+  },
+  {
+    name: "NEAR Protocol",
+    ticker: "NEAR",
+    type: "crypto",
+    category: "crypto",
+    narrative: "采用夜影分片技术的NEAR，实现了链上无限扩展与人类可读账户名的友好体验",
+    inception: "2020-04-22",
+    verdict: "金牛座的稳健与耐心赋予了其分片架构的链上坚实基础",
+    status: "active"
+  },
+  {
+    name: "Injective",
+    ticker: "INJ",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为跨链衍生品交易所，Injective实现了免许可链上金融衍生品的极速交易",
+    inception: "2021-11-10",
+    verdict: "天蝎座的深度与转化力赋予了其跨链衍生品交易的链上金融炼金术",
+    status: "active"
+  },
+  {
+    name: "Sui",
+    ticker: "SUI",
+    type: "crypto",
+    category: "crypto",
+    narrative: "基于对象存储模型的新一代公链，Sui实现了链上资产并行处理的高吞吐范式",
+    inception: "2023-05-03",
+    verdict: "金牛座的忠诚与物质感赋予了其对象存储模型的链上资产安全感",
+    status: "active"
+  },
+  {
+    name: "Sei",
+    ticker: "SEI",
+    type: "crypto",
+    category: "crypto",
+    narrative: "专为交易优化的并行化EVM公链，Sei通过Twin-Turbo共识实现链上亚秒级终局",
+    inception: "2023-08-15",
+    verdict: "狮子座的自信与表现力赋予了其并行化交易引擎的链上性能王者风范",
+    status: "active"
+  },
+  {
+    name: "Celestia",
+    ticker: "TIA",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为首个模块化数据可用性层，Celestia将链上数据发布与执行解耦开创了新范式",
+    inception: "2023-10-31",
+    verdict: "天蝎座的神秘与洞察力赋予了其模块化数据可用性层的链上解密力量",
+    status: "active"
+  },
+  {
+    name: "Jupiter",
+    ticker: "JUP",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为Solana生态核心DEX聚合器，Jupiter提供了一站式链上代币交换与限价单服务",
+    inception: "2024-01-31",
+    verdict: "水瓶座的创新与远见赋予了其Solana生态DEX聚合器的链上未来主义精神",
+    status: "active"
+  },
+  {
+    name: "Dogecoin",
+    ticker: "DOGE",
+    type: "crypto",
+    category: "crypto",
+    narrative: "源于柴犬模因的DOGE，以社区驱动的方式成为链上最受欢迎的小费与打赏货币",
+    inception: "2013-12-06",
+    verdict: "射手座的自由与幽默感赋予了其模因货币鼻祖的链上欢乐传播力",
+    status: "active"
+  },
+  {
+    name: "Shiba Inu",
+    ticker: "SHIB",
+    type: "crypto",
+    category: "crypto",
+    narrative: "从模因代币发展为包含DEX与Layer2的完整链上生态系统",
+    inception: "2020-08-01",
+    verdict: "狮子座的慷慨与社群号召力赋予了其去中心化模因生态的链上忠诚军团",
+    status: "active"
+  },
+  {
+    name: "Pepe",
+    ticker: "PEPE",
+    type: "crypto",
+    category: "crypto",
+    narrative: "以经典青蛙模因为载体，PEPE成为纯粹链上模因文化的现象级代币",
+    inception: "2023-04-15",
+    verdict: "白羊座的激情与冲劲赋予了其纯粹模因文化的链上病毒式爆发力",
+    status: "active"
+  },
+  {
+    name: "dogwifhat",
+    ticker: "WIF",
+    type: "crypto",
+    category: "crypto",
+    narrative: "Solana生态中最具代表性的模因代币，以戴帽子的柴犬形象席卷链上社区",
+    inception: "2023-11-30",
+    verdict: "射手座的乐观与冒险精神赋予了其Solana模因浪潮的链上自由灵魂",
+    status: "active"
+  },
+  {
+    name: "Bonk",
+    ticker: "BONK",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为Solana上的社区模因代币，BONK通过空投激励重振了链上生态活力",
+    inception: "2022-12-25",
+    verdict: "摩羯座的坚韧与逆袭精神赋予了其Solana社区驱动的链上草根复兴力量",
+    status: "dormant"
+  },
+  {
+    name: "Floki",
+    ticker: "FLOKI",
+    type: "crypto",
+    category: "crypto",
+    narrative: "以马斯克宠物犬命名的模因代币，FLOKI构建了包含游戏与NFT的链上模因宇宙",
+    inception: "2021-06-30",
+    verdict: "巨蟹座的守护与情感赋予了其以犬为图腾的链上社区温暖归属感",
+    status: "dormant"
+  },
+  {
+    name: "TRON",
+    ticker: "TRX",
+    type: "crypto",
+    category: "crypto",
+    narrative: "以高吞吐量与低手续费著称，TRON专注于链上内容娱乐与稳定币支付",
+    inception: "2017-09-13",
+    verdict: "处女座的服务精神与务实赋予了其高吞吐量支付网络的链上普惠金融使命",
+    status: "active"
+  },
+  {
+    name: "Ethereum Classic",
+    ticker: "ETC",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为DAO分叉后的原链，ETC坚守代码即法律的链上不可篡改原则",
+    inception: "2016-07-20",
+    verdict: "巨蟹座的怀旧与守护本能赋予了其以太坊原教旨主义的链上纯粹信仰",
+    status: "active"
+  },
+  {
+    name: "Litecoin",
+    ticker: "LTC",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为比特币的轻量级分叉，Litecoin以更快的出块时间实现了链上日常支付的银色补充",
+    inception: "2011-10-13",
+    verdict: "天秤座的效率与平衡感赋予了其轻量级支付银的链上快捷交易之道",
+    status: "active"
+  },
+  {
+    name: "Bitcoin Cash",
+    ticker: "BCH",
+    type: "crypto",
+    category: "crypto",
+    narrative: "通过大区块扩容路线，BCH致力于恢复比特币作为链上点对点电子现金的原始愿景",
+    inception: "2017-08-01",
+    verdict: "狮子座的独立与勇气赋予了其大区块路线的链上自由意志",
+    status: "dormant"
+  },
+  {
+    name: "Stellar",
+    ticker: "XLM",
+    type: "crypto",
+    category: "crypto",
+    narrative: "专注于无银行账户人群的跨境支付网络，Stellar连接了法币与链上数字资产",
+    inception: "2014-07-31",
+    verdict: "狮子座的慷慨与人道主义赋予了其普惠金融跨境支付的链上星光",
+    status: "dormant"
+  },
+  {
+    name: "Algorand",
+    ticker: "ALGO",
+    type: "crypto",
+    category: "crypto",
+    narrative: "基于纯权益证明共识的公链，Algorand以即时终局性提供链上高效交易体验",
+    inception: "2019-06-11",
+    verdict: "双子座的灵活与沟通力赋予了其纯权益证明共识的链上技术优雅",
+    status: "dormant"
+  },
+  {
+    name: "VeChain",
+    ticker: "VET",
+    type: "crypto",
+    category: "crypto",
+    narrative: "为企业级供应链管理提供区块链解决方案，VET实现了链上商品溯源与防伪",
+    inception: "2018-06-20",
+    verdict: "双子座的多变与适应力赋予了其企业级供应链溯源的链上万物互联角色",
+    status: "dormant"
+  },
+  {
+    name: "Internet Computer",
+    ticker: "ICP",
+    type: "crypto",
+    category: "crypto",
+    narrative: "旨在将互联网本身运行在区块链上，ICP构建了链上去中心化世界计算机的宏大愿景",
+    inception: "2021-05-10",
+    verdict: "金牛座的稳健与物质感赋予了其互联网计算机的链上去中心化世界计算机愿景",
+    status: "dormant"
+  },
+  {
+    name: "Hedera",
+    ticker: "HBAR",
+    type: "crypto",
+    category: "crypto",
+    narrative: "采用哈希图共识算法的企业级公链，Hedera提供高吞吐低延迟的链上治理服务",
+    inception: "2019-09-17",
+    verdict: "处女座的精密与完美主义赋予了其哈希图共识的链上企业级秩序",
+    status: "dormant"
+  },
+  {
+    name: "The Sandbox",
+    ticker: "SAND",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为元宇宙虚拟世界平台，SAND让用户在链上创建、拥有并货币化游戏体验",
+    inception: "2020-08-14",
+    verdict: "狮子座的创造力与表现欲赋予了其元宇宙虚拟地产的链上想象力王国",
+    status: "dormant"
+  },
+  {
+    name: "Decentraland",
+    ticker: "MANA",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为去中心化虚拟现实平台，MANA支撑着链上数字土地的所有权与治理",
+    inception: "2017-08-18",
+    verdict: "狮子座的自信与艺术感赋予了其去中心化虚拟世界的链上数字领土主权",
+    status: "dormant"
+  },
+  {
+    name: "Axie Infinity",
+    ticker: "AXS",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为Play-to-Earn游戏先驱，Axie Infinity通过链上战斗与繁殖创造了全新的游戏经济模型",
+    inception: "2018-11-01",
+    verdict: "天蝎座的深度与战略思维赋予了其Play-to-Earn游戏经济的链上进化力量",
+    status: "dormant"
+  },
+  {
+    name: "ApeCoin",
+    ticker: "APE",
+    type: "crypto",
+    category: "crypto",
+    narrative: "源于BAYC NFT系列的治理代币，APE承载着Web3文化与链上社区治理的双重使命",
+    inception: "2022-03-17",
+    verdict: "双鱼座的共情与社群意识赋予了其Web3文化代币的链上精神图腾",
+    status: "dormant"
+  },
+  {
+    name: "Gala Games",
+    ticker: "GALA",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为区块链游戏发行平台，GALA让玩家真正拥有链上游戏资产与决策权",
+    inception: "2020-09-14",
+    verdict: "处女座的服务精神赋予了其去中心化游戏生态的链上玩家赋权使命",
+    status: "dormant"
+  },
+  {
+    name: "Render",
+    ticker: "RENDER",
+    type: "crypto",
+    category: "crypto",
+    narrative: "连接GPU算力需求方与供应方的去中心化网络，RENDER实现了链上分布式3D渲染",
+    inception: "2017-10-26",
+    verdict: "天蝎座的转化力与深度赋予了其去中心化GPU渲染网络的链上视觉炼金术",
+    status: "active"
+  },
+  {
+    name: "Fetch.ai",
+    ticker: "FET",
+    type: "crypto",
+    category: "crypto",
+    narrative: "结合人工智能与区块链，FET构建了自主经济代理在链上自动执行的智能网络",
+    inception: "2019-03-07",
+    verdict: "双鱼座的直觉与创造力赋予了其去中心化人工智能的链上智慧涌现",
+    status: "active"
+  },
+  {
+    name: "Immutable",
+    ticker: "IMX",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为以太坊NFT与游戏Layer2解决方案，IMX实现了链上零Gas费的NFT铸造与交易",
+    inception: "2021-11-03",
+    verdict: "天蝎座的深度与专注赋予了其以太坊NFT Layer2的链上数字藏品殿堂",
+    status: "dormant"
+  },
+  {
+    name: "The Graph",
+    ticker: "GRT",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为去中心化索引协议，The Graph让链上数据的高效查询与检索成为现实",
+    inception: "2020-12-17",
+    verdict: "射手座的探索精神赋予了其去中心化索引协议的链上数据导航能力",
+    status: "active"
+  },
+  {
+    name: "Lido DAO",
+    ticker: "LDO",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为流动性质押协议龙头，LDO让链上ETH质押者获得流动性代币以参与DeFi",
+    inception: "2020-12-16",
+    verdict: "射手座的自由与扩张欲赋予了其流动性质押协议的链上ETH解放力量",
+    status: "active"
+  },
+  {
+    name: "Rocket Pool",
+    ticker: "RPL",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为去中心化以太坊质押协议，RPL以节点运营商与质押者共赢模式服务链上",
+    inception: "2020-11-09",
+    verdict: "天蝎座的意志力与深度赋予了其去中心化以太坊质押的链上守护者使命",
+    status: "dormant"
+  },
+  {
+    name: "Maker",
+    ticker: "MKR",
+    type: "crypto",
+    category: "crypto",
+    narrative: "作为DAI稳定币的治理代币，MKR掌控着链上去中心化央行的货币政策与风险参数",
+    inception: "2015-08-18",
+    verdict: "狮子座的王者气魄与决断力赋予了其DAI稳定币治理的链上央行权威",
+    status: "active"
+  }
+];;
+
 
 // ========== MOCK DATA ==========
 const scannerData = {
@@ -5472,7 +7242,7 @@ function switchNav(nav) {
     calendar: () => addCalendarCard(),
     log: () => addTradingLogPrompt(),
     pulse: () => addPulseCard(),
-    transits: () => { /* placeholder */ },
+    transits: () => { addGlobalVibesCard(); },
     watchlist: () => addWatchlistCard()
   };
   if (actions[nav]) actions[nav]();
@@ -6235,7 +8005,7 @@ function handleSearch() {
       addPulseCard();
     } else if (lowerQuery === 'global transits' || lowerQuery === '全球行运' || lowerQuery === 'グローバルトランジット' || lowerQuery === '글로벌 트랜짓' || lowerQuery === '宏观天象') {
       if (!deductCredits(5, 'Market Pulse')) return;
-      addPulseCard();
+      addGlobalVibesCard();
     } else if (lowerQuery.match(/lost|止损|郁闷|最悪|힘들|亏损|損失|損切り|손실/)) {
       if (!deductCredits(5, 'Log Entry')) return;
       addTradingLogCard('negative');
@@ -8273,6 +10043,132 @@ async function loadTradeLogsFromCloud() {
     if (res.ok) return await res.json();
   } catch(e) {}
   return [];
+}
+
+
+function addGlobalVibesCard() {
+  var container = document.getElementById('chatMessages');
+  var msg = document.createElement('div');
+  msg.className = 'msg ai';
+
+  var gvId = 'gv_' + Date.now();
+
+  var tabs = [
+    { key: 'entities', label: 'The Architect Entities', data: architectEntitiesData },
+    { key: 'titans', label: 'The Archetype Players', data: archetypeTitansData },
+    { key: 'orbits', label: 'Capital Orbits', data: capitalOrbitsData },
+    { key: 'onchain', label: 'On-chain Frequencies', data: onChainFrequenciesData }
+  ];
+
+  var tabsHTML = '';
+  for (var i = 0; i < tabs.length; i++) {
+    var t = tabs[i];
+    var cls = i === 0 ? 'gv-tab active' : 'gv-tab';
+    tabsHTML += '<div class="' + cls + '" data-gvtab="' + t.key + '" data-gvid="' + gvId + '" onclick="switchGVTab(this)">' +
+      t.label + '<span class="gv-tab-count">(' + t.data.length + ')</span></div>';
+  }
+
+  var innerHTML =
+    '<div class="gv-container" id="' + gvId + '">' +
+      '<div class="gv-tabs">' + tabsHTML + '</div>' +
+      '<input class="gv-search" type="text" placeholder="Search name, ticker, narrative..." data-gvid="' + gvId + '" oninput="filterGVTable(this)">' +
+      '<div class="gv-count-bar" data-gvid="' + gvId + '"><span class="gv-showing">Showing 0 of 0</span><span class="gv-active-count"></span></div>' +
+      '<div class="gv-scroll" data-gvid="' + gvId + '">' +
+        '<table class="gv-table">' +
+          '<thead><tr>' +
+            '<th>Name</th>' +
+            '<th>Core Narrative</th>' +
+            '<th>Inception</th>' +
+            '<th>Cosmic DNA Verdict</th>' +
+            '<th>Status</th>' +
+          '</tr></thead>' +
+          '<tbody data-gvid="' + gvId + '"></tbody>' +
+        '</table>' +
+        '<div class="gv-empty" data-gvid="' + gvId + '" style="display:none;">No results found</div>' +
+      '</div>' +
+    '</div>';
+
+  msg.innerHTML = innerHTML;
+  container.appendChild(msg);
+  scrollChatBottom();
+
+  // Store state
+  window['_gvState_' + gvId] = { activeTab: 'entities', query: '', tabs: tabs };
+
+  // Render initial data
+  renderGVTable(gvId);
+}
+
+function switchGVTab(el) {
+  var gvId = el.getAttribute('data-gvid');
+  var key = el.getAttribute('data-gvtab');
+  var container = document.getElementById(gvId);
+  container.querySelectorAll('.gv-tab').forEach(function(tab) { tab.classList.remove('active'); });
+  el.classList.add('active');
+  window['_gvState_' + gvId].activeTab = key;
+  renderGVTable(gvId);
+}
+
+function filterGVTable(input) {
+  var gvId = input.getAttribute('data-gvid');
+  window['_gvState_' + gvId].query = input.value.toLowerCase();
+  renderGVTable(gvId);
+}
+
+function renderGVTable(gvId) {
+  var state = window['_gvState_' + gvId];
+  if (!state) return;
+  var tabData = null;
+  for (var i = 0; i < state.tabs.length; i++) {
+    if (state.tabs[i].key === state.activeTab) { tabData = state.tabs[i].data; break; }
+  }
+  if (!tabData) return;
+
+  var filtered = tabData;
+  if (state.query) {
+    var q = state.query;
+    filtered = tabData.filter(function(item) {
+      var name = (item.name || '').toLowerCase();
+      var ticker = (item.ticker || '').toLowerCase();
+      var narrative = (item.narrative || '').toLowerCase();
+      var verdict = (item.verdict || '').toLowerCase();
+      return name.indexOf(q) !== -1 || ticker.indexOf(q) !== -1 || narrative.indexOf(q) !== -1 || verdict.indexOf(q) !== -1;
+    });
+  }
+
+  var tbody = document.querySelector('tbody[data-gvid="' + gvId + '"]');
+  var countBar = document.querySelector('.gv-count-bar[data-gvid="' + gvId + '"]');
+  var emptyEl = document.querySelector('.gv-empty[data-gvid="' + gvId + '"]');
+
+  // Count active
+  var activeCount = 0;
+  for (var a = 0; a < tabData.length; a++) { if (tabData[a].status === 'active') activeCount++; }
+
+  countBar.querySelector('.gv-showing').textContent = 'Showing ' + filtered.length + ' of ' + tabData.length;
+  countBar.querySelector('.gv-active-count').textContent = activeCount + ' active / ' + (tabData.length - activeCount) + ' dormant';
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  var rows = '';
+  for (var j = 0; j < filtered.length; j++) {
+    var item = filtered[j];
+    var tickerHTML = item.ticker ? '<span class="gv-ticker">' + escapeHtml(item.ticker) + '</span>' : '';
+    var statusDot = item.status === 'active' ? 'gv-status-dot active' : 'gv-status-dot dormant';
+    var statusLabel = item.status === 'active' ? 'ACTIVE' : 'DORMANT';
+    rows += '<tr>' +
+      '<td><span class="gv-name">' + escapeHtml(item.name) + '</span>' + tickerHTML + '</td>' +
+      '<td class="gv-narrative">' + escapeHtml(item.narrative) + '</td>' +
+      '<td class="gv-date">' + escapeHtml(item.inception) + '</td>' +
+      '<td class="gv-verdict">' + escapeHtml(item.verdict) + '</td>' +
+      '<td class="gv-status"><span class="' + statusDot + '"></span><span class="gv-status-text">' + statusLabel + '</span></td>' +
+    '</tr>';
+  }
+  tbody.innerHTML = rows;
 }
 
 init();
