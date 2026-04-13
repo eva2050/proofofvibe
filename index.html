@@ -1264,7 +1264,11 @@ html[data-theme="dark"] .dna-card {
 .dna-report-card {
   max-width: 960px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 24px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .dna-report-header {
@@ -1279,7 +1283,12 @@ html[data-theme="dark"] .dna-card {
   display: flex;
   gap: 48px;
   align-items: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+  padding: 28px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 
 .dna-identity-row .dna-traits {
@@ -1304,10 +1313,11 @@ html[data-theme="dark"] .dna-card {
   font-style: italic;
   line-height: 1.7;
   padding: 20px 28px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  margin-bottom: 32px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  margin-bottom: 16px;
   text-align: center;
   position: relative;
 }
@@ -1390,7 +1400,12 @@ html[data-theme="dark"] .dna-card {
 /* ========== SHARE ========== */
 .dna-share-row {
   text-align: center;
-  margin: 24px 0 8px;
+  margin: 0 0 16px;
+  padding: 16px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 
 .dna-share-btn {
@@ -1425,7 +1440,9 @@ html[data-theme="dark"] .dna-card {
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  margin-top: 10px;
+  margin-top: 12px;
+  background: var(--card-bg);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   transition: border-color 0.2s;
 }
 .dna-collapsible:hover {
@@ -1477,8 +1494,9 @@ html[data-theme="dark"] .dna-card {
 .dna-grid-2col {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 0;
+  margin-bottom: 16px;
 }
 .dna-grid-2col .dna-collapsible {
   margin-top: 0;
