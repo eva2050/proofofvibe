@@ -1198,6 +1198,14 @@ html[data-theme="dark"] .dna-card {
 
 .dna-info { flex: 1; text-align: center; }
 
+.dna-info-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
 .dna-info .archetype {
   font-size: 13px;
   font-weight: 600;
@@ -7220,17 +7228,12 @@ function addDNACard() {
         '<div class="dna-report-header">' +
           '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
           '<div class="dna-info">' +
+            '<div class="dna-info-title">你的交易人格是</div>' +
             '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
             '<div class="dna-info-label">' + t('dna.archetype') + '</div>' +
             '<div class="dna-info-stars">' + starsHTML + '</div>' +
             '<div class="dna-info-rating">财富评级 <span class="dna-info-rating-num">' + report.wealthRating + '</span>/6</div>' +
             '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
-            '<div class="dna-share-row-inline">' +
-              '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
-                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-                '分享报告' +
-              '</button>' +
-            '</div>' +
             '<div class="dna-traits">' + traitsHTML + '</div>' +
           '</div>' +
         '</div>' +
@@ -7245,6 +7248,12 @@ function addDNACard() {
           '<div class="dna-cog-divider"></div>' +
           '<div class="dna-cog-title">星盘共振分析</div>' +
           '<div class="dna-cog-analysis">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
+          '<div class="dna-share-row-inline">' +
+            '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
+              '分享报告' +
+            '</button>' +
+          '</div>' +
         '</div>' +
       '</div>' +
 
