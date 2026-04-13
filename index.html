@@ -1239,6 +1239,26 @@ html[data-theme="dark"] .dna-card {
   font-size: 14px;
 }
 
+.dna-identity-whale {
+  text-align: center;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  margin-top: 16px;
+}
+
+.dna-identity-whale-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+
+.dna-identity-whale-pattern {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+
 /* ========== DNA TRAITS ========== */
 .dna-traits {
   display: flex;
@@ -7150,16 +7170,20 @@ function addDNACard() {
             '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="dna-traits">' + traitsHTML + '</div>' +
+        '<div class="dna-identity-whale">' +
+          '<div class="dna-identity-whale-name">' + escapeHtml(report.whale.name) + '</div>' +
+          '<div class="dna-identity-whale-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
+        '</div>' +
       '</div>' +
+
+      '<div class="dna-traits">' + traitsHTML + '</div>' +
 
       '<div class="dna-grid-2col">' +
 
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">鲸鱼模式：' + escapeHtml(report.whale.name) + '</span>' +
-          '<span class="dna-collapsible-count">' + escapeHtml(report.whale.pattern) + '</span>' +
+          '<span class="dna-collapsible-title">鲸鱼模式详情</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           '<div class="dna-whale-bio">' + escapeHtml(report.whale.bio) + '</div>' +
