@@ -1387,7 +1387,7 @@ html[data-theme="dark"] .dna-card {
   font-size: 14px;
   color: var(--text-primary);
   line-height: 1.6;
-  padding: 6px 0;
+  padding: 8px 0;
   padding-left: 20px;
   position: relative;
 }
@@ -1398,6 +1398,21 @@ html[data-theme="dark"] .dna-card {
   color: var(--accent);
   font-weight: 700;
   font-size: 12px;
+}
+
+.dna-spec-content { flex: 1; }
+
+.dna-spec-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 3px;
+}
+
+.dna-spec-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* ========== SHARE ========== */
@@ -6595,16 +6610,27 @@ function _matchWhale(chart, traits, patterns) {
 
 function _generateSpecTypes(chart, traits, patterns) {
   var types = [];
-  if (traits.risk.value >= 65 && traits.intuition.value >= 60) types.push('财报压缩期期权波动率卖出');
-  if (traits.precision.value >= 65 && traits.stamina.value >= 60) types.push('12-24个月论点周期的长期价值持仓');
-  if (traits.greed.value >= 70 && traits.risk.value >= 60) types.push('早期协议的集中加密货币仓位');
-  if (traits.intuition.value >= 70 && traits.precision.value <= 55) types.push('4H-1D时间框架动量波段交易');
-  if (traits.stamina.value >= 70 && traits.risk.value <= 50) types.push('带再平衡触发器的指数基金定投');
-  if (traits.precision.value >= 60 && traits.risk.value >= 55) types.push('相关性资产的配对交易与统计套利');
-  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) types.push('危机Alpha：市场失灵期间做多波动率策略');
-  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) types.push('私募股权式非对称机会集中押注');
+  if (traits.risk.value >= 65 && traits.intuition.value >= 60) types.push({ name: '财报压缩期期权波动率卖出', desc: '在财报季前期卖出高隐含波动率的期权，利用波动率压缩获利。适合对市场情绪变化敏感的交易者，通过统计模型识别被高估的波动率溢价。' });
+  if (traits.precision.value >= 65 && traits.stamina.value >= 60) types.push({ name: '12-24个月论点周期的长期价值持仓', desc: '基于深度基本面研究建立长期仓位，持仓周期12-24个月。忽略短期噪音，专注于企业内在价值的逐步兑现。适合有耐心且研究能力突出的投资者。' });
+  if (traits.greed.value >= 70 && traits.risk.value >= 60) types.push({ name: '早期协议的集中加密货币仓位', desc: '在区块链项目早期阶段集中投资，追求10-100倍的非对称回报。需要强大的技术判断力和对行业叙事的敏锐嗅觉，同时接受归零风险。' });
+  if (traits.intuition.value >= 70 && traits.precision.value <= 55) types.push({ name: '4H-1D时间框架动量波段交易', desc: '在4小时至日线级别捕捉趋势动量，快进快出。依赖价格行为和成交量分析，结合支撑/阻力位进行波段操作。适合盘感强、执行力果断的交易者。' });
+  if (traits.stamina.value >= 70 && traits.risk.value <= 50) types.push({ name: '带再平衡触发器的指数基金定投', desc: '定期定额投资宽基指数基金，配合基于估值偏离度的再平衡机制。在市场低估时加仓、高估时减仓，长期复利增长。适合追求稳健回报的长期投资者。' });
+  if (traits.precision.value >= 60 && traits.risk.value >= 55) types.push({ name: '相关性资产的配对交易与统计套利', desc: '同时做多和做空高度相关的资产对，赚取价差回归均值的利润。市场方向无关，纯靠统计模型驱动。适合量化思维强、纪律严明的交易者。' });
+  if (patterns.some(function(p) { return p.code === 'GRD-CRS'; })) types.push({ name: '危机Alpha：市场失灵期间做多波动率策略', desc: '在市场极端恐慌时买入波动率产品（如VIX看涨期权），利用恐慌指数的飙升获利。属于逆向策略，需要精确的时机把握和严格的风险控制。' });
+  if (patterns.some(function(p) { return p.code === 'JUP-PLU'; })) types.push({ name: '私募股权式非对称机会集中押注', desc: '识别具有非对称风险收益比的罕见机会，集中资金押注。类似私募股权的投资逻辑——少量投资可能产生巨额回报，但大部分押注可能归零。' });
 
-  if (types.length === 0) types.push('适度杠杆的宽基ETF持仓');
+  // Always ensure at least 3
+  if (types.length === 0) {
+    types.push({ name: '适度杠杆的宽基ETF持仓', desc: '通过2-3倍杠杆的宽基ETF（如QQQ、SPY）参与市场长期趋势。在控制单一标的风险的同时获取市场Beta收益，适合作为核心持仓策略。' });
+    types.push({ name: '基于技术信号的波段操作', desc: '结合移动平均线、RSI、MACD等经典技术指标，在关键支撑/阻力位附近进行波段买卖。注重风险收益比，每笔交易设定明确的止损和止盈目标。' });
+    types.push({ name: '跨资产类别轮动策略', desc: '根据宏观经济周期在不同资产类别（股票、债券、商品、现金）之间动态配置。利用经济领先指标判断周期阶段，提前布局即将走强的资产类别。' });
+  } else if (types.length === 1) {
+    types.push({ name: '基于技术信号的波段操作', desc: '结合移动平均线、RSI、MACD等经典技术指标，在关键支撑/阻力位附近进行波段买卖。注重风险收益比，每笔交易设定明确的止损和止盈目标。' });
+    types.push({ name: '跨资产类别轮动策略', desc: '根据宏观经济周期在不同资产类别（股票、债券、商品、现金）之间动态配置。利用经济领先指标判断周期阶段，提前布局即将走强的资产类别。' });
+  } else if (types.length === 2) {
+    types.push({ name: '跨资产类别轮动策略', desc: '根据宏观经济周期在不同资产类别（股票、债券、商品、现金）之间动态配置。利用经济领先指标判断周期阶段，提前布局即将走强的资产类别。' });
+  }
+
   return types.slice(0, 3);
 }
 
@@ -6986,7 +7012,9 @@ function addDNACard() {
   // Build speculation types HTML
   var specHTML = '';
   report.specTypes.forEach(function(s, i) {
-    specHTML += '<div class="dna-spec-item"><span class="dna-spec-num">' + (i + 1) + '</span> ' + escapeHtml(s) + '</div>';
+    var title = typeof s === 'object' ? s.name : s;
+    var desc = typeof s === 'object' ? s.desc : '';
+    specHTML += '<div class="dna-spec-item"><span class="dna-spec-num">' + (i + 1) + '</span><div class="dna-spec-content"><div class="dna-spec-name">' + escapeHtml(title) + '</div>' + (desc ? '<div class="dna-spec-desc">' + escapeHtml(desc) + '</div>' : '') + '</div></div>';
   });
 
   // Build natal chart details HTML (from API data)
