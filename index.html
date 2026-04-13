@@ -3686,6 +3686,172 @@ html[lang="ko"] {
 .gv-empty { padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
 .gv-count-bar { padding: 8px 12px; font-size: 10px; color: var(--text-secondary); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; }
 .gv-count-bar span { font-variant-numeric: tabular-nums; }
+
+/* ========== INSIGHT PORTAL ========== */
+.ip-container { padding: 0; }
+.ip-ticker-bar {
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  padding: 10px 0;
+  background: var(--card-bg);
+  position: relative;
+}
+.ip-ticker-bar::before,
+.ip-ticker-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  z-index: 2;
+  pointer-events: none;
+}
+.ip-ticker-bar::before { left: 0; background: linear-gradient(to right, var(--card-bg), transparent); }
+.ip-ticker-bar::after { right: 0; background: linear-gradient(to left, var(--card-bg), transparent); }
+.ip-ticker-track {
+  display: inline-flex;
+  gap: 40px;
+  animation: ipTickerScroll 60s linear infinite;
+}
+.ip-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+.ip-ticker-item .ip-ticker-symbol {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 12px;
+}
+.ip-ticker-item .ip-ticker-verdict {
+  font-style: italic;
+  opacity: 0.7;
+}
+.ip-ticker-item .ip-ticker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+@keyframes ipTickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ip-section-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-secondary);
+  padding: 16px 20px 8px;
+}
+.ip-trending-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 8px;
+  padding: 0 20px 16px;
+}
+.ip-trending-card {
+  padding: 14px 16px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.ip-trending-card:hover {
+  border-color: rgba(0,0,0,0.15);
+}
+.ip-trending-card .ip-tc-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.ip-trending-card .ip-tc-symbol {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.ip-trending-card .ip-tc-tag {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.ip-trending-card .ip-tc-tag.active { background: rgba(34,197,94,0.1); color: #22C55E; }
+.ip-trending-card .ip-tc-tag.dormant { background: rgba(0,0,0,0.05); color: var(--text-secondary); }
+.ip-trending-card .ip-tc-verdict {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+  opacity: 0.8;
+}
+.ip-reports-section {
+  padding: 0 20px 20px;
+}
+.ip-reports-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+}
+.ip-report-card {
+  padding: 18px 20px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  background: var(--card-bg);
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.ip-report-card:hover {
+  border-color: rgba(0,0,0,0.15);
+}
+.ip-report-card .ip-rc-category {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.ip-report-card .ip-rc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+.ip-report-card .ip-rc-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+.ip-report-card .ip-rc-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.ip-report-card .ip-rc-meta .ip-rc-date {
+  font-variant-numeric: tabular-nums;
+}
+.ip-report-card .ip-rc-meta .ip-rc-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  opacity: 0.4;
+}
 </style>
 </head>
 <body>
@@ -7237,7 +7403,7 @@ function switchNav(nav) {
   document.getElementById('welcomeState').classList.add('hidden');
   document.getElementById('chatMessages').classList.add('active');
   const actions = {
-    scanner: () => { /* just clear, show empty scanner */ },
+    scanner: () => { addInsightPortalCard(); },
     dna: () => addDNACard(),
     calendar: () => addCalendarCard(),
     log: () => addTradingLogPrompt(),
@@ -10169,6 +10335,115 @@ function renderGVTable(gvId) {
     '</tr>';
   }
   tbody.innerHTML = rows;
+}
+
+// ========== INSIGHT PORTAL ==========
+function addInsightPortalCard() {
+  var container = document.getElementById('chatMessages');
+  var msg = document.createElement('div');
+  msg.className = 'msg ai';
+
+  // --- Ticker data ---
+  var ipTickerItems = [
+    { symbol: "$NVDA", verdict: "正在经历木天合相共振，算力板块情绪进入爆发期" },
+    { symbol: "@ElonMusk", verdict: "命盘正遭遇水火刑摩擦，警惕社交媒体言论引发市场波动" },
+    { symbol: "$BTC", verdict: "太阳摩羯的通缩意志正在被土星回归激活" },
+    { symbol: "$TSLA", verdict: "火星白羊的进攻能量与冥王星形成对冲，波动率飙升" },
+    { symbol: "@Powell", verdict: "木星进入双子，政策转向信号的天象窗口已打开" },
+    { symbol: "$ETH", verdict: "海王星双鱼的梦幻共识正在接受土星的现实检验" },
+    { symbol: "$AAPL", verdict: "金星金牛的审美护城河在木星扩张下迎来品牌升级周期" },
+    { symbol: "$SOL", verdict: "天王星金牛的颠覆能量正在重塑链上金融基础设施" },
+    { symbol: "@Buffett", verdict: "土星摩羯的结构性耐心使其在市场恐慌中持续加码能源" },
+    { symbol: "$META", verdict: "冥王星水瓶的集体意识革命正在为其元宇宙叙事注入新动能" }
+  ];
+
+  // Build ticker HTML (duplicate for seamless loop)
+  var tickerHTML = '';
+  var allTicker = ipTickerItems.concat(ipTickerItems);
+  for (var t = 0; t < allTicker.length; t++) {
+    tickerHTML += '<div class="ip-ticker-item">' +
+      '<span class="ip-ticker-dot"></span>' +
+      '<span class="ip-ticker-symbol">' + escapeHtml(allTicker[t].symbol) + '</span>' +
+      '<span class="ip-ticker-verdict">' + escapeHtml(allTicker[t].verdict) + '</span>' +
+    '</div>';
+  }
+
+  // --- Trending: pick 6 active items from Global Vibes datasets ---
+  var allVibes = []
+    .concat(architectEntitiesData || [])
+    .concat(archetypeTitansData || [])
+    .concat(capitalOrbitsData || [])
+    .concat(onChainFrequenciesData || []);
+  var activeVibes = allVibes.filter(function(v) { return v.status === 'active'; });
+  // Shuffle
+  for (var si = activeVibes.length - 1; si > 0; si--) {
+    var ri = Math.floor(Math.random() * (si + 1));
+    var tmp = activeVibes[si];
+    activeVibes[si] = activeVibes[ri];
+    activeVibes[ri] = tmp;
+  }
+  var trendingItems = activeVibes.slice(0, 6);
+
+  var trendingHTML = '';
+  for (var ti = 0; ti < trendingItems.length; ti++) {
+    var item = trendingItems[ti];
+    var sym = item.ticker ? ('$' + item.ticker) : ('@' + item.name.split(' ')[0]);
+    var tagCls = item.status === 'active' ? 'active' : 'dormant';
+    var tagLabel = item.status === 'active' ? 'ACTIVE' : 'DORMANT';
+    trendingHTML += '<div class="ip-trending-card">' +
+      '<div class="ip-tc-header">' +
+        '<span class="ip-tc-symbol">' + escapeHtml(sym) + '</span>' +
+        '<span class="ip-tc-tag ' + tagCls + '">' + tagLabel + '</span>' +
+      '</div>' +
+      '<div class="ip-tc-verdict">' + escapeHtml(item.verdict) + '</div>' +
+    '</div>';
+  }
+
+  // --- Reports data ---
+  var ipReports = [
+    { category: "GEOPOLITICS", title: "特朗普关税风暴：木星射手座的扩张主义如何重塑全球贸易格局", desc: "当木星进入射手座的扩张能量遇上特朗普的保护主义政策，全球供应链正在经历一场星象级别的重构。", date: "2025.04.12", readTime: "8 min" },
+    { category: "CRYPTO", title: "BTC减半后周期：土星双鱼与冥王星水瓶的世纪博弈", desc: "比特币第四次减半完成，土星在双鱼座的限制力与冥王星在水瓶座的颠覆力正在争夺加密市场的叙事主导权。", date: "2025.04.11", readTime: "12 min" },
+    { category: "TECH", title: "AI军备竞赛：NVDA与AMD的火星对冲如何定义算力霸权", desc: "NVIDIA与AMD的竞争已超越商业范畴，成为火星白羊的进攻性对决。星盘显示，这场博弈将在2025年Q3达到高潮。", date: "2025.04.10", readTime: "10 min" },
+    { category: "MACRO", title: "美联储降息周期：木星双子与土星双鱼的政策十字路口", desc: "美联储正面临星象级别的决策困境：木星双子的信息过载与土星双鱼的流动性焦虑正在拉扯政策方向。", date: "2025.04.09", readTime: "9 min" },
+    { category: "MARKET OUTLOOK", title: "2025下半年星象预警：天王星进入金牛的全球市场冲击波", desc: "天王星即将进入金牛座，这将引发全球资产定价体系的剧烈震荡。历史数据显示，天王星换座往往伴随黑天鹅事件。", date: "2025.04.08", readTime: "15 min" },
+    { category: "CRYPTO", title: "SOL vs ETH：公链之王的星盘对决与2025格局预判", desc: "Solana和Ethereum的竞争已进入白热化阶段。从星盘角度看，两者的创始星象呈现出截然不同的金融DNA。", date: "2025.04.07", readTime: "11 min" },
+    { category: "GEOPOLITICS", title: "中东局势升级：火星白羊的战争冲动与原油市场的星象共振", desc: "火星在白羊座的位置正在加剧地缘政治紧张局势。从星盘分析，原油价格将在4月底迎来关键转折点。", date: "2025.04.06", readTime: "7 min" },
+    { category: "TECH", title: "苹果Vision Pro的冥王星时刻：空间计算能否重演iPhone奇迹", desc: "Apple Vision Pro正处于冥王星摩羯的深度转型期。星盘分析显示，其成功与否取决于2025年秋季的木星相位。", date: "2025.04.05", readTime: "8 min" },
+    { category: "MACRO", title: "日元套利交易逆转：金星金牛崩塌与全球流动性收缩信号", desc: "日元正在经历金星金牛座的崩塌周期。当金星失去金牛座的稳定支撑，套利交易的平仓潮将席卷全球市场。", date: "2025.04.04", readTime: "10 min" },
+    { category: "MARKET OUTLOOK", title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13 min" }
+  ];
+
+  var reportsHTML = '';
+  for (var r = 0; r < ipReports.length; r++) {
+    var rp = ipReports[r];
+    reportsHTML += '<div class="ip-report-card">' +
+      '<div class="ip-rc-category">' + escapeHtml(rp.category) + '</div>' +
+      '<div class="ip-rc-title">' + escapeHtml(rp.title) + '</div>' +
+      '<div class="ip-rc-desc">' + escapeHtml(rp.desc) + '</div>' +
+      '<div class="ip-rc-meta">' +
+        '<span class="ip-rc-date">' + escapeHtml(rp.date) + '</span>' +
+        '<span class="ip-rc-dot"></span>' +
+        '<span>' + escapeHtml(rp.readTime) + ' read</span>' +
+      '</div>' +
+    '</div>';
+  }
+
+  var innerHTML =
+    '<div class="ip-container">' +
+      '<div class="ip-ticker-bar">' +
+        '<div class="ip-ticker-track">' + tickerHTML + '</div>' +
+      '</div>' +
+      '<div class="ip-section-label">Trending Vibrations / 热门频率</div>' +
+      '<div class="ip-trending-grid">' + trendingHTML + '</div>' +
+      '<div class="ip-section-label">Latest Reports / 最新报告</div>' +
+      '<div class="ip-reports-section">' +
+        '<div class="ip-reports-grid">' + reportsHTML + '</div>' +
+      '</div>' +
+    '</div>';
+
+  msg.innerHTML = innerHTML;
+  container.appendChild(msg);
+  scrollChatBottom();
 }
 
 init();
