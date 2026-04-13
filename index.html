@@ -4180,15 +4180,16 @@ const scannerData = {
 };
 
 const dnaData = {
-  archetype: 'The Revenge Trader',
+  archetype: '量子赌徒',
   stars: 4,
   totalStars: 6,
+  verdict: '你的直觉是武器，但你的情绪是弱点。月亮与火星在天蝎座的合相赋予你超凡的市场感知力，但太阳对冲海王星意味着你经常在现实与幻想之间迷失。',
   traits: {
-    risk: { value: 82, color: '#EF4444' },
-    greed: { value: 91, color: '#F59E0B' },
-    precision: { value: 45, color: '#3B82F6' },
-    intuition: { value: 73, color: '#8B5CF6' },
-    stamina: { value: 67, color: '#22C55E' }
+    risk: { value: 78, color: '#EF4444' },
+    greed: { value: 62, color: '#F59E0B' },
+    precision: { value: 72, color: '#3B82F6' },
+    intuition: { value: 85, color: '#8B5CF6' },
+    stamina: { value: 68, color: '#22C55E' }
   }
 };
 
@@ -5713,7 +5714,59 @@ function switchSettingsTab(tab) {
   if (tab === 'library') renderLibrary();
 }
 
-let natalChartData = null;
+var natalChartData = {
+  ascendant: { sign: 'Aries', degree: 12.18 },
+  mc: { sign: 'Capricorn', degree: 7.21 },
+  planets: [
+    { name: 'Sun', sign: 'Cancer', degree: 27.47, house: 4, retrograde: false },
+    { name: 'Moon', sign: 'Scorpio', degree: 0.29, house: 7, retrograde: false },
+    { name: 'Mercury', sign: 'Leo', degree: 7.25, house: 5, retrograde: true },
+    { name: 'Venus', sign: 'Virgo', degree: 3.51, house: 6, retrograde: false },
+    { name: 'Mars', sign: 'Scorpio', degree: 6.00, house: 7, retrograde: false },
+    { name: 'Jupiter', sign: 'Taurus', degree: 2.99, house: 1, retrograde: false },
+    { name: 'Saturn', sign: 'Taurus', degree: 15.78, house: 1, retrograde: false },
+    { name: 'Uranus', sign: 'Aquarius', degree: 15.52, house: 11, retrograde: true },
+    { name: 'Neptune', sign: 'Aquarius', degree: 3.13, house: 11, retrograde: true },
+    { name: 'Pluto', sign: 'Sagittarius', degree: 7.97, house: 8, retrograde: true }
+  ],
+  aspects: [
+    { planet1: 'Sun', planet2: 'Moon', type: 'square', degree: 2.82 },
+    { planet1: 'Sun', planet2: 'Jupiter', type: 'square', degree: 5.53 },
+    { planet1: 'Sun', planet2: 'Neptune', type: 'opposition', degree: 5.66 },
+    { planet1: 'Moon', planet2: 'Mercury', type: 'square', degree: 6.95 },
+    { planet1: 'Moon', planet2: 'Venus', type: 'sextile', degree: 3.22 },
+    { planet1: 'Moon', planet2: 'Mars', type: 'conjunction', degree: 5.71 },
+    { planet1: 'Moon', planet2: 'Jupiter', type: 'opposition', degree: 2.70 },
+    { planet1: 'Moon', planet2: 'Neptune', type: 'square', degree: 2.84 },
+    { planet1: 'Mercury', planet2: 'Mars', type: 'square', degree: 1.25 },
+    { planet1: 'Mercury', planet2: 'Jupiter', type: 'square', degree: 4.25 },
+    { planet1: 'Mercury', planet2: 'Neptune', type: 'opposition', degree: 4.12 },
+    { planet1: 'Mercury', planet2: 'Pluto', type: 'trine', degree: 0.72 },
+    { planet1: 'Venus', planet2: 'Mars', type: 'sextile', degree: 2.49 },
+    { planet1: 'Venus', planet2: 'Jupiter', type: 'trine', degree: 0.52 },
+    { planet1: 'Venus', planet2: 'Pluto', type: 'square', degree: 4.45 },
+    { planet1: 'Mars', planet2: 'Jupiter', type: 'opposition', degree: 3.00 },
+    { planet1: 'Mars', planet2: 'Neptune', type: 'square', degree: 2.87 },
+    { planet1: 'Jupiter', planet2: 'Neptune', type: 'square', degree: 0.14 },
+    { planet1: 'Saturn', planet2: 'Uranus', type: 'square', degree: 0.26 },
+    { planet1: 'Neptune', planet2: 'Pluto', type: 'sextile', degree: 4.83 },
+    { planet1: 'Pluto', planet2: 'NorthNode', type: 'trine', degree: 5.11 }
+  ],
+  houses: {
+    1: { sign: 'Aries', degree: 12.18 },
+    2: { sign: 'Taurus', degree: 18.67 },
+    3: { sign: 'Gemini', degree: 14.74 },
+    4: { sign: 'Cancer', degree: 7.21 },
+    5: { sign: 'Leo', degree: 0.77 },
+    6: { sign: 'Virgo', degree: 0.47 },
+    7: { sign: 'Libra', degree: 12.18 },
+    8: { sign: 'Scorpio', degree: 18.67 },
+    9: { sign: 'Sagittarius', degree: 14.74 },
+    10: { sign: 'Capricorn', degree: 7.21 },
+    11: { sign: 'Aquarius', degree: 0.77 },
+    12: { sign: 'Pisces', degree: 0.47 }
+  }
+};
 
 function handleAvatarUpload(event) {
   const file = event.target.files[0];
