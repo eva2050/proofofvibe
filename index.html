@@ -1389,7 +1389,7 @@ html[data-theme="dark"] .dna-card {
   color: var(--text-secondary);
   font-style: italic;
   line-height: 1.6;
-  padding: 12px 0 0;
+  padding: 0;
   background: transparent;
   border: none;
   border-radius: 0;
@@ -1397,8 +1397,8 @@ html[data-theme="dark"] .dna-card {
   margin-bottom: 0;
   text-align: center;
   position: relative;
-  border-top: 1px solid var(--border);
-  margin-top: 12px;
+  border-top: none;
+  margin-top: 8px;
 }
 .dna-verdict::before {
   content: '"';
@@ -7237,7 +7237,6 @@ function addDNACard() {
             '<div class="dna-info-title">你的交易人格是</div>' +
             '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
             '<div class="dna-info-stars">' + starsHTML + '</div>' +
-            '<div class="dna-info-rating">财富评级 <span class="dna-info-rating-num">' + report.wealthRating + '</span>/6</div>' +
             '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
             '<div class="dna-traits">' + traitsHTML + '</div>' +
           '</div>' +
