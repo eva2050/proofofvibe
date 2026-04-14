@@ -3878,7 +3878,7 @@ html[lang="ko"] {
     </div>
     <nav class="sidebar-nav">
       <div class="nav-section-label" data-i18n="nav.signals">SIGNALS</div>
-      <div class="nav-item active" data-nav="scanner" onclick="switchNav('scanner')">
+      <div class="nav-item" data-nav="scanner" onclick="switchNav('scanner')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span data-i18n="nav.scanner">The Scanner</span>
       </div>
@@ -7426,10 +7426,10 @@ function newChat() {
   document.getElementById('welcomeState').classList.remove('hidden');
   document.getElementById('chatMessages').classList.remove('active');
   document.getElementById('searchInput').value = '';
-  // Reset nav to scanner
-  currentNav = 'scanner';
+  // Reset nav - no highlight on welcome
+  currentNav = '';
   document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.toggle('active', el.getAttribute('data-nav') === 'scanner');
+    el.classList.remove('active');
   });
   document.getElementById('headerTitle').textContent = t(navTitles['scanner']);
 }
