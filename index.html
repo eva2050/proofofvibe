@@ -3862,7 +3862,7 @@ html[lang="ko"] {
 
   <!-- LEFT SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo" onclick="switchNav('scanner')" style="cursor:pointer;">
+    <div class="sidebar-logo" onclick="newChat()" style="cursor:pointer;">
       <img src="logo.png" alt="ProofOfVibe" class="logo-light" style="height:27px;display:block;">
       <img src="logo-white.png" alt="ProofOfVibe" class="logo-dark" style="height:27px;display:none;">
     </div>
@@ -7392,6 +7392,7 @@ const navTitles = {
 };
 
 function switchNav(nav) {
+  if (currentNav === nav) return;
   currentNav = nav;
   document.querySelectorAll('.nav-item').forEach(el => {
     el.classList.toggle('active', el.getAttribute('data-nav') === nav);
@@ -7411,7 +7412,7 @@ function switchNav(nav) {
     transits: () => { addGlobalVibesCard(); },
     watchlist: () => addWatchlistCard()
   };
-  if (actions[nav]) actions[nav]();
+  if (actions[nav]) requestAnimationFrame(() => actions[nav]());
 }
 
 // ========== NEW CHAT / HISTORY ==========
