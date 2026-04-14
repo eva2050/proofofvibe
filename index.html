@@ -10624,11 +10624,11 @@ function addInsightPortalCard() {
   // Build ticker HTML (duplicate for seamless loop)
   var tickerHTML = '';
   var allTicker = ipTickerItems.concat(ipTickerItems);
-  for (var t = 0; t < allTicker.length; t++) {
+  for (var ti = 0; ti < allTicker.length; ti++) {
     tickerHTML += '<div class="ip-ticker-item">' +
       '<span class="ip-ticker-dot"></span>' +
-      '<span class="ip-ticker-symbol">' + escapeHtml(allTicker[t].symbol) + '</span>' +
-      '<span class="ip-ticker-verdict">' + escapeHtml(allTicker[t].verdict) + '</span>' +
+      '<span class="ip-ticker-symbol">' + escapeHtml(allTicker[ti].symbol) + '</span>' +
+      '<span class="ip-ticker-verdict">' + escapeHtml(allTicker[ti].verdict) + '</span>' +
     '</div>';
   }
 
