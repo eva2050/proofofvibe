@@ -7671,7 +7671,7 @@ function switchNav(nav) {
     transits: () => { addGlobalVibesCard(); },
     watchlist: () => addWatchlistCard()
   };
-  if (actions[nav]) requestAnimationFrame(() => actions[nav]());
+  if (actions[nav]) actions[nav]();
 }
 
 // ========== NEW CHAT / HISTORY ==========
