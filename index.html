@@ -3906,6 +3906,105 @@ html[lang="ko"] {
 .ip-report-card .ip-rc-body {
   padding: 14px 16px 16px;
 }
+
+/* ========== Report Detail Modal ========== */
+.report-detail-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: rdFadeIn 0.2s ease;
+}
+@keyframes rdFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.report-detail-card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+}
+.rd-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: background 0.15s;
+}
+.rd-close:hover { background: var(--hover-bg); }
+.rd-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  display: block;
+}
+.rd-body {
+  padding: 20px 24px 24px;
+}
+.rd-category {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.rd-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+.rd-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+.rd-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  opacity: 0.4;
+}
+.rd-desc {
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.rd-content {
+  font-size: 14px;
+  line-height: 1.7;
+}
 </style>
 </head>
 <body>
@@ -6577,6 +6676,7 @@ const i18n = {
     'ip.trendingVibrations': 'Trending Vibrations',
     'ip.latestReports': 'Latest Reports',
     'ip.minRead': 'min read',
+    'ip.fullReportComingSoon': 'Full report content is coming soon. Stay tuned for in-depth cosmic analysis.',
     'ip.geopolitics': 'GEOPOLITICS',
     'ip.crypto': 'CRYPTO',
     'ip.tech': 'TECH',
@@ -7100,6 +7200,7 @@ const i18n = {
     'ip.trendingVibrations': '热门频率',
     'ip.latestReports': '最新报告',
     'ip.minRead': '分钟阅读',
+    'ip.fullReportComingSoon': '完整报告内容即将上线，敬请期待深度星象分析。',
     'ip.geopolitics': '地缘政治',
     'ip.crypto': '加密货币',
     'ip.tech': '科技',
@@ -10649,6 +10750,49 @@ function renderGVTable(gvId) {
 }
 
 // ========== INSIGHT PORTAL ==========
+function openReportDetail(index) {
+  var rp = ipReports[index];
+  if (!rp) return;
+
+  // Remove existing modal if any
+  var existing = document.getElementById('reportDetailModal');
+  if (existing) existing.remove();
+
+  var modal = document.createElement('div');
+  modal.id = 'reportDetailModal';
+  modal.className = 'report-detail-overlay';
+  modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
+
+  var imgHTML = rp.image_url
+    ? '<img class="rd-image" src="' + escapeHtml(rp.image_url) + '" alt="" onerror="this.style.display=\'none\'">'
+    : '';
+
+  modal.innerHTML =
+    '<div class="report-detail-card">' +
+      '<button class="rd-close" onclick="document.getElementById(\'reportDetailModal\').remove()">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+      '</button>' +
+      imgHTML +
+      '<div class="rd-body">' +
+        '<div class="rd-category">' + escapeHtml(rp.category) + '</div>' +
+        '<h2 class="rd-title">' + escapeHtml(rp.title) + '</h2>' +
+        '<div class="rd-meta">' +
+          '<span>' + escapeHtml(rp.date) + '</span>' +
+          '<span class="rd-dot"></span>' +
+          '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
+        '</div>' +
+        '<div class="rd-desc">' + escapeHtml(rp.desc) + '</div>' +
+        '<div class="rd-content">' +
+          '<p style="color:var(--text-secondary);font-size:13px;line-height:1.7;">' +
+            t('ip.fullReportComingSoon') +
+          '</p>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+}
+
 function getCategoryGradient(cat) {
   var gradients = {
     'GEOPOLITICS': '#1a1a2e,#16213e',
@@ -10770,7 +10914,7 @@ async function addInsightPortalCard() {
       : '<div class="ip-rc-image" style="background:linear-gradient(135deg,' + getCategoryGradient(rp.category) + ')"></div>';
     var hasImageCls = 'has-image';
 
-    reportsHTML += '<div class="ip-report-card ' + hasImageCls + '">' +
+    reportsHTML += '<div class="ip-report-card ' + hasImageCls + '" onclick="openReportDetail(' + r + ')">' +
       imgHTML +
       '<div class="ip-rc-body">' +
         '<div class="ip-rc-category">' + escapeHtml(rp.category) + '</div>' +
