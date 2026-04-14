@@ -539,15 +539,22 @@ html[data-theme="dark"] .welcome-title {
 
 .astro-cards-scroll {
   width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.astro-cards-scroll::-webkit-scrollbar { display: none; }
 
 .astro-cards-track {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
   gap: 12px;
 }
 
 .astro-card {
+  flex-shrink: 0;
+  width: calc(50% - 6px);
+  scroll-snap-align: start;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 14px;
@@ -738,8 +745,8 @@ html[data-theme="dark"] .astro-card:hover {
 }
 
 @media (max-width: 768px) {
-  .astro-cards-track {
-    grid-template-columns: 1fr;
+  .astro-card {
+    width: calc(50% - 6px);
   }
   .astro-arrow { display: none; }
   .astro-dots { display: none; }
@@ -8334,15 +8341,8 @@ const astroCardsData = [
 ];
 
 function generateAstroCards() {
-  renderAstroPage();
-  renderAstroDots();
-}
-
-function renderAstroPage() {
   const track = document.getElementById('astroCardsTrack');
-  const start = astroPageIndex * 3;
-  const page = astroCardsData.slice(start, start + 3);
-  track.innerHTML = page.map(c => {
+  track.innerHTML = astroCardsData.map(c => {
     let bars = '';
     for (let i = 0; i < 14; i++) {
       const r = Math.random();
