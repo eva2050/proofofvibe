@@ -10224,10 +10224,34 @@ function getStoredAuth() {
   if (authToken) {
     const user = localStorage.getItem('vibe_user');
     if (user) {
-      try { currentUser = JSON.parse(user); } catch(e) { currentUser = null; }
+      try { currentUser = JSON.parse(user); } catch(e) {
+        console.error('Failed to parse stored user, clearing auth');
+        currentUser = null;
+        authToken = null;
+        localStorage.removeItem('vibe_token');
+        localStorage.removeItem('vibe_user');
+        updateUIForAuth();
+        return;
+      }
     }
+    if (currentUser) {
+      updateUIForAuth();
+      validateToken();
+    } else {
+      // Has token but no user data — try to validate and recover
+      validateToken().then(valid => {
+        if (!valid || !currentUser) {
+          // Token is invalid, clear everything
+          authToken = null;
+          localStorage.removeItem('vibe_token');
+          localStorage.removeItem('vibe_user');
+          updateUIForAuth();
+        }
+      });
+    }
+  } else {
+    currentUser = null;
     updateUIForAuth();
-    validateToken();
   }
 }
 
@@ -10239,14 +10263,21 @@ async function validateToken() {
     });
     if (res.ok) {
       const data = await res.json();
-      currentUser = data.user;
+      // Merge with existing localStorage data to preserve picture etc.
+      const stored = localStorage.getItem('vibe_user');
+      let storedUser = {};
+      try { storedUser = JSON.parse(stored) || {}; } catch(e) {}
+      currentUser = { ...storedUser, ...data.user };
       localStorage.setItem('vibe_user', JSON.stringify(currentUser));
       updateUIForAuth();
       return true;
     }
     // If /api/auth/me fails, keep local state (don't logout)
+    console.log('Token validation failed, keeping local state');
     return true;
   } catch(e) {
+    // Network error — keep local state
+    console.log('Token validation network error, keeping local state');
     return true;
   }
 }
