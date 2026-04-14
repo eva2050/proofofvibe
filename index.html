@@ -515,8 +515,14 @@ html[data-theme="dark"] .welcome-title {
   color: var(--text-secondary);
   max-width: 600px;
   line-height: 1.6;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   transition: color var(--transition-speed);
+}
+.welcome-state .input-bar {
+  padding: 0;
+  margin-bottom: 32px;
+  max-width: 560px;
+  width: 100%;
 }
 
 /* 30-Day Vibe Forecast */
@@ -977,6 +983,32 @@ html[data-theme="light"] .result-card {
 
 html[data-theme="dark"] .result-card {
   box-shadow: none;
+}
+
+/* Dark mode fixes */
+html[data-theme="dark"] .gv-tabs,
+html[data-theme="dark"] .gv-search,
+html[data-theme="dark"] .gv-table thead th,
+html[data-theme="dark"] .gv-table tbody tr {
+  border-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .gv-table tbody tr:hover {
+  background: rgba(255,255,255,0.03);
+}
+html[data-theme="dark"] .gv-status-dot.dormant {
+  background: rgba(255,255,255,0.2);
+}
+html[data-theme="dark"] .gv-count-bar {
+  border-top-color: rgba(255,255,255,0.06);
+}
+html[data-theme="dark"] .dna-collapsible {
+  border-color: rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .mod-daily-action {
+  background: rgba(255,255,255,0.03);
+}
+html[data-theme="dark"] .pulse-left {
+  border-bottom-color: rgba(255,255,255,0.08);
 }
 
 /* Pulse Monitor two-column layout */
@@ -3993,6 +4025,15 @@ html[lang="ko"] {
       <div class="welcome-state" id="welcomeState">
         <h1 class="welcome-title" data-i18n="welcome.title">The math is priced. The edge is vibe.</h1>
         <p class="welcome-subtitle" data-i18n="welcome.subtitle">Mix astrology, market data, and gut feeling. Scan any ticker, person, or institution — or discover your Financial DNA.</p>
+        <div class="input-bar" id="welcomeInputBar">
+          <div class="input-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" data-i18n-placeholder="input.placeholder" placeholder="Search $NVDA, @ElonMusk, #Citadel..." onkeydown="if(event.key==='Enter')handleSearch()">
+            <button class="input-send-btn" id="sendBtn" onclick="handleSearch()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
         <div class="astro-cards-wrapper" id="astroCardsWrapper">
           <button class="astro-arrow astro-arrow-left" id="astroPrev" onclick="slideAstroCards(-1)" disabled>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
@@ -4025,16 +4066,6 @@ html[lang="ko"] {
       </div>
     </div>
 
-    <!-- Input Bar -->
-    <div class="input-bar">
-      <div class="input-wrapper">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="searchInput" data-i18n-placeholder="input.placeholder" placeholder="Search $NVDA, @ElonMusk, #Citadel..." onkeydown="if(event.key==='Enter')handleSearch()">
-        <button class="input-send-btn" id="sendBtn" onclick="handleSearch()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>
   </main>
 
 </div>
@@ -10527,7 +10558,6 @@ function addGlobalVibesCard() {
   var innerHTML =
     '<div class="gv-container" id="' + gvId + '">' +
       '<div class="gv-tabs">' + tabsHTML + '</div>' +
-      '<input class="gv-search" type="text" placeholder="' + t('gv.searchPlaceholder') + '" data-gvid="' + gvId + '" oninput="filterGVTable(this)">' +
       '<div class="gv-scroll" data-gvid="' + gvId + '">' +
         '<table class="gv-table">' +
           '<thead><tr>' +
