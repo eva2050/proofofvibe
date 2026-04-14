@@ -7628,11 +7628,8 @@ function changeLang(lang) {
     el.classList.toggle('active', el.getAttribute('data-lang') === lang);
   });
   applyI18n();
-  // Re-render user name for i18n (Guest text may change)
-  if (!currentUser) {
-    const userName = document.getElementById('userName');
-    if (userName) userName.textContent = t('user.guest') || 'Guest';
-  }
+  // Re-render user info after i18n (applyI18n overwrites data-i18n elements)
+  updateUIForAuth();
 }
 
 // ========== THEME ==========
