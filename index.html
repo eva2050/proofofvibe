@@ -979,6 +979,37 @@ html[data-theme="dark"] .result-card {
   box-shadow: none;
 }
 
+/* Pulse Monitor two-column layout */
+.pulse-layout {
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+.pulse-left {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+  border-right: 1px solid rgba(0,0,0,0.08);
+}
+.pulse-right {
+  flex: 1;
+  min-width: 0;
+  padding: 16px;
+}
+@media (max-width: 900px) {
+  .pulse-layout {
+    flex-direction: column;
+  }
+  .pulse-left {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding-bottom: 12px;
+  }
+  .pulse-right {
+    padding-top: 12px;
+  }
+}
+
 /* Calendar + Dashboard layout */
 .calendar-layout {
   display: flex;
@@ -9777,14 +9808,18 @@ function addPulseCard() {
   '</div>';
 
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
-    '<div class="result-card"><div style="padding:16px;">' +
+    '<div class="result-card"><div class="pulse-layout">' +
+    '<div class="pulse-left">' +
     tensionHTML +
     cyclesSection +
     stationsSection +
+    '</div>' +
+    '<div class="pulse-right">' +
     assetsSection +
     milestonesSection +
     elementsSection +
     strategySection +
+    '</div>' +
     '</div></div></div>';
 
   container.appendChild(msg);
