@@ -477,10 +477,10 @@ html[data-theme="dark"] .main-header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 80px);
-  padding: 32px 24px;
+  flex: 1;
+  padding: 16px 24px;
   text-align: center;
-  gap: 0;
+  overflow-y: auto;
 }
 
 .welcome-state.hidden {
@@ -489,10 +489,10 @@ html[data-theme="dark"] .main-header {
 
 .welcome-title {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 38px;
+  font-size: 28px;
   font-weight: 400;
   color: var(--text-primary);
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   transition: color var(--transition-speed);
   letter-spacing: -0.5px;
 }
@@ -512,17 +512,17 @@ html[data-theme="dark"] .welcome-title {
 }
 
 .welcome-subtitle {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-secondary);
-  max-width: 520px;
-  line-height: 1.6;
-  margin-bottom: 20px;
+  max-width: 440px;
+  line-height: 1.5;
+  margin-bottom: 14px;
   transition: color var(--transition-speed);
 }
 .welcome-state .input-bar {
   padding: 0;
-  margin-bottom: 16px;
-  max-width: 480px;
+  margin-bottom: 10px;
+  max-width: 420px;
   width: 100%;
 }
 
@@ -550,12 +550,12 @@ html[data-theme="dark"] .welcome-title {
 .astro-card {
   flex-shrink: 0;
   width: calc(33.333% - 11px);
-  max-width: 300px;
-  min-width: 240px;
+  max-width: 280px;
+  min-width: 220px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 20px;
+  border-radius: 14px;
+  padding: 16px;
   cursor: pointer;
   transition: all 0.25s;
   position: relative;
@@ -597,18 +597,18 @@ html[data-theme="dark"] .astro-card:hover {
 .astro-card-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .astro-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   flex-shrink: 0;
   color: #fff;
@@ -670,7 +670,7 @@ html[data-theme="dark"] .astro-card:hover {
 
 .astro-card-body {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   align-items: stretch;
 }
 
@@ -679,10 +679,10 @@ html[data-theme="dark"] .astro-card:hover {
   display: flex;
   align-items: flex-end;
   gap: 3px;
-  height: 48px;
-  padding: 6px 8px;
+  height: 40px;
+  padding: 4px 6px;
   background: var(--hover-bg);
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .astro-bar {
@@ -714,7 +714,7 @@ html[data-theme="dark"] .astro-card:hover {
 }
 
 .astro-stat-value {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
   line-height: 1;
 }
@@ -841,18 +841,18 @@ html[data-theme="dark"] .astro-arrow {
 .search-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
 .chip {
-  padding: 8px 16px;
+  padding: 6px 14px;
   border-radius: 20px;
   border: 1px solid var(--border);
   background: transparent;
   color: var(--text-secondary);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
@@ -3460,22 +3460,22 @@ html[data-theme="dark"] .pricing-card:hover {
     padding: 16px;
   }
   .welcome-state {
-    padding: 24px 16px;
+    padding: 20px 16px 12px;
   }
   .welcome-title {
-    font-size: 26px;
+    font-size: 24px;
   }
   .welcome-subtitle {
-    font-size: 13px;
+    font-size: 12px;
     max-width: 100%;
   }
   .welcome-state .input-bar {
     max-width: 100%;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .search-chips {
-    gap: 6px;
-    margin-bottom: 20px;
+    gap: 5px;
+    margin-bottom: 14px;
   }
   .chip {
     padding: 6px 14px;
