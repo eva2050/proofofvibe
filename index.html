@@ -7671,7 +7671,7 @@ function switchNav(nav) {
     transits: () => { addGlobalVibesCard(); },
     watchlist: () => addWatchlistCard()
   };
-  if (actions[nav]) actions[nav]();
+  if (actions[nav]) { actions[nav](); scrollChatTop(); }
 }
 
 // ========== NEW CHAT / HISTORY ==========
@@ -10492,10 +10492,10 @@ function addGlobalVibesCard() {
 
   var tabsHTML = '';
   for (var i = 0; i < tabs.length; i++) {
-    var t = tabs[i];
+    var tab = tabs[i];
     var cls = i === 0 ? 'gv-tab active' : 'gv-tab';
-    tabsHTML += '<div class="' + cls + '" data-gvtab="' + t.key + '" data-gvid="' + gvId + '" onclick="switchGVTab(this)">' +
-      t.label + '<span class="gv-tab-count">(' + t.data.length + ')</span></div>';
+    tabsHTML += '<div class="' + cls + '" data-gvtab="' + tab.key + '" data-gvid="' + gvId + '" onclick="switchGVTab(this)">' +
+      tab.label + '<span class="gv-tab-count">(' + tab.data.length + ')</span></div>';
   }
 
   var innerHTML =
