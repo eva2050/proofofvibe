@@ -118,6 +118,17 @@ async function handleRequest(request) {
       return await withAuth(request, handleDeleteBookmark);
     }
 
+    // ── Reports routes (public GET, admin POST/DELETE) ─────────────────────
+    if (path === '/api/reports' && method === 'GET') {
+      return await handleGetReports(request);
+    }
+    if (path === '/api/reports' && method === 'POST') {
+      return await handleCreateReport(request);
+    }
+    if (path.match(/^\/api\/reports\/\d+$/) && method === 'DELETE') {
+      return await handleDeleteReport(request);
+    }
+
     // ── 404 ───────────────────────────────────────────────────────────────
     return jsonResponse({ error: 'Not found' }, 404);
   } catch (err) {
@@ -702,4 +713,74 @@ async function handleDeleteBookmark(request, ctx) {
   await d1Run('DELETE FROM bookmarks WHERE rowid = ? AND user_id = ?', [id, ctx.user.user_id]);
 
   return jsonResponse({ message: 'Bookmark deleted' });
+}
+
+// =============================================================================
+// GET /api/reports?lang=en&category=CRYPTO&limit=10&offset=0  (public)
+// =============================================================================
+
+async function handleGetReports(request) {
+  const url = new URL(request.url);
+  const lang = url.searchParams.get('lang') || 'en';
+  const category = url.searchParams.get('category') || '';
+  const limit = parseInt(url.searchParams.get('limit') || '20');
+  const offset = parseInt(url.searchParams.get('offset') || '0');
+
+  let query = 'SELECT * FROM reports WHERE lang = ?';
+  const params = [lang];
+  if (category) {
+    query += ' AND category = ?';
+    params.push(category);
+  }
+  query += ' ORDER BY date DESC, created_at DESC LIMIT ? OFFSET ?';
+  params.push(limit, offset);
+
+  const results = await d1All(query, params);
+
+  return withCors(jsonResponse({ success: true, data: results }), request);
+}
+
+// =============================================================================
+// POST /api/reports  (admin - create report)
+// =============================================================================
+
+async function handleCreateReport(request) {
+  const body = await readBody(request);
+  const { category, title, description, image_url, date, read_time, lang } = body;
+
+  if (!title) {
+    return withCors(jsonResponse({ error: 'title is required' }, 400), request);
+  }
+
+  const result = await d1Run(
+    'INSERT INTO reports (category, title, description, image_url, date, read_time, lang) VALUES (?, ?, ?, ?, ?, ?, ?)',
+    [category || 'MARKET OUTLOOK', title, description || '', image_url || '', date || '', read_time || 5, lang || 'en']
+  );
+
+  return withCors(
+    jsonResponse({ success: true, id: result.last_row_id }, 201),
+    request
+  );
+}
+
+// =============================================================================
+// DELETE /api/reports/:id  (admin - delete report)
+// =============================================================================
+
+async function handleDeleteReport(request) {
+  const url = new URL(request.url);
+  const id = parseInt(url.pathname.split('/').pop(), 10);
+
+  if (!id || isNaN(id)) {
+    return withCors(jsonResponse({ error: 'Invalid report ID' }, 400), request);
+  }
+
+  const existing = await d1First('SELECT id FROM reports WHERE rowid = ?', [id]);
+  if (!existing) {
+    return withCors(jsonResponse({ error: 'Report not found' }, 404), request);
+  }
+
+  await d1Run('DELETE FROM reports WHERE rowid = ?', [id]);
+
+  return withCors(jsonResponse({ success: true, message: 'Report deleted' }), request);
 }
