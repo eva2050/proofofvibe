@@ -6385,7 +6385,185 @@ const i18n = {
     'dna.roast.stamina.low': 'You fold faster than a cheap suit.',
     'log.negative': 'The stars sense your frustration. Losses are cosmic lessons — they hurt, but they teach. Mercury retrograde may have scrambled your signals. Take a breath, review your thesis, and wait for clearer skies.',
     'log.positive': 'Victory vibes detected! The cosmos celebrates your gains. Jupiter\'s blessing is upon you — ride this momentum but don\'t let greed turn winners into lessons. The stars say: book some profits, you earned it.',
-    'log.neutral': 'The cosmic fog is thick. Uncertainty is not weakness — it\'s the universe telling you to wait. Neptune clouds your judgment right now. Best move: no move. Let the planets realign before your next trade.'
+    'log.neutral': 'The cosmic fog is thick. Uncertainty is not weakness — it\'s the universe telling you to wait. Neptune clouds your judgment right now. Best move: no move. Let the planets realign before your next trade.',
+    'mod.whaleBanner': 'Whale Resonance Detected',
+    'mod.entityFoundation': 'Entity Foundation',
+    'mod.currentAlignment': 'Current Alignment',
+    'mod.personalSync': 'Personal Sync',
+    'mod.actionableVerdict': 'Actionable Verdict',
+    'mod.volatilityGene': 'Volatility Gene',
+    'mod.entityType': 'Entity Type',
+    'mod.stockCrypto': 'Stock / Crypto',
+    'mod.personality': 'Personality',
+    'mod.institution': 'Institution',
+    'mod.strongSync': 'Strong Sync',
+    'mod.partialSync': 'Partial Sync',
+    'mod.weakSync': 'Weak Sync',
+    'mod.syncStrongDesc': 'Multiple harmonious aspects detected between this entity and your natal chart. High probability of aligned gains.',
+    'mod.syncPartialDesc': 'Mixed aspects. Some positions favor you while others present challenges. Selective entry recommended.',
+    'mod.syncWeakDesc': 'Challenging aspects. Even if the entity performs well, your personal timing may not align. Consider hedging.',
+    'mod.volHigh': 'High',
+    'mod.volMid': 'Medium',
+    'mod.volLow': 'Low',
+    'mod.verdictBullish': 'Entity is bullish and resonates with your chart. Favorable for new positions.',
+    'mod.verdictPartial': 'Entity has potential but partially misaligned with your chart. Wait for better entry.',
+    'mod.verdictPoor': 'Low sync. Consider avoiding or hedging this position.',
+    'mod.save': 'Save',
+    'mod.saved': 'Saved',
+    'mod.vibeCalendar': 'Wealth Calendar',
+    'mod.calendarSubtitle': 'Personal Wealth Rhythm',
+    'mod.todayVibeScore': 'Today\'s Vibe Score',
+    'mod.favorable': 'Favorable — Trust your judgment',
+    'mod.caution': 'Caution — Patience is the best strategy',
+    'mod.neutral': 'Neutral — Observe and plan',
+    'mod.profitWindow': 'Profit Window',
+    'mod.defenseZone': 'Defense Zone',
+    'mod.days': 'days',
+    'mod.dailyAction': 'Daily Action',
+    'mod.pulseMonitor': 'Pulse Monitor',
+    'mod.pulseSubtitle': 'Real-time Cosmic Thermometer',
+    'mod.marketTension': 'Market Tension Index',
+    'mod.highPressure': 'High Pressure',
+    'mod.moderateTension': 'Moderate Pressure',
+    'mod.lowPressure': 'Low Pressure',
+    'mod.tensionDesc': 'Sum of hard aspects (square/opposition) between planets, reflecting explosive market risk.',
+    'mod.planetaryStations': 'Planetary Stations',
+    'mod.elementalBalance': 'Elemental Balance',
+    'mod.fire': 'Fire',
+    'mod.earth': 'Earth',
+    'mod.air': 'Air',
+    'mod.water': 'Water',
+    'mod.fireDesc': 'Impulsive trading, high turnover',
+    'mod.earthDesc': 'Value-focused, risk-averse sentiment',
+    'mod.airDesc': 'Information-driven, amplified volatility',
+    'mod.waterDesc': 'Emotional trading, intuition-driven',
+    'mod.fireDominant': 'Fire dominant → Impulsive market, high turnover. Beware of FOMO chasing.',
+    'mod.mercury': 'Mercury',
+    'mod.venus': 'Venus',
+    'mod.mars': 'Mars',
+    'mod.jupiter': 'Jupiter',
+    'mod.saturn': 'Saturn',
+    'mod.retrograde': 'Retrograde',
+    'mod.direct': 'Direct',
+    'mod.station': 'Station',
+    'mod.mercuryRetroDesc': 'Higher probability of technical glitches and miscommunication. Double-check orders before executing.',
+    'mod.venusDirectDesc': 'Wealth energy flows smoothly. Favorable for value-based entries.',
+    'mod.marsStationDesc': 'Energy is building. Major moves possible within 2-3 days.',
+    'mod.jupiterDirectDesc': 'Expansion energy supports. Growth positions are favored.',
+    'mod.saturnDirectDesc': 'Discipline is rewarded. Systematic strategies outperform.',
+    'mod.globalTransits': 'Global Vibes',
+    'mod.transitsSubtitle': 'Macro Cosmic Forecast',
+    'mod.cycleIdentification': 'Cycle Identification',
+    'mod.assetClassRating': 'Asset Class Rating',
+    'mod.riskMilestones': 'Risk Milestones',
+    'mod.macroStrategy': 'Macro Strategy',
+    'mod.saturnNeptune': 'Saturn-Neptune Cycle',
+    'mod.jupiterUranus': 'Jupiter-Uranus Cycle',
+    'mod.plutoAquarius': 'Pluto in Aquarius',
+    'mod.waningSquare': 'Waning Square',
+    'mod.conjunction': 'Conjunction',
+    'mod.entryPhase': 'Entry Phase',
+    'mod.saturnNeptuneDesc': 'Reality check for overvalued assets. Overhyped sectors face deleveraging pressure.',
+    'mod.jupiterUranusDesc': 'Breakthrough energy. High probability of tech disruption and crypto rallies.',
+    'mod.plutoAquariusDesc': 'Power shifting to decentralized systems. AI, crypto, and space economy enter golden age.',
+    'mod.impactHigh': 'High',
+    'mod.impactTransformative': 'Transformative',
+    'mod.crypto': 'Crypto',
+    'mod.aiTech': 'AI / Tech',
+    'mod.blueChips': 'Blue Chips',
+    'mod.bonds': 'Bonds',
+    'mod.realEstate': 'Real Estate',
+    'mod.commodities': 'Commodities',
+    'mod.cryptoReason': 'Pluto in Aquarius + Jupiter-Uranus conjunction',
+    'mod.aiTechReason': 'Uranus innovation wave drives sector rotation',
+    'mod.blueChipsReason': 'Saturn discipline supports defensive allocation',
+    'mod.bondsReason': 'Rate uncertainty keeps fixed income in limbo',
+    'mod.realEstateReason': 'Saturn pressure on fixed assets',
+    'mod.commoditiesReason': 'Mars energy but mixed elemental balance',
+    'mod.macroStrategyText': 'Based on your trading DNA and current transits: <strong style="color:#22C55E;">Increase crypto and AI exposure</strong> — Jupiter-Uranus energy peaks in the next 3 months. <strong style="color:#F59E0B;">Reduce leverage</strong> — Saturn retrograde approaches in June. <strong style="color:var(--text-primary);">Keep 30% cash</strong> to navigate Pluto sign-change volatility.',
+    'mod.vibeWatchlist': 'Vibe Watchlist',
+    'mod.watchlistSubtitle': 'Resonance Dashboard',
+    'mod.watchlistDesc': 'Entities you follow will appear here with real-time cosmic sync scores.',
+    'mod.addFromScanner': '+ Add from Scanner',
+    'mod.top': 'TOP',
+    'mod.cosmicRealityCheck': 'Cosmic Reality Check',
+    'mod.victoryVibes': 'Victory Vibes',
+    'mod.cosmicFog': 'Cosmic Fog',
+    'mod.tradingLogPrompt': 'Tell me about your most recent trade...',
+    'mod.risk': 'Risk',
+    'mod.greed': 'Greed',
+    'mod.precision': 'Precision',
+    'mod.intuition': 'Intuition',
+    'mod.stamina': 'Stamina',
+    'mod.trine': 'Trine',
+    'mod.square': 'Square',
+    'mod.sextile': 'Sextile',
+    'mod.opposition': 'Opposition',
+    'mod.conjunct': 'Conjunct',
+    'mod.mon': 'Mon',
+    'mod.tue': 'Tue',
+    'mod.wed': 'Wed',
+    'mod.thu': 'Thu',
+    'mod.fri': 'Fri',
+    'mod.sat': 'Sat',
+    'mod.sun': 'Sun',
+    // DNA Page
+    'dna.yourTradingPersona': 'Your Trading Persona Is',
+    'dna.whaleEcho': 'Whale Echo',
+    'dna.tradingStyle': 'Trading Style',
+    'dna.syncAnalysis': 'Natal Chart Resonance Analysis',
+    'dna.shareReport': 'Share Report',
+    'dna.financialDNAReport': 'Financial DNA Report',
+    'dna.verifiedBy': 'Verified by ProofOfVibe Quantum Astrology Engine',
+    'dna.chartDetails': 'Chart Details',
+    'dna.wealthPatterns': 'Wealth Patterns',
+    'dna.patternsCount': 'patterns',
+    'dna.cognitiveMapping': 'Cognitive Mapping',
+    'dna.typicalLossScenarios': 'Typical Loss Scenario Backtest',
+    'dna.scenariosCount': 'scenarios',
+    'dna.typicalProfitWindows': 'Typical Profit Windows',
+    'dna.windowsCount': 'windows',
+    'dna.advancedPath': 'Advanced Path',
+    'dna.behavioralDirectives': 'Behavioral Directives',
+    'dna.goldenSectors': 'Golden Sectors',
+    'dna.radarRisk': 'Risk',
+    'dna.radarGreed': 'Greed',
+    'dna.radarPrecision': 'Precision',
+    'dna.radarIntuition': 'Intuition',
+    'dna.radarStamina': 'Stamina',
+    'dna.tierS': 'TIER S',
+    'dna.tierA': 'TIER A',
+    'dna.tierR': 'TIER R',
+    'dna.noPatterns': 'No dominant patterns detected. Your chart operates below the signal threshold.',
+    'dna.sign': 'Sign',
+    'dna.age': 'Age',
+    'dna.betaPosition': 'Beta (Index / Passive)',
+    'dna.alphaPosition': 'Alpha (Active / Offensive)',
+    // Global Vibes
+    'gv.architectEntities': 'The Architect Entities',
+    'gv.archetypePlayers': 'The Archetype Players',
+    'gv.capitalOrbits': 'Capital Orbits',
+    'gv.onchainFrequencies': 'On-chain Frequencies',
+    'gv.searchPlaceholder': 'Search name, ticker, narrative...',
+    'gv.showing': 'Showing',
+    'gv.of': 'of',
+    'gv.active': 'active',
+    'gv.dormant': 'dormant',
+    'gv.noResults': 'No results found',
+    'gv.name': 'Name',
+    'gv.coreNarrative': 'Core Narrative',
+    'gv.inception': 'Inception',
+    'gv.cosmicDNAVerdict': 'Cosmic DNA Verdict',
+    'gv.status': 'Status',
+    // Insight Portal
+    'ip.trendingVibrations': 'Trending Vibrations',
+    'ip.latestReports': 'Latest Reports',
+    'ip.minRead': 'min read',
+    'ip.geopolitics': 'GEOPOLITICS',
+    'ip.crypto': 'CRYPTO',
+    'ip.tech': 'TECH',
+    'ip.macro': 'MACRO',
+    'ip.marketOutlook': 'MARKET OUTLOOK'
   },
   es: {
     'nav.signals': 'SEÑALES',
@@ -6851,6 +7029,63 @@ const i18n = {
     'mod.fri': '五',
     'mod.sat': '六',
     'mod.sun': '日',
+    // DNA Page
+    'dna.yourTradingPersona': '你的交易人格是',
+    'dna.whaleEcho': '巨鲸共振',
+    'dna.tradingStyle': '交易风格',
+    'dna.syncAnalysis': '星盘共振分析',
+    'dna.shareReport': '分享报告',
+    'dna.financialDNAReport': '财务基因报告',
+    'dna.verifiedBy': '经 ProofOfVibe 量子占星引擎验证',
+    'dna.chartDetails': '星盘详情',
+    'dna.wealthPatterns': '财富格局深度鉴定',
+    'dna.patternsCount': '个格局',
+    'dna.cognitiveMapping': '认知映射',
+    'dna.typicalLossScenarios': '典型损钱场景回测',
+    'dna.scenariosCount': '个场景',
+    'dna.typicalProfitWindows': '典型赚钱时机',
+    'dna.windowsCount': '个窗口',
+    'dna.advancedPath': '进阶路径',
+    'dna.behavioralDirectives': '行为指令',
+    'dna.goldenSectors': '黄金赛道',
+    'dna.radarRisk': '风险',
+    'dna.radarGreed': '贪婪',
+    'dna.radarPrecision': '精准',
+    'dna.radarIntuition': '直觉',
+    'dna.radarStamina': '耐力',
+    'dna.tierS': 'S 级',
+    'dna.tierA': 'A 级',
+    'dna.tierR': 'R 级',
+    'dna.noPatterns': '未检测到主导格局。你的星盘运作在信号阈值以下。',
+    'dna.sign': '星座',
+    'dna.age': '年龄',
+    'dna.betaPosition': 'Beta（指数/被动仓位）',
+    'dna.alphaPosition': 'Alpha（主动/进攻仓位）',
+    // Global Vibes
+    'gv.architectEntities': '架构师实体',
+    'gv.archetypePlayers': '原型玩家',
+    'gv.capitalOrbits': '资本轨道',
+    'gv.onchainFrequencies': '链上频率',
+    'gv.searchPlaceholder': '搜索名称、代码、叙事...',
+    'gv.showing': '显示',
+    'gv.of': '/',
+    'gv.active': '活跃',
+    'gv.dormant': '休眠',
+    'gv.noResults': '未找到结果',
+    'gv.name': '标的',
+    'gv.coreNarrative': '核心叙事',
+    'gv.inception': '创世日期',
+    'gv.cosmicDNAVerdict': '宇宙DNA判词',
+    'gv.status': '状态',
+    // Insight Portal
+    'ip.trendingVibrations': '热门频率',
+    'ip.latestReports': '最新报告',
+    'ip.minRead': '分钟阅读',
+    'ip.geopolitics': '地缘政治',
+    'ip.crypto': '加密货币',
+    'ip.tech': '科技',
+    'ip.macro': '宏观',
+    'ip.marketOutlook': '市场展望'
   },
   'zh-tw': {
     'nav.signals': '信號',
@@ -9084,12 +9319,12 @@ function addDNACard() {
 
   // Tier badge colors
   var tierColors = { S: '#EF4444', A: '#F59E0B', R: '#6B7280' };
-  var tierLabels = { S: 'TIER S', A: 'TIER A', R: 'TIER R' };
+  var tierLabels = { S: t('dna.tierS'), A: t('dna.tierA'), R: t('dna.tierR') };
 
   // Build patterns HTML
   var patternsHTML = '';
   if (report.patterns.length === 0) {
-    patternsHTML = '<div style="padding:12px;color:var(--text-secondary);font-size:13px;font-style:italic;">No dominant patterns detected. Your chart operates below the signal threshold — neither blessed nor cursed, merely average.</div>';
+    patternsHTML = '<div style="padding:12px;color:var(--text-secondary);font-size:13px;font-style:italic;">' + t('dna.noPatterns') + '</div>';
   } else {
     report.patterns.forEach(function(p) {
       patternsHTML += '<div class="dna-pattern-item">' +
@@ -9108,7 +9343,7 @@ function addDNACard() {
     var retroBadge = section.retrograde ? ' <span style="color:#EF4444;font-size:11px;font-weight:600;">[RX]</span>' : '';
     cogHTML += '<div class="dna-cog-section">' +
       '<div class="dna-cog-label">' + escapeHtml(section.label) + retroBadge + '</div>' +
-      '<div class="dna-cog-sign" style="color:var(--accent);">Sign: ' + escapeHtml(section.sign) + '</div>' +
+      '<div class="dna-cog-sign" style="color:var(--accent);">' + t('dna.sign') + ': ' + escapeHtml(section.sign) + '</div>' +
       '<div class="dna-cog-analysis">' + escapeHtml(section.analysis) + '</div>' +
     '</div>';
   });
@@ -9118,7 +9353,7 @@ function addDNACard() {
   report.failureScenarios.forEach(function(s) {
     failHTML += '<div class="dna-scenario-item">' +
       '<div class="dna-scenario-header">' +
-        '<span class="dna-age-marker">Age ' + escapeHtml(s.age) + '</span>' +
+        '<span class="dna-age-marker">' + t('dna.age') + ' ' + escapeHtml(s.age) + '</span>' +
         '<span class="dna-scenario-title">' + escapeHtml(s.title) + '</span>' +
       '</div>' +
       '<div class="dna-scenario-desc">' + escapeHtml(s.desc) + '</div>' +
@@ -9200,12 +9435,12 @@ function addDNACard() {
   var ascHTML = '<div class="dna-asc-command">' + escapeHtml(report.ascension.command) + '</div>' +
     '<div class="dna-alloc-row">' +
       '<div class="dna-alloc-item">' +
-        '<div class="dna-alloc-label">Beta (指数/被动仓位)</div>' +
+        '<div class="dna-alloc-label">' + t('dna.betaPosition') + '</div>' +
         '<div class="dna-alloc-bar"><div class="dna-alloc-fill beta" style="width:' + report.ascension.beta + '%"></div></div>' +
         '<div class="dna-alloc-pct">' + report.ascension.beta + '%</div>' +
       '</div>' +
       '<div class="dna-alloc-item">' +
-        '<div class="dna-alloc-label">Alpha (主动/进攻仓位)</div>' +
+        '<div class="dna-alloc-label">' + t('dna.alphaPosition') + '</div>' +
         '<div class="dna-alloc-bar"><div class="dna-alloc-fill alpha" style="width:' + report.ascension.alpha + '%"></div></div>' +
         '<div class="dna-alloc-pct">' + report.ascension.alpha + '%</div>' +
       '</div>' +
@@ -9231,7 +9466,7 @@ function addDNACard() {
         '<div class="dna-report-header">' +
           '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
           '<div class="dna-info">' +
-            '<div class="dna-info-title">你的交易人格是</div>' +
+            '<div class="dna-info-title">' + t('dna.yourTradingPersona') + '</div>' +
             '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
             '<div class="dna-info-stars">' + starsHTML + '</div>' +
             '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
@@ -9239,20 +9474,20 @@ function addDNACard() {
           '</div>' +
         '</div>' +
         '<div class="dna-identity-whale">' +
-          '<div class="dna-identity-whale-label">Whale Echo</div>' +
+          '<div class="dna-identity-whale-label">' + t('dna.whaleEcho') + '</div>' +
           '<div class="dna-identity-whale-name">' + escapeHtml(report.whale.name) + '</div>' +
           '<div class="dna-identity-whale-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
           '<div class="dna-whale-bio">' + escapeHtml(report.whale.bio) + '</div>' +
           '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">交易风格</div>' +
+          '<div class="dna-cog-title">' + t('dna.tradingStyle') + '</div>' +
           '<div class="dna-cog-analysis">' + escapeHtml(report.whale.style) + '</div>' +
           '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">星盘共振分析</div>' +
+          '<div class="dna-cog-title">' + t('dna.syncAnalysis') + '</div>' +
           '<div class="dna-cog-analysis">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
           '<div class="dna-share-row-inline">' +
             '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-              '分享报告' +
+              t('dna.shareReport') +
             '</button>' +
           '</div>' +
         '</div>' +
@@ -9263,11 +9498,11 @@ function addDNACard() {
         '<div class="dna-share-card-inner">' +
           '<div style="text-align:center;margin-bottom:12px;">' +
             '<div style="font-size:18px;font-weight:800;color:var(--text-primary);">' + escapeHtml(report.archetype) + '</div>' +
-            '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">Financial DNA 财务基因报告</div>' +
+            '<div style="font-size:13px;color:var(--text-secondary);margin-top:4px;">' + t('dna.financialDNAReport') + '</div>' +
             '<div style="font-size:20px;margin-top:6px;">' + starsHTML + '</div>' +
           '</div>' +
           '<div style="font-size:12px;color:var(--text-secondary);font-style:italic;text-align:center;padding:8px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">' + escapeHtml(report.verdict) + '</div>' +
-          '<div style="text-align:center;margin-top:10px;font-size:10px;color:var(--text-secondary);opacity:0.7;">Verified by ProofOfVibe Quantum Astrology Engine</div>' +
+          '<div style="text-align:center;margin-top:10px;font-size:10px;color:var(--text-secondary);opacity:0.7;">' + t('dna.verifiedBy') + '</div>' +
         '</div>' +
       '</div>' +
 
@@ -9275,7 +9510,7 @@ function addDNACard() {
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">星盘详情</span>' +
+          '<span class="dna-collapsible-title">' + t('dna.chartDetails') + '</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           natalHTML +
@@ -9286,13 +9521,13 @@ function addDNACard() {
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">财富格局深度鉴定</span>' +
-          '<span class="dna-collapsible-count">' + report.patterns.length + ' 个格局</span>' +
+          '<span class="dna-collapsible-title">' + t('dna.wealthPatterns') + '</span>' +
+          '<span class="dna-collapsible-count">' + report.patterns.length + ' ' + t('dna.patternsCount') + '</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           patternsHTML +
           '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">认知映射</div>' +
+          '<div class="dna-cog-title">' + t('dna.cognitiveMapping') + '</div>' +
           cogHTML +
         '</div>' +
       '</div>' +
@@ -9303,8 +9538,8 @@ function addDNACard() {
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">典型损钱场景回测</span>' +
-          '<span class="dna-collapsible-count">' + report.failureScenarios.length + ' 个场景</span>' +
+          '<span class="dna-collapsible-title">' + t('dna.typicalLossScenarios') + '</span>' +
+          '<span class="dna-collapsible-count">' + report.failureScenarios.length + ' ' + t('dna.scenariosCount') + '</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           failHTML +
@@ -9315,8 +9550,8 @@ function addDNACard() {
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">典型赚钱时机</span>' +
-          '<span class="dna-collapsible-count">' + report.profitWindows.length + ' 个窗口</span>' +
+          '<span class="dna-collapsible-title">' + t('dna.typicalProfitWindows') + '</span>' +
+          '<span class="dna-collapsible-count">' + report.profitWindows.length + ' ' + t('dna.windowsCount') + '</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
           profitHTML +
@@ -9329,16 +9564,16 @@ function addDNACard() {
       '<div class="dna-collapsible">' +
         '<div class="dna-collapsible-header">' +
           '<span class="dna-collapsible-arrow">▾</span>' +
-          '<span class="dna-collapsible-title">进阶路径</span>' +
+          '<span class="dna-collapsible-title">' + t('dna.advancedPath') + '</span>' +
         '</div>' +
         '<div class="dna-collapsible-body">' +
-          '<div class="dna-asc-label">行为指令</div>' +
+          '<div class="dna-asc-label">' + t('dna.behavioralDirectives') + '</div>' +
           ascHTML +
         '</div>' +
       '</div>' +
 
       '<div class="dna-spec-section">' +
-        '<div class="dna-section-label">黄金赛道</div>' +
+        '<div class="dna-section-label">' + t('dna.goldenSectors') + '</div>' +
         specHTML +
       '</div>' +
 
@@ -9436,7 +9671,7 @@ function drawRadarChart() {
   }
 
   // Draw labels
-  const labels = ['风险', '贪婪', '精准', '直觉', '耐力'];
+  const labels = [t('dna.radarRisk'), t('dna.radarGreed'), t('dna.radarPrecision'), t('dna.radarIntuition'), t('dna.radarStamina')];
   ctx.font = '9px DM Sans';
   ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary').trim() || '#6B7280';
   ctx.textAlign = 'center';
@@ -10249,10 +10484,10 @@ function addGlobalVibesCard() {
   var gvId = 'gv_' + Date.now();
 
   var tabs = [
-    { key: 'entities', label: 'The Architect Entities', data: architectEntitiesData },
-    { key: 'titans', label: 'The Archetype Players', data: archetypeTitansData },
-    { key: 'orbits', label: 'Capital Orbits', data: capitalOrbitsData },
-    { key: 'onchain', label: 'On-chain Frequencies', data: onChainFrequenciesData }
+    { key: 'entities', label: t('gv.architectEntities'), data: architectEntitiesData },
+    { key: 'titans', label: t('gv.archetypePlayers'), data: archetypeTitansData },
+    { key: 'orbits', label: t('gv.capitalOrbits'), data: capitalOrbitsData },
+    { key: 'onchain', label: t('gv.onchainFrequencies'), data: onChainFrequenciesData }
   ];
 
   var tabsHTML = '';
@@ -10266,20 +10501,20 @@ function addGlobalVibesCard() {
   var innerHTML =
     '<div class="gv-container" id="' + gvId + '">' +
       '<div class="gv-tabs">' + tabsHTML + '</div>' +
-      '<input class="gv-search" type="text" placeholder="Search name, ticker, narrative..." data-gvid="' + gvId + '" oninput="filterGVTable(this)">' +
-      '<div class="gv-count-bar" data-gvid="' + gvId + '"><span class="gv-showing">Showing 0 of 0</span><span class="gv-active-count"></span></div>' +
+      '<input class="gv-search" type="text" placeholder="' + t('gv.searchPlaceholder') + '" data-gvid="' + gvId + '" oninput="filterGVTable(this)">' +
+      '<div class="gv-count-bar" data-gvid="' + gvId + '"><span class="gv-showing">' + t('gv.showing') + ' 0 ' + t('gv.of') + ' 0</span><span class="gv-active-count"></span></div>' +
       '<div class="gv-scroll" data-gvid="' + gvId + '">' +
         '<table class="gv-table">' +
           '<thead><tr>' +
-            '<th>Name</th>' +
-            '<th>Core Narrative</th>' +
-            '<th>Inception</th>' +
-            '<th>Cosmic DNA Verdict</th>' +
-            '<th>Status</th>' +
+            '<th>' + t('gv.name') + '</th>' +
+            '<th>' + t('gv.coreNarrative') + '</th>' +
+            '<th>' + t('gv.inception') + '</th>' +
+            '<th>' + t('gv.cosmicDNAVerdict') + '</th>' +
+            '<th>' + t('gv.status') + '</th>' +
           '</tr></thead>' +
           '<tbody data-gvid="' + gvId + '"></tbody>' +
         '</table>' +
-        '<div class="gv-empty" data-gvid="' + gvId + '" style="display:none;">No results found</div>' +
+        '<div class="gv-empty" data-gvid="' + gvId + '" style="display:none;">' + t('gv.noResults') + '</div>' +
       '</div>' +
     '</div>';
 
@@ -10339,8 +10574,8 @@ function renderGVTable(gvId) {
   var activeCount = 0;
   for (var a = 0; a < tabData.length; a++) { if (tabData[a].status === 'active') activeCount++; }
 
-  countBar.querySelector('.gv-showing').textContent = 'Showing ' + filtered.length + ' of ' + tabData.length;
-  countBar.querySelector('.gv-active-count').textContent = activeCount + ' active / ' + (tabData.length - activeCount) + ' dormant';
+  countBar.querySelector('.gv-showing').textContent = t('gv.showing') + ' ' + filtered.length + ' ' + t('gv.of') + ' ' + tabData.length;
+  countBar.querySelector('.gv-active-count').textContent = activeCount + ' ' + t('gv.active') + ' / ' + (tabData.length - activeCount) + ' ' + t('gv.dormant');
 
   if (filtered.length === 0) {
     tbody.innerHTML = '';
@@ -10354,7 +10589,7 @@ function renderGVTable(gvId) {
     var item = filtered[j];
     var tickerHTML = item.ticker ? '<span class="gv-ticker">' + escapeHtml(item.ticker) + '</span>' : '';
     var statusDot = item.status === 'active' ? 'gv-status-dot active' : 'gv-status-dot dormant';
-    var statusLabel = item.status === 'active' ? 'ACTIVE' : 'DORMANT';
+    var statusLabel = item.status === 'active' ? t('gv.active').toUpperCase() : t('gv.dormant').toUpperCase();
     rows += '<tr>' +
       '<td><span class="gv-name">' + escapeHtml(item.name) + '</span>' + tickerHTML + '</td>' +
       '<td class="gv-narrative">' + escapeHtml(item.narrative) + '</td>' +
@@ -10430,16 +10665,16 @@ function addInsightPortalCard() {
 
   // --- Reports data ---
   var ipReports = [
-    { category: "GEOPOLITICS", title: "特朗普关税风暴：木星射手座的扩张主义如何重塑全球贸易格局", desc: "当木星进入射手座的扩张能量遇上特朗普的保护主义政策，全球供应链正在经历一场星象级别的重构。", date: "2025.04.12", readTime: "8 min" },
-    { category: "CRYPTO", title: "BTC减半后周期：土星双鱼与冥王星水瓶的世纪博弈", desc: "比特币第四次减半完成，土星在双鱼座的限制力与冥王星在水瓶座的颠覆力正在争夺加密市场的叙事主导权。", date: "2025.04.11", readTime: "12 min" },
-    { category: "TECH", title: "AI军备竞赛：NVDA与AMD的火星对冲如何定义算力霸权", desc: "NVIDIA与AMD的竞争已超越商业范畴，成为火星白羊的进攻性对决。星盘显示，这场博弈将在2025年Q3达到高潮。", date: "2025.04.10", readTime: "10 min" },
-    { category: "MACRO", title: "美联储降息周期：木星双子与土星双鱼的政策十字路口", desc: "美联储正面临星象级别的决策困境：木星双子的信息过载与土星双鱼的流动性焦虑正在拉扯政策方向。", date: "2025.04.09", readTime: "9 min" },
-    { category: "MARKET OUTLOOK", title: "2025下半年星象预警：天王星进入金牛的全球市场冲击波", desc: "天王星即将进入金牛座，这将引发全球资产定价体系的剧烈震荡。历史数据显示，天王星换座往往伴随黑天鹅事件。", date: "2025.04.08", readTime: "15 min" },
-    { category: "CRYPTO", title: "SOL vs ETH：公链之王的星盘对决与2025格局预判", desc: "Solana和Ethereum的竞争已进入白热化阶段。从星盘角度看，两者的创始星象呈现出截然不同的金融DNA。", date: "2025.04.07", readTime: "11 min" },
-    { category: "GEOPOLITICS", title: "中东局势升级：火星白羊的战争冲动与原油市场的星象共振", desc: "火星在白羊座的位置正在加剧地缘政治紧张局势。从星盘分析，原油价格将在4月底迎来关键转折点。", date: "2025.04.06", readTime: "7 min" },
-    { category: "TECH", title: "苹果Vision Pro的冥王星时刻：空间计算能否重演iPhone奇迹", desc: "Apple Vision Pro正处于冥王星摩羯的深度转型期。星盘分析显示，其成功与否取决于2025年秋季的木星相位。", date: "2025.04.05", readTime: "8 min" },
-    { category: "MACRO", title: "日元套利交易逆转：金星金牛崩塌与全球流动性收缩信号", desc: "日元正在经历金星金牛座的崩塌周期。当金星失去金牛座的稳定支撑，套利交易的平仓潮将席卷全球市场。", date: "2025.04.04", readTime: "10 min" },
-    { category: "MARKET OUTLOOK", title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13 min" }
+    { category: t('ip.geopolitics'), title: "特朗普关税风暴：木星射手座的扩张主义如何重塑全球贸易格局", desc: "当木星进入射手座的扩张能量遇上特朗普的保护主义政策，全球供应链正在经历一场星象级别的重构。", date: "2025.04.12", readTime: "8 min" },
+    { category: t('ip.crypto'), title: "BTC减半后周期：土星双鱼与冥王星水瓶的世纪博弈", desc: "比特币第四次减半完成，土星在双鱼座的限制力与冥王星在水瓶座的颠覆力正在争夺加密市场的叙事主导权。", date: "2025.04.11", readTime: "12 min" },
+    { category: t('ip.tech'), title: "AI军备竞赛：NVDA与AMD的火星对冲如何定义算力霸权", desc: "NVIDIA与AMD的竞争已超越商业范畴，成为火星白羊的进攻性对决。星盘显示，这场博弈将在2025年Q3达到高潮。", date: "2025.04.10", readTime: "10 min" },
+    { category: t('ip.macro'), title: "美联储降息周期：木星双子与土星双鱼的政策十字路口", desc: "美联储正面临星象级别的决策困境：木星双子的信息过载与土星双鱼的流动性焦虑正在拉扯政策方向。", date: "2025.04.09", readTime: "9 min" },
+    { category: t('ip.marketOutlook'), title: "2025下半年星象预警：天王星进入金牛的全球市场冲击波", desc: "天王星即将进入金牛座，这将引发全球资产定价体系的剧烈震荡。历史数据显示，天王星换座往往伴随黑天鹅事件。", date: "2025.04.08", readTime: "15 min" },
+    { category: t('ip.crypto'), title: "SOL vs ETH：公链之王的星盘对决与2025格局预判", desc: "Solana和Ethereum的竞争已进入白热化阶段。从星盘角度看，两者的创始星象呈现出截然不同的金融DNA。", date: "2025.04.07", readTime: "11 min" },
+    { category: t('ip.geopolitics'), title: "中东局势升级：火星白羊的战争冲动与原油市场的星象共振", desc: "火星在白羊座的位置正在加剧地缘政治紧张局势。从星盘分析，原油价格将在4月底迎来关键转折点。", date: "2025.04.06", readTime: "7 min" },
+    { category: t('ip.tech'), title: "苹果Vision Pro的冥王星时刻：空间计算能否重演iPhone奇迹", desc: "Apple Vision Pro正处于冥王星摩羯的深度转型期。星盘分析显示，其成功与否取决于2025年秋季的木星相位。", date: "2025.04.05", readTime: "8 min" },
+    { category: t('ip.macro'), title: "日元套利交易逆转：金星金牛崩塌与全球流动性收缩信号", desc: "日元正在经历金星金牛座的崩塌周期。当金星失去金牛座的稳定支撑，套利交易的平仓潮将席卷全球市场。", date: "2025.04.04", readTime: "10 min" },
+    { category: t('ip.marketOutlook'), title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13 min" }
   ];
 
   var reportsHTML = '';
@@ -10452,7 +10687,7 @@ function addInsightPortalCard() {
       '<div class="ip-rc-meta">' +
         '<span class="ip-rc-date">' + escapeHtml(rp.date) + '</span>' +
         '<span class="ip-rc-dot"></span>' +
-        '<span>' + escapeHtml(rp.readTime) + ' read</span>' +
+        '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
       '</div>' +
     '</div>';
   }
@@ -10462,9 +10697,9 @@ function addInsightPortalCard() {
       '<div class="ip-ticker-bar">' +
         '<div class="ip-ticker-track">' + tickerHTML + '</div>' +
       '</div>' +
-      '<div class="ip-section-label">Trending Vibrations / 热门频率</div>' +
+      '<div class="ip-section-label">' + t('ip.trendingVibrations') + '</div>' +
       '<div class="ip-trending-grid">' + trendingHTML + '</div>' +
-      '<div class="ip-section-label">Latest Reports / 最新报告</div>' +
+      '<div class="ip-section-label">' + t('ip.latestReports') + '</div>' +
       '<div class="ip-reports-section">' +
         '<div class="ip-reports-grid">' + reportsHTML + '</div>' +
       '</div>' +
