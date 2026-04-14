@@ -10583,7 +10583,7 @@ function addGlobalVibesCard() {
 
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
-  scrollChatBottom();
+  scrollChatTop();
 
   // Store state
   window['_gvState_' + gvId] = { activeTab: 'entities', query: '', tabs: tabs };
@@ -10814,7 +10814,7 @@ async function addInsightPortalCard() {
 
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
-  scrollChatBottom();
+  scrollChatTop();
 }
 
 init();
