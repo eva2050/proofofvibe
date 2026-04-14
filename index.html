@@ -456,6 +456,8 @@ html[data-theme="dark"] .main-header {
   overflow-y: auto;
   padding: 0;
   scroll-behavior: smooth;
+  display: flex;
+  flex-direction: column;
 }
 
 .chat-area::-webkit-scrollbar {
@@ -476,6 +478,7 @@ html[data-theme="dark"] .main-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex: 1;
   padding: 32px 24px 24px;
   text-align: center;
 }
@@ -868,6 +871,7 @@ html[data-theme="dark"] .astro-arrow {
   display: none;
   flex-direction: column;
   gap: 16px;
+  flex: 1;
 }
 
 .chat-messages.active {
@@ -3867,43 +3871,52 @@ html[lang="ko"] {
   gap: 10px;
 }
 .ip-report-card {
-  padding: 18px 20px;
+  padding: 0;
   border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--card-bg);
   cursor: pointer;
-  transition: border-color 0.2s;
+  transition: all 0.2s;
+  overflow: hidden;
 }
 .ip-report-card:hover {
   border-color: rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 .ip-report-card .ip-rc-category {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   color: var(--accent);
   margin-bottom: 6px;
 }
 .ip-report-card .ip-rc-title {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 6px;
-  line-height: 1.3;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .ip-report-card .ip-rc-desc {
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.5;
-  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .ip-report-card .ip-rc-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 10px;
-  color: var(--text-secondary);
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-tertiary, var(--text-secondary));
 }
 .ip-report-card .ip-rc-meta .ip-rc-date {
   font-variant-numeric: tabular-nums;
@@ -3915,15 +3928,10 @@ html[lang="ko"] {
   background: var(--text-secondary);
   opacity: 0.4;
 }
-.ip-report-card {
-  cursor: pointer;
-  overflow: hidden;
-}
 .ip-rc-image {
   width: 100%;
   height: 120px;
   object-fit: cover;
-  border-radius: 8px 8px 0 0;
   display: block;
   background: linear-gradient(135deg, var(--border) 0%, var(--hover-bg) 100%);
 }
@@ -3931,15 +3939,18 @@ html[lang="ko"] {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   color: #fff;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
   font-size: 9px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 4px;
 }
 .ip-report-card.has-image {
   position: relative;
+}
+.ip-report-card .ip-rc-body {
+  padding: 14px 16px 16px;
 }
 </style>
 </head>
@@ -10744,16 +10755,16 @@ async function addInsightPortalCard() {
 
   // --- Reports data (fallback if API unavailable) ---
   var ipReportsFallback = [
-    { category: t('ip.geopolitics'), title: "特朗普关税风暴：木星射手座的扩张主义如何重塑全球贸易格局", desc: "当木星进入射手座的扩张能量遇上特朗普的保护主义政策，全球供应链正在经历一场星象级别的重构。", date: "2025.04.12", readTime: "8 min", image_url: 'assets/report-geopolitics-1.jpg' },
-    { category: t('ip.crypto'), title: "BTC减半后周期：土星双鱼与冥王星水瓶的世纪博弈", desc: "比特币第四次减半完成，土星在双鱼座的限制力与冥王星在水瓶座的颠覆力正在争夺加密市场的叙事主导权。", date: "2025.04.11", readTime: "12 min", image_url: 'assets/report-crypto-1.jpg' },
-    { category: t('ip.tech'), title: "AI军备竞赛：NVDA与AMD的火星对冲如何定义算力霸权", desc: "NVIDIA与AMD的竞争已超越商业范畴，成为火星白羊的进攻性对决。星盘显示，这场博弈将在2025年Q3达到高潮。", date: "2025.04.10", readTime: "10 min", image_url: 'assets/report-tech-1.jpg' },
-    { category: t('ip.macro'), title: "美联储降息周期：木星双子与土星双鱼的政策十字路口", desc: "美联储正面临星象级别的决策困境：木星双子的信息过载与土星双鱼的流动性焦虑正在拉扯政策方向。", date: "2025.04.09", readTime: "9 min", image_url: 'assets/report-macro-1.jpg' },
-    { category: t('ip.marketOutlook'), title: "2025下半年星象预警：天王星进入金牛的全球市场冲击波", desc: "天王星即将进入金牛座，这将引发全球资产定价体系的剧烈震荡。历史数据显示，天王星换座往往伴随黑天鹅事件。", date: "2025.04.08", readTime: "15 min", image_url: 'assets/report-outlook-1.jpg' },
-    { category: t('ip.crypto'), title: "SOL vs ETH：公链之王的星盘对决与2025格局预判", desc: "Solana和Ethereum的竞争已进入白热化阶段。从星盘角度看，两者的创始星象呈现出截然不同的金融DNA。", date: "2025.04.07", readTime: "11 min", image_url: 'assets/report-crypto-2.jpg' },
-    { category: t('ip.geopolitics'), title: "中东局势升级：火星白羊的战争冲动与原油市场的星象共振", desc: "火星在白羊座的位置正在加剧地缘政治紧张局势。从星盘分析，原油价格将在4月底迎来关键转折点。", date: "2025.04.06", readTime: "7 min", image_url: 'assets/report-geopolitics-2.jpg' },
-    { category: t('ip.tech'), title: "苹果Vision Pro的冥王星时刻：空间计算能否重演iPhone奇迹", desc: "Apple Vision Pro正处于冥王星摩羯的深度转型期。星盘分析显示，其成功与否取决于2025年秋季的木星相位。", date: "2025.04.05", readTime: "8 min", image_url: 'assets/report-tech-2.jpg' },
-    { category: t('ip.macro'), title: "日元套利交易逆转：金星金牛崩塌与全球流动性收缩信号", desc: "日元正在经历金星金牛座的崩塌周期。当金星失去金牛座的稳定支撑，套利交易的平仓潮将席卷全球市场。", date: "2025.04.04", readTime: "10 min", image_url: 'assets/report-macro-2.jpg' },
-    { category: t('ip.marketOutlook'), title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13 min", image_url: 'assets/report-outlook-1.jpg' }
+    { category: t('ip.geopolitics'), title: "特朗普关税风暴：木星射手座的扩张主义如何重塑全球贸易格局", desc: "当木星进入射手座的扩张能量遇上特朗普的保护主义政策，全球供应链正在经历一场星象级别的重构。", date: "2025.04.12", readTime: "8", image_url: 'assets/report-geopolitics-1.jpg' },
+    { category: t('ip.crypto'), title: "BTC减半后周期：土星双鱼与冥王星水瓶的世纪博弈", desc: "比特币第四次减半完成，土星在双鱼座的限制力与冥王星在水瓶座的颠覆力正在争夺加密市场的叙事主导权。", date: "2025.04.11", readTime: "12", image_url: 'assets/report-crypto-1.jpg' },
+    { category: t('ip.tech'), title: "AI军备竞赛：NVDA与AMD的火星对冲如何定义算力霸权", desc: "NVIDIA与AMD的竞争已超越商业范畴，成为火星白羊的进攻性对决。星盘显示，这场博弈将在2025年Q3达到高潮。", date: "2025.04.10", readTime: "10", image_url: 'assets/report-tech-1.jpg' },
+    { category: t('ip.macro'), title: "美联储降息周期：木星双子与土星双鱼的政策十字路口", desc: "美联储正面临星象级别的决策困境：木星双子的信息过载与土星双鱼的流动性焦虑正在拉扯政策方向。", date: "2025.04.09", readTime: "9", image_url: 'assets/report-macro-1.jpg' },
+    { category: t('ip.marketOutlook'), title: "2025下半年星象预警：天王星进入金牛的全球市场冲击波", desc: "天王星即将进入金牛座，这将引发全球资产定价体系的剧烈震荡。历史数据显示，天王星换座往往伴随黑天鹅事件。", date: "2025.04.08", readTime: "15", image_url: 'assets/report-outlook-1.jpg' },
+    { category: t('ip.crypto'), title: "SOL vs ETH：公链之王的星盘对决与2025格局预判", desc: "Solana和Ethereum的竞争已进入白热化阶段。从星盘角度看，两者的创始星象呈现出截然不同的金融DNA。", date: "2025.04.07", readTime: "11", image_url: 'assets/report-crypto-2.jpg' },
+    { category: t('ip.geopolitics'), title: "中东局势升级：火星白羊的战争冲动与原油市场的星象共振", desc: "火星在白羊座的位置正在加剧地缘政治紧张局势。从星盘分析，原油价格将在4月底迎来关键转折点。", date: "2025.04.06", readTime: "7", image_url: 'assets/report-geopolitics-2.jpg' },
+    { category: t('ip.tech'), title: "苹果Vision Pro的冥王星时刻：空间计算能否重演iPhone奇迹", desc: "Apple Vision Pro正处于冥王星摩羯的深度转型期。星盘分析显示，其成功与否取决于2025年秋季的木星相位。", date: "2025.04.05", readTime: "8", image_url: 'assets/report-tech-2.jpg' },
+    { category: t('ip.macro'), title: "日元套利交易逆转：金星金牛崩塌与全球流动性收缩信号", desc: "日元正在经历金星金牛座的崩塌周期。当金星失去金牛座的稳定支撑，套利交易的平仓潮将席卷全球市场。", date: "2025.04.04", readTime: "10", image_url: 'assets/report-macro-2.jpg' },
+    { category: t('ip.marketOutlook'), title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13", image_url: 'assets/report-outlook-1.jpg' }
   ];
 
   // Try loading reports from D1 API, fallback to hardcoded
@@ -10788,14 +10799,16 @@ async function addInsightPortalCard() {
 
     reportsHTML += '<div class="ip-report-card ' + hasImageCls + '">' +
       imgHTML +
-      '<div class="ip-rc-category">' + escapeHtml(rp.category) + '</div>' +
-      '<div class="ip-rc-title">' + escapeHtml(rp.title) + '</div>' +
-      '<div class="ip-rc-meta">' +
-        '<span class="ip-rc-date">' + escapeHtml(rp.date) + '</span>' +
-        '<span class="ip-rc-dot"></span>' +
-        '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
+      '<div class="ip-rc-body">' +
+        '<div class="ip-rc-category">' + escapeHtml(rp.category) + '</div>' +
+        '<div class="ip-rc-title">' + escapeHtml(rp.title) + '</div>' +
+        '<div class="ip-rc-meta">' +
+          '<span class="ip-rc-date">' + escapeHtml(rp.date) + '</span>' +
+          '<span class="ip-rc-dot"></span>' +
+          '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
+        '</div>' +
+        '<div class="ip-rc-desc">' + escapeHtml(rp.desc) + '</div>' +
       '</div>' +
-      '<div class="ip-rc-desc">' + escapeHtml(rp.desc) + '</div>' +
     '</div>';
   }
 
