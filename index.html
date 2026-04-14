@@ -3708,7 +3708,7 @@ html[lang="ko"] {
 .gv-status-text { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); }
 .gv-scroll { max-height: 600px; overflow-y: auto; }
 .gv-empty { padding: 40px 20px; text-align: center; color: var(--text-secondary); font-size: 13px; }
-.gv-count-bar { padding: 8px 12px; font-size: 10px; color: var(--text-secondary); border-bottom: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; }
+.gv-count-bar { padding: 8px 12px; font-size: 10px; color: var(--text-secondary); border-top: 1px solid rgba(0,0,0,0.06); display: flex; justify-content: space-between; }
 .gv-count-bar span { font-variant-numeric: tabular-nums; }
 
 /* ========== INSIGHT PORTAL ========== */
@@ -10502,7 +10502,6 @@ function addGlobalVibesCard() {
     '<div class="gv-container" id="' + gvId + '">' +
       '<div class="gv-tabs">' + tabsHTML + '</div>' +
       '<input class="gv-search" type="text" placeholder="' + t('gv.searchPlaceholder') + '" data-gvid="' + gvId + '" oninput="filterGVTable(this)">' +
-      '<div class="gv-count-bar" data-gvid="' + gvId + '"><span class="gv-showing">' + t('gv.showing') + ' 0 ' + t('gv.of') + ' 0</span><span class="gv-active-count"></span></div>' +
       '<div class="gv-scroll" data-gvid="' + gvId + '">' +
         '<table class="gv-table">' +
           '<thead><tr>' +
@@ -10516,6 +10515,7 @@ function addGlobalVibesCard() {
         '</table>' +
         '<div class="gv-empty" data-gvid="' + gvId + '" style="display:none;">' + t('gv.noResults') + '</div>' +
       '</div>' +
+      '<div class="gv-count-bar" data-gvid="' + gvId + '"><span class="gv-showing">' + t('gv.showing') + ' 0 ' + t('gv.of') + ' 0</span><span class="gv-active-count"></span></div>' +
     '</div>';
 
   msg.innerHTML = innerHTML;
