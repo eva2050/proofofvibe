@@ -478,8 +478,9 @@ html[data-theme="dark"] .main-header {
   align-items: center;
   justify-content: center;
   min-height: calc(100vh - 80px);
-  padding: 40px 20px;
+  padding: 32px 24px;
   text-align: center;
+  gap: 0;
 }
 
 .welcome-state.hidden {
@@ -488,10 +489,10 @@ html[data-theme="dark"] .main-header {
 
 .welcome-title {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 400;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   transition: color var(--transition-speed);
   letter-spacing: -0.5px;
 }
@@ -511,17 +512,17 @@ html[data-theme="dark"] .welcome-title {
 }
 
 .welcome-subtitle {
-  font-size: 15px;
+  font-size: 14px;
   color: var(--text-secondary);
-  max-width: 600px;
+  max-width: 520px;
   line-height: 1.6;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   transition: color var(--transition-speed);
 }
 .welcome-state .input-bar {
   padding: 0;
-  margin-bottom: 32px;
-  max-width: 560px;
+  margin-bottom: 16px;
+  max-width: 480px;
   width: 100%;
 }
 
@@ -529,7 +530,9 @@ html[data-theme="dark"] .welcome-title {
 /* ========== ASTRO CARDS (Welcome) ========== */
 .astro-cards-wrapper {
   position: relative;
-  margin-bottom: 32px;
+  margin-bottom: 0;
+  width: 100%;
+  max-width: 960px;
 }
 
 .astro-cards-scroll {
@@ -840,6 +843,7 @@ html[data-theme="dark"] .astro-arrow {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
+  margin-bottom: 24px;
 }
 
 .chip {
@@ -3456,16 +3460,22 @@ html[data-theme="dark"] .pricing-card:hover {
     padding: 16px;
   }
   .welcome-state {
-    padding: 30px 16px;
+    padding: 24px 16px;
   }
   .welcome-title {
-    font-size: 28px;
+    font-size: 26px;
   }
   .welcome-subtitle {
-    font-size: 14px;
+    font-size: 13px;
+    max-width: 100%;
+  }
+  .welcome-state .input-bar {
+    max-width: 100%;
+    margin-bottom: 12px;
   }
   .search-chips {
     gap: 6px;
+    margin-bottom: 20px;
   }
   .chip {
     padding: 6px 14px;
