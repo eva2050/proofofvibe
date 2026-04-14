@@ -480,16 +480,10 @@ html[data-theme="dark"] .main-header {
   min-height: calc(100vh - 80px);
   padding: 40px 20px;
   text-align: center;
-  transition: opacity 0.3s, transform 0.3s;
 }
 
 .welcome-state.hidden {
-  opacity: 0;
-  transform: translateY(-20px);
-  pointer-events: none;
-  position: absolute;
-  height: 0;
-  overflow: hidden;
+  display: none;
 }
 
 .welcome-title {
