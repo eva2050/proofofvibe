@@ -3650,6 +3650,26 @@ html[lang="ko"] {
 /* ========== GLOBAL VIBES ========== */
 .gv-container { padding: 0; }
 .gv-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 0; }
+.gv-search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.gv-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 12px;
+  color: var(--text-primary);
+  outline: none;
+  font-family: inherit;
+}
+.gv-search-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
 .gv-tab {
   padding: 10px 16px;
   font-size: 11px;
@@ -3793,7 +3813,6 @@ html[lang="ko"] {
   font-size: 11px;
   color: var(--text-secondary);
   line-height: 1.5;
-  font-style: italic;
   opacity: 0.8;
 }
 .ip-reports-section {
@@ -6548,6 +6567,7 @@ const i18n = {
     'gv.active': 'active',
     'gv.dormant': 'dormant',
     'gv.noResults': 'No results found',
+    'gv.searchPlaceholder': 'Search entities...',
     'gv.name': 'Name',
     'gv.coreNarrative': 'Core Narrative',
     'gv.inception': 'Inception',
@@ -7070,6 +7090,7 @@ const i18n = {
     'gv.active': '活跃',
     'gv.dormant': '休眠',
     'gv.noResults': '未找到结果',
+    'gv.searchPlaceholder': '搜索标的...',
     'gv.name': '标的',
     'gv.coreNarrative': '核心叙事',
     'gv.inception': '创世日期',
@@ -10524,6 +10545,10 @@ function addGlobalVibesCard() {
   var innerHTML =
     '<div class="gv-container" id="' + gvId + '">' +
       '<div class="gv-tabs">' + tabsHTML + '</div>' +
+      '<div class="gv-search-bar" data-gvid="' + gvId + '">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;opacity:0.4;"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>' +
+        '<input type="text" class="gv-search-input" data-gvid="' + gvId + '" placeholder="' + t('gv.searchPlaceholder') + '" oninput="filterGVTable(this)">' +
+      '</div>' +
       '<div class="gv-scroll" data-gvid="' + gvId + '">' +
         '<table class="gv-table">' +
           '<thead><tr>' +
