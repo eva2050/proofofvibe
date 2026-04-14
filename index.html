@@ -481,9 +481,10 @@ html[data-theme="dark"] .main-header {
   flex-direction: column;
   align-items: center;
   flex: 1;
-  padding: 32px 24px 24px;
+  padding: 24px;
   text-align: center;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 0;
 }
 
 .welcome-state.hidden {
@@ -492,10 +493,10 @@ html[data-theme="dark"] .main-header {
 
 .welcome-title {
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 28px;
+  font-size: 30px;
   font-weight: 400;
   color: var(--text-primary);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   transition: color var(--transition-speed);
   letter-spacing: -0.5px;
 }
@@ -515,52 +516,44 @@ html[data-theme="dark"] .welcome-title {
 }
 
 .welcome-subtitle {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
-  max-width: 440px;
-  line-height: 1.5;
-  margin-bottom: 14px;
+  max-width: 480px;
+  line-height: 1.6;
+  margin-bottom: 24px;
   transition: color var(--transition-speed);
 }
 .welcome-state .input-bar {
   padding: 0;
-  margin-bottom: 10px;
-  max-width: 420px;
+  margin-bottom: 16px;
+  max-width: 560px;
   width: 100%;
 }
 
-/* 30-Day Vibe Forecast */
 /* ========== ASTRO CARDS (Welcome) ========== */
 .astro-cards-wrapper {
-  position: relative;
-  margin-bottom: 0;
   width: 100%;
-  max-width: 960px;
+  max-width: 640px;
+  margin-top: 8px;
 }
 
 .astro-cards-scroll {
   width: 100%;
-  overflow: hidden;
-  margin: 0 auto;
 }
 
 .astro-cards-track {
-  display: flex;
-  gap: 16px;
-  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .astro-card {
-  flex-shrink: 0;
-  width: calc(33.333% - 11px);
-  max-width: 280px;
-  min-width: 220px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: 16px;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.2s;
   position: relative;
   overflow: hidden;
 }
@@ -588,13 +581,12 @@ html[data-theme="dark"] .astro-card {
 .astro-card.card-neutral::before { background: linear-gradient(90deg, var(--border), var(--text-secondary)); }
 
 .astro-card:hover {
-  border-color: rgba(0,0,0,0.1);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.12);
+  background: var(--hover-bg);
 }
 
 html[data-theme="dark"] .astro-card:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+  background: var(--hover-bg);
 }
 
 .astro-card-header {
@@ -737,89 +729,20 @@ html[data-theme="dark"] .astro-card:hover {
 
 /* Arrow buttons */
 .astro-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  background: var(--card-bg);
-  color: var(--text-secondary);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-
-html[data-theme="dark"] .astro-arrow {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.astro-arrow:hover {
-  border-color: var(--text-primary);
-  color: var(--text-primary);
-  background: var(--hover-bg);
-}
-
-.astro-arrow:disabled {
-  opacity: 0.3;
-  cursor: default;
-  pointer-events: none;
-}
-
-.astro-arrow-left { left: -12px; }
-.astro-arrow-right { right: -12px; }
-
-.astro-arrow svg {
-  width: 16px;
-  height: 16px;
+  display: none;
 }
 
 /* Dots indicator */
 .astro-dots {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
-  margin-top: 14px;
-}
-
-.astro-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--border);
-  transition: all 0.2s;
-}
-
-.astro-dot.active {
-  background: var(--text-primary);
-  width: 18px;
-  border-radius: 3px;
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .astro-card {
-    width: calc(100% - 0px);
-    min-width: 0;
+  .astro-cards-track {
+    grid-template-columns: 1fr;
   }
   .astro-arrow { display: none; }
-  .astro-cards-scroll {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    scroll-snap-type: x mandatory;
-  }
-  .astro-cards-scroll::-webkit-scrollbar { display: none; }
-  .astro-cards-track {
-    transition: none;
-  }
-  .astro-card {
-    scroll-snap-align: center;
-  }
+  .astro-dots { display: none; }
 }
 
 @media (max-width: 480px) {
@@ -3463,22 +3386,24 @@ html[data-theme="dark"] .pricing-card:hover {
     padding: 16px;
   }
   .welcome-state {
-    padding: 20px 16px 12px;
+    padding: 20px 16px;
+    justify-content: center;
   }
   .welcome-title {
     font-size: 24px;
   }
   .welcome-subtitle {
-    font-size: 12px;
+    font-size: 13px;
     max-width: 100%;
+    margin-bottom: 20px;
   }
   .welcome-state .input-bar {
     max-width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
   }
   .search-chips {
-    gap: 5px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 16px;
   }
   .chip {
     padding: 6px 14px;
