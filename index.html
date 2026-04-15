@@ -1280,17 +1280,17 @@ html[data-theme="dark"] .dna-card {
   flex-direction: column;
   gap: 0;
   width: 100%;
-  padding: 8px 0 0;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  margin-top: 6px;
+  padding: 10px 0 0;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  margin-top: 8px;
 }
 
 .dna-trait {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px solid rgba(0,0,0,0.04);
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
 }
 .dna-trait:last-child {
   border-bottom: none;
@@ -1298,33 +1298,53 @@ html[data-theme="dark"] .dna-card {
 
 .dna-trait .trait-name {
   font-size: 11px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-secondary);
-  width: 48px;
+  width: 52px;
   flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 .dna-trait .trait-bar-bg {
   flex: 1;
-  height: 4px;
-  background: rgba(0,0,0,0.06);
-  border-radius: 2px;
+  height: 6px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 3px;
   overflow: hidden;
+  position: relative;
+}
+
+html[data-theme="dark"] .dna-trait .trait-bar-bg {
+  background: rgba(255,255,255,0.06);
 }
 
 .dna-trait .trait-bar-fill {
   height: 100%;
-  border-radius: 2px;
-  transition: width 0.8s ease;
+  border-radius: 3px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.dna-trait .trait-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
+  border-radius: 0 3px 3px 0;
 }
 
 .dna-trait .trait-value {
   font-size: 12px;
   font-weight: 700;
-  width: 34px;
+  width: 36px;
   text-align: right;
   color: var(--text-primary);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.3px;
 }
 
 .dna-trait .trait-roast {
@@ -1332,9 +1352,9 @@ html[data-theme="dark"] .dna-card {
   color: var(--text-secondary);
   font-style: normal;
   margin-top: 0;
-  padding-left: 56px;
-  line-height: 1.3;
-  opacity: 0.45;
+  padding-left: 62px;
+  line-height: 1.4;
+  opacity: 0.5;
 }
 
 /* ========== DNA REPORT CARD ========== */
