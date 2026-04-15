@@ -1820,6 +1820,63 @@ html[data-theme="dark"] .log-card {
   transition: color var(--transition-speed);
 }
 
+/* ========== TRADING LOG v2 ========== */
+.tl-container { padding: 0; }
+.tl-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
+.tl-add-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--accent); color: #fff; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
+.tl-timeline { padding: 0 20px 20px; overflow-y: auto; max-height: 400px; }
+.tl-entry { position: relative; padding-left: 24px; margin-bottom: 16px; }
+.tl-entry::before { content: ''; position: absolute; left: 5px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.tl-entry::after { content: ''; position: absolute; left: 0; top: 6px; width: 12px; height: 12px; border-radius: 50%; }
+.tl-entry.tl-buy::after { background: #22C55E; }
+.tl-entry.tl-sell::after { background: #EF4444; }
+.tl-entry.tl-note::after { background: var(--text-secondary); }
+.tl-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.tl-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.tl-card-date { font-size: 11px; color: var(--text-secondary); }
+.tl-card-action { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
+.tl-card-action.buy { background: rgba(34,197,94,0.1); color: #22C55E; }
+.tl-card-action.sell { background: rgba(239,68,68,0.1); color: #EF4444; }
+.tl-card-symbol { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.tl-card-reason { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px; font-style: italic; }
+.tl-card-params { font-size: 11px; color: var(--text-secondary); display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.tl-card-param { display: flex; align-items: center; gap: 4px; }
+.tl-card-param-label { font-weight: 600; color: var(--text-primary); }
+.tl-vibe-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.tl-vibe-label { font-size: 10px; color: var(--text-secondary); }
+.tl-vibe-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; position: relative; }
+.tl-vibe-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
+.tl-vibe-dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary); transform: translate(-50%,-50%); border: 2px solid var(--card-bg); }
+.tl-audit { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+.tl-audit-icon { margin-right: 4px; }
+.tl-quick-box { border-top: 1px solid var(--border); padding: 12px 20px; display: flex; gap: 8px; }
+.tl-quick-input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; }
+.tl-quick-send { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--accent); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.tl-empty { text-align: center; padding: 40px 20px; color: var(--text-secondary); font-size: 13px; }
+
+/* Trading Log Modal */
+.tl-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.tl-modal { background: var(--card-bg); border-radius: 16px; max-width: 480px; width: 100%; padding: 24px; max-height: 85vh; overflow-y: auto; position: relative; }
+.tl-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.tl-modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 4px; }
+.tl-action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+.tl-action-btn { padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: transparent; cursor: pointer; text-align: center; font-size: 13px; font-weight: 600; transition: all 0.15s; color: var(--text-primary); }
+.tl-action-btn:hover { background: var(--hover-bg); }
+.tl-action-btn.buy-btn { border-color: rgba(34,197,94,0.3); color: #22C55E; }
+.tl-action-btn.sell-btn { border-color: rgba(239,68,68,0.3); color: #EF4444; }
+.tl-action-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.tl-form-group { margin-bottom: 14px; }
+.tl-form-label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
+.tl-form-row { display: flex; gap: 10px; }
+.tl-form-input { flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; box-sizing: border-box; }
+.tl-form-input:focus { border-color: var(--accent); }
+.tl-form-textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; resize: vertical; min-height: 60px; font-family: inherit; box-sizing: border-box; }
+.tl-vibe-slider-container { margin-bottom: 14px; }
+.tl-vibe-slider { width: 100%; -webkit-appearance: none; height: 6px; border-radius: 3px; background: linear-gradient(to right, #EF4444, #F59E0B, #22C55E); outline: none; }
+.tl-vibe-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--text-primary); cursor: pointer; }
+.tl-vibe-value { text-align: center; font-size: 12px; font-weight: 600; margin-top: 4px; }
+.tl-submit-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
+
 /* ========== INPUT BAR ========== */
 .input-bar {
   padding: 12px 20px 16px;
@@ -6502,6 +6559,35 @@ const i18n = {
     'log.negative': 'The stars sense your frustration. Losses are cosmic lessons — they hurt, but they teach. Mercury retrograde may have scrambled your signals. Take a breath, review your thesis, and wait for clearer skies.',
     'log.positive': 'Victory vibes detected! The cosmos celebrates your gains. Jupiter\'s blessing is upon you — ride this momentum but don\'t let greed turn winners into lessons. The stars say: book some profits, you earned it.',
     'log.neutral': 'The cosmic fog is thick. Uncertainty is not weakness — it\'s the universe telling you to wait. Neptune clouds your judgment right now. Best move: no move. Let the planets realign before your next trade.',
+    'tl.title': 'Trading Log',
+    'tl.newTrade': 'New Trade',
+    'tl.buy': 'Buy',
+    'tl.avgDown': 'Avg Down',
+    'tl.addPos': 'Add Position',
+    'tl.reduce': 'Reduce',
+    'tl.closeAll': 'Close All',
+    'tl.stopLoss': 'Stop Loss',
+    'tl.symbol': 'Symbol',
+    'tl.entryPrice': 'Entry Price',
+    'tl.exitPrice': 'Exit Price',
+    'tl.tpSl': 'Take Profit / Stop Loss',
+    'tl.tp': 'TP',
+    'tl.sl': 'SL',
+    'tl.reason': 'Reason',
+    'tl.reasonPlaceholder': 'Why this trade? (e.g., 4H volume squeeze, expecting bounce)',
+    'tl.exitReasonPlaceholder': 'Why exit? (e.g., hit TP target, cut loss)',
+    'tl.vibeCheck': 'Vibe Check',
+    'tl.fear': 'Fear',
+    'tl.greed': 'Greed',
+    'tl.fearBias': 'Cautious',
+    'tl.greedBias': 'Aggressive',
+    'tl.neutral': 'Neutral',
+    'tl.submit': 'Save Trade',
+    'tl.quickPlaceholder': 'Quick thought...',
+    'tl.note': 'Note',
+    'tl.empty': 'No trades yet. Tap + to record your first trade.',
+    'tl.enterSymbol': 'Please enter a symbol',
+    'tl.auditPlaceholder': 'AI audit will appear here after analysis.',
     'mod.whaleBanner': 'Whale Resonance Detected',
     'mod.entityFoundation': 'Entity Foundation',
     'mod.currentAlignment': 'Current Alignment',
@@ -7025,6 +7111,35 @@ const i18n = {
     'log.negative': '星星感受到了你的沮丧。亏损是宇宙的必修课——虽然痛，但有用。水星逆行可能干扰了你的判断，深呼吸，重新审视逻辑，等天空放晴再出手。',
     'log.positive': '检测到胜利 vibe！宇宙为你的收益举杯。木星的祝福正在生效——乘势而上，但别让贪婪把赢家变成教训。星星说：落袋为安，你值得。',
     'log.neutral': '宇宙迷雾正浓。不确定不是软弱——是宇宙在提醒你等待。海王星正在模糊你的判断，最佳操作就是不操作。等行星重新排列好，再考虑下一笔交易。',
+    'tl.title': '交易日志',
+    'tl.newTrade': '新建交易',
+    'tl.buy': '买入',
+    'tl.avgDown': '补仓',
+    'tl.addPos': '加码',
+    'tl.reduce': '减仓',
+    'tl.closeAll': '清仓',
+    'tl.stopLoss': '止损',
+    'tl.symbol': '标的',
+    'tl.entryPrice': '入场价',
+    'tl.exitPrice': '出场价',
+    'tl.tpSl': '止盈 / 止损',
+    'tl.tp': '止盈',
+    'tl.sl': '止损',
+    'tl.reason': '原因',
+    'tl.reasonPlaceholder': '为什么做这笔交易？（如：4H 缩量回调，博反弹）',
+    'tl.exitReasonPlaceholder': '为什么出场？（如：触及止盈，认赔出局）',
+    'tl.vibeCheck': '心理状态',
+    'tl.fear': '恐惧',
+    'tl.greed': '贪婪',
+    'tl.fearBias': '偏谨慎',
+    'tl.greedBias': '偏激进',
+    'tl.neutral': '中性',
+    'tl.submit': '保存交易',
+    'tl.quickPlaceholder': '记录闪念...',
+    'tl.note': '笔记',
+    'tl.empty': '暂无交易记录。点击 + 记录第一笔交易。',
+    'tl.enterSymbol': '请输入标的',
+    'tl.auditPlaceholder': 'AI 审计分析将在此显示。',
     // Module content translations
     'mod.whaleBanner': '🐋 检测到巨鲸共振',
     'mod.entityFoundation': '标的底色',
@@ -10238,7 +10353,291 @@ function addWatchlistCard() {
 }
 
 function addTradingLogPrompt() {
-  addChatMessage('ai', t('mod.tradingLogPrompt'));
+  var container = document.getElementById('chatMessages');
+  var msg = document.createElement('div');
+  msg.className = 'msg ai';
+  
+  var innerHTML = '<div class="tl-container" id="tlContainer">' +
+    '<div class="tl-header">' +
+      '<div style="font-size:15px;font-weight:700;color:var(--text-primary);">' + t('tl.title') + '</div>' +
+      '<button class="tl-add-btn" onclick="openTradeLogModal()" title="+">+</button>' +
+    '</div>' +
+    '<div class="tl-timeline" id="tlTimeline"></div>' +
+    '<div class="tl-quick-box">' +
+      '<input type="text" class="tl-quick-input" id="tlQuickInput" placeholder="' + t('tl.quickPlaceholder') + '" onkeydown="if(event.key===\'Enter\')submitQuickNote()">' +
+      '<button class="tl-quick-send" onclick="submitQuickNote()">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>' +
+      '</button>' +
+    '</div>' +
+  '</div>';
+  
+  msg.innerHTML = innerHTML;
+  container.appendChild(msg);
+  scrollChatTop();
+  
+  loadAndRenderTradeLogs();
+}
+
+function openTradeLogModal() {
+  var existing = document.getElementById('tlModal');
+  if (existing) existing.remove();
+  
+  var modal = document.createElement('div');
+  modal.id = 'tlModal';
+  modal.className = 'tl-modal-overlay';
+  modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
+  
+  modal.innerHTML = '<div class="tl-modal">' +
+    '<button class="tl-modal-close" onclick="document.getElementById(\'tlModal\').remove()">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+    '</button>' +
+    '<div class="tl-modal-title">' + t('tl.newTrade') + '</div>' +
+    '<div class="tl-action-grid" id="tlActionGrid">' +
+      '<button class="tl-action-btn buy-btn" data-action="buy" onclick="selectTradeAction(this)">' + t('tl.buy') + '</button>' +
+      '<button class="tl-action-btn buy-btn" data-action="avg" onclick="selectTradeAction(this)">' + t('tl.avgDown') + '</button>' +
+      '<button class="tl-action-btn buy-btn" data-action="add" onclick="selectTradeAction(this)">' + t('tl.addPos') + '</button>' +
+      '<button class="tl-action-btn sell-btn" data-action="reduce" onclick="selectTradeAction(this)">' + t('tl.reduce') + '</button>' +
+      '<button class="tl-action-btn sell-btn" data-action="close" onclick="selectTradeAction(this)">' + t('tl.closeAll') + '</button>' +
+      '<button class="tl-action-btn sell-btn" data-action="stop" onclick="selectTradeAction(this)">' + t('tl.stopLoss') + '</button>' +
+    '</div>' +
+    '<div id="tlDynamicForm" style="display:none;"></div>' +
+  '</div>';
+  
+  document.body.appendChild(modal);
+}
+
+var currentTradeAction = '';
+
+function selectTradeAction(btn) {
+  currentTradeAction = btn.getAttribute('data-action');
+  document.querySelectorAll('.tl-action-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  
+  var isBuy = ['buy', 'avg', 'add'].indexOf(currentTradeAction) !== -1;
+  var form = document.getElementById('tlDynamicForm');
+  form.style.display = 'block';
+  
+  if (isBuy) {
+    form.innerHTML = '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.symbol') + '</label>' +
+      '<input type="text" class="tl-form-input" id="tlSymbol" placeholder="$BTC">' +
+    '</div>' +
+    '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.entryPrice') + '</label>' +
+      '<input type="number" class="tl-form-input" id="tlEntryPrice" placeholder="0.00" step="any">' +
+    '</div>' +
+    '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.tpSl') + '</label>' +
+      '<div class="tl-form-row">' +
+        '<input type="number" class="tl-form-input" id="tlTP" placeholder="' + t('tl.tp') + '" step="any">' +
+        '<input type="number" class="tl-form-input" id="tlSL" placeholder="' + t('tl.sl') + '" step="any">' +
+      '</div>' +
+      '<div id="tlRRDisplay" style="font-size:11px;color:var(--accent);margin-top:4px;"></div>' +
+    '</div>' +
+    '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.reason') + '</label>' +
+      '<textarea class="tl-form-textarea" id="tlReason" placeholder="' + t('tl.reasonPlaceholder') + '"></textarea>' +
+    '</div>' +
+    '<div class="tl-vibe-slider-container">' +
+      '<label class="tl-form-label">' + t('tl.vibeCheck') + '</label>' +
+      '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-bottom:4px;"><span>' + t('tl.fear') + '</span><span>' + t('tl.greed') + '</span></div>' +
+      '<input type="range" class="tl-vibe-slider" id="tlVibeSlider" min="0" max="100" value="50" oninput="updateVibeDisplay(this.value)">' +
+      '<div class="tl-vibe-value" id="tlVibeValue">50%</div>' +
+    '</div>' +
+    '<button class="tl-submit-btn" onclick="submitTradeLog()">' + t('tl.submit') + '</button>';
+    
+    var entryInput = document.getElementById('tlEntryPrice');
+    var tpInput = document.getElementById('tlTP');
+    var slInput = document.getElementById('tlSL');
+    var calcRR = function() {
+      var entry = parseFloat(entryInput.value);
+      var tp = parseFloat(tpInput.value);
+      var sl = parseFloat(slInput.value);
+      var rrDiv = document.getElementById('tlRRDisplay');
+      if (entry && tp && sl && entry > 0) {
+        var rr = (Math.abs(tp - entry) / Math.abs(entry - sl)).toFixed(1);
+        rrDiv.textContent = 'R/R: ' + rr;
+      } else {
+        rrDiv.textContent = '';
+      }
+    };
+    entryInput.addEventListener('input', calcRR);
+    tpInput.addEventListener('input', calcRR);
+    slInput.addEventListener('input', calcRR);
+  } else {
+    form.innerHTML = '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.symbol') + '</label>' +
+      '<input type="text" class="tl-form-input" id="tlSymbol" placeholder="$BTC">' +
+    '</div>' +
+    '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.exitPrice') + '</label>' +
+      '<input type="number" class="tl-form-input" id="tlExitPrice" placeholder="0.00" step="any">' +
+    '</div>' +
+    '<div class="tl-form-group">' +
+      '<label class="tl-form-label">' + t('tl.reason') + '</label>' +
+      '<textarea class="tl-form-textarea" id="tlReason" placeholder="' + t('tl.exitReasonPlaceholder') + '"></textarea>' +
+    '</div>' +
+    '<div class="tl-vibe-slider-container">' +
+      '<label class="tl-form-label">' + t('tl.vibeCheck') + '</label>' +
+      '<div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-secondary);margin-bottom:4px;"><span>' + t('tl.fear') + '</span><span>' + t('tl.greed') + '</span></div>' +
+      '<input type="range" class="tl-vibe-slider" id="tlVibeSlider" min="0" max="100" value="50" oninput="updateVibeDisplay(this.value)">' +
+      '<div class="tl-vibe-value" id="tlVibeValue">50%</div>' +
+    '</div>' +
+    '<button class="tl-submit-btn" onclick="submitTradeLog()">' + t('tl.submit') + '</button>';
+  }
+}
+
+function updateVibeDisplay(val) {
+  var el = document.getElementById('tlVibeValue');
+  if (el) {
+    var label = val < 30 ? t('tl.fearBias') : val > 70 ? t('tl.greedBias') : t('tl.neutral');
+    el.textContent = val + '% ' + label;
+  }
+}
+
+function submitTradeLog() {
+  var symbol = document.getElementById('tlSymbol').value.trim();
+  if (!symbol) { showToast(t('tl.enterSymbol')); return; }
+  
+  var isBuy = ['buy', 'avg', 'add'].indexOf(currentTradeAction) !== -1;
+  var vibe = parseInt(document.getElementById('tlVibeSlider').value);
+  var reason = document.getElementById('tlReason').value.trim();
+  var now = new Date();
+  
+  var entry = {
+    id: Date.now(),
+    type: isBuy ? 'buy' : 'sell',
+    action: currentTradeAction,
+    symbol: symbol,
+    date: now.toISOString().split('T')[0],
+    time: now.toTimeString().slice(0, 5),
+    vibe: vibe,
+    reason: reason || '',
+    tp: '',
+    sl: '',
+    entryPrice: '',
+    exitPrice: '',
+    rr: ''
+  };
+  
+  if (isBuy) {
+    entry.entryPrice = document.getElementById('tlEntryPrice').value || '';
+    entry.tp = document.getElementById('tlTP').value || '';
+    entry.sl = document.getElementById('tlSL').value || '';
+    if (entry.entryPrice && entry.tp && entry.sl && parseFloat(entry.entryPrice) > 0) {
+      entry.rr = (Math.abs(parseFloat(entry.tp) - parseFloat(entry.entryPrice)) / Math.abs(parseFloat(entry.entryPrice) - parseFloat(entry.sl))).toFixed(1);
+    }
+  } else {
+    entry.exitPrice = document.getElementById('tlExitPrice').value || '';
+  }
+  
+  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  logs.unshift(entry);
+  localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  
+  saveTradeLogToCloud(isBuy ? 'positive' : 'negative', symbol, reason, entry.entryPrice || entry.exitPrice);
+  
+  document.getElementById('tlModal').remove();
+  renderTradeLogs(logs);
+}
+
+function submitQuickNote() {
+  var input = document.getElementById('tlQuickInput');
+  var text = input.value.trim();
+  if (!text) return;
+  
+  var now = new Date();
+  var entry = {
+    id: Date.now(),
+    type: 'note',
+    action: 'note',
+    symbol: '',
+    date: now.toISOString().split('T')[0],
+    time: now.toTimeString().slice(0, 5),
+    vibe: 50,
+    reason: text,
+    tp: '', sl: '', entryPrice: '', exitPrice: '', rr: ''
+  };
+  
+  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  logs.unshift(entry);
+  localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  
+  input.value = '';
+  renderTradeLogs(logs);
+}
+
+function loadAndRenderTradeLogs() {
+  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  renderTradeLogs(logs);
+}
+
+function renderTradeLogs(logs) {
+  var timeline = document.getElementById('tlTimeline');
+  if (!timeline) return;
+  
+  if (logs.length === 0) {
+    timeline.innerHTML = '<div class="tl-empty">' + t('tl.empty') + '</div>';
+    return;
+  }
+  
+  var actionLabels = {
+    buy: t('tl.buy'), avg: t('tl.avgDown'), add: t('tl.addPos'),
+    reduce: t('tl.reduce'), close: t('tl.closeAll'), stop: t('tl.stopLoss'), note: t('tl.note')
+  };
+  
+  var html = '';
+  for (var i = 0; i < logs.length; i++) {
+    var log = logs[i];
+    var typeCls = log.type === 'buy' ? 'tl-buy' : log.type === 'sell' ? 'tl-sell' : 'tl-note';
+    var actionCls = log.type === 'buy' ? 'buy' : log.type === 'sell' ? 'sell' : '';
+    var vibeColor = log.vibe < 30 ? '#EF4444' : log.vibe > 70 ? '#22C55E' : '#F59E0B';
+    var vibeLabel = log.vibe < 30 ? t('tl.fearBias') : log.vibe > 70 ? t('tl.greedBias') : t('tl.neutral');
+    
+    html += '<div class="tl-entry ' + typeCls + '">' +
+      '<div class="tl-card">' +
+        '<div class="tl-card-header">' +
+          '<span class="tl-card-date">' + escapeHtml(log.date) + ' ' + escapeHtml(log.time || '') + '</span>' +
+          (log.action !== 'note' ? '<span class="tl-card-action ' + actionCls + '">' + escapeHtml(actionLabels[log.action] || log.action) + '</span>' : '') +
+        '</div>';
+    
+    if (log.symbol) {
+      html += '<div class="tl-card-symbol">' + escapeHtml(log.symbol) + (log.action !== 'note' ? ' · ' + escapeHtml(actionLabels[log.action] || '') : '') + '</div>';
+    }
+    
+    if (log.reason) {
+      html += '<div class="tl-card-reason">"' + escapeHtml(log.reason) + '"</div>';
+    }
+    
+    var params = [];
+    if (log.sl) params.push('<span class="tl-card-param"><span class="tl-card-param-label">SL:</span> ' + escapeHtml(log.sl) + '</span>');
+    if (log.tp) params.push('<span class="tl-card-param"><span class="tl-card-param-label">TP:</span> ' + escapeHtml(log.tp) + '</span>');
+    if (log.rr) params.push('<span class="tl-card-param"><span class="tl-card-param-label">R/R:</span> ' + escapeHtml(log.rr) + '</span>');
+    if (log.entryPrice) params.push('<span class="tl-card-param"><span class="tl-card-param-label">Entry:</span> ' + escapeHtml(log.entryPrice) + '</span>');
+    if (log.exitPrice) params.push('<span class="tl-card-param"><span class="tl-card-param-label">Exit:</span> ' + escapeHtml(log.exitPrice) + '</span>');
+    
+    if (params.length > 0) {
+      html += '<div class="tl-card-params">' + params.join('') + '</div>';
+    }
+    
+    html += '<div class="tl-vibe-bar">' +
+      '<span class="tl-vibe-label">' + t('tl.fear') + '</span>' +
+      '<div class="tl-vibe-track">' +
+        '<div class="tl-vibe-fill" style="width:' + log.vibe + '%;background:' + vibeColor + ';"></div>' +
+        '<div class="tl-vibe-dot" style="left:' + log.vibe + '%;"></div>' +
+      '</div>' +
+      '<span class="tl-vibe-label">' + t('tl.greed') + '</span>' +
+      '<span style="font-size:10px;color:' + vibeColor + ';font-weight:600;">(' + log.vibe + '% ' + vibeLabel + ')</span>' +
+    '</div>';
+    
+    if (log.type !== 'note') {
+      html += '<div class="tl-audit"><span class="tl-audit-icon">&#x1F4A1;</span> ' + t('tl.auditPlaceholder') + '</div>';
+    }
+    
+    html += '</div></div>';
+  }
+  
+  timeline.innerHTML = html;
 }
 
 function addTradingLogCard(sentiment) {
