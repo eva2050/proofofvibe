@@ -1185,45 +1185,6 @@ html[data-theme="dark"] .dna-card {
   flex-shrink: 0;
 }
 
-.dna-archetype-emoji {
-  font-size: 36px;
-  line-height: 1;
-  text-align: center;
-  flex-shrink: 0;
-  margin-bottom: 2px;
-}
-
-.dna-info { flex: 1; text-align: center; }
-
-.dna-info-title {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  color: var(--text-secondary);
-  margin-bottom: 1px;
-  text-transform: uppercase;
-}
-
-.dna-info .archetype {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 6px;
-  letter-spacing: 0.3px;
-}
-
-.dna-info .stars {
-  color: var(--accent-yellow);
-  font-size: 18px;
-  letter-spacing: 2px;
-}
-
-.dna-info-stars {
-  font-size: 13px;
-  letter-spacing: 2px;
-  margin-bottom: 4px;
-}
-
 .dna-info-rating {
   font-size: 12px;
   color: var(--text-secondary);
@@ -1236,19 +1197,26 @@ html[data-theme="dark"] .dna-card {
   font-size: 14px;
 }
 
-.dna-identity-whale {
-  flex: 1;
-  padding: 0 0 0 20px;
-  background: transparent;
-  border: none;
-  border-radius: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 0;
-  overflow: visible;
+/* ========== DNA HERO ========== */
+.dna-hero {
+  padding: 20px 24px 16px;
+  text-align: center;
 }
-
-.dna-identity-whale-label {
+.dna-hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.dna-hero-emoji {
+  font-size: 36px;
+  line-height: 1;
+}
+.dna-hero-info {
+  text-align: left;
+}
+.dna-hero-label {
   font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
@@ -1256,22 +1224,138 @@ html[data-theme="dark"] .dna-card {
   color: var(--text-secondary);
   margin-bottom: 2px;
 }
-
-.dna-identity-whale-name {
+.dna-hero-archetype {
   font-family: 'DM Sans', sans-serif;
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 2px;
-  letter-spacing: -0.3px;
+  letter-spacing: -0.5px;
+}
+.dna-hero-stars {
+  font-size: 16px;
+  line-height: 1;
+  margin-left: auto;
+}
+.dna-hero-verdict {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-style: italic;
+  max-width: 480px;
+  margin: 0 auto;
 }
 
-.dna-identity-whale-pattern {
+/* ========== DNA TRAITS ROW ========== */
+.dna-traits-row {
+  display: flex;
+  gap: 0;
+  padding: 0 24px 16px;
+  justify-content: center;
+}
+.dna-traits-row .dna-trait {
+  flex: 1;
+  max-width: 160px;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border-bottom: none;
+}
+.dna-traits-row .dna-trait .trait-name {
+  width: auto;
+  font-size: 10px;
+}
+.dna-traits-row .dna-trait .trait-bar-bg {
+  width: 100%;
+  height: 5px;
+}
+.dna-traits-row .dna-trait .trait-value {
+  width: auto;
+  font-size: 13px;
+  font-weight: 800;
+}
+.dna-traits-row .dna-trait .trait-roast {
+  display: none;
+}
+
+/* ========== DNA WHALE CARD ========== */
+.dna-whale-card {
+  margin: 0 24px 20px;
+  padding: 16px 18px;
+  background: var(--hover-bg, rgba(0,0,0,0.02));
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+html[data-theme="dark"] .dna-whale-card {
+  background: rgba(255,255,255,0.03);
+}
+.dna-whale-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+.dna-whale-card-label {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.dna-whale-card-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.3px;
+}
+.dna-whale-card-pattern {
   font-size: 11px;
   color: var(--text-secondary);
   font-weight: 500;
-  letter-spacing: 0.3px;
-  margin-bottom: 10px;
+  background: var(--card-bg);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.dna-whale-card-bio {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.dna-whale-card-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.dna-whale-card-section {
+  padding: 10px 12px;
+  background: var(--card-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+.dna-whale-section-title {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.dna-whale-section-text {
+  font-size: 11px;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+.dna-whale-card-footer {
+  display: flex;
+  justify-content: center;
 }
 
 /* ========== DNA TRAITS ========== */
@@ -1368,64 +1452,7 @@ html[data-theme="dark"] .dna-trait .trait-bar-bg {
   box-shadow: none;
 }
 
-.dna-report-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  flex: 1;
-  min-width: 0;
-  padding-right: 20px;
-  border-right: 1px solid rgba(0,0,0,0.08);
-}
 
-.dna-identity-row {
-  display: flex;
-  gap: 0;
-  align-items: stretch;
-  margin-bottom: 8px;
-  padding: 24px;
-  background: var(--card-bg);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 10px;
-  box-shadow: none;
-  overflow: visible;
-}
-
-.dna-identity-row .dna-traits {
-  flex: 1;
-  margin-top: 0;
-  padding-top: 0;
-  border-top: none;
-}
-
-.dna-report-archetype {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--text-primary);
-  margin-bottom: 2px;
-  letter-spacing: -0.5px;
-  line-height: 1.1;
-}
-
-.dna-verdict {
-  font-size: 12px;
-  color: var(--text-secondary);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  padding: 6px 0 0 10px;
-  background: transparent;
-  border-radius: 0;
-  margin: 4px 0 0;
-  text-align: left;
-  border: none;
-  box-shadow: none;
-  border-top: none;
-  border-left: 2px solid rgba(0,0,0,0.12);
-  opacity: 0.7;
-}
 
 .dna-whale-row { display: none; }
 
@@ -3606,12 +3633,17 @@ html[data-theme="dark"] .pricing-card:hover {
     border-radius: 12px;
   }
   .dna-report-card { padding: 20px; }
-  .dna-report-archetype { font-size: 24px; }
-  .dna-identity-row { flex-direction: column; align-items: stretch; gap: 0; }
-  .dna-report-header { flex-direction: column; align-items: center; text-align: center; padding-right: 0; border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); padding-bottom: 16px; }
-  .dna-identity-whale { padding: 16px 0 0; }
-  .dna-identity-whale-name { font-size: 16px; }
-  .dna-verdict { text-align: center; }
+  .dna-traits-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .dna-traits-row .dna-trait {
+    min-width: calc(33% - 4px);
+    max-width: calc(33% - 4px);
+  }
+  .dna-whale-card-sections {
+    grid-template-columns: 1fr;
+  }
   .dna-share-row-inline { text-align: center; }
   .dna-collapsible-title { font-size: 12px; }
   .dna-collapsible-header { padding: 14px 16px; }
@@ -9755,35 +9787,49 @@ function addDNACard() {
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="dna-card dna-report-card">' +
 
-      // === SECTION 1: Identity Label + Whale ===
-      '<div class="dna-identity-row">' +
-        '<div class="dna-report-header">' +
-          '<div class="dna-archetype-emoji">' + archEmoji + '</div>' +
-          '<div class="dna-info">' +
-            '<div class="dna-info-title">' + t('dna.yourTradingPersona') + '</div>' +
-            '<div class="dna-report-archetype">' + escapeHtml(report.archetype) + '</div>' +
-            '<div class="dna-info-stars">' + starsHTML + '</div>' +
-            '<div class="dna-verdict">' + escapeHtml(report.verdict) + '</div>' +
-            '<div class="dna-traits">' + traitsHTML + '</div>' +
+      // === SECTION 1: Identity Hero ===
+      '<div class="dna-hero">' +
+        '<div class="dna-hero-top">' +
+          '<div class="dna-hero-emoji">' + archEmoji + '</div>' +
+          '<div class="dna-hero-info">' +
+            '<div class="dna-hero-label">' + t('dna.yourTradingPersona') + '</div>' +
+            '<div class="dna-hero-archetype">' + escapeHtml(report.archetype) + '</div>' +
+          '</div>' +
+          '<div class="dna-hero-stars">' + starsHTML + '</div>' +
+        '</div>' +
+        '<div class="dna-hero-verdict">' + escapeHtml(report.verdict) + '</div>' +
+      '</div>' +
+
+      // === SECTION 2: Trait Bars (horizontal compact) ===
+      '<div class="dna-traits-row">' +
+        traitsHTML +
+      '</div>' +
+
+      // === SECTION 3: Whale Echo Card ===
+      '<div class="dna-whale-card">' +
+        '<div class="dna-whale-card-header">' +
+          '<div>' +
+            '<div class="dna-whale-card-label">' + t('dna.whaleEcho') + '</div>' +
+            '<div class="dna-whale-card-name">' + escapeHtml(report.whale.name) + '</div>' +
+          '</div>' +
+          '<div class="dna-whale-card-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
+        '</div>' +
+        '<div class="dna-whale-card-bio">' + escapeHtml(report.whale.bio) + '</div>' +
+        '<div class="dna-whale-card-sections">' +
+          '<div class="dna-whale-card-section">' +
+            '<div class="dna-whale-section-title">' + t('dna.tradingStyle') + '</div>' +
+            '<div class="dna-whale-section-text">' + escapeHtml(report.whale.style) + '</div>' +
+          '</div>' +
+          '<div class="dna-whale-card-section">' +
+            '<div class="dna-whale-section-title">' + t('dna.syncAnalysis') + '</div>' +
+            '<div class="dna-whale-section-text">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="dna-identity-whale">' +
-          '<div class="dna-identity-whale-label">' + t('dna.whaleEcho') + '</div>' +
-          '<div class="dna-identity-whale-name">' + escapeHtml(report.whale.name) + '</div>' +
-          '<div class="dna-identity-whale-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
-          '<div class="dna-whale-bio">' + escapeHtml(report.whale.bio) + '</div>' +
-          '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">' + t('dna.tradingStyle') + '</div>' +
-          '<div class="dna-cog-analysis">' + escapeHtml(report.whale.style) + '</div>' +
-          '<div class="dna-cog-divider"></div>' +
-          '<div class="dna-cog-title">' + t('dna.syncAnalysis') + '</div>' +
-          '<div class="dna-cog-analysis">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
-          '<div class="dna-share-row-inline">' +
-            '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
-              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
-              t('dna.shareReport') +
-            '</button>' +
-          '</div>' +
+        '<div class="dna-whale-card-footer">' +
+          '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
+            t('dna.shareReport') +
+          '</button>' +
         '</div>' +
       '</div>' +
 
@@ -10167,7 +10213,7 @@ function addPulseCard() {
 
   // === Market Tension Index (always visible) ===
   const tension = 67;
-  const tensionColor = tension > 70 ? '#EF4444' : tension > 40 ? '#F59E0B' : '#22C55E';
+  const tensionColor = tension > 70 ? 'rgba(239,68,68,0.3)' : tension > 40 ? 'rgba(245,158,11,0.3)' : 'rgba(34,197,94,0.3)';
   const tensionLabel = tension > 70 ? t('mod.highPressure') : tension > 40 ? t('mod.moderateTension') : t('mod.lowPressure');
   const tensionCirc = 2 * Math.PI * 40;
   const tensionOffset = tensionCirc - (tension / 100) * tensionCirc;
