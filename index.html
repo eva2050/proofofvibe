@@ -10587,32 +10587,33 @@ function submitQuickNote() {
 function loadAndRenderTradeLogs() {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
   
-  // Load sample data if empty (first visit)
-  if (logs.length === 0) {
-    logs = [
+  // Always show sample data unless user has dismissed them
+  var dismissed = localStorage.getItem('vibe_tl_samples_dismissed');
+  if (!dismissed) {
+    var samples = [
       {
-        id: 1001, type: 'buy', action: 'buy', symbol: '$BTC',
+        id: 's1', type: 'buy', action: 'buy', symbol: '$BTC',
         date: '2025.04.14', time: '09:32', vibe: 72,
         reason: '4H级别缩量回调至EMA21支撑，RSI超卖反弹信号明确，博短线反弹。',
         tp: '68000', sl: '62000', entryPrice: '63500', exitPrice: '', rr: '2.5',
         audit: '💡 当前火星与你命盘木星形成三分相，进攻性交易决策符合你DNA中的"狙击手"特质。BTC处于金星金牛座的稳定区间，支撑有效。建议：严格执行62000止损，不要产生情感留恋。R/R 2.5为优质交易。'
       },
       {
-        id: 1002, type: 'sell', action: 'stop', symbol: '$SOL',
+        id: 's2', type: 'sell', action: 'stop', symbol: '$SOL',
         date: '2025.04.13', time: '14:15', vibe: 25,
         reason: '跌破关键支撑位，冥王星逆行期间趋势不明，认赔出局保本金。',
         tp: '', sl: '', entryPrice: '148', exitPrice: '142', rr: '',
         audit: '💡 土星在双鱼座的对冲能量正在压制SOL的上涨动能。止损决策展现了你命盘中"风象"特质的理性一面——在不确定时期果断退出，比盲目持有更明智。本次亏损约4%，在可控范围内。'
       },
       {
-        id: 1003, type: 'buy', action: 'avg', symbol: '$NVDA',
+        id: 's3', type: 'buy', action: 'avg', symbol: '$NVDA',
         date: '2025.04.12', time: '10:45', vibe: 55,
         reason: '财报前补仓，木星双子座的扩张周期利好AI叙事，长期看好算力需求。',
         tp: '950', sl: '820', entryPrice: '875', exitPrice: '', rr: '1.7',
-        audit: '💡 木星双子与NVDA的创始星象高度共振。补仓时机选择在财报前的"信息真空期"，符合水星逆行期间"逆向布局"的星象策略。建议：设置820硬止损，若财报不及预期可快速离场。'
+        audit: '💡 木星双子与NVDA创始星象高度共振。补仓时机选择在财报前的"信息真空期"，符合水星逆行期间"逆向布局"的星象策略。建议：设置820硬止损，若财报不及预期可快速离场。'
       }
     ];
-    localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+    logs = samples.concat(logs);
   }
   
   renderTradeLogs(logs);
@@ -10729,10 +10730,14 @@ function editTradeLog(id) {
 }
 
 function deleteTradeLog(id) {
+  // If deleting a sample (id starts with 's'), mark samples as dismissed
+  if (typeof id === 'string' && id.indexOf('s') === 0) {
+    localStorage.setItem('vibe_tl_samples_dismissed', '1');
+  }
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
-  logs = logs.filter(function(l) { return l.id !== id; });
+  logs = logs.filter(function(l) { return String(l.id) !== String(id); });
   localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
-  renderTradeLogs(logs);
+  loadAndRenderTradeLogs();
 }
 
 function addTradingLogCard(sentiment) {
