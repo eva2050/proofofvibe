@@ -1822,58 +1822,70 @@ html[data-theme="dark"] .log-card {
 
 /* ========== TRADING LOG v2 ========== */
 .tl-container { padding: 0; }
-.tl-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; }
-.tl-add-btn { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--accent); color: #fff; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; }
-.tl-timeline { padding: 0 20px 20px; overflow-y: auto; max-height: 400px; }
-.tl-entry { position: relative; padding-left: 24px; margin-bottom: 16px; }
-.tl-entry::before { content: ''; position: absolute; left: 5px; top: 0; bottom: 0; width: 2px; background: var(--border); }
-.tl-entry::after { content: ''; position: absolute; left: 0; top: 6px; width: 12px; height: 12px; border-radius: 50%; }
-.tl-entry.tl-buy::after { background: #22C55E; }
-.tl-entry.tl-sell::after { background: #EF4444; }
-.tl-entry.tl-note::after { background: var(--text-secondary); }
-.tl-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
-.tl-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-.tl-card-date { font-size: 11px; color: var(--text-secondary); }
-.tl-card-action { font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; }
-.tl-card-action.buy { background: rgba(34,197,94,0.1); color: #22C55E; }
-.tl-card-action.sell { background: rgba(239,68,68,0.1); color: #EF4444; }
-.tl-card-symbol { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
-.tl-card-reason { font-size: 12px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 8px; font-style: italic; }
-.tl-card-params { font-size: 11px; color: var(--text-secondary); display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.tl-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px 12px; }
+.tl-add-btn { width: 34px; height: 34px; border-radius: 50%; border: 2px solid var(--accent); background: transparent; color: var(--accent); font-size: 20px; font-weight: 300; cursor: pointer; display: flex; align-items: center; justify-content: center; line-height: 1; transition: all 0.2s; }
+.tl-add-btn:hover { background: var(--accent); color: #fff; }
+.tl-timeline { padding: 4px 20px 16px; overflow-y: auto; max-height: 420px; }
+.tl-entry { position: relative; padding-left: 28px; margin-bottom: 12px; }
+.tl-entry:last-child::before { display: none; }
+.tl-entry::before { content: ''; position: absolute; left: 5px; top: 0; bottom: -12px; width: 2px; background: var(--border); }
+.tl-entry::after { content: ''; position: absolute; left: 0; top: 8px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--card-bg); box-shadow: 0 0 0 2px var(--border); }
+.tl-entry.tl-buy::after { background: #22C55E; box-shadow: 0 0 0 2px rgba(34,197,94,0.2); }
+.tl-entry.tl-sell::after { background: #EF4444; box-shadow: 0 0 0 2px rgba(239,68,68,0.2); }
+.tl-entry.tl-note::after { background: var(--text-secondary); box-shadow: 0 0 0 2px rgba(128,128,128,0.2); }
+.tl-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; transition: border-color 0.15s, box-shadow 0.15s; }
+.tl-card:hover { border-color: rgba(0,0,0,0.12); box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+html[data-theme="dark"] .tl-card:hover { border-color: rgba(255,255,255,0.1); box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+.tl-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.tl-card-date { font-size: 11px; color: var(--text-tertiary, var(--text-secondary)); font-variant-numeric: tabular-nums; }
+.tl-card-action { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+.tl-card-action.buy { background: rgba(34,197,94,0.08); color: #22C55E; }
+.tl-card-action.sell { background: rgba(239,68,68,0.08); color: #EF4444; }
+.tl-card-symbol { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; letter-spacing: -0.3px; }
+.tl-card-reason { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 10px; font-style: italic; opacity: 0.85; }
+.tl-card-params { font-size: 11px; color: var(--text-secondary); display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; padding: 8px 10px; background: var(--hover-bg, rgba(0,0,0,0.02)); border-radius: 8px; }
 .tl-card-param { display: flex; align-items: center; gap: 4px; }
-.tl-card-param-label { font-weight: 600; color: var(--text-primary); }
-.tl-vibe-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.tl-vibe-label { font-size: 10px; color: var(--text-secondary); }
+.tl-card-param-label { font-weight: 600; color: var(--text-primary); font-size: 10px; text-transform: uppercase; letter-spacing: 0.3px; }
+.tl-vibe-bar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.tl-vibe-label { font-size: 9px; color: var(--text-tertiary, var(--text-secondary)); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 .tl-vibe-track { flex: 1; height: 4px; background: var(--border); border-radius: 2px; position: relative; }
 .tl-vibe-fill { height: 100%; border-radius: 2px; transition: width 0.3s; }
-.tl-vibe-dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary); transform: translate(-50%,-50%); border: 2px solid var(--card-bg); }
-.tl-audit { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--text-secondary); line-height: 1.5; }
+.tl-vibe-dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary); transform: translate(-50%,-50%); border: 2px solid var(--card-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.tl-audit { margin-top: 10px; padding: 10px 12px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--text-secondary); line-height: 1.6; background: linear-gradient(135deg, rgba(99,102,241,0.03), rgba(168,85,247,0.03)); border-radius: 0 0 8px 8px; }
 .tl-audit-icon { margin-right: 4px; }
+.tl-card-delete { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent; color: var(--text-tertiary, var(--text-secondary)); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s, background 0.15s; font-size: 14px; }
+.tl-card:hover .tl-card-delete { opacity: 1; }
+.tl-card-delete:hover { background: rgba(239,68,68,0.1); color: #EF4444; }
 .tl-quick-box { border-top: 1px solid var(--border); padding: 12px 20px; display: flex; gap: 8px; }
-.tl-quick-input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; }
-.tl-quick-send { width: 32px; height: 32px; border-radius: 50%; border: none; background: var(--accent); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.tl-empty { text-align: center; padding: 40px 20px; color: var(--text-secondary); font-size: 13px; }
-
-/* Trading Log Modal */
-.tl-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
-.tl-modal { background: var(--card-bg); border-radius: 16px; max-width: 480px; width: 100%; padding: 24px; max-height: 85vh; overflow-y: auto; position: relative; }
-.tl-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+.tl-quick-input { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+.tl-quick-input:focus { border-color: var(--accent); }
+.tl-quick-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
+.tl-quick-send { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--accent); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.15s; flex-shrink: 0; }
+.tl-quick-send:hover { opacity: 0.85; }
+.tl-empty { text-align: center; padding: 48px 20px; color: var(--text-secondary); font-size: 13px; line-height: 1.6; }
+.tl-submit-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.15s; margin-top: 4px; }
+.tl-submit-btn:hover { opacity: 0.9; }
+.tl-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; animation: tlFadeIn 0.2s ease; }
+@keyframes tlFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.tl-modal { background: var(--card-bg); border-radius: 16px; max-width: 480px; width: 100%; padding: 24px; max-height: 85vh; overflow-y: auto; position: relative; box-shadow: 0 20px 60px rgba(0,0,0,0.2); margin: 0 16px; }
+.tl-modal-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; color: var(--text-primary); }
 .tl-modal-close { position: absolute; top: 16px; right: 16px; background: none; border: none; cursor: pointer; color: var(--text-secondary); padding: 4px; }
 .tl-action-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
 .tl-action-btn { padding: 10px; border-radius: 10px; border: 1px solid var(--border); background: transparent; cursor: pointer; text-align: center; font-size: 13px; font-weight: 600; transition: all 0.15s; color: var(--text-primary); }
 .tl-action-btn:hover { background: var(--hover-bg); }
-.tl-action-btn.buy-btn { border-color: rgba(34,197,94,0.3); color: #22C55E; }
-.tl-action-btn.sell-btn { border-color: rgba(239,68,68,0.3); color: #EF4444; }
+.tl-action-btn.buy-btn { border-color: rgba(34,197,94,0.25); color: #22C55E; }
+.tl-action-btn.sell-btn { border-color: rgba(239,68,68,0.25); color: #EF4444; }
 .tl-action-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 .tl-form-group { margin-bottom: 14px; }
 .tl-form-label { font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
 .tl-form-row { display: flex; gap: 10px; }
-.tl-form-input { flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; box-sizing: border-box; }
+.tl-form-input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; box-sizing: border-box; transition: border-color 0.15s; }
 .tl-form-input:focus { border-color: var(--accent); }
-.tl-form-textarea { width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; resize: vertical; min-height: 60px; font-family: inherit; box-sizing: border-box; }
+.tl-form-textarea { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; resize: vertical; min-height: 60px; font-family: inherit; box-sizing: border-box; transition: border-color 0.15s; }
+.tl-form-textarea:focus { border-color: var(--accent); }
 .tl-vibe-slider-container { margin-bottom: 14px; }
 .tl-vibe-slider { width: 100%; -webkit-appearance: none; height: 6px; border-radius: 3px; background: linear-gradient(to right, #EF4444, #F59E0B, #22C55E); outline: none; }
-.tl-vibe-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--text-primary); cursor: pointer; }
+.tl-vibe-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #fff; border: 2px solid var(--text-primary); cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
 .tl-vibe-value { text-align: center; font-size: 12px; font-weight: 600; margin-top: 4px; }
 .tl-submit-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; background: var(--accent); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; }
 
@@ -10569,6 +10581,35 @@ function submitQuickNote() {
 
 function loadAndRenderTradeLogs() {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  
+  // Load sample data if empty (first visit)
+  if (logs.length === 0) {
+    logs = [
+      {
+        id: 1001, type: 'buy', action: 'buy', symbol: '$BTC',
+        date: '2025.04.14', time: '09:32', vibe: 72,
+        reason: '4H级别缩量回调至EMA21支撑，RSI超卖反弹信号明确，博短线反弹。',
+        tp: '68000', sl: '62000', entryPrice: '63500', exitPrice: '', rr: '2.5',
+        audit: '💡 当前火星与你命盘木星形成三分相，进攻性交易决策符合你DNA中的"狙击手"特质。BTC处于金星金牛座的稳定区间，支撑有效。建议：严格执行62000止损，不要产生情感留恋。R/R 2.5为优质交易。'
+      },
+      {
+        id: 1002, type: 'sell', action: 'stop', symbol: '$SOL',
+        date: '2025.04.13', time: '14:15', vibe: 25,
+        reason: '跌破关键支撑位，冥王星逆行期间趋势不明，认赔出局保本金。',
+        tp: '', sl: '', entryPrice: '148', exitPrice: '142', rr: '',
+        audit: '💡 土星在双鱼座的对冲能量正在压制SOL的上涨动能。止损决策展现了你命盘中"风象"特质的理性一面——在不确定时期果断退出，比盲目持有更明智。本次亏损约4%，在可控范围内。'
+      },
+      {
+        id: 1003, type: 'buy', action: 'avg', symbol: '$NVDA',
+        date: '2025.04.12', time: '10:45', vibe: 55,
+        reason: '财报前补仓，木星双子座的扩张周期利好AI叙事，长期看好算力需求。',
+        tp: '950', sl: '820', entryPrice: '875', exitPrice: '', rr: '1.7',
+        audit: '💡 木星双子与NVDA的创始星象高度共振。补仓时机选择在财报前的"信息真空期"，符合水星逆行期间"逆向布局"的星象策略。建议：设置820硬止损，若财报不及预期可快速离场。'
+      }
+    ];
+    localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  }
+  
   renderTradeLogs(logs);
 }
 
@@ -10594,8 +10635,9 @@ function renderTradeLogs(logs) {
     var vibeColor = log.vibe < 30 ? '#EF4444' : log.vibe > 70 ? '#22C55E' : '#F59E0B';
     var vibeLabel = log.vibe < 30 ? t('tl.fearBias') : log.vibe > 70 ? t('tl.greedBias') : t('tl.neutral');
     
-    html += '<div class="tl-entry ' + typeCls + '">' +
-      '<div class="tl-card">' +
+    html += '<div class="tl-entry ' + typeCls + '" data-tl-id="' + log.id + '">' +
+      '<div class="tl-card" style="position:relative;">' +
+        '<button class="tl-card-delete" onclick="deleteTradeLog(' + log.id + ')" title="Delete">×</button>' +
         '<div class="tl-card-header">' +
           '<span class="tl-card-date">' + escapeHtml(log.date) + ' ' + escapeHtml(log.time || '') + '</span>' +
           (log.action !== 'note' ? '<span class="tl-card-action ' + actionCls + '">' + escapeHtml(actionLabels[log.action] || log.action) + '</span>' : '') +
@@ -10631,13 +10673,21 @@ function renderTradeLogs(logs) {
     '</div>';
     
     if (log.type !== 'note') {
-      html += '<div class="tl-audit"><span class="tl-audit-icon">&#x1F4A1;</span> ' + t('tl.auditPlaceholder') + '</div>';
+      var auditText = log.audit || t('tl.auditPlaceholder');
+      html += '<div class="tl-audit"><span class="tl-audit-icon">&#x1F4A1;</span> ' + escapeHtml(auditText) + '</div>';
     }
     
     html += '</div></div>';
   }
   
   timeline.innerHTML = html;
+}
+
+function deleteTradeLog(id) {
+  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  logs = logs.filter(function(l) { return l.id !== id; });
+  localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  renderTradeLogs(logs);
 }
 
 function addTradingLogCard(sentiment) {
