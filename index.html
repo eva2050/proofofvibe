@@ -1853,9 +1853,11 @@ html[data-theme="dark"] .tl-card:hover { border-color: rgba(255,255,255,0.1); bo
 .tl-vibe-dot { position: absolute; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--text-primary); transform: translate(-50%,-50%); border: 2px solid var(--card-bg); box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
 .tl-audit { margin-top: 10px; padding: 10px 12px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--text-secondary); line-height: 1.6; background: linear-gradient(135deg, rgba(99,102,241,0.03), rgba(168,85,247,0.03)); border-radius: 0 0 8px 8px; }
 .tl-audit-icon { margin-right: 4px; }
-.tl-card-delete { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 6px; border: none; background: transparent; color: var(--text-tertiary, var(--text-secondary)); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.15s, background 0.15s; font-size: 14px; }
-.tl-card:hover .tl-card-delete { opacity: 1; }
-.tl-card-delete:hover { background: rgba(239,68,68,0.1); color: #EF4444; }
+.tl-card-actions { position: absolute; top: 10px; right: 10px; display: flex; gap: 4px; opacity: 0; transition: opacity 0.15s; }
+.tl-card:hover .tl-card-actions { opacity: 1; }
+.tl-card-btn { width: 26px; height: 26px; border-radius: 6px; border: none; background: transparent; color: var(--text-tertiary, var(--text-secondary)); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; }
+.tl-card-btn:hover { background: var(--hover-bg); color: var(--text-primary); }
+.tl-card-del:hover { background: rgba(239,68,68,0.1); color: #EF4444; }
 .tl-quick-box { border-top: 1px solid var(--border); padding: 12px 20px; display: flex; gap: 8px; }
 .tl-quick-input { flex: 1; border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; font-size: 13px; background: transparent; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
 .tl-quick-input:focus { border-color: var(--accent); }
@@ -10637,14 +10639,22 @@ function renderTradeLogs(logs) {
     
     html += '<div class="tl-entry ' + typeCls + '" data-tl-id="' + log.id + '">' +
       '<div class="tl-card" style="position:relative;">' +
-        '<button class="tl-card-delete" onclick="deleteTradeLog(' + log.id + ')" title="Delete">×</button>' +
+        '<div class="tl-card-actions">' +
+          '<button class="tl-card-btn tl-card-edit" onclick="editTradeLog(' + log.id + ')" title="Edit">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>' +
+          '</button>' +
+          '<button class="tl-card-btn tl-card-del" onclick="deleteTradeLog(' + log.id + ')" title="Delete">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>' +
+          '</button>' +
+        '</div>' +
         '<div class="tl-card-header">' +
           '<span class="tl-card-date">' + escapeHtml(log.date) + ' ' + escapeHtml(log.time || '') + '</span>' +
-          (log.action !== 'note' ? '<span class="tl-card-action ' + actionCls + '">' + escapeHtml(actionLabels[log.action] || log.action) + '</span>' : '') +
         '</div>';
     
     if (log.symbol) {
-      html += '<div class="tl-card-symbol">' + escapeHtml(log.symbol) + (log.action !== 'note' ? ' · ' + escapeHtml(actionLabels[log.action] || '') : '') + '</div>';
+      html += '<div class="tl-card-symbol">' + escapeHtml(log.symbol) +
+        (log.action !== 'note' ? ' <span class="tl-card-action ' + actionCls + '">' + escapeHtml(actionLabels[log.action] || '') + '</span>' : '') +
+      '</div>';
     }
     
     if (log.reason) {
@@ -10681,6 +10691,38 @@ function renderTradeLogs(logs) {
   }
   
   timeline.innerHTML = html;
+}
+
+function editTradeLog(id) {
+  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  var log = logs.find(function(l) { return l.id === id; });
+  if (!log) return;
+  // Pre-fill and open modal with existing data
+  openTradeLogModal();
+  // Wait for modal DOM, then set values
+  setTimeout(function() {
+    var actionBtn = document.querySelector('.tl-action-btn[data-action="' + log.action + '"]');
+    if (actionBtn) selectTradeAction(actionBtn);
+    var symbolEl = document.getElementById('tlSymbol');
+    if (symbolEl) symbolEl.value = log.symbol || '';
+    var reasonEl = document.getElementById('tlReason');
+    if (reasonEl) reasonEl.value = log.reason || '';
+    var vibeEl = document.getElementById('tlVibeSlider');
+    if (vibeEl) { vibeEl.value = log.vibe || 50; updateVibeDisplay(log.vibe || 50); }
+    if (log.type === 'buy') {
+      var entryEl = document.getElementById('tlEntryPrice');
+      if (entryEl) entryEl.value = log.entryPrice || '';
+      var tpEl = document.getElementById('tlTP');
+      if (tpEl) tpEl.value = log.tp || '';
+      var slEl = document.getElementById('tlSL');
+      if (slEl) slEl.value = log.sl || '';
+    } else if (log.type === 'sell') {
+      var exitEl = document.getElementById('tlExitPrice');
+      if (exitEl) exitEl.value = log.exitPrice || '';
+    }
+    // Remove old entry while editing
+    deleteTradeLog(id);
+  }, 50);
 }
 
 function deleteTradeLog(id) {
