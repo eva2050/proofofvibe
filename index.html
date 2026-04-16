@@ -1197,6 +1197,21 @@ html[data-theme="dark"] .dna-card {
   font-size: 14px;
 }
 
+/* ========== DNA IDENTITY CARD ========== */
+.dna-identity-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+html[data-theme="light"] .dna-identity-card {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+html[data-theme="dark"] .dna-identity-card {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+}
+
 /* ========== DNA HERO ========== */
 .dna-hero {
   padding: 20px 24px 16px;
@@ -1278,24 +1293,21 @@ html[data-theme="dark"] .dna-card {
   display: none;
 }
 
-/* ========== DNA WHALE CARD ========== */
-.dna-whale-card {
-  margin: 0 24px 20px;
-  padding: 16px 18px;
-  background: var(--hover-bg, rgba(0,0,0,0.02));
+/* ========== DNA WHALE SECTION ========== */
+.dna-whale-section {
+  padding: 10px 12px;
+  background: var(--card-bg);
+  border-radius: 10px;
   border: 1px solid var(--border);
-  border-radius: 14px;
+  margin-bottom: 12px;
 }
-html[data-theme="dark"] .dna-whale-card {
-  background: rgba(255,255,255,0.03);
-}
-.dna-whale-card-header {
+.dna-whale-section-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 10px;
 }
-.dna-whale-card-label {
+.dna-whale-section-label {
   font-size: 9px;
   font-weight: 700;
   text-transform: uppercase;
@@ -1303,14 +1315,14 @@ html[data-theme="dark"] .dna-whale-card {
   color: var(--accent);
   margin-bottom: 2px;
 }
-.dna-whale-card-name {
+.dna-whale-section-name {
   font-family: 'DM Sans', sans-serif;
   font-size: 16px;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.3px;
 }
-.dna-whale-card-pattern {
+.dna-whale-section-pattern {
   font-size: 11px;
   color: var(--text-secondary);
   font-weight: 500;
@@ -1320,7 +1332,7 @@ html[data-theme="dark"] .dna-whale-card {
   border: 1px solid var(--border);
   white-space: nowrap;
 }
-.dna-whale-card-bio {
+.dna-whale-section-bio {
   font-size: 12px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -1328,17 +1340,11 @@ html[data-theme="dark"] .dna-whale-card {
   padding-bottom: 12px;
   border-bottom: 1px solid var(--border);
 }
-.dna-whale-card-sections {
+.dna-whale-sections {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
   margin-bottom: 14px;
-}
-.dna-whale-card-section {
-  padding: 10px 12px;
-  background: var(--card-bg);
-  border-radius: 10px;
-  border: 1px solid var(--border);
 }
 .dna-whale-section-title {
   font-size: 9px;
@@ -1353,7 +1359,7 @@ html[data-theme="dark"] .dna-whale-card {
   color: var(--text-primary);
   line-height: 1.6;
 }
-.dna-whale-card-footer {
+.dna-whale-section-footer {
   display: flex;
   justify-content: center;
 }
@@ -9787,6 +9793,9 @@ function addDNACard() {
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="dna-card dna-report-card">' +
 
+      // === Identity Card (hero + traits + whale) ===
+      '<div class="dna-identity-card">' +
+
       // === SECTION 1: Identity Hero ===
       '<div class="dna-hero">' +
         '<div class="dna-hero-top">' +
@@ -9805,17 +9814,17 @@ function addDNACard() {
         traitsHTML +
       '</div>' +
 
-      // === SECTION 3: Whale Echo Card ===
-      '<div class="dna-whale-card">' +
-        '<div class="dna-whale-card-header">' +
+      // === SECTION 3: Whale Echo ===
+      '<div class="dna-whale-section">' +
+        '<div class="dna-whale-section-header">' +
           '<div>' +
-            '<div class="dna-whale-card-label">' + t('dna.whaleEcho') + '</div>' +
-            '<div class="dna-whale-card-name">' + escapeHtml(report.whale.name) + '</div>' +
+            '<div class="dna-whale-section-label">' + t('dna.whaleEcho') + '</div>' +
+            '<div class="dna-whale-section-name">' + escapeHtml(report.whale.name) + '</div>' +
           '</div>' +
-          '<div class="dna-whale-card-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
+          '<div class="dna-whale-section-pattern">' + escapeHtml(report.whale.pattern) + '</div>' +
         '</div>' +
-        '<div class="dna-whale-card-bio">' + escapeHtml(report.whale.bio) + '</div>' +
-        '<div class="dna-whale-card-sections">' +
+        '<div class="dna-whale-section-bio">' + escapeHtml(report.whale.bio) + '</div>' +
+        '<div class="dna-whale-sections">' +
           '<div class="dna-whale-card-section">' +
             '<div class="dna-whale-section-title">' + t('dna.tradingStyle') + '</div>' +
             '<div class="dna-whale-section-text">' + escapeHtml(report.whale.style) + '</div>' +
@@ -9825,13 +9834,15 @@ function addDNACard() {
             '<div class="dna-whale-section-text">' + escapeHtml(report.whale.syncAnalysis || '') + '</div>' +
           '</div>' +
         '</div>' +
-        '<div class="dna-whale-card-footer">' +
+        '<div class="dna-whale-section-footer">' +
           '<button class="dna-share-btn" onclick="document.getElementById(\'' + shareCardId + '\').style.display=document.getElementById(\'' + shareCardId + '\').style.display===\'block\'?\'none\':\'block\'">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;vertical-align:middle;margin-right:4px;"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>' +
             t('dna.shareReport') +
           '</button>' +
         '</div>' +
       '</div>' +
+
+      '</div>' + // end dna-identity-card
 
       // Share card (hidden by default)
       '<div id="' + shareCardId + '" class="dna-share-card" style="display:none;">' +
