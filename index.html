@@ -779,12 +779,7 @@ html[data-theme="dark"] .astro-card:hover {
     border-bottom: 1px solid var(--border);
   }
   .dna-traits-row {
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-  .dna-traits-row .dna-trait {
-    min-width: calc(33% - 4px);
-    max-width: calc(33% - 4px);
+    flex-direction: column;
   }
   .dna-whale-sections {
     grid-template-columns: 1fr;
@@ -1293,34 +1288,34 @@ html[data-theme="dark"] .dna-identity-card {
 /* ========== DNA TRAITS ROW ========== */
 .dna-traits-row {
   display: flex;
+  flex-direction: column;
   gap: 0;
   padding: 0;
-  justify-content: flex-start;
 }
 .dna-traits-row .dna-trait {
-  flex: 1;
-  max-width: 160px;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
-  padding: 8px 6px;
-  border-bottom: none;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  max-width: none;
 }
 .dna-traits-row .dna-trait .trait-name {
-  width: auto;
-  font-size: 10px;
+  width: 52px;
+  font-size: 11px;
 }
 .dna-traits-row .dna-trait .trait-bar-bg {
-  width: 100%;
-  height: 5px;
+  flex: 1;
+  height: 6px;
 }
 .dna-traits-row .dna-trait .trait-value {
-  width: auto;
-  font-size: 13px;
-  font-weight: 800;
+  width: 36px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
 }
 .dna-traits-row .dna-trait .trait-roast {
-  display: none;
+  display: block;
 }
 
 /* ========== DNA WHALE SECTION ========== */
