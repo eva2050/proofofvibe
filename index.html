@@ -771,6 +771,24 @@ html[data-theme="dark"] .astro-card:hover {
   .astro-stat-value {
     font-size: 18px;
   }
+  .dna-identity-card {
+    flex-direction: column;
+  }
+  .dna-identity-left {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .dna-traits-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .dna-traits-row .dna-trait {
+    min-width: calc(33% - 4px);
+    max-width: calc(33% - 4px);
+  }
+  .dna-whale-sections {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Search Chips */
@@ -1204,6 +1222,8 @@ html[data-theme="dark"] .dna-card {
   border-radius: 16px;
   overflow: hidden;
   margin-bottom: 12px;
+  display: flex;
+  gap: 0;
 }
 html[data-theme="light"] .dna-identity-card {
   box-shadow: 0 2px 12px rgba(0,0,0,0.04);
@@ -1211,16 +1231,28 @@ html[data-theme="light"] .dna-identity-card {
 html[data-theme="dark"] .dna-identity-card {
   box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
+.dna-identity-left {
+  flex: 1;
+  min-width: 0;
+  padding: 20px 20px 16px;
+  border-right: 1px solid var(--border);
+}
+.dna-identity-right {
+  flex: 1;
+  min-width: 0;
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
 
 /* ========== DNA HERO ========== */
 .dna-hero {
-  padding: 20px 24px 16px;
-  text-align: center;
+  padding: 0 0 16px;
+  text-align: left;
 }
 .dna-hero-top {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 12px;
   margin-bottom: 10px;
 }
@@ -1256,16 +1288,14 @@ html[data-theme="dark"] .dna-identity-card {
   color: var(--text-secondary);
   line-height: 1.6;
   font-style: italic;
-  max-width: 480px;
-  margin: 0 auto;
 }
 
 /* ========== DNA TRAITS ROW ========== */
 .dna-traits-row {
   display: flex;
   gap: 0;
-  padding: 0 24px 16px;
-  justify-content: center;
+  padding: 0;
+  justify-content: flex-start;
 }
 .dna-traits-row .dna-trait {
   flex: 1;
@@ -1299,7 +1329,9 @@ html[data-theme="dark"] .dna-identity-card {
   background: var(--card-bg);
   border-radius: 10px;
   border: 1px solid var(--border);
-  margin-bottom: 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .dna-whale-section-header {
   display: flex;
@@ -9795,6 +9827,7 @@ function addDNACard() {
 
       // === Identity Card (hero + traits + whale) ===
       '<div class="dna-identity-card">' +
+        '<div class="dna-identity-left">' +
 
       // === SECTION 1: Identity Hero ===
       '<div class="dna-hero">' +
@@ -9813,6 +9846,10 @@ function addDNACard() {
       '<div class="dna-traits-row">' +
         traitsHTML +
       '</div>' +
+
+        '</div>' + // end dna-identity-left
+
+        '<div class="dna-identity-right">' +
 
       // === SECTION 3: Whale Echo ===
       '<div class="dna-whale-section">' +
@@ -9842,6 +9879,7 @@ function addDNACard() {
         '</div>' +
       '</div>' +
 
+        '</div>' + // end dna-identity-right
       '</div>' + // end dna-identity-card
 
       // Share card (hidden by default)
