@@ -3536,6 +3536,31 @@ html[data-theme="dark"] .pricing-card:hover {
   .welcome-title {
     font-size: 34px;
   }
+  .sidebar {
+    min-width: 0;
+  }
+  .gv-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .gv-table .gv-narrative { max-width: 150px; }
+  .gv-table .gv-verdict { max-width: 120px; }
+  .ip-container {
+    margin: -16px -16px 0;
+    width: calc(100% + 32px);
+  }
+  .tl-chat-popup {
+    width: calc(100vw - 48px);
+    right: 16px;
+    max-height: 55vh;
+  }
+  .tl-action-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .dna-alloc-label {
+    width: 110px;
+    font-size: 11px;
+  }
 }
 
 /* ===== Mobile landscape / small tablet (≤768px) ===== */
@@ -3620,6 +3645,37 @@ html[data-theme="dark"] .pricing-card:hover {
     white-space: normal;
     max-width: 85vw;
     text-align: center;
+  }
+  .tl-fab {
+    bottom: 80px;
+    right: 16px;
+  }
+  .tl-chat-popup {
+    width: calc(100vw - 32px);
+    right: 16px;
+    left: 16px;
+    bottom: 72px;
+    max-height: 50vh;
+  }
+  .ip-trending-grid {
+    grid-template-columns: 1fr;
+    padding: 0 12px 12px;
+  }
+  .calendar-dashboard {
+    padding: 12px;
+  }
+  .natal-planets-grid {
+    grid-template-columns: 1fr;
+  }
+  .dna-hero-emoji {
+    font-size: 36px;
+  }
+  .report-detail-overlay {
+    padding: 16px;
+  }
+  .ip-ticker-bar::before,
+  .ip-ticker-bar::after {
+    width: 30px;
   }
 }
 
@@ -3750,9 +3806,30 @@ html[data-theme="dark"] .pricing-card:hover {
     width: 100px;
     height: 100px;
   }
+  .dna-alloc-label {
+    width: 90px;
+    font-size: 10px;
+  }
+  .ip-container {
+    margin: -12px -12px 0;
+    width: calc(100% + 24px);
+  }
+  .gv-table .gv-narrative { max-width: 100px; }
+  .gv-table .gv-verdict { max-width: 80px; }
+  .gv-table th:nth-child(4),
+  .gv-table td:nth-child(4) { display: none; }
+  .invite-modal { width: 100%; max-width: 100vw; }
+  .upgrade-modal { width: 100%; max-width: 100vw; }
 }
 
 /* ===== Landscape mode ===== */
+@media (max-width: 380px) {
+  .dna-traits-row .dna-trait {
+    min-width: calc(50% - 4px);
+    max-width: calc(50% - 4px);
+  }
+}
+
 @media (max-height: 500px) and (orientation: landscape) {
   .welcome-state {
     min-height: auto;
