@@ -11576,32 +11576,14 @@ async function addInsightPortalCard() {
     { category: t('ip.marketOutlook'), title: "巴菲特指标与星盘周期：2025年美股大顶的天象预警", desc: "巴菲特指标已达到历史高位。结合当前的天象周期分析，美股正接近一个关键的顶部区域。", date: "2025.04.03", readTime: "13", image_url: 'assets/report-outlook-1.jpg' }
   ];
 
-  // Try loading reports from D1 API, fallback to hardcoded
+  // Try loading reports from D1 API in background, fallback to hardcoded
   var ipReports = ipReportsFallback;
-  try {
-    var apiBase = window.location.origin;
-    var resp = await fetch(apiBase + '/api/reports?lang=' + currentLang + '&limit=20');
-    if (resp.ok) {
-      var json = await resp.json();
-      if (json.success && json.data && json.data.length > 0) {
-        ipReports = json.data.map(function(r) {
-          return {
-            category: r.category,
-            title: r.title,
-            desc: r.description || '',
-            date: r.date,
-            readTime: (r.read_time || 5) + ' min',
-            image_url: r.image_url || ''
-          };
-        });
-      }
-    }
-  } catch(e) { /* use fallback */ }
 
+  // Build reports HTML immediately with fallback data
   var reportsHTML = '';
   for (var r = 0; r < ipReports.length; r++) {
     var rp = ipReports[r];
-    var imgHTML = rp.image_url 
+    var imgHTML = rp.image_url
       ? '<img class="ip-rc-image" src="' + escapeHtml(rp.image_url) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
       : '<div class="ip-rc-image" style="background:linear-gradient(135deg,' + getCategoryGradient(rp.category) + ')"></div>';
     var hasImageCls = 'has-image';
@@ -11630,13 +11612,59 @@ async function addInsightPortalCard() {
       '<div class="ip-trending-grid">' + trendingHTML + '</div>' +
       '<div class="ip-section-label">' + t('ip.latestReports') + '</div>' +
       '<div class="ip-reports-section">' +
-        '<div class="ip-reports-grid">' + reportsHTML + '</div>' +
+        '<div class="ip-reports-grid" id="ipReportsGrid">' + reportsHTML + '</div>' +
       '</div>' +
     '</div>';
 
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
   scrollChatTop();
+
+  // Fetch API reports in background and update if available
+  try {
+    var apiBase = window.location.origin;
+    fetch(apiBase + '/api/reports?lang=' + currentLang + '&limit=20')
+      .then(function(resp) { return resp.json(); })
+      .then(function(json) {
+        if (json.success && json.data && json.data.length > 0) {
+          var newReports = json.data.map(function(r) {
+            return {
+              category: r.category,
+              title: r.title,
+              desc: r.description || '',
+              date: r.date,
+              readTime: (r.read_time || 5) + ' min',
+              image_url: r.image_url || ''
+            };
+          });
+          var grid = document.getElementById('ipReportsGrid');
+          if (grid) {
+            var html = '';
+            for (var i = 0; i < newReports.length; i++) {
+              var rp = newReports[i];
+              var imgHTML2 = rp.image_url
+                ? '<img class="ip-rc-image" src="' + escapeHtml(rp.image_url) + '" alt="" loading="lazy" onerror="this.style.display=\'none\'">'
+                : '<div class="ip-rc-image" style="background:linear-gradient(135deg,' + getCategoryGradient(rp.category) + ')"></div>';
+              html += '<div class="ip-report-card has-image" onclick="openReportDetail(' + i + ')">' +
+                imgHTML2 +
+                '<div class="ip-rc-body">' +
+                  '<div class="ip-rc-category">' + escapeHtml(rp.category) + '</div>' +
+                  '<div class="ip-rc-title">' + escapeHtml(rp.title) + '</div>' +
+                  '<div class="ip-rc-desc">' + escapeHtml(rp.desc) + '</div>' +
+                  '<div class="ip-rc-meta">' +
+                    '<span class="ip-rc-date">' + escapeHtml(rp.date) + '</span>' +
+                    '<span class="ip-rc-dot"></span>' +
+                    '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
+                  '</div>' +
+                '</div>' +
+              '</div>';
+            }
+            grid.innerHTML = html;
+          }
+        }
+      })
+      .catch(function() { /* use fallback */ });
+  } catch(e) { /* use fallback */ }
 }
 
 init();
