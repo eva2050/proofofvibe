@@ -1212,32 +1212,41 @@ html[data-theme="dark"] .dna-card {
 
 /* ========== DNA IDENTITY CARD ========== */
 .dna-identity-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  margin-bottom: 12px;
   display: flex;
-  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 html[data-theme="light"] .dna-identity-card {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+  /* no shadow on wrapper */
 }
 html[data-theme="dark"] .dna-identity-card {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  /* no shadow on wrapper */
 }
 .dna-identity-left {
   flex: 1;
   min-width: 0;
-  padding: 20px 20px 16px;
-  border-right: 1px solid var(--border);
+  padding: 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+}
+html[data-theme="dark"] .dna-identity-left {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 .dna-identity-right {
   flex: 1;
   min-width: 0;
   padding: 16px 20px 20px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
+}
+html[data-theme="dark"] .dna-identity-right {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 
 /* ========== DNA HERO ========== */
