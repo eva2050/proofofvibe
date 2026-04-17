@@ -1308,8 +1308,10 @@ html[data-theme="dark"] .dna-identity-card {
   font-weight: 700;
   text-align: right;
 }
-.dna-traits-row .dna-trait .trait-roast {
+.dna-traits-row .dna-trait.roast {
   display: block;
+  margin-top: -1px;
+  border-bottom: none;
 }
 
 /* ========== DNA WHALE SECTION ========== */
@@ -1393,7 +1395,7 @@ html[data-theme="dark"] .dna-identity-card {
   color: var(--text-primary);
   line-height: 1.7;
   padding: 10px 12px;
-  background: var(--hover-bg);
+  background: rgba(0,0,0,0.016);
   border-radius: 8px;
 }
 .dna-whale-section-footer {
