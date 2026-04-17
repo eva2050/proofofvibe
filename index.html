@@ -11610,24 +11610,24 @@ function addCalendarCard() {
   // Today's Daily Action
   const ts = days[0].score;
   const transit = ts > 20 ? t('mod.mercury') + ' ☿ ' + t('mod.sextile') + ' ' + t('mod.jupiter') + ' ♃' : ts < -20 ? t('mod.mars') + ' ♂ ' + t('mod.square') + ' ' + t('mod.saturn') + ' ♄' : t('mod.venus') + ' ♀ ' + t('mod.trine') + ' Moon ☽';
-  const action = ts > 20 ? 'Execute planned entries. Momentum favors decisive action. Set alerts for take-profit levels.' : ts < -20 ? 'No new positions. Review open trades and tighten stops. Journal your emotional state.' : 'Research day. Screen new candidates, update watchlist. No urgent trades needed.';
+  const action = ts > 20 ? dnaT('执行计划入场。动能有利于果断行动。设置止盈提醒。','Execute planned entries. Momentum favors decisive action. Set alerts for take-profit levels.','Ejecutar entradas planificadas. El momentum favorece la accion decisiva. Establecer alertas de toma de ganancias.','執行計劃入場。動能有利於果斷行動。設置止盈提醒。','計画通りエントリー。モメンタムは決断的な行動に有利。利確アラートを設定。','계획된 진입 실행. 모멘텀이 결단적 행동에 유리. 익절 알림 설정.') : ts < -20 ? dnaT('不开新仓。检查持仓并收紧止损。记录你的情绪状态。','No new positions. Review open trades and tighten stops. Journal your emotional state.','Sin nuevas posiciones. Revisar operaciones abiertas y ajustar stops. Registrar tu estado emocional.','不開新倉。檢查持倉並收緊止損。記錄你的情緒狀態。','新規ポジションなし。オープンポジションを見直し、ストップを引き締める。感情状態をジャーナルに記録。','새 포지션 없음. 보유 거래 검토 및 손절 타이트화. 감정 상태 기록.') : dnaT('研究日。筛选新标的，更新观察列表。无需紧急交易。','Research day. Screen new candidates, update watchlist. No urgent trades needed.','Dia de investigacion. Filtrar nuevos candidatos, actualizar lista de seguimiento. Sin operaciones urgentes.','研究日。篩選新標的，更新觀察列表。無需緊急交易。','リサーチデー。新規銘柄をスクリーニング、ウォッチリスト更新。緊急トレード不要。','리서치 데이. 새 후보 스크리닝, 관심 목록 업데이트. 긴급 거래 불필요.');
 
   // Dashboard sidebar HTML (from right panel)
   const dashboardHTML = '<div class="calendar-dashboard">' +
     '<div class="panel-title" data-i18n="panel.title" style="font-size:13px;">COSMIC DASHBOARD</div>' +
     '<div class="nav-section-label" style="padding-left:0;font-size:11px;" data-i18n="panel.currentTransits">Current Transits</div>' +
     '<div class="transit-card intense">' +
-      '<div class="transit-name" style="font-size:12px;">Saturn &#9788; Square Moon</div>' +
+      '<div class="transit-name" style="font-size:12px;">' + dnaT('土星 &#9788; 四分 月亮','Saturn &#9788; Square Moon','Saturno &#9788; Cuadratura Luna','土星 &#9788; 四分 月亮','土星 &#9788; 四分 月亮','토성 &#9788; 사각 달') + '</div>' +
       '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.saturnDesc">Restructuring emotional investments. Tight stops advised.</div>' +
       '<span class="transit-tag intense" style="font-size:10px;" data-i18n="panel.intense">Intense</span>' +
     '</div>' +
     '<div class="transit-card positive">' +
-      '<div class="transit-name" style="font-size:12px;">Jupiter &#9788; Trine Venus</div>' +
+      '<div class="transit-name" style="font-size:12px;">' + dnaT('木星 &#9788; 三分 金星','Jupiter &#9788; Trine Venus','Jupiter &#9788; Trino Venus','木星 &#9788; 三分 金星','木星 &#9788; トライン 金星','목성 &#9788; 삼분 금성') + '</div>' +
       '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.jupiterDesc">Harmonious wealth flow. Green light for growth positions.</div>' +
       '<span class="transit-tag positive" style="font-size:10px;" data-i18n="panel.positive">Positive</span>' +
     '</div>' +
     '<div class="transit-card">' +
-      '<div class="transit-name" style="font-size:12px;">Mars &#9788; Sextile Mercury</div>' +
+      '<div class="transit-name" style="font-size:12px;">' + dnaT('火星 &#9788; 六分 水星','Mars &#9788; Sextile Mercury','Marte &#9788; Sextil Mercurio','火星 &#9788; 六分 水星','火星 &#9788; セクスタイル 水星','화성 &#9788; 육분 수성') + '</div>' +
       '<div class="transit-desc" style="font-size:11px;" data-i18n="panel.marsDesc">Sharp mental clarity for quick trades.</div>' +
       '<span class="transit-tag neutral" style="font-size:10px;" data-i18n="panel.neutral">Neutral</span>' +
     '</div>' +
@@ -11799,11 +11799,11 @@ function addPulseCard() {
 
   // === Risk Milestones (collapsible) ===
   const milestones = [
-    { date: 'Apr 14', event: 'Jupiter Station Direct', risk: 'medium', icon: '♃' },
-    { date: 'Apr 20', event: 'Sun enters Taurus', risk: 'low', icon: '☉' },
-    { date: 'May 1', event: 'Pluto enters Aquarius', risk: 'high', icon: '♇' },
-    { date: 'May 12', event: 'Mars enters Leo', risk: 'medium', icon: '♂' },
-    { date: 'Jun 1', event: 'Saturn Retrograde begins', risk: 'high', icon: '♄' },
+    { date: 'Apr 14', event: dnaT('木星恢复顺行','Jupiter Station Direct','Jupiter Estacion Directa','木星恢復順行','木星順行','목성 순행'), risk: 'medium', icon: '♃' },
+    { date: 'Apr 20', event: dnaT('太阳进入金牛座','Sun enters Taurus','Sol entra en Tauro','太陽進入金牛座','太陽が牡牛座に入座','태양 황소자리 진입'), risk: 'low', icon: '☉' },
+    { date: 'May 1', event: dnaT('冥王星进入水瓶座','Pluto enters Aquarius','Pluton entra en Acuario','冥王星進入水瓶座','冥王星が水瓶座に入座','명왕성 물병자리 진입'), risk: 'high', icon: '♇' },
+    { date: 'May 12', event: dnaT('火星进入狮子座','Mars enters Leo','Marte entra en Leo','火星進入獅子座','火星が獅子座に入座','화성 사자자리 진입'), risk: 'medium', icon: '♂' },
+    { date: 'Jun 1', event: dnaT('土星逆行开始','Saturn Retrograde begins','Saturno Retrogrado comienza','土星逆行開始','土星逆行開始','토성 역행 시작'), risk: 'high', icon: '♄' },
   ];
 
   const riskColors = { high: '#EF4444', medium: '#F59E0B', low: '#22C55E' };
@@ -11816,7 +11816,7 @@ function addPulseCard() {
         '<div style="font-size:12px;font-weight:600;color:var(--text-primary);">' + m.event + '</div>' +
         '<div style="font-size:10px;color:var(--text-secondary);">' + m.date + '</div>' +
       '</div>' +
-      '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:' + riskColors[m.risk] + '15;color:' + riskColors[m.risk] + ';">' + m.risk.toUpperCase() + '</span>' +
+      '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:' + riskColors[m.risk] + '15;color:' + riskColors[m.risk] + ';">' + (m.risk === 'high' ? t('mod.riskHigh') : m.risk === 'medium' ? t('mod.riskMedium') : t('mod.riskLow')) + '</span>' +
     '</div>';
   });
   milestonesHTML += '</div>';
@@ -11892,12 +11892,12 @@ function addWatchlistCard() {
   msg.className = 'msg ai';
 
   const items = [
-    { name: '$NVDA', type: t('mod.stockCrypto'), score: 82, sync: 88, trend: '+4.2%', vibe: 'bullish', reason: 'Jupiter trine your natal Venus — this stock resonates with your chart.' },
-    { name: '#Berkshire', type: t('mod.institution'), score: 92, sync: 76, trend: '+0.8%', vibe: 'bullish', reason: 'Saturn discipline aligns with your risk tolerance. Steady gains.' },
-    { name: '$BTC', type: t('mod.crypto'), score: 78, sync: 71, trend: '+3.1%', vibe: 'bullish', reason: 'Uranus innovation wave matches your intuition profile.' },
-    { name: '@CathieWood', type: t('mod.personality'), score: 72, sync: 55, trend: '+0.7%', vibe: 'neutral', reason: 'Mixed aspects. Her conviction aligns but timing may clash.' },
-    { name: '@ElonMusk', type: t('mod.personality'), score: 31, sync: 28, trend: '-1.2%', vibe: 'bearish', reason: 'Mercury retrograde on his natal Mercury — chaos ahead. Mismatch with your chart.' },
-    { name: '$TSLA', type: t('mod.stockCrypto'), score: 42, sync: 22, trend: '-2.1%', vibe: 'bearish', reason: 'Uranus disruption in Taurus clashes with your stability needs.' },
+    { name: '$NVDA', type: t('mod.stockCrypto'), score: 82, sync: 88, trend: '+4.2%', vibe: 'bullish', reason: dnaT('木星与你的本命金星形成三分相——这支股票与你的星盘高度共振。','Jupiter trine your natal Venus — this stock resonates with your chart.','Jupiter en trino con tu Venus natal — esta accion resuena con tu carta.','木星與你的本命金星形成三分相——這支股票與你的星盤高度共振。','木星があなたのネイタル金星とトライン — この銘柄はあなたのチャートと共鳴。','목성이 내 태어난 금성과 삼분각 — 이 주식은 내 차트와 공명.') },
+    { name: '#Berkshire', type: t('mod.institution'), score: 92, sync: 76, trend: '+0.8%', vibe: 'bullish', reason: dnaT('土星的纪律与你的风险偏好完美契合。稳健收益。','Saturn discipline aligns with your risk tolerance. Steady gains.','La disciplina de Saturno se alinea con tu tolerancia al riesgo. Ganancias estables.','土星的紀律與你的風險偏好完美契合。穩健收益。','土星の規律があなたのリスク許容度と一致。着実な利益。','토성의 규율이 내 리스크 허용치와 일치. 안정적 수익.') },
+    { name: '$BTC', type: t('mod.crypto'), score: 78, sync: 71, trend: '+3.1%', vibe: 'bullish', reason: dnaT('天王星的创新浪潮与你的直觉画像高度匹配。','Uranus innovation wave matches your intuition profile.','La ola de innovacion de Urano coincide con tu perfil intuitivo.','天王星的創新浪潮與你的直覺畫像高度匹配。','天王星のイノベーション波があなたの直感プロファイルと一致。','천왕성의 혁신 파도가 내 직관 프로필과 일치.') },
+    { name: '@CathieWood', type: t('mod.personality'), score: 72, sync: 55, trend: '+0.7%', vibe: 'neutral', reason: dnaT('相位混合。她的信念与你一致，但时机可能冲突。','Mixed aspects. Her conviction aligns but timing may clash.','Aspectos mixtos. Su conviccion coincide pero el timing puede chocar.','相位混合。她的信念與你一致，但時機可能衝突。','混合アスペクト。彼女の確信は一致するが、タイミングが衝突する可能性。','혼합 상. 그녀의 확신은 일치하지만 타이밍이 충돌할 수 있음.') },
+    { name: '@ElonMusk', type: t('mod.personality'), score: 31, sync: 28, trend: '-1.2%', vibe: 'bearish', reason: dnaT('水星逆行在他的本命水星上——前方混乱。与你的星盘不匹配。','Mercury retrograde on his natal Mercury — chaos ahead. Mismatch with your chart.','Mercurio retrogrado en su Mercurio natal — caos por delante. Incompatibilidad con tu carta.','水星逆行在他的本命水星上——前方混亂。與你的星盤不匹配。','水星逆行が彼のネイタル水星に — 前方にカオス。あなたのチャートとは不一致。','수성 역행이 그의 태어난 수성에 — 혼돈 예고. 내 차트와 불일치.') },
+    { name: '$TSLA', type: t('mod.stockCrypto'), score: 42, sync: 22, trend: '-2.1%', vibe: 'bearish', reason: dnaT('天王星在金牛座的颠覆能量与你的稳定性需求冲突。','Uranus disruption in Taurus clashes with your stability needs.','La energia disruptiva de Urano en Tauro choca con tus necesidades de estabilidad.','天王星在金牛座的顛覆能量與你的穩定性需求衝突。','金牛座の天王星の破壊的エネルギーがあなたの安定性のニーズと衝突。','황소자리 천왕성의 파괴적 에너지가 내 안정성 요구와 충돌.') },
   ];
 
   // Sort by sync score (dynamic ranking)
