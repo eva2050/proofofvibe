@@ -1326,7 +1326,7 @@ html[data-theme="dark"] .dna-identity-card {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .dna-whale-section-label {
   font-size: 9px;
@@ -1334,24 +1334,25 @@ html[data-theme="dark"] .dna-identity-card {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   color: var(--accent);
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 .dna-whale-section-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--text-primary);
   letter-spacing: -0.3px;
+  margin-bottom: 4px;
 }
 .dna-whale-section-pattern {
   font-size: 11px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  background: var(--card-bg);
-  padding: 4px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
+  color: var(--accent);
+  font-weight: 600;
+  background: rgba(139,92,246,0.08);
+  padding: 3px 10px;
+  border-radius: 20px;
   white-space: nowrap;
+  display: inline-block;
 }
 .dna-whale-section-bio {
   font-size: 12px;
@@ -1359,26 +1360,41 @@ html[data-theme="dark"] .dna-identity-card {
   line-height: 1.6;
   margin-bottom: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .dna-whale-sections {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 14px;
+  flex: 1;
 }
 .dna-whale-section-title {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-secondary);
   margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.dna-whale-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 .dna-whale-section-text {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--text-primary);
   line-height: 1.7;
+  padding: 10px 12px;
+  background: var(--hover-bg);
+  border-radius: 8px;
 }
 .dna-whale-section-footer {
   display: flex;
