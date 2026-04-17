@@ -1212,41 +1212,32 @@ html[data-theme="dark"] .dna-card {
 
 /* ========== DNA IDENTITY CARD ========== */
 .dna-identity-card {
-  display: flex;
-  gap: 12px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
   margin-bottom: 12px;
+  display: flex;
+  align-items: stretch;
 }
 html[data-theme="light"] .dna-identity-card {
-  /* no shadow on wrapper */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
 }
 html[data-theme="dark"] .dna-identity-card {
-  /* no shadow on wrapper */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 .dna-identity-left {
   flex: 1;
   min-width: 0;
   padding: 20px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-}
-html[data-theme="dark"] .dna-identity-left {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  border-right: 1px solid var(--border);
 }
 .dna-identity-right {
   flex: 1;
   min-width: 0;
   padding: 16px 20px 20px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
-}
-html[data-theme="dark"] .dna-identity-right {
-  box-shadow: 0 2px 12px rgba(0,0,0,0.2);
 }
 
 /* ========== DNA HERO ========== */
