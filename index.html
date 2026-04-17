@@ -9374,6 +9374,8 @@ function changeLang(lang) {
   applyI18n();
   // Re-render user info after i18n (applyI18n overwrites data-i18n elements)
   updateUIForAuth();
+  // Re-render Trading Log to update dnaT() content
+  loadAndRenderTradeLogs();
 }
 
 // ========== THEME ==========
