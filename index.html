@@ -11204,7 +11204,7 @@ function addDNACard() {
         var cnName = _cardPlanetName(planet.name);
         var cnSign = _cardSignName(planet.sign);
         var retroBadge = planet.retrograde ? ' <span style="color:#EF4444;font-size:10px;">' + dnaT('逆行','Retrograde','Retrogrado','逆行','逆行','역행') + '</span>' : '';
-        var signBg = {Aries:'rgba(239,68,68,0.03)',Leo:'rgba(239,68,68,0.03)',Sagittarius:'rgba(239,68,68,0.03)',Taurus:'rgba(34,197,94,0.03)',Virgo:'rgba(34,197,94,0.03)',Capricorn:'rgba(34,197,94,0.03)',Gemini:'rgba(59,130,246,0.03)',Libra:'rgba(59,130,246,0.03)',Aquarius:'rgba(59,130,246,0.03)',Cancer:'rgba(168,85,247,0.03)',Scorpio:'rgba(168,85,247,0.03)',Pisces:'rgba(168,85,247,0.03)'};
+        var signBg = {Aries:'rgba(239,68,68,0.04)',Leo:'rgba(239,68,68,0.04)',Sagittarius:'rgba(239,68,68,0.04)',Taurus:'rgba(34,197,94,0.04)',Virgo:'rgba(34,197,94,0.04)',Capricorn:'rgba(34,197,94,0.04)',Gemini:'rgba(59,130,246,0.04)',Libra:'rgba(59,130,246,0.04)',Aquarius:'rgba(59,130,246,0.04)',Cancer:'rgba(168,85,247,0.04)',Scorpio:'rgba(168,85,247,0.04)',Pisces:'rgba(168,85,247,0.04)'};
         var itemBg = signBg[planet.sign] || 'var(--hover-bg)';
         natalHTML += '<div class="natal-planet-item" style="background:' + itemBg + ';">' +
           '<span class="natal-planet-name">' + cnName + '</span>' +
