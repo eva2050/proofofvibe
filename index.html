@@ -11780,8 +11780,8 @@ function addCalendarCard() {
 
   // Build calendar body - pad start, then days, pad end
   let calBody = '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;">';
-  // Pad before first day
-  const padBefore = mondayOffset < 0 ? 6 : mondayOffset - 1;
+  // Pad before first day: how many empty cells before today's column (Mon=0, Tue=1, ..., Sun=6)
+  const padBefore = (days[0].dow + 6) % 7;
   for (let p = 0; p < padBefore; p++) {
     calBody += '<div></div>';
   }
