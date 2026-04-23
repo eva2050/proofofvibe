@@ -11691,15 +11691,20 @@ async function addInsightPortalCard() {
   var trendingHTML = '';
   for (var ti = 0; ti < trendingItems.length; ti++) {
     var item = trendingItems[ti];
-    var sym = item.ticker ? ('$' + item.ticker) : ('@' + item.name.split(' ')[0]);
+    var sym = item.ticker ? ('$' + item.ticker) : ('@' + (item.name || '').split(' ')[0]);
+    var displayName = sym;
+    if (item.name && item.ticker && item.name !== item.ticker) {
+      displayName = sym + ' ' + item.name;
+    }
     var tagCls = item.status === 'active' ? 'active' : 'dormant';
     var tagLabel = item.status === 'active' ? t('gv.active').toUpperCase() : t('gv.dormant').toUpperCase();
+    var verdict = gvT(item, 'verdict') || gvT(item, 'narrative') || '';
     trendingHTML += '<div class="ip-trending-card">' +
       '<div class="ip-tc-header">' +
-        '<span class="ip-tc-symbol">' + escapeHtml(sym) + '</span>' +
+        '<span class="ip-tc-symbol">' + escapeHtml(displayName) + '</span>' +
         '<span class="ip-tc-tag ' + tagCls + '">' + tagLabel + '</span>' +
       '</div>' +
-      '<div class="ip-tc-verdict">' + escapeHtml(gvT(item, 'verdict')) + '</div>' +
+      (verdict ? '<div class="ip-tc-verdict">' + escapeHtml(verdict) + '</div>' : '') +
     '</div>';
   }
 
