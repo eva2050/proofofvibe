@@ -4894,6 +4894,45 @@ var gvDataLoading = false;
 var gvDataCallbacks = [];
 var gvRawData = { entities: [], titans: [], orbits: [], onchain: [] };
 
+// Static fallback data for local HTML preview (file:// protocol)
+var GV_FALLBACK = {
+  entities: [
+    { name: 'Federal Reserve System', ticker: 'FED', category: 'institution', inception: '1913-12-23', status: 'active', market: 'US', sector: 'Financial Institution', sun_sign: 'Capricorn', narrative: '以制度力量塑造全球金融格局，系统化货币政策与金融稳定的关键角色', narrative_en: 'Shaping the global financial landscape through strict discipline, a critical role in monetary policy and financial stability', verdict: '摩羯座的制度性力量使其成为全球金融秩序的基石', verdict_en: 'Capricorn institutional power makes it the cornerstone of global financial order' },
+    { name: 'BlackRock', ticker: 'BLK', category: 'institution', inception: '1988-01-01', status: 'active', market: 'US', sector: 'Asset Management', sun_sign: 'Aquarius', narrative: '水瓶座的天才在于将分散的力量汇聚成不可忽视的集体意志', narrative_en: 'Aquarius genius lies in converging scattered forces into an undeniable collective will', verdict: '水瓶座的集体意识操控者，10万亿美元的沉默力量', verdict_en: 'Aquarius collective consciousness manipulator, $10T silent force' },
+    { name: 'Citadel Securities', ticker: 'CITADEL', category: 'institution', inception: '2002-01-01', status: 'active', market: 'US', sector: 'Hedge Fund', sun_sign: 'Scorpio', narrative: '天蝎座式的隐秘力量，在暗处编织着市场的流动性网络', narrative_en: 'Scorpio-style hidden power, weaving market liquidity networks in the shadows', verdict: '天蝎座的暗影操盘手，控制着美国股票市场近40%的交易量', verdict_en: 'Scorpio shadow operator, controlling nearly 40% of US equity trading volume' }
+  ],
+  titans: [
+    { name: 'Elon Musk', ticker: null, category: 'titan', inception: '1971-06-28', status: 'active', market: 'US', sector: 'Technology', sun_sign: 'Cancer', narrative: '巨蟹座的家国情怀与火星的进攻性完美融合，创造出跨行业的颠覆性帝国', narrative_en: 'Cancerian patriotism perfectly fused with Martian aggression, creating cross-industry disruptive empire', verdict: '火星白羊的进攻能量与月亮巨蟹的直觉使他成为市场情绪的终极操控者', verdict_en: 'Mars Aries offensive energy combined with Moon Cancer intuition makes him the ultimate market sentiment manipulator' },
+    { name: 'Warren Buffett', ticker: null, category: 'titan', inception: '1930-08-30', status: 'active', market: 'US', sector: 'Value Investing', sun_sign: 'Virgo', narrative: '处女座的分析天赋使他成为价值投资的代名词，精确而耐心', narrative_en: 'Virgo analytical talent makes him synonymous with value investing — precise and patient', verdict: '土星摩羯的结构性耐心是他最强大的武器，在恐慌中买入，在狂热中离场', verdict_en: 'Saturn Capricorn structural patience is his most powerful weapon — buy in panic, sell in euphoria' },
+    { name: 'Cathie Wood', ticker: null, category: 'titan', inception: '1955-11-26', status: 'active', market: 'US', sector: 'Disruptive Innovation', sun_sign: 'Sagittarius', narrative: '射手座的远见与乐观驱动她押注颠覆性技术，不畏短期波动', narrative_en: 'Sagittarius vision and optimism drive her bets on disruptive technology, undeterred by short-term volatility', verdict: '木星射手座的扩张能量使她成为创新领域的先知，但波动性是双刃剑', verdict_en: 'Jupiter Sagittarius expansion energy makes her a prophet of innovation, but volatility is a double-edged sword' }
+  ],
+  'orbits-us': [
+    { name: 'S&P 500', ticker: 'SPY', category: 'index', inception: '1993-01-22', status: 'active', market: 'US', sector: 'Index', sun_sign: 'Libra', narrative: '天秤座代表着平衡与公正，作为美国股市的终极晴雨表', narrative_en: 'Libra represents balance and justice, the ultimate barometer of the US stock market', verdict: '当前受木星双子座信息过载影响，波动率上升', verdict_en: 'Currently affected by Jupiter Gemini information overload, volatility rising' },
+    { name: 'Nasdaq 100', ticker: 'QQQ', category: 'index', inception: '1999-03-10', status: 'active', market: 'US', sector: 'Tech Index', sun_sign: 'Pisces', narrative: '双鱼座的双鱼游弋在科技与梦想之间，连接现实与未来', narrative_en: 'Pisces fish swim between technology and dreams, connecting reality and the future', verdict: '海王星双鱼的梦幻泡沫与冥王星水瓶的现实重构正在激烈博弈', verdict_en: 'Neptune Pisces dream bubble vs Pluto Aquarius reality restructuring in intense contest' }
+  ],
+  'orbits-cn': [
+    { name: 'CSI 300', ticker: '000300', category: 'index', inception: '2005-04-08', status: 'active', market: 'CN', sector: 'Index', sun_sign: 'Aries', narrative: '白羊座的开创精神驱动中国核心资产的价值重估', narrative_en: 'Aries pioneering spirit drives revaluation of China core assets', verdict: '火星白羊的能量正在积蓄，等待政策催化剂', verdict_en: 'Mars Aries energy is accumulating, waiting for policy catalyst' }
+  ],
+  'orbits-hk': [
+    { name: 'Hang Seng Index', ticker: 'HSI', category: 'index', inception: '1969-11-24', status: 'active', market: 'HK', sector: 'Index', sun_sign: 'Scorpio', narrative: '天蝎座的深度与转型能力使其成为东西方资本流动的枢纽', narrative_en: 'Scorpio depth and transformation ability make it the hub for East-West capital flows', verdict: '冥王星摩羯的深层转型正在进行，底部区域已现', verdict_en: 'Pluto Capricorn deep transformation underway, bottom zone visible' }
+  ],
+  'orbits-eu': [
+    { name: 'Euro Stoxx 50', ticker: 'SX5E', category: 'index', inception: '1998-02-26', status: 'active', market: 'EU', sector: 'Index', sun_sign: 'Taurus', narrative: '金牛座的稳定性与固执使其成为欧洲经济的风向标', narrative_en: 'Taurus stability and stubbornness make it the bellwether of European economy', verdict: '金星金牛的审美护城河正在吸引全球资本回流欧洲', verdict_en: 'Venus Taurus aesthetic moat is attracting global capital back to Europe' }
+  ],
+  'orbits-jp': [
+    { name: 'Nikkei 225', ticker: 'NKY', category: 'index', inception: '1950-09-07', status: 'active', market: 'JP', sector: 'Index', sun_sign: 'Leo', narrative: '狮子座的王者风范使其在亚洲市场中独树一帜', narrative_en: 'Leo royal demeanor makes it unique in Asian markets', verdict: '太阳狮子座的自信回归正在推动日股创出新高', verdict_en: 'Sun Leo confident return is driving Nikkei to new highs' }
+  ],
+  onchain: [
+    { name: 'Bitcoin', ticker: 'BTC', category: 'crypto', inception: '2009-01-03', status: 'active', market: 'Global', sector: 'Cryptocurrency', sun_sign: 'Capricorn', narrative: '摩羯座的去中心化理想与土星的结构性约束正在塑造数字黄金', narrative_en: 'Capricorn decentralization ideal and Saturn structural constraint are shaping digital gold', verdict: '太阳摩羯的通缩意志正在被土星回归激活', verdict_en: 'Sun Capricorn deflationary resolve is being activated by Saturn return' },
+    { name: 'Ethereum', ticker: 'ETH', category: 'crypto', inception: '2015-07-30', status: 'active', market: 'Global', sector: 'Cryptocurrency', sun_sign: 'Leo', narrative: '狮子座的创造力与领导力使其成为智能合约领域的王者', narrative_en: 'Leo creativity and leadership make it the king of smart contracts', verdict: '海王星双鱼的梦幻共识正在接受土星的现实检验', verdict_en: 'Neptune Pisces dream consensus undergoing Saturn reality test' },
+    { name: 'Solana', ticker: 'SOL', category: 'crypto', inception: '2020-03-16', status: 'active', market: 'Global', sector: 'Cryptocurrency', sun_sign: 'Pisces', narrative: '双鱼座的流动性与适应性使其成为高性能公链的新星', narrative_en: 'Pisces fluidity and adaptability make it the rising star of high-performance public chains', verdict: '天王星金牛的颠覆能量正在重塑链上金融基础设施', verdict_en: 'Uranus Taurus disruptive energy is reshaping on-chain financial infrastructure' }
+  ],
+  milestones: [
+    { name: 'Dow Jones (1929 Crash)', ticker: 'DJIA-1929', category: 'milestone', inception: '1929-10-29', status: 'historical', market: 'US', sector: 'Historical Event', sun_sign: 'Scorpio', narrative: '天蝎座的大崩盘开启了现代金融史上最深刻的自我反思', narrative_en: 'The Scorpio Great Crash initiated the deepest self-reflection in modern financial history', verdict: '冥王星摩羯的历史周期提醒我们：贪婪的代价永远由后来者承担', verdict_en: 'Pluto Capricorn historical cycle reminds us: the cost of greed is always borne by latecomers' },
+    { name: 'BTC Halving 2024', ticker: 'BTC-HALV', category: 'milestone', inception: '2024-04-20', status: 'active', market: 'Global', sector: 'Crypto Event', sun_sign: 'Taurus', narrative: '金牛座的地壳运动正在推动比特币进入新一轮供给收缩周期', narrative_en: 'Taurus tectonic movement is pushing Bitcoin into a new supply contraction cycle', verdict: '土星双鱼与冥王星水瓶的世纪博弈将在本轮周期中达到高潮', verdict_en: 'Saturn Pisces vs Pluto Aquarius century contest will peak in this cycle' }
+  ]
+};
+
 // ── Narrative templates by sector ──
 var GV_SECTOR_NARRATIVES = {
   'Technology': { zh: '以技术创新驱动行业变革，在数字化浪潮中构建不可替代的技术壁垒', en: 'Driving industry transformation through technological innovation, building irreplaceable moats in the digital wave' },
@@ -4991,49 +5030,44 @@ function loadGVData(callback) {
   var results = {};
   var completed = 0;
   var total = GV_ENDPOINTS.length;
+  var anySuccess = false;
 
   GV_ENDPOINTS.forEach(function(ep) {
     fetch(API_BASE + ep.url)
       .then(function(r) { return r.json(); })
       .then(function(data) {
+        anySuccess = true;
         results[ep.key] = data;
         completed++;
-        if (completed === total) {
-          // Merge orbits sub-categories
-          var allOrbits = [];
-          ['orbits-us','orbits-cn','orbits-hk','orbits-eu','orbits-jp'].forEach(function(k) {
-            if (results[k]) allOrbits = allOrbits.concat(results[k]);
-          });
-          results.orbits = allOrbits;
-
-          gvRawData = results;
-          gvDataLoaded = true;
-          gvDataLoading = false;
-          var cbs = gvDataCallbacks.slice();
-          gvDataCallbacks = [];
-          cbs.forEach(function(cb) { cb(results); });
-        }
+        if (completed === total) { finishGVLoad(results); }
       })
       .catch(function(err) {
-        console.error('Failed to load ' + ep.url + ':', err);
+        console.warn('Failed to load ' + ep.url + ':', err);
         completed++;
-        if (completed === total) {
-          // Merge orbits sub-categories
-          var allOrbits = [];
-          ['orbits-us','orbits-cn','orbits-hk','orbits-eu','orbits-jp'].forEach(function(k) {
-            if (results[k]) allOrbits = allOrbits.concat(results[k]);
-          });
-          results.orbits = allOrbits;
-
-          gvRawData = results;
-          gvDataLoaded = true;
-          gvDataLoading = false;
-          var cbs = gvDataCallbacks.slice();
-          gvDataCallbacks = [];
-          cbs.forEach(function(cb) { cb(results); });
-        }
+        if (completed === total) { finishGVLoad(results); }
       });
   });
+
+  function finishGVLoad(res) {
+    // If all fetches failed (e.g. file:// protocol), use static fallback
+    if (!anySuccess) {
+      console.log('All GV API calls failed, using static fallback data');
+      res = JSON.parse(JSON.stringify(GV_FALLBACK));
+    }
+    // Merge orbits sub-categories
+    var allOrbits = [];
+    ['orbits-us','orbits-cn','orbits-hk','orbits-eu','orbits-jp'].forEach(function(k) {
+      if (res[k]) allOrbits = allOrbits.concat(res[k]);
+    });
+    res.orbits = allOrbits;
+
+    gvRawData = res;
+    gvDataLoaded = true;
+    gvDataLoading = false;
+    var cbs = gvDataCallbacks.slice();
+    gvDataCallbacks = [];
+    cbs.forEach(function(cb) { cb(res); });
+  }
 }
 
 // ── Enrich raw data (API now returns narrative/verdict directly) ──
