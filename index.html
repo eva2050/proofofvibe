@@ -11672,21 +11672,34 @@ async function addInsightPortalCard() {
     '</div>';
   }
 
-  // --- Trending: pick 6 active items from Global Vibes datasets ---
-  var allVibes = []
-    .concat(architectEntitiesData || [])
-    .concat(archetypeTitansData || [])
-    .concat(capitalOrbitsData || [])
-    .concat(onChainFrequenciesData || []);
-  var activeVibes = allVibes.filter(function(v) { return v.status === 'active'; });
-  // Shuffle
-  for (var si = activeVibes.length - 1; si > 0; si--) {
-    var ri = Math.floor(Math.random() * (si + 1));
-    var tmp = activeVibes[si];
-    activeVibes[si] = activeVibes[ri];
-    activeVibes[ri] = tmp;
+  // --- Trending: fixed 6 items ---
+  var TRENDING_TICKERS = ['NVDA', 'TSLA', 'AAPL', 'BTC', 'Trump', 'Nasdaq'];
+  var TRENDING_STATIC = {
+    'NVDA': { name: 'NVIDIA', ticker: 'NVDA', status: 'active', narrative: '火星白羊的进攻能量与冥王星形成对冲，波动率飙升', narrative_en: 'Mars Aries offensive energy forming an opposition with Pluto, volatility surging', verdict: '火星白羊的进攻能量与冥王星形成对冲，AI算力霸权的星象争夺进入高潮', verdict_en: 'Mars Aries offensive energy opposes Pluto, the astrological battle for AI computing supremacy intensifies' },
+    'TSLA': { name: 'Tesla', ticker: 'TSLA', status: 'active', narrative: '天王星金牛的颠覆能量正在重塑全球汽车产业格局', narrative_en: 'Uranus Taurus disruptive energy is reshaping the global auto industry', verdict: '天王星金牛的颠覆能量与火星白羊的进攻性完美共振，电动车革命的星象先锋', verdict_en: 'Uranus Taurus disruptive energy resonates with Mars Aries aggression, the astrological pioneer of the EV revolution' },
+    'AAPL': { name: 'Apple', ticker: 'AAPL', status: 'active', narrative: '金星金牛的审美护城河在木星扩张下迎来品牌升级周期', narrative_en: 'Venus Taurus aesthetic moat entering a brand upgrade cycle under Jupiter expansion', verdict: '金星金牛的审美护城河与冥王星摩羯的深度转型形成张力，空间计算能否重演iPhone奇迹', verdict_en: 'Venus Taurus aesthetic moat tensions with Pluto Capricorn deep transformation — can spatial computing recreate the iPhone miracle' },
+    'BTC': { name: 'Bitcoin', ticker: 'BTC', status: 'active', narrative: '太阳摩羯的通缩意志正在被土星回归激活', narrative_en: 'Sun Capricorn deflationary resolve is being activated by Saturn return', verdict: '太阳摩羯的通缩意志正在被土星回归激活，数字黄金进入新一轮供给收缩周期', verdict_en: 'Sun Capricorn deflationary resolve activated by Saturn return, digital gold enters new supply contraction cycle' },
+    'Trump': { name: 'Donald Trump', ticker: null, status: 'active', narrative: '木星射手座的扩张主义如何重塑全球贸易格局', narrative_en: 'How Jupiter Sagittarius expansionism reshapes global trade', verdict: '木星射手座的扩张能量遇上保护主义政策，全球供应链正在经历星象级别的重构', verdict_en: 'Jupiter Sagittarius expansion energy meets protectionist policies, global supply chains undergoing astrological-level restructuring' },
+    'Nasdaq': { name: 'Nasdaq', ticker: 'QQQ', status: 'active', narrative: '双鱼座的双鱼游弋在科技与梦想之间', narrative_en: 'Pisces fish swim between technology and dreams', verdict: '海王星双鱼的梦幻泡沫与冥王星水瓶的现实重构正在激烈博弈，科技成长的星象十字路口', verdict_en: 'Neptune Pisces dream bubble vs Pluto Aquarius reality restructuring in intense contest, the astrological crossroads for tech growth' }
+  };
+  var trendingItems = [];
+  for (var ti = 0; ti < TRENDING_TICKERS.length; ti++) {
+    var target = TRENDING_TICKERS[ti];
+    // Try to find in loaded data
+    var found = null;
+    var allVibes = []
+      .concat(architectEntitiesData || [])
+      .concat(archetypeTitansData || [])
+      .concat(capitalOrbitsData || [])
+      .concat(onChainFrequenciesData || []);
+    for (var vi = 0; vi < allVibes.length; vi++) {
+      var v = allVibes[vi];
+      var match = (v.ticker && v.ticker.toUpperCase() === target.toUpperCase()) ||
+                  (v.name && v.name.toUpperCase().indexOf(target.toUpperCase()) !== -1);
+      if (match) { found = v; break; }
+    }
+    trendingItems.push(found || TRENDING_STATIC[target]);
   }
-  var trendingItems = activeVibes.slice(0, 6);
 
   var trendingHTML = '';
   for (var ti = 0; ti < trendingItems.length; ti++) {
