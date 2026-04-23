@@ -10418,127 +10418,263 @@ window.AstroEngine = (function() {
   function calcDayScore(date, userBirthDate) {
     var score = 0;
     var positions = getPlanetPositions(date);
-    var season = getMarketSeason(date);
     var lunar = getLunarPhase(date);
     var mercRetro = getMercuryRetrograde(date);
+    var factors = []; // {name, impact} — track for CRD amplification
 
-    // 1. Base market season score (+/-20)
-    score += Math.max(-20, Math.min(20, season.bias));
+    // Helper: add a factor to the list and accumulate score
+    function addFactor(name, impact) {
+      factors.push({ name: name, impact: impact });
+      score += impact;
+    }
 
-    // 2. Lunar phase influence (+/-15)
-    if (lunar.name === 'Full Moon' || lunar.name === 'New Moon') {
-      score += (lunar.name === 'Full Moon' ? 5 : -10);
+    // Helper: get aspect impact with exactness scaling
+    function aspectImpact(asp, positiveVal, negativeVal) {
+      if (!asp) return 0;
+      var scale = asp.exactness / asp.orb;
+      if (asp.name === 'trine' || asp.name === 'sextile') return Math.round(positiveVal * scale);
+      if (asp.name === 'square' || asp.name === 'opposition') return Math.round(-negativeVal * scale);
+      if (asp.name === 'conjunction') return Math.round(positiveVal * 0.5 * scale); // conjunction is neutral-ish
+      return 0;
+    }
+
+    // ============================================================
+    // 1. LUNAR PHASE — R001 New Moon Bullish / R002 Full Moon Volatility
+    //    R001: BUY at T-1, confidence 0.85 → +15 (85% of ~18)
+    //    R002: SELL/HEDGE at T-1, confidence 0.65 → -10 (volatility, slightly negative)
+    // ============================================================
+    if (lunar.name === 'New Moon') {
+      addFactor('New Moon Bullish (R001)', 15);
+    } else if (lunar.name === 'Full Moon') {
+      addFactor('Full Moon Volatility (R002)', -10);
     } else if (lunar.name === 'First Quarter' || lunar.name === 'Last Quarter') {
-      score += 0;
+      // Neutral turning points — no factor added
     } else if (lunar.name === 'Waxing Gibbous') {
-      score += 3;
-    } else if (lunar.name === 'Waning Gibbous') {
-      score -= 5;
+      addFactor('Waxing Gibbous', 3);
     } else if (lunar.name === 'Waxing Crescent') {
-      score += 2;
+      addFactor('Waxing Crescent', 2);
+    } else if (lunar.name === 'Waning Gibbous') {
+      addFactor('Waning Gibbous', -3);
     } else if (lunar.name === 'Waning Crescent') {
-      score -= 8;
+      addFactor('Waning Crescent', -5);
     }
 
-    // 3. Mercury retrograde penalty (-25)
-    if (mercRetro) score -= 25;
-
-    // 4. Eclipse proximity (+/-20 if within 3 days)
-    var eclipses = getEclipses(date.getFullYear());
-    for (var ei = 0; ei < eclipses.length; ei++) {
-      var eDist = Math.abs(daysBetween(date, eclipses[ei].date));
-      if (eDist <= 3) {
-        score += (eclipses[ei].type === 'solar' ? -15 : -10) * (1 - eDist / 3);
-      }
-    }
-
-    // 5. Jupiter aspects (+/-12) — reduced from 20
-    var jupPos = positions.Jupiter;
-    var jupTargets = ['Venus', 'Mars', 'Mercury', 'Sun', 'Moon'];
-    for (var ji = 0; ji < jupTargets.length; ji++) {
-      var asp = getAspect(jupPos, positions[jupTargets[ji]]);
-      if (asp) {
-        if (asp.name === 'trine' || asp.name === 'sextile') score += Math.round(asp.exactness / asp.orb * 12);
-        else if (asp.name === 'square' || asp.name === 'opposition') score -= Math.round(asp.exactness / asp.orb * 12);
-      }
-    }
-
-    // 6. Saturn aspects (+/-18) — increased from 15
-    var satPos = positions.Saturn;
-    var satTargets = ['Sun', 'Moon', 'Mercury', 'Venus'];
-    for (var si = 0; si < satTargets.length; si++) {
-      var sasp = getAspect(satPos, positions[satTargets[si]]);
-      if (sasp) {
-        if (sasp.name === 'square' || sasp.name === 'opposition') score -= Math.round(sasp.exactness / sasp.orb * 18);
-        else if (sasp.name === 'trine' || sasp.name === 'sextile') score += Math.round(sasp.exactness / sasp.orb * 6);
-      }
-    }
-
-    // 7. Mars energy (+/-15) — increased from 10
-    var marsPos = positions.Mars;
-    var marsTargets = ['Mercury', 'Venus', 'Jupiter'];
-    for (var mi = 0; mi < marsTargets.length; mi++) {
-      var masp = getAspect(marsPos, positions[marsTargets[mi]]);
-      if (masp && (masp.name === 'square' || masp.name === 'opposition')) {
-        score -= Math.round(masp.exactness / masp.orb * 15);
-      } else if (masp && (masp.name === 'conjunction')) {
-        score -= Math.round(masp.exactness / masp.orb * 8);
-      }
-    }
-
-    // 8. Venus aspects (+/-6) — reduced from 10
-    var venPos = positions.Venus;
-    var venTargets = ['Jupiter', 'Sun', 'Moon'];
-    for (var vi = 0; vi < venTargets.length; vi++) {
-      var vasp = getAspect(venPos, positions[venTargets[vi]]);
-      if (vasp && (vasp.name === 'trine' || vasp.name === 'sextile')) {
-        score += Math.round(vasp.exactness / vasp.orb * 6);
-      }
-    }
-
-    // 9. Uranus disruption (+/-10) — new factor for volatility
-    var uraPos = positions.Uranus;
-    var uraTargets = ['Sun', 'Moon', 'Mercury'];
-    for (var ui = 0; ui < uraTargets.length; ui++) {
-      var uasp = getAspect(uraPos, positions[uraTargets[ui]]);
-      if (uasp) {
-        if (uasp.name === 'square' || uasp.name === 'opposition') score -= Math.round(uasp.exactness / uasp.orb * 10);
-        else if (uasp.name === 'conjunction') score -= Math.round(uasp.exactness / uasp.orb * 5);
-      }
-    }
-
-    // 10. Day of week effect (+/-5)
-    var dow = date.getDay();
-    if (dow === 2) score -= 5;  // Tuesday = Mars = volatile
-    else if (dow === 5) score += 5;  // Friday = Venus = favorable
-    else if (dow === 0) score -= 3;  // Sunday
-    else if (dow === 6) score -= 2;  // Saturday
-
-    // 11. User birth chart resonance (+/-10) — reduced from 15
-    if (userBirthDate && !isNaN(userBirthDate.getTime())) {
-      var natalPos = getPlanetPositions(userBirthDate);
-      var transitPlanets = ['Jupiter', 'Venus', 'Saturn', 'Mars'];
-      for (var bi = 0; bi < transitPlanets.length; bi++) {
-        var tp = transitPlanets[bi];
-        var natalPlanets = ['Sun', 'Moon', 'Mercury', 'Venus', 'Mars', 'Jupiter'];
-        for (var bj = 0; bj < natalPlanets.length; bj++) {
-          var nasp = getAspect(positions[tp], natalPos[natalPlanets[bj]]);
-          if (nasp) {
-            if (tp === 'Jupiter' || tp === 'Venus') {
-              if (nasp.name === 'trine' || nasp.name === 'sextile') score += Math.round(nasp.exactness / nasp.orb * 10);
-            } else if (tp === 'Saturn') {
-              if (nasp.name === 'square' || nasp.name === 'opposition') score -= Math.round(nasp.exactness / nasp.orb * 10);
-            } else if (tp === 'Mars') {
-              if (nasp.name === 'conjunction') score += Math.round(nasp.exactness / nasp.orb * 6);
-            }
-          }
+    // ============================================================
+    // 2. MERCURY RETROGRADE — R003 Reversal, confidence 0.7
+    //    Active: -20 (confidence 0.7 → 70% of ~28)
+    //    Within 3 days of station start/end: -15 (station = reversal signal per Merriman)
+    // ============================================================
+    if (mercRetro) {
+      addFactor('Mercury Retrograde (R003)', -20);
+    } else {
+      // Check proximity to Mercury retrograde stations (reversal signal)
+      var t = date.getTime();
+      for (var ri = 0; ri < MERCURY_RETRO.length; ri++) {
+        var period = MERCURY_RETRO[ri];
+        var distStart = Math.abs(daysBetween(date, period[0]));
+        var distEnd = Math.abs(daysBetween(date, period[1]));
+        if (distStart <= 3 && distStart > 0) {
+          addFactor('Mercury Station Proximity (Merriman)', -15);
+          break;
+        }
+        if (distEnd <= 3 && distEnd > 0) {
+          addFactor('Mercury Station Proximity (Merriman)', -15);
+          break;
         }
       }
     }
 
-    // Seeded random small component — reduced range
+    // ============================================================
+    // 3. JUPITER-VENUS ASPECTS — R004 Prosperity, confidence 0.9
+    //    Trine: +18 (confidence 0.9 → 90% of 20)
+    //    Sextile: +12
+    //    Conjunction: +10
+    //    Square/Opposition: -8
+    // ============================================================
+    var jupVenAsp = getAspect(positions.Jupiter, positions.Venus);
+    if (jupVenAsp) {
+      var jvImpact = 0;
+      var jvScale = jupVenAsp.exactness / jupVenAsp.orb;
+      if (jupVenAsp.name === 'trine') jvImpact = Math.round(18 * jvScale);
+      else if (jupVenAsp.name === 'sextile') jvImpact = Math.round(12 * jvScale);
+      else if (jupVenAsp.name === 'conjunction') jvImpact = Math.round(10 * jvScale);
+      else if (jupVenAsp.name === 'square' || jupVenAsp.name === 'opposition') jvImpact = Math.round(-8 * jvScale);
+      if (jvImpact !== 0) addFactor('Jupiter-Venus (R004 Prosperity)', jvImpact);
+    }
+
+    // ============================================================
+    // 4. MARS-SATURN ASPECTS — R005 Stress, confidence 0.75
+    //    Square: -15 (confidence 0.75 → 75% of 20)
+    //    Opposition: -12
+    // ============================================================
+    var marsSatAsp = getAspect(positions.Mars, positions.Saturn);
+    if (marsSatAsp) {
+      var msImpact = 0;
+      var msScale = marsSatAsp.exactness / marsSatAsp.orb;
+      if (marsSatAsp.name === 'square') msImpact = Math.round(-15 * msScale);
+      else if (marsSatAsp.name === 'opposition') msImpact = Math.round(-12 * msScale);
+      else if (marsSatAsp.name === 'conjunction') msImpact = Math.round(-8 * msScale);
+      if (msImpact !== 0) addFactor('Mars-Saturn (R005 Stress)', msImpact);
+    }
+
+    // ============================================================
+    // 5. JUPITER-SUN ASPECTS — Probabilistic KB
+    //    Trine/Conjunction: +14 (win rate 0.71 → 71% of ~20)
+    //    Square/Opposition: -10
+    // ============================================================
+    var jupSunAsp = getAspect(positions.Jupiter, positions.Sun);
+    if (jupSunAsp) {
+      var jsImpact = 0;
+      var jsScale = jupSunAsp.exactness / jupSunAsp.orb;
+      if (jupSunAsp.name === 'trine') jsImpact = Math.round(14 * jsScale);
+      else if (jupSunAsp.name === 'conjunction') jsImpact = Math.round(14 * jsScale);
+      else if (jupSunAsp.name === 'sextile') jsImpact = Math.round(8 * jsScale);
+      else if (jupSunAsp.name === 'square' || jupSunAsp.name === 'opposition') jsImpact = Math.round(-10 * jsScale);
+      if (jsImpact !== 0) addFactor('Jupiter-Sun Expansion', jsImpact);
+    }
+
+    // ============================================================
+    // 6. SATURN-SUN ASPECTS — Probabilistic KB
+    //    Square/Opposition: -8 (win rate 0.52, slightly below 50%)
+    //    Trine: +5
+    // ============================================================
+    var satSunAsp = getAspect(positions.Saturn, positions.Sun);
+    if (satSunAsp) {
+      var ssImpact = 0;
+      var ssScale = satSunAsp.exactness / satSunAsp.orb;
+      if (satSunAsp.name === 'square' || satSunAsp.name === 'opposition') ssImpact = Math.round(-8 * ssScale);
+      else if (satSunAsp.name === 'trine') ssImpact = Math.round(5 * ssScale);
+      else if (satSunAsp.name === 'sextile') ssImpact = Math.round(3 * ssScale);
+      if (ssImpact !== 0) addFactor('Saturn-Sun Contraction', ssImpact);
+    }
+
+    // ============================================================
+    // 7. URANUS-MERCURY ASPECTS — Probabilistic KB
+    //    Square/Conjunction: -8 (volatility, win rate 0.57)
+    //    Trine: +5 (innovation)
+    // ============================================================
+    var uraMerAsp = getAspect(positions.Uranus, positions.Mercury);
+    if (uraMerAsp) {
+      var umImpact = 0;
+      var umScale = uraMerAsp.exactness / uraMerAsp.orb;
+      if (uraMerAsp.name === 'square') umImpact = Math.round(-8 * umScale);
+      else if (uraMerAsp.name === 'conjunction') umImpact = Math.round(-8 * umScale);
+      else if (uraMerAsp.name === 'opposition') umImpact = Math.round(-6 * umScale);
+      else if (uraMerAsp.name === 'trine') umImpact = Math.round(5 * umScale);
+      if (umImpact !== 0) addFactor('Uranus-Mercury Volatility', umImpact);
+    }
+
+    // ============================================================
+    // 8. MARS ZODIAC SIGN TREND — Bayer's Rule
+    //    Fire signs (Aries/Leo/Sagittarius, index 0/4/8): +5
+    //    Air signs (Gemini/Libra/Aquarius, index 2/6/10): +3
+    //    Earth signs (Taurus/Virgo/Capricorn, index 1/5/9): -3
+    //    Water signs (Cancer/Scorpio/Pisces, index 3/7/11): -5
+    // ============================================================
+    var marsSign = getZodiacSign(positions.Mars);
+    var marsElement = marsSign.index % 4; // 0=Fire, 1=Earth, 2=Air, 3=Water
+    if (marsElement === 0) addFactor('Mars in Fire (Bayer)', 5);
+    else if (marsElement === 2) addFactor('Mars in Air (Bayer)', 3);
+    else if (marsElement === 1) addFactor('Mars in Earth (Bayer)', -3);
+    else if (marsElement === 3) addFactor('Mars in Water (Bayer)', -5);
+
+    // ============================================================
+    // 9. ECLIPSE PROXIMITY — Eclipse season volatility windows
+    //    Within 3 days: -12 (solar), -8 (lunar)
+    // ============================================================
+    var eclipses = getEclipses(date.getFullYear());
+    for (var ei = 0; ei < eclipses.length; ei++) {
+      var eDist = Math.abs(daysBetween(date, eclipses[ei].date));
+      if (eDist <= 3) {
+        var eImpact = eclipses[ei].type === 'solar' ? -12 : -8;
+        eImpact = Math.round(eImpact * (1 - eDist / 3));
+        if (eImpact !== 0) addFactor('Eclipse Proximity (' + eclipses[ei].type + ')', eImpact);
+      }
+    }
+
+    // ============================================================
+    // 10. SATURN-URANUS ASPECT — Long-term cycle (~45-year)
+    //     Hard aspects correlate with major market crises
+    //     Square/Opposition: -10, Conjunction: -8
+    // ============================================================
+    var satUraAsp = getAspect(positions.Saturn, positions.Uranus);
+    if (satUraAsp) {
+      var suImpact = 0;
+      var suScale = satUraAsp.exactness / satUraAsp.orb;
+      if (satUraAsp.name === 'square' || satUraAsp.name === 'opposition') suImpact = Math.round(-10 * suScale);
+      else if (satUraAsp.name === 'conjunction') suImpact = Math.round(-8 * suScale);
+      if (suImpact !== 0) addFactor('Saturn-Uranus Cycle (45yr)', suImpact);
+    }
+
+    // ============================================================
+    // 11. MARKET SEASON — Equinox/Solstice influence
+    //     Spring: +5, Summer: 0, Fall: -5, Winter: -3
+    // ============================================================
+    var season = getMarketSeason(date);
+    if (season.bias > 0) addFactor('Market Season (' + season.name + ')', Math.min(5, Math.round(season.bias / 3)));
+    else if (season.bias < 0) addFactor('Market Season (' + season.name + ')', Math.max(-5, Math.round(season.bias / 3)));
+
+    // ============================================================
+    // 12. USER NATAL CHART RESONANCE — IPO Engine Logic
+    //     Jupiter conjunct natal Sun: +12 (confidence 0.9)
+    //     Saturn square natal Moon: -10 (confidence 0.8)
+    //     Uranus trine natal Mercury: +8 (confidence 0.75)
+    // ============================================================
+    if (userBirthDate && !isNaN(userBirthDate.getTime())) {
+      var natalPos = getPlanetPositions(userBirthDate);
+
+      // Jupiter conjunct natal Sun — Major expansion, confidence 0.9
+      var jupNatalSunAsp = getAspect(positions.Jupiter, natalPos.Sun);
+      if (jupNatalSunAsp && (jupNatalSunAsp.name === 'conjunction' || jupNatalSunAsp.name === 'trine')) {
+        var jnsScale = jupNatalSunAsp.exactness / jupNatalSunAsp.orb;
+        addFactor('Jupiter conj Natal Sun (IPO)', Math.round(12 * jnsScale));
+      }
+
+      // Saturn square natal Moon — Market panic, confidence 0.8
+      var satNatalMoonAsp = getAspect(positions.Saturn, natalPos.Moon);
+      if (satNatalMoonAsp && (satNatalMoonAsp.name === 'square' || satNatalMoonAsp.name === 'opposition')) {
+        var snmScale = satNatalMoonAsp.exactness / satNatalMoonAsp.orb;
+        addFactor('Saturn sq Natal Moon (IPO)', Math.round(-10 * snmScale));
+      }
+
+      // Uranus trine natal Mercury — Breakthrough innovation, confidence 0.75
+      var uraNatalMerAsp = getAspect(positions.Uranus, natalPos.Mercury);
+      if (uraNatalMerAsp && (uraNatalMerAsp.name === 'trine' || uraNatalMerAsp.name === 'sextile')) {
+        var unmScale = uraNatalMerAsp.exactness / uraNatalMerAsp.orb;
+        addFactor('Uranus trine Natal Mercury (IPO)', Math.round(8 * unmScale));
+      }
+    }
+
+    // ============================================================
+    // CRD AMPLIFICATION — Merriman's Climactic Reversal Dates
+    // When multiple geocosmic factors converge, reversal probability
+    // increases dramatically. Count factors with |impact| > 8 that
+    // align in the same direction.
+    // ============================================================
+    var strongPositive = 0;
+    var strongNegative = 0;
+    for (var fi = 0; fi < factors.length; fi++) {
+      if (Math.abs(factors[fi].impact) > 8) {
+        if (factors[fi].impact > 0) strongPositive++;
+        else strongNegative++;
+      }
+    }
+
+    // If 3+ strong factors align in same direction: amplify by 1.3x
+    // If 4+ strong factors align: amplify by 1.5x
+    var crdMultiplier = 1.0;
+    if (strongPositive >= 4 || strongNegative >= 4) {
+      crdMultiplier = 1.5;
+    } else if (strongPositive >= 3 || strongNegative >= 3) {
+      crdMultiplier = 1.3;
+    }
+    score = Math.round(score * crdMultiplier);
+
+    // ============================================================
+    // SEEDED RANDOM — Small uncertainty component (+/-5)
+    // ============================================================
     var rng = seededRandom(date.toISOString().slice(0, 10));
-    score += Math.round((rng() - 0.5) * 14);
+    score += Math.round((rng() - 0.5) * 10);
 
     return Math.max(-100, Math.min(100, Math.round(score)));
   }
@@ -10547,7 +10683,27 @@ window.AstroEngine = (function() {
     var positions = getPlanetPositions(date);
     var allAspects = [];
     var planetNames = Object.keys(positions);
-    var importance = { Jupiter: 5, Saturn: 4, Mars: 3, Venus: 2, Mercury: 1.5, Sun: 1, Moon: 1, Uranus: 1, Neptune: 0.8, Pluto: 0.5 };
+
+    // KB-aligned importance weights based on financial astrology rules engine
+    // Outer planets have higher weight for macro trends; specific pairs have
+    // boosted importance per rules R001-R005 and probabilistic KB
+    var importance = { Jupiter: 5, Saturn: 4, Mars: 3, Venus: 2.5, Mercury: 1.5, Sun: 1, Moon: 1, Uranus: 2, Neptune: 1.5, Pluto: 1 };
+
+    // Specific pair importance multipliers from the knowledge base
+    var pairBoost = {
+      'Jupiter-Venus': 1.8,   // R004 Prosperity, confidence 0.9
+      'Venus-Jupiter': 1.8,
+      'Mars-Saturn': 1.6,     // R005 Stress, confidence 0.75
+      'Saturn-Mars': 1.6,
+      'Jupiter-Sun': 1.5,     // Probabilistic KB: expansion, win rate 0.71
+      'Sun-Jupiter': 1.5,
+      'Saturn-Sun': 1.4,      // Probabilistic KB: contraction, win rate 0.52
+      'Sun-Saturn': 1.4,
+      'Uranus-Mercury': 1.3,  // Probabilistic KB: volatility, win rate 0.57
+      'Mercury-Uranus': 1.3,
+      'Saturn-Uranus': 1.5,   // 45-year cycle, major market crises
+      'Uranus-Saturn': 1.5
+    };
 
     for (var i = 0; i < planetNames.length; i++) {
       for (var j = i + 1; j < planetNames.length; j++) {
@@ -10555,7 +10711,8 @@ window.AstroEngine = (function() {
         var p2 = planetNames[j];
         var asp = getAspect(positions[p1], positions[p2]);
         if (asp) {
-          var imp = (importance[p1] || 1) * (importance[p2] || 1) * asp.weight * (asp.exactness / asp.orb);
+          var boost = pairBoost[p1 + '-' + p2] || 1.0;
+          var imp = (importance[p1] || 1) * (importance[p2] || 1) * asp.weight * (asp.exactness / asp.orb) * boost;
           allAspects.push({ p1: p1, p2: p2, aspect: asp, importance: imp });
         }
       }
@@ -10564,35 +10721,42 @@ window.AstroEngine = (function() {
     // Sort by importance descending
     allAspects.sort(function(a, b) { return b.importance - a.importance; });
 
+    // KB-aligned financial descriptions with rule references
     var aspectNames = { conjunction: 'conjunction', sextile: 'sextile', square: 'square', trine: 'trine', opposition: 'opposition' };
     var financialDescs = {
       'conjunction': {
-        'Jupiter-Venus': 'Major wealth alignment. Favorable for large investments.',
-        'Jupiter-Mercury': 'Optimistic communications. Good for negotiations.',
-        'Saturn-Mars': 'Disciplined action required. Avoid impulsive trades.',
+        'Jupiter-Venus': 'R004: Major wealth alignment. Confidence 0.9. Favorable for large investments.',
+        'Jupiter-Mercury': 'Optimistic communications. Good for negotiations and financial planning.',
+        'Saturn-Mars': 'R005: Disciplined action required. Confidence 0.75. Avoid impulsive trades.',
         'Mars-Venus': 'Energized financial decisions. Passion drives markets.',
+        'Saturn-Uranus': '45-year cycle activation. Major market restructuring potential.',
         'default': 'Planetary conjunction intensifies market focus.'
       },
       'trine': {
-        'Jupiter-Venus': 'Harmonious wealth flow. Green light for growth positions.',
-        'Jupiter-Sun': 'Confidence and expansion. Favorable for new ventures.',
+        'Jupiter-Venus': 'R004: Harmonious wealth flow. Confidence 0.9. Green light for growth positions.',
+        'Jupiter-Sun': 'Probabilistic KB: Confidence and expansion. Expected win rate 0.71.',
         'Venus-Mercury': 'Pleasant financial communications. Good for deals.',
+        'Saturn-Uranus': 'Long-term cycle easing. Structural support for markets.',
         'default': 'Flowing energy supports smooth market operations.'
       },
       'sextile': {
-        'Jupiter-Venus': 'Opportunity window opening. Watch for entry signals.',
+        'Jupiter-Venus': 'R004: Opportunity window opening. Watch for entry signals.',
         'Venus-Mars': 'Constructive financial energy. Good timing for trades.',
         'default': 'Supportive aspect creates minor opportunities.'
       },
       'square': {
         'Saturn-Moon': 'Emotional tension in markets. Tight stops advised.',
         'Mars-Jupiter': 'Overconfidence risk. Avoid oversized positions.',
-        'Saturn-Sun': 'Restructuring pressure. Review portfolio allocation.',
+        'Saturn-Sun': 'Probabilistic KB: Restructuring pressure. Expected win rate 0.52.',
+        'Mars-Saturn': 'R005: Stress aspect active. Confidence 0.75. Reduce exposure.',
+        'Saturn-Uranus': '45-year cycle hard aspect. Elevated crisis probability.',
+        'Uranus-Mercury': 'Probabilistic KB: Volatility spike. Expected win rate 0.57.',
         'default': 'Challenging aspect creates market friction.'
       },
       'opposition': {
         'Jupiter-Saturn': 'Expansion vs contraction tension. Mixed signals.',
         'Venus-Mars': 'Desire vs action conflict. Wait for clarity.',
+        'Saturn-Uranus': '45-year cycle opposition. Major market turning point potential.',
         'default': 'Polarized energies create market uncertainty.'
       }
     };
@@ -10642,20 +10806,66 @@ window.AstroEngine = (function() {
     var mercRetro = getMercuryRetrograde(date);
     var eclipses = getEclipses(date.getFullYear());
 
-    // Overall Sentiment
+    // ============================================================
+    // Overall Sentiment — KB-aligned scoring
+    // Uses confidence-weighted factors from rules engine and probabilistic KB
+    // ============================================================
     var sentimentScore = 0;
-    // Jupiter position influence
-    var jupSign = getZodiacSign(positions.Jupiter);
-    if (jupSign.index === 1 || jupSign.index === 4 || jupSign.index === 7) sentimentScore += 15; // Taurus, Leo, Scorpio = favorable
-    else if (jupSign.index === 3 || jupSign.index === 9) sentimentScore -= 5; // Cancer, Capricorn = cautious
 
-    // Jupiter aspects
-    var jupAsp = getAspect(positions.Jupiter, positions.Venus);
-    if (jupAsp && (jupAsp.name === 'trine' || jupAsp.name === 'sextile')) sentimentScore += 15;
-    jupAsp = getAspect(positions.Jupiter, positions.Saturn);
-    if (jupAsp && (jupAsp.name === 'square' || jupAsp.name === 'opposition')) sentimentScore -= 10;
+    // R001/R002: Lunar phase influence on sentiment
+    if (lunar.name === 'New Moon') sentimentScore += 8;       // R001 bullish, confidence 0.85
+    else if (lunar.name === 'Full Moon') sentimentScore -= 5;  // R002 volatility, confidence 0.65
+    else if (lunar.name === 'Waxing Gibbous') sentimentScore += 3;
+    else if (lunar.name === 'Waning Gibbous') sentimentScore -= 3;
+    else if (lunar.name === 'Waxing Crescent') sentimentScore += 2;
+    else if (lunar.name === 'Waning Crescent') sentimentScore -= 2;
 
-    sentimentScore += season.bias;
+    // R003: Mercury retrograde — confidence 0.7
+    if (mercRetro) sentimentScore -= 10;
+
+    // R004: Jupiter-Venus aspect — confidence 0.9
+    var jupVenAsp = getAspect(positions.Jupiter, positions.Venus);
+    if (jupVenAsp) {
+      var jvScale = jupVenAsp.exactness / jupVenAsp.orb;
+      if (jupVenAsp.name === 'trine' || jupVenAsp.name === 'sextile') sentimentScore += Math.round(12 * jvScale);
+      else if (jupVenAsp.name === 'conjunction') sentimentScore += Math.round(8 * jvScale);
+      else if (jupVenAsp.name === 'square' || jupVenAsp.name === 'opposition') sentimentScore -= Math.round(5 * jvScale);
+    }
+
+    // R005: Mars-Saturn aspect — confidence 0.75
+    var marsSatAsp = getAspect(positions.Mars, positions.Saturn);
+    if (marsSatAsp) {
+      var msScale = marsSatAsp.exactness / marsSatAsp.orb;
+      if (marsSatAsp.name === 'square') sentimentScore -= Math.round(10 * msScale);
+      else if (marsSatAsp.name === 'opposition') sentimentScore -= Math.round(8 * msScale);
+    }
+
+    // Probabilistic KB: Jupiter-Sun expansion (win rate 0.71)
+    var jupSunAsp = getAspect(positions.Jupiter, positions.Sun);
+    if (jupSunAsp) {
+      var jsScale = jupSunAsp.exactness / jupSunAsp.orb;
+      if (jupSunAsp.name === 'trine' || jupSunAsp.name === 'conjunction') sentimentScore += Math.round(8 * jsScale);
+      else if (jupSunAsp.name === 'square' || jupSunAsp.name === 'opposition') sentimentScore -= Math.round(5 * jsScale);
+    }
+
+    // Probabilistic KB: Saturn-Sun contraction (win rate 0.52)
+    var satSunAsp = getAspect(positions.Saturn, positions.Sun);
+    if (satSunAsp) {
+      var ssScale = satSunAsp.exactness / satSunAsp.orb;
+      if (satSunAsp.name === 'square' || satSunAsp.name === 'opposition') sentimentScore -= Math.round(5 * ssScale);
+      else if (satSunAsp.name === 'trine') sentimentScore += Math.round(3 * ssScale);
+    }
+
+    // Bayer's Mars trend rule
+    var marsSign = getZodiacSign(positions.Mars);
+    var marsElement = marsSign.index % 4;
+    if (marsElement === 0) sentimentScore += 3;       // Fire = bullish
+    else if (marsElement === 2) sentimentScore += 2;  // Air = slightly bullish
+    else if (marsElement === 1) sentimentScore -= 2;  // Earth = slightly bearish
+    else if (marsElement === 3) sentimentScore -= 3;  // Water = bearish
+
+    // Market season (moderate influence)
+    sentimentScore += Math.round(season.bias / 3);
 
     var sentiment, sentimentClass;
     if (sentimentScore > 15) { sentiment = 'Bullish ↗'; sentimentClass = 'bullish'; }
@@ -10664,25 +10874,50 @@ window.AstroEngine = (function() {
     else if (sentimentScore > -30) { sentiment = 'Cautious ↘'; sentimentClass = 'warning'; }
     else { sentiment = 'Bearish ↘'; sentimentClass = 'bearish'; }
 
-    // Volatility Forecast
+    // ============================================================
+    // Volatility Forecast — KB-aligned
+    // Elevated by: eclipses, Mercury retrograde, Uranus aspects,
+    // Mars-Uranus, Saturn-Uranus hard aspects, Full Moon
+    // ============================================================
     var volScore = season.volatility;
+
+    // R002: Full Moon volatility
+    if (lunar.name === 'Full Moon') volScore += 0.2;
+
+    // R003: Mercury retrograde adds volatility
+    if (mercRetro) volScore += 0.15;
+
+    // Probabilistic KB: Uranus-Mercury volatility (win rate 0.57)
+    var uraMerAsp = getAspect(positions.Uranus, positions.Mercury);
+    if (uraMerAsp && (uraMerAsp.name === 'square' || uraMerAsp.name === 'conjunction')) {
+      volScore += 0.2;
+    }
+
+    // Mars-Uranus: general disruption
     var marsUranAsp = getAspect(positions.Mars, positions.Uranus);
-    if (marsUranAsp) volScore += 0.3;
+    if (marsUranAsp) volScore += 0.25;
+
+    // Mars-Pluto: intense transformation energy
     var marsAsp = getAspect(positions.Mars, positions.Pluto);
     if (marsAsp) volScore += 0.2;
 
-    // Eclipse proximity
-    for (var ei = 0; ei < eclipses.length; ei++) {
-      if (Math.abs(daysBetween(date, eclipses[ei].date)) <= 7) volScore += 0.3;
+    // Saturn-Uranus 45-year cycle: hard aspects elevate volatility
+    var satUraAsp = getAspect(positions.Saturn, positions.Uranus);
+    if (satUraAsp && (satUraAsp.name === 'square' || satUraAsp.name === 'opposition')) {
+      volScore += 0.3;
     }
-    if (mercRetro) volScore += 0.15;
+
+    // Eclipse proximity — eclipse season volatility windows
+    for (var ei = 0; ei < eclipses.length; ei++) {
+      if (Math.abs(daysBetween(date, eclipses[ei].date)) <= 7) volScore += 0.25;
+    }
 
     var volatility, volClass;
     if (volScore > 0.8) { volatility = 'High ⚡'; volClass = 'high'; }
     else if (volScore > 0.5) { volatility = 'Moderate ~'; volClass = 'moderate'; }
     else { volatility = 'Low -'; volClass = 'low'; }
 
-    // Mercury Retrograde
+    // Mercury Retrograde status
     var mercStatus, mercClass;
     if (mercRetro) { mercStatus = 'Active ⚠'; mercClass = 'warning'; }
     else { mercStatus = 'Inactive ✓'; mercClass = 'safe'; }
