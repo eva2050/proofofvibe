@@ -9913,7 +9913,8 @@ function selectCalDay(index, el) {
   if (!days || !days[index]) return;
   var day = days[index];
   var score = day.score;
-  var color = score > 20 ? '#22C55E' : score < -20 ? '#EF4444' : 'var(--text-primary)';
+  var color = score > 20 ? '#22C55E' : score < -20 ? '#EF4444' : '#94A3B8';
+  var shadowColor = score > 20 ? '#22C55E' : score < -20 ? '#EF4444' : '#94A3B8';
 
   // Update score number
   var numEl = document.getElementById('calScoreNum');
@@ -9953,7 +9954,7 @@ function selectCalDay(index, el) {
         if (numDiv) { numDiv.style.fontWeight = '800'; numDiv.style.color = color; }
         if (circleDiv) {
           circleDiv.style.background = color;
-          circleDiv.style.boxShadow = '0 0 0 3px ' + color + '30';
+          circleDiv.style.boxShadow = '0 0 0 3px ' + shadowColor + '30';
           circleDiv.style.animation = 'todayPulse 2s ease-in-out infinite';
           var dot = circleDiv.children[0];
           if (dot) { dot.style.width = '10px'; dot.style.height = '10px'; dot.style.background = '#fff'; dot.style.opacity = '0.9'; }
