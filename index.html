@@ -13151,7 +13151,7 @@ function renderGVTable(gvId) {
 
 // ========== INSIGHT PORTAL ==========
 function openReportDetail(index) {
-  var rp = ipReports[index];
+  var rp = window.ipReports && window.ipReports[index];
   if (!rp) return;
 
   // Remove existing modal if any
@@ -13314,7 +13314,8 @@ async function addInsightPortalCard() {
   ];
 
   // Try loading reports from D1 API in background, fallback to hardcoded
-  var ipReports = ipReportsFallback;
+  window.ipReports = ipReportsFallback;
+  var ipReports = window.ipReports;
 
   // Build reports HTML immediately with fallback data
   var reportsHTML = '';
@@ -13397,6 +13398,7 @@ async function addInsightPortalCard() {
               '</div>';
             }
             grid.innerHTML = html;
+            window.ipReports = newReports;
           }
         }
       })
