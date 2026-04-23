@@ -4963,44 +4963,76 @@ function gvGenVerdict(item) {
   }
 }
 
-// ── Data loading ──
+// ── Data loading (parallel from 8 endpoints) ──
+var GV_ENDPOINTS = [
+  { key: 'entities', url: '/api/gv-institution' },
+  { key: 'titans', url: '/api/gv-titan' },
+  { key: 'onchain', url: '/api/gv-onchain' },
+  { key: 'orbits-us', url: '/api/gv-orbits-us' },
+  { key: 'orbits-cn', url: '/api/gv-orbits-cn' },
+  { key: 'orbits-hk', url: '/api/gv-orbits-hk' },
+  { key: 'orbits-eu', url: '/api/gv-orbits-eu' },
+  { key: 'orbits-jp', url: '/api/gv-orbits-jp' }
+];
+
 function loadGVData(callback) {
   if (gvDataLoaded) { callback(gvRawData); return; }
   gvDataCallbacks.push(callback);
   if (gvDataLoading) return;
   gvDataLoading = true;
 
-  fetch(API_BASE + '/api/global-vibes')
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      gvRawData = data;
-      gvDataLoaded = true;
-      gvDataLoading = false;
-      var cbs = gvDataCallbacks.slice();
-      gvDataCallbacks = [];
-      cbs.forEach(function(cb) { cb(data); });
-    })
-    .catch(function(err) {
-      console.error('Failed to load global vibes data:', err);
-      gvDataLoading = false;
-      var cbs = gvDataCallbacks.slice();
-      gvDataCallbacks = [];
-      cbs.forEach(function(cb) { cb(gvRawData); });
-    });
+  var results = {};
+  var completed = 0;
+  var total = GV_ENDPOINTS.length;
+  var failed = false;
+
+  GV_ENDPOINTS.forEach(function(ep) {
+    fetch(API_BASE + ep.url)
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (failed) return;
+        results[ep.key] = data;
+        completed++;
+        if (completed === total) {
+          // Merge orbits sub-categories
+          var allOrbits = [];
+          ['orbits-us','orbits-cn','orbits-hk','orbits-eu','orbits-jp'].forEach(function(k) {
+            if (results[k]) allOrbits = allOrbits.concat(results[k]);
+          });
+          results.orbits = allOrbits;
+
+          gvRawData = results;
+          gvDataLoaded = true;
+          gvDataLoading = false;
+          var cbs = gvDataCallbacks.slice();
+          gvDataCallbacks = [];
+          cbs.forEach(function(cb) { cb(results); });
+        }
+      })
+      .catch(function(err) {
+        if (failed) return;
+        console.error('Failed to load ' + ep.url + ':', err);
+        failed = true;
+        gvDataLoading = false;
+        var cbs = gvDataCallbacks.slice();
+        gvDataCallbacks = [];
+        cbs.forEach(function(cb) { cb(gvRawData); });
+      });
+  });
 }
 
-// ── Enrich raw data with generated narrative/verdict ──
+// ── Enrich raw data (API now returns narrative/verdict directly) ──
 function gvEnrichItem(item) {
   return {
     name: item.name || '',
     ticker: item.ticker || null,
     type: item.category === 'titan' ? 'titan' : (item.category === 'institution' ? 'institution' : item.category),
     category: item.category || 'equity',
-    narrative: gvGenNarrative(item),
-    narrative_en: gvGenNarrative({ sector: item.sector, category: item.category }),
+    narrative: item.narrative || gvGenNarrative(item),
+    narrative_en: item.narrative_en || gvGenNarrative({ sector: item.sector, category: item.category }),
     inception: item.inception || '',
-    verdict: gvGenVerdict(item),
-    verdict_en: gvGenVerdict({ sun_sign: item.sun_sign }),
+    verdict: item.verdict || gvGenVerdict(item),
+    verdict_en: item.verdict_en || gvGenVerdict({ sun_sign: item.sun_sign }),
     status: item.status || 'active'
   };
 }
