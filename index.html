@@ -11502,9 +11502,10 @@ function renderGVTable(gvId) {
   emptyEl.style.display = 'none';
 
   var rows = '';
+  var showTicker = (state.activeTab === 'orbits');
   for (var j = 0; j < filtered.length; j++) {
     var item = filtered[j];
-    var tickerHTML = item.ticker ? '<span class="gv-ticker">' + escapeHtml(item.ticker) + '</span>' : '';
+    var tickerHTML = (showTicker && item.ticker) ? '<span class="gv-ticker">' + escapeHtml(item.ticker) + '</span>' : '';
     var statusDot = item.status === 'active' ? 'gv-status-dot active' : 'gv-status-dot dormant';
     var statusLabel = item.status === 'active' ? t('gv.active').toUpperCase() : t('gv.dormant').toUpperCase();
     rows += '<tr>' +
