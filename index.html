@@ -5302,6 +5302,7 @@ const i18n = {
     'toast.loggedOut': 'Logged out',
     'toast.noVibeData': 'No vibe data found for "',
     'tl.title': 'My TradeFlow',
+    'tl.confirmDelete': 'Are you sure you want to delete this trade log?',
     'tl.newTrade': 'New Trade',
     'tl.buy': 'Buy',
     'tl.avgDown': 'Avg Down',
@@ -5929,6 +5930,7 @@ const i18n = {
     'tl.submit': 'Guardar Operación',
     'tl.symbol': 'Símbolo',
     'tl.title': 'Mi Registro de Operaciones',
+    'tl.confirmDelete': '¿Estás seguro de que deseas eliminar este registro de operación?',
     'tl.tp': 'TP',
     'tl.tpSl': 'Take Profit / Stop Loss',
     'tl.vibeCheck': 'Vibe Check',
@@ -6890,6 +6892,7 @@ const i18n = {
     'tl.submit': '保存交易',
     'tl.symbol': '標的',
     'tl.title': '我的交易流',
+    'tl.confirmDelete': '確定要刪除這條交易記錄嗎？',
     'tl.tp': '止盈',
     'tl.tpSl': '止盈 / 止損',
     'tl.vibeCheck': 'Vibe 檢查',
@@ -7310,6 +7313,7 @@ const i18n = {
     'tl.submit': '取引を保存',
     'tl.symbol': '銘柄',
     'tl.title': 'マイ・トレードフロー',
+    'tl.confirmDelete': 'この取引記録を削除してもよろしいですか？',
     'tl.tp': 'TP',
     'tl.tpSl': '利確 / 損切',
     'tl.vibeCheck': 'バイブチェック',
@@ -7714,6 +7718,7 @@ const i18n = {
     'tl.submit': '거래 저장',
     'tl.symbol': '종목',
     'tl.title': '내 트레이드 플로우',
+    'tl.confirmDelete': '이 거래 기록을 삭제하시겠습니까?',
     'tl.tp': 'TP',
     'tl.tpSl': '익절 / 손절',
     'tl.vibeCheck': '바이브 체크',
@@ -10795,10 +10800,10 @@ function renderTradeLogs(logs) {
     html += '<div class="tl-entry ' + typeCls + '" data-tl-id="' + log.id + '">' +
       '<div class="tl-card" style="position:relative;">' +
         '<div class="tl-card-actions">' +
-          '<button class="tl-card-btn tl-card-edit" onclick="editTradeLog(' + log.id + ')" title="Edit">' +
+          '<button class="tl-card-btn tl-card-edit" onclick="editTradeLog(\'' + log.id + '\')" title="Edit">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>' +
           '</button>' +
-          '<button class="tl-card-btn tl-card-del" onclick="deleteTradeLog(' + log.id + ')" title="Delete">' +
+          '<button class="tl-card-btn tl-card-del" onclick="confirmDeleteTradeLog(\'' + log.id + '\')" title="Delete">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>' +
           '</button>' +
         '</div>' +
@@ -10878,6 +10883,12 @@ function editTradeLog(id) {
     // Remove old entry while editing
     deleteTradeLog(id);
   }, 50);
+}
+
+function confirmDeleteTradeLog(id) {
+  if (confirm(t('tl.confirmDelete') || 'Are you sure you want to delete this trade log?')) {
+    deleteTradeLog(id);
+  }
 }
 
 function deleteTradeLog(id) {
