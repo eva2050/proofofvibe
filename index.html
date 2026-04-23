@@ -4991,13 +4991,11 @@ function loadGVData(callback) {
   var results = {};
   var completed = 0;
   var total = GV_ENDPOINTS.length;
-  var failed = false;
 
   GV_ENDPOINTS.forEach(function(ep) {
     fetch(API_BASE + ep.url)
       .then(function(r) { return r.json(); })
       .then(function(data) {
-        if (failed) return;
         results[ep.key] = data;
         completed++;
         if (completed === total) {
@@ -5017,13 +5015,23 @@ function loadGVData(callback) {
         }
       })
       .catch(function(err) {
-        if (failed) return;
         console.error('Failed to load ' + ep.url + ':', err);
-        failed = true;
-        gvDataLoading = false;
-        var cbs = gvDataCallbacks.slice();
-        gvDataCallbacks = [];
-        cbs.forEach(function(cb) { cb(gvRawData); });
+        completed++;
+        if (completed === total) {
+          // Merge orbits sub-categories
+          var allOrbits = [];
+          ['orbits-us','orbits-cn','orbits-hk','orbits-eu','orbits-jp'].forEach(function(k) {
+            if (results[k]) allOrbits = allOrbits.concat(results[k]);
+          });
+          results.orbits = allOrbits;
+
+          gvRawData = results;
+          gvDataLoaded = true;
+          gvDataLoading = false;
+          var cbs = gvDataCallbacks.slice();
+          gvDataCallbacks = [];
+          cbs.forEach(function(cb) { cb(results); });
+        }
       });
   });
 }
