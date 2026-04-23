@@ -10427,15 +10427,15 @@ window.AstroEngine = (function() {
 
     // 2. Lunar phase influence (+/-15)
     if (lunar.name === 'Full Moon' || lunar.name === 'New Moon') {
-      score += (lunar.name === 'Full Moon' ? 10 : -5);
+      score += (lunar.name === 'Full Moon' ? 5 : -10);
     } else if (lunar.name === 'First Quarter' || lunar.name === 'Last Quarter') {
       score += 0;
     } else if (lunar.name === 'Waxing Gibbous') {
-      score += 8;
+      score += 3;
     } else if (lunar.name === 'Waning Gibbous') {
       score -= 5;
     } else if (lunar.name === 'Waxing Crescent') {
-      score += 5;
+      score += 2;
     } else if (lunar.name === 'Waning Crescent') {
       score -= 8;
     }
@@ -10452,56 +10452,69 @@ window.AstroEngine = (function() {
       }
     }
 
-    // 5. Jupiter aspects (+/-20)
+    // 5. Jupiter aspects (+/-12) — reduced from 20
     var jupPos = positions.Jupiter;
     var jupTargets = ['Venus', 'Mars', 'Mercury', 'Sun', 'Moon'];
     for (var ji = 0; ji < jupTargets.length; ji++) {
       var asp = getAspect(jupPos, positions[jupTargets[ji]]);
       if (asp) {
-        if (asp.name === 'trine' || asp.name === 'sextile') score += Math.round(asp.exactness / asp.orb * 20);
-        else if (asp.name === 'square' || asp.name === 'opposition') score -= Math.round(asp.exactness / asp.orb * 15);
+        if (asp.name === 'trine' || asp.name === 'sextile') score += Math.round(asp.exactness / asp.orb * 12);
+        else if (asp.name === 'square' || asp.name === 'opposition') score -= Math.round(asp.exactness / asp.orb * 12);
       }
     }
 
-    // 6. Saturn aspects (+/-15)
+    // 6. Saturn aspects (+/-18) — increased from 15
     var satPos = positions.Saturn;
     var satTargets = ['Sun', 'Moon', 'Mercury', 'Venus'];
     for (var si = 0; si < satTargets.length; si++) {
       var sasp = getAspect(satPos, positions[satTargets[si]]);
       if (sasp) {
-        if (sasp.name === 'square' || sasp.name === 'opposition') score -= Math.round(sasp.exactness / sasp.orb * 15);
-        else if (sasp.name === 'trine' || sasp.name === 'sextile') score += Math.round(sasp.exactness / sasp.orb * 8);
+        if (sasp.name === 'square' || sasp.name === 'opposition') score -= Math.round(sasp.exactness / sasp.orb * 18);
+        else if (sasp.name === 'trine' || sasp.name === 'sextile') score += Math.round(sasp.exactness / sasp.orb * 6);
       }
     }
 
-    // 7. Mars energy (+/-10)
+    // 7. Mars energy (+/-15) — increased from 10
     var marsPos = positions.Mars;
     var marsTargets = ['Mercury', 'Venus', 'Jupiter'];
     for (var mi = 0; mi < marsTargets.length; mi++) {
       var masp = getAspect(marsPos, positions[marsTargets[mi]]);
       if (masp && (masp.name === 'square' || masp.name === 'opposition')) {
-        score -= Math.round(masp.exactness / masp.orb * 10);
+        score -= Math.round(masp.exactness / masp.orb * 15);
+      } else if (masp && (masp.name === 'conjunction')) {
+        score -= Math.round(masp.exactness / masp.orb * 8);
       }
     }
 
-    // 8. Venus aspects (+/-10)
+    // 8. Venus aspects (+/-6) — reduced from 10
     var venPos = positions.Venus;
     var venTargets = ['Jupiter', 'Sun', 'Moon'];
     for (var vi = 0; vi < venTargets.length; vi++) {
       var vasp = getAspect(venPos, positions[venTargets[vi]]);
       if (vasp && (vasp.name === 'trine' || vasp.name === 'sextile')) {
-        score += Math.round(vasp.exactness / vasp.orb * 10);
+        score += Math.round(vasp.exactness / vasp.orb * 6);
       }
     }
 
-    // 9. Day of week effect (+/-5)
+    // 9. Uranus disruption (+/-10) — new factor for volatility
+    var uraPos = positions.Uranus;
+    var uraTargets = ['Sun', 'Moon', 'Mercury'];
+    for (var ui = 0; ui < uraTargets.length; ui++) {
+      var uasp = getAspect(uraPos, positions[uraTargets[ui]]);
+      if (uasp) {
+        if (uasp.name === 'square' || uasp.name === 'opposition') score -= Math.round(uasp.exactness / uasp.orb * 10);
+        else if (uasp.name === 'conjunction') score -= Math.round(uasp.exactness / uasp.orb * 5);
+      }
+    }
+
+    // 10. Day of week effect (+/-5)
     var dow = date.getDay();
     if (dow === 2) score -= 5;  // Tuesday = Mars = volatile
     else if (dow === 5) score += 5;  // Friday = Venus = favorable
     else if (dow === 0) score -= 3;  // Sunday
     else if (dow === 6) score -= 2;  // Saturday
 
-    // 10. User birth chart resonance (+/-15)
+    // 11. User birth chart resonance (+/-10) — reduced from 15
     if (userBirthDate && !isNaN(userBirthDate.getTime())) {
       var natalPos = getPlanetPositions(userBirthDate);
       var transitPlanets = ['Jupiter', 'Venus', 'Saturn', 'Mars'];
@@ -10512,20 +10525,20 @@ window.AstroEngine = (function() {
           var nasp = getAspect(positions[tp], natalPos[natalPlanets[bj]]);
           if (nasp) {
             if (tp === 'Jupiter' || tp === 'Venus') {
-              if (nasp.name === 'trine' || nasp.name === 'sextile') score += Math.round(nasp.exactness / nasp.orb * 15);
+              if (nasp.name === 'trine' || nasp.name === 'sextile') score += Math.round(nasp.exactness / nasp.orb * 10);
             } else if (tp === 'Saturn') {
-              if (nasp.name === 'square' || nasp.name === 'opposition') score -= Math.round(nasp.exactness / nasp.orb * 12);
+              if (nasp.name === 'square' || nasp.name === 'opposition') score -= Math.round(nasp.exactness / nasp.orb * 10);
             } else if (tp === 'Mars') {
-              if (nasp.name === 'conjunction') score += Math.round(nasp.exactness / nasp.orb * 10);
+              if (nasp.name === 'conjunction') score += Math.round(nasp.exactness / nasp.orb * 6);
             }
           }
         }
       }
     }
 
-    // Seeded random small component
+    // Seeded random small component — reduced range
     var rng = seededRandom(date.toISOString().slice(0, 10));
-    score += Math.round((rng() - 0.5) * 10);
+    score += Math.round((rng() - 0.5) * 14);
 
     return Math.max(-100, Math.min(100, Math.round(score)));
   }
