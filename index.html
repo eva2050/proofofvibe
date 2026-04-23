@@ -4974,6 +4974,7 @@ var GV_ENDPOINTS = [
   { key: 'entities', url: '/api/gv-institution' },
   { key: 'titans', url: '/api/gv-titan' },
   { key: 'onchain', url: '/api/gv-onchain' },
+  { key: 'milestones', url: '/api/gv-milestone' },
   { key: 'orbits-us', url: '/api/gv-orbits-us' },
   { key: 'orbits-cn', url: '/api/gv-orbits-cn' },
   { key: 'orbits-hk', url: '/api/gv-orbits-hk' },
@@ -5048,12 +5049,14 @@ var architectEntitiesData = [];
 var archetypeTitansData = [];
 var capitalOrbitsData = [];
 var onChainFrequenciesData = [];
+var financialMilestonesData = [];
 
 function gvPopulateLegacyVars(data) {
   architectEntitiesData = (data.entities || []).map(gvEnrichItem);
   archetypeTitansData = (data.titans || []).map(gvEnrichItem);
   capitalOrbitsData = (data.orbits || []).map(gvEnrichItem);
   onChainFrequenciesData = (data.onchain || []).map(gvEnrichItem);
+  financialMilestonesData = (data.milestones || []).map(gvEnrichItem);
 }
 
 
@@ -5544,6 +5547,7 @@ const i18n = {
     'gv.archetypePlayers': 'The Archetype Players',
     'gv.capitalOrbits': 'Capital Orbits',
     'gv.onchainFrequencies': 'On-chain Frequencies',
+    'gv.financialMilestones': 'Financial Milestones',
     'gv.searchPlaceholder': 'Search name, ticker, narrative...',
     'gv.showing': 'Showing',
     'gv.of': 'of',
@@ -5790,6 +5794,7 @@ const i18n = {
     'gv.noResults': 'No se encontraron resultados',
     'gv.of': 'de',
     'gv.onchainFrequencies': 'Frecuencias On-chain',
+    'gv.financialMilestones': 'Hitos Financieros',
     'gv.searchPlaceholder': 'Buscar nombre, ticker, narrativa...',
     'gv.showing': 'Mostrando',
     'gv.status': 'Estado',
@@ -6357,6 +6362,7 @@ const i18n = {
     'gv.archetypePlayers': '金融大鳄',
     'gv.capitalOrbits': '美股',
     'gv.onchainFrequencies': '加密货币',
+    'gv.financialMilestones': '金融里程碑',
     'gv.searchPlaceholder': '搜索名称、代码、叙事...',
     'gv.showing': '显示',
     'gv.of': '/',
@@ -6623,6 +6629,7 @@ const i18n = {
     'gv.noResults': '未找到結果',
     'gv.of': '/',
     'gv.onchainFrequencies': '鏈上頻率',
+    'gv.financialMilestones': '金融里程碑',
     'gv.searchPlaceholder': '搜尋名稱、代碼、敘事...',
     'gv.showing': '顯示',
     'gv.status': '狀態',
@@ -7173,6 +7180,7 @@ const i18n = {
     'gv.noResults': '結果が見つかりません',
     'gv.of': '/',
     'gv.onchainFrequencies': 'オンチェーン周波数',
+    'gv.financialMilestones': '金融マイルストーン',
     'gv.searchPlaceholder': '名前、ティッカー、ナラティブを検索...',
     'gv.showing': '表示中',
     'gv.status': 'ステータス',
@@ -7578,6 +7586,7 @@ const i18n = {
     'gv.noResults': '결과 없음',
     'gv.of': '/',
     'gv.onchainFrequencies': '온체인 주파수',
+    'gv.financialMilestones': '금융 마일스톤',
     'gv.searchPlaceholder': '이름, 티커, 내러티브 검색...',
     'gv.showing': '표시',
     'gv.status': '상태',
@@ -11342,7 +11351,8 @@ function addGlobalVibesCard() {
     { key: 'entities', label: t('gv.architectEntities'), dataKey: 'entities' },
     { key: 'titans', label: t('gv.archetypePlayers'), dataKey: 'titans' },
     { key: 'orbits', label: t('gv.capitalOrbits'), dataKey: 'orbits' },
-    { key: 'onchain', label: t('gv.onchainFrequencies'), dataKey: 'onchain' }
+    { key: 'onchain', label: t('gv.onchainFrequencies'), dataKey: 'onchain' },
+    { key: 'milestones', label: t('gv.financialMilestones'), dataKey: 'milestones' }
   ];
 
   var tabsHTML = '';
@@ -11400,7 +11410,8 @@ function addGlobalVibesCard() {
       { key: 'entities', label: t('gv.architectEntities'), data: architectEntitiesData },
       { key: 'titans', label: t('gv.archetypePlayers'), data: archetypeTitansData },
       { key: 'orbits', label: t('gv.capitalOrbits'), data: capitalOrbitsData },
-      { key: 'onchain', label: t('gv.onchainFrequencies'), data: onChainFrequenciesData }
+      { key: 'onchain', label: t('gv.onchainFrequencies'), data: onChainFrequenciesData },
+      { key: 'milestones', label: t('gv.financialMilestones'), data: financialMilestonesData }
     ];
 
     // Update tab counts
