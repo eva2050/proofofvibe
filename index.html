@@ -2264,8 +2264,8 @@ html[data-theme="dark"] .transit-tag.positive {
 }
 
 @keyframes todayPulse {
-  0%, 100% { box-shadow: 0 0 0 3px rgba(34,197,94,0.15); }
-  50% { box-shadow: 0 0 0 6px rgba(34,197,94,0.08); }
+  0%, 100% { box-shadow: 0 0 0 3px var(--pulse-color, rgba(34,197,94,0.15)); }
+  50% { box-shadow: 0 0 0 6px var(--pulse-color, rgba(34,197,94,0.08)); }
 }
 
 .modal {
@@ -9954,6 +9954,7 @@ function selectCalDay(index, el) {
         if (numDiv) { numDiv.style.fontWeight = '800'; numDiv.style.color = color; }
         if (circleDiv) {
           circleDiv.style.background = color;
+          circleDiv.style.setProperty('--pulse-color', score > 20 ? 'rgba(34,197,94,0.15)' : score < -20 ? 'rgba(239,68,68,0.15)' : 'rgba(148,163,184,0.15)');
           circleDiv.style.boxShadow = '0 0 0 3px ' + shadowColor + '30';
           circleDiv.style.animation = 'todayPulse 2s ease-in-out infinite';
           var dot = circleDiv.children[0];
