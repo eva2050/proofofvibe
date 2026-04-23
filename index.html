@@ -4192,80 +4192,128 @@ html[lang="ko"] {
 .report-detail-overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
+  background: var(--card-bg);
   z-index: 1000;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  animation: rdFadeIn 0.2s ease;
+  flex-direction: column;
+  animation: rdFadeIn 0.25s ease;
+  overflow: hidden;
 }
 @keyframes rdFadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 .report-detail-card {
-  background: var(--card-bg);
-  border-radius: 16px;
-  max-width: 600px;
+  max-width: 720px;
   width: 100%;
-  max-height: 85vh;
+  margin: 0 auto;
+  flex: 1;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
-.rd-close {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+.rd-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+.rd-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.rd-back-btn {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   border: none;
-  background: var(--card-bg);
+  background: var(--hover-bg);
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   transition: background 0.15s;
 }
-.rd-close:hover { background: var(--hover-bg); }
-.rd-image {
+.rd-back-btn:hover { background: var(--border); }
+.rd-topbar-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+.rd-share-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.rd-share-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.rd-share-icon:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+.rd-share-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.rd-close {
+  display: none;
+}
+.rd-hero {
   width: 100%;
-  height: 200px;
+  height: 320px;
   object-fit: cover;
-  border-radius: 16px 16px 0 0;
   display: block;
 }
 .rd-body {
-  padding: 20px 24px 24px;
+  padding: 32px 32px 48px;
+  max-width: 640px;
+  margin: 0 auto;
 }
 .rd-category {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   color: var(--accent);
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 .rd-title {
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 28px;
+  font-weight: 800;
   color: var(--text-primary);
   line-height: 1.3;
-  margin-bottom: 12px;
+  margin-bottom: 16px;
+  letter-spacing: -0.5px;
 }
 .rd-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 10px;
+  font-size: 13px;
   color: var(--text-secondary);
-  margin-bottom: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
 }
 .rd-dot {
   width: 3px;
@@ -4275,16 +4323,67 @@ html[lang="ko"] {
   opacity: 0.4;
 }
 .rd-desc {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-primary);
-  line-height: 1.7;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
+  line-height: 1.8;
+  margin-bottom: 28px;
+  font-weight: 500;
 }
 .rd-content {
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+.rd-content p {
+  margin-bottom: 20px;
+}
+.rd-content h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 32px 0 12px;
+  color: var(--text-primary);
+}
+.rd-content blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 12px 20px;
+  margin: 20px 0;
+  background: var(--hover-bg);
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+.rd-bottom-share {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 24px 32px 40px;
+  border-top: 1px solid var(--border);
+  max-width: 640px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+.rd-bottom-share span {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-right: 8px;
+}
+@media (max-width: 768px) {
+  .rd-hero { height: 200px; }
+  .rd-body { padding: 24px 20px 40px; }
+  .rd-title { font-size: 22px; }
+  .rd-bottom-share { padding: 20px 20px 32px; flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+  .rd-hero { height: 160px; }
+  .rd-body { padding: 20px 16px 32px; }
+  .rd-title { font-size: 20px; }
+  .rd-topbar { padding: 10px 16px; }
+  .rd-topbar-title { display: none; }
 }
 </style>
 </head>
@@ -7303,6 +7402,7 @@ const i18n = {
     'ip.trendingVibrations': 'Trending Vibrations',
     'ip.latestReports': 'Latest Reports',
     'ip.minRead': 'min read',
+    'ip.share': 'Share',
     'ip.fullReportComingSoon': 'Full report content is coming soon. Stay tuned for in-depth cosmic analysis.',
     'ip.geopolitics': 'GEOPOLITICS',
     'ip.crypto': 'CRYPTO',
@@ -7542,6 +7642,7 @@ const i18n = {
     'ip.macro': 'MACRO',
     'ip.marketOutlook': 'PERSPECTIVA DEL MERCADO',
     'ip.minRead': 'm',
+    'ip.share': 'Compartir',
     'ip.tech': 'TECNOLOGÍA',
     'ip.trendingVibrations': 'Vibraciones en Tendencia',
     'mod.actionableVerdict': 'Veredicto Accionable',
@@ -8095,6 +8196,7 @@ const i18n = {
     'ip.trendingVibrations': '热门频率',
     'ip.latestReports': '最新报告',
     'ip.minRead': '分钟阅读',
+    'ip.share': '分享',
     'ip.fullReportComingSoon': '完整报告内容即将上线，敬请期待深度星象分析。',
     'ip.geopolitics': '地缘政治',
     'ip.crypto': '加密货币',
@@ -8380,6 +8482,7 @@ const i18n = {
     'ip.macro': '宏觀',
     'ip.marketOutlook': '市場展望',
     'ip.minRead': 'i',
+    'ip.share': '分享',
     'ip.tech': '科技',
     'ip.trendingVibrations': '熱門 Vibe',
     'library.celebrities': '名人',
@@ -8893,6 +8996,7 @@ const i18n = {
     'ip.macro': 'マクロ',
     'ip.marketOutlook': 'マーケット展望',
     'ip.minRead': 'n',
+    'ip.share': '共有',
     'ip.tech': 'テクノロジー',
     'ip.trendingVibrations': 'トレンドバイブ',
     'mod.actionableVerdict': 'アクショナブル判定',
@@ -9287,6 +9391,7 @@ const i18n = {
     'ip.macro': '거시',
     'ip.marketOutlook': '시장 전망',
     'ip.minRead': ' ',
+    'ip.share': '공유',
     'ip.tech': '기술',
     'ip.trendingVibrations': '트렌딩 바이브',
     'mod.actionableVerdict': '실행 가능한 판단',
@@ -13056,17 +13161,44 @@ function openReportDetail(index) {
   var modal = document.createElement('div');
   modal.id = 'reportDetailModal';
   modal.className = 'report-detail-overlay';
-  modal.onclick = function(e) { if (e.target === modal) modal.remove(); };
 
   var imgHTML = rp.image_url
-    ? '<img class="rd-image" src="' + escapeHtml(rp.image_url) + '" alt="" onerror="this.style.display=\'none\'">'
+    ? '<img class="rd-hero" src="' + escapeHtml(rp.image_url) + '" alt="" onerror="this.style.display=\'none\'">'
     : '';
+
+  var shareUrl = encodeURIComponent(window.location.href);
+  var shareTitle = encodeURIComponent(rp.title);
+
+  var shareIcons =
+    '<div class="rd-share-icons">' +
+      '<a class="rd-share-icon" href="https://twitter.com/intent/tweet?text=' + shareTitle + '&url=' + shareUrl + '" target="_blank" rel="noopener" title="X / Twitter">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>' +
+      '</a>' +
+      '<a class="rd-share-icon" href="https://www.facebook.com/sharer/sharer.php?u=' + shareUrl + '" target="_blank" rel="noopener" title="Facebook">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>' +
+      '</a>' +
+      '<a class="rd-share-icon" href="https://www.linkedin.com/sharing/share-offsite/?url=' + shareUrl + '" target="_blank" rel="noopener" title="LinkedIn">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>' +
+      '</a>' +
+      '<a class="rd-share-icon" href="https://telegram.me/share/url?url=' + shareUrl + '&text=' + shareTitle + '" target="_blank" rel="noopener" title="Telegram">' +
+        '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>' +
+      '</a>' +
+      '<button class="rd-share-icon" onclick="navigator.clipboard.writeText(window.location.href);this.style.color=\'var(--accent)\'" title="Copy Link">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>' +
+      '</button>' +
+    '</div>';
 
   modal.innerHTML =
     '<div class="report-detail-card">' +
-      '<button class="rd-close" onclick="document.getElementById(\'reportDetailModal\').remove()">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
-      '</button>' +
+      '<div class="rd-topbar">' +
+        '<div class="rd-topbar-left">' +
+          '<button class="rd-back-btn" onclick="document.getElementById(\'reportDetailModal\').remove()">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><polyline points="15 18 9 12 15 6"></polyline></svg>' +
+          '</button>' +
+          '<span class="rd-topbar-title">' + escapeHtml(rp.category) + '</span>' +
+        '</div>' +
+        shareIcons +
+      '</div>' +
       imgHTML +
       '<div class="rd-body">' +
         '<div class="rd-category">' + escapeHtml(rp.category) + '</div>' +
@@ -13078,10 +13210,12 @@ function openReportDetail(index) {
         '</div>' +
         '<div class="rd-desc">' + escapeHtml(rp.desc) + '</div>' +
         '<div class="rd-content">' +
-          '<p style="color:var(--text-secondary);font-size:13px;line-height:1.7;">' +
-            t('ip.fullReportComingSoon') +
-          '</p>' +
+          '<p>' + t('ip.fullReportComingSoon') + '</p>' +
         '</div>' +
+      '</div>' +
+      '<div class="rd-bottom-share">' +
+        '<span>' + t('ip.share') + '</span>' +
+        shareIcons +
       '</div>' +
     '</div>';
 
