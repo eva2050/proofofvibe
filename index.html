@@ -1432,6 +1432,10 @@ html[data-theme="dark"] .dna-identity-card {
 .dna-trait:last-child {
   border-bottom: none;
 }
+/* Remove border from the last non-roast trait (Stamina) */
+.dna-trait:not(.roast):has(+ .dna-trait.roast:last-child) {
+  border-bottom: none;
+}
 
 .dna-trait .trait-name {
   font-size: 11px;
