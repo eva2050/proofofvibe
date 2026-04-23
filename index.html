@@ -10740,36 +10740,39 @@ function submitQuickNote() {
   renderTradeLogs(logs);
 }
 
+function getSampleTradeLogs() {
+  return [
+    {
+      id: 's1', type: 'buy', action: 'buy', symbol: '$BTC',
+      date: '2025.04.14', time: '09:32', vibe: 72,
+      reason: dnaT('4H级别缩量回调至EMA21支撑，RSI超卖反弹信号明确，博短线反弹。','4H volume contraction pullback to EMA21 support, RSI oversold bounce signal clear, playing short-term bounce.','Contracción de volumen en 4H retroceso al soporte EMA21, señal de rebote RSI sobreventa clara, jugando rebote a corto plazo.','4H級別縮量回調至EMA21支撐，RSI超賣反彈信號明確，博短線反彈。','4Hボリューム収縮のEMA21サポートへの戻り、RSI売られ過ぎの反発シグナル明確、ショートターム反発狙い。','4H 거래량 수축 후 EMA21 지지선으로 조정, RSI 과매도 반등 신호 명확, 단기 반등 노림.'),
+      tp: '68000', sl: '62000', entryPrice: '63500', exitPrice: '', rr: '2.5',
+      audit: dnaT('当前火星与你命盘木星形成三分相，进攻性交易决策符合你DNA中的"狙击手"特质。BTC处于金星金牛座的稳定区间，支撑有效。建议：严格执行62000止损，不要产生情感留恋。R/R 2.5为优质交易。','Mars forms a trine with your natal Jupiter — aggressive trading decisions match your DNA\'s "sniper" trait. BTC is in Venus Taurus stability zone, support is valid. Suggestion: strictly execute 62000 stop loss, no emotional attachment. R/R 2.5 is a quality trade.','Marte forma un trino con tu Júpiter natal — las decisiones de trading agresivo coinciden con el rasgo "francotirador" de tu ADN. BTC está en la zona de estabilidad de Venus Tauro, el soporte es válido. Sugerencia: ejecuta estrictamente el stop loss de 62000, sin apego emocional. R/R 2.5 es una operación de calidad.','當前火星與你命盤木星形成三分相，進攻性交易決策符合你DNA中的「狙擊手」特質。BTC處於金星金牛座的穩定區間，支撐有效。建議：嚴格執行62000止損，不要產生情感留戀。R/R 2.5為優質交易。','火星があなたのネイタル木星とトラインを形成 — 攻撃的なトレード決断はあなたのDNAの「スナイパー」特性に一致。BTCは金星牡牛座の安定ゾーンにあり、サポートは有効。提案：62000のストップロスを厳格に実行、感情的な執着なし。R/R 2.5は質の高いトレード。','현재 화성이 내 태어난 목성과 삼분각을 형성 — 공격적 거래 결정은 내 DNA의 "저격수" 특성과 일치. BTC는 금성 황소자리 안정 구간에 있어 지지선이 유효. 제안: 62000 손절을 엄격히 실행, 감정적 집착 금지. R/R 2.5는 양질의 거래.')
+    },
+    {
+      id: 's2', type: 'sell', action: 'stop', symbol: '$SOL',
+      date: '2025.04.13', time: '14:15', vibe: 25,
+      reason: dnaT('跌破关键支撑位，冥王星逆行期间趋势不明，认赔出局保本金。','Broke key support level, trend unclear during Pluto retrograde, cut losses to preserve capital.','Rompió el nivel de soporte clave, tendencia poco clara durante el retroceso de Plutón, cortar pérdidas para preservar capital.','跌破關鍵支撐位，冥王星逆行期間趨勢不明，認賠出局保本金。','重要サポートブレイク、冥王星逆行中でトレンド不明確、損切りで資本保全。','주요 지지선 돌파, 명왕성 역행 중 추세 불명확, 손절로 자본 보호.'),
+      tp: '', sl: '', entryPrice: '148', exitPrice: '142', rr: '',
+      audit: dnaT('土星在双鱼座的对冲能量正在压制SOL的上涨动能。止损决策展现了你命盘中"风象"特质的理性一面——在不确定时期果断退出，比盲目持有更明智。本次亏损约4%，在可控范围内。','Saturn\'s counter-energy in Pisces is suppressing SOL\'s upward momentum. The stop loss decision shows the rational side of your chart\'s "Air" trait — decisive exit during uncertainty is wiser than blind holding. This loss is about 4%, within controllable range.','La energía contraria de Saturno en Piscis está suprimiendo el impulso alcista de SOL. La decisión de stop loss muestra el lado racional del rasgo "Aire" de tu carta — salida decisiva durante la incertidumbre es más sabia que mantener a ciegas. Esta pérdida es de aproximadamente 4%, dentro del rango controlable.','土星在雙魚座的對沖能量正在壓制SOL的上漲動能。止損決策展現了你命盤中「風象」特質的理性一面——在不確定時期果斷退出，比盲目持有更明智。本次虧損約4%，在可控範圍內。','双魚座の土星の対抗エネルギーがSOLの上昇モメンタムを抑制。損切り決断はチャートの「風」特性の理性的な側面を示す — 不確実性の中での決断的な退出は、盲目的なホールドより賢明。今回の損失は約4%、管理可能な範囲。','물병자리 토성의 대립 에너지가 SOL의 상승 모멘텀을 억제. 손절 결정은 내 차트의 "바람" 특성의 이성적 면을 보여줌 — 불확실성 중 결단적 청산은 맹목적 보유보다 현명. 이번 손실은 약 4%, 통제 가능한 범위.')
+    },
+    {
+      id: 's3', type: 'buy', action: 'avg', symbol: '$NVDA',
+      date: '2025.04.12', time: '10:45', vibe: 55,
+      reason: dnaT('财报前补仓，木星双子座的扩张周期利好AI叙事，长期看好算力需求。','Averaging down before earnings, Jupiter in Gemini expansion cycle favors AI narrative, bullish on computing demand long-term.','Promediando a la baja antes de ganancias, el ciclo de expansión de Júpiter en Géminis favorece la narrativa de IA, alcista en la demanda de cómputo a largo plazo.','財報前補倉，木星雙子座的擴張週期利好AI敘事，長期看好算力需求。','決算前のナンピン、双子座の木星拡張サイクルがAIナラティブを支援、長期的にコンピューティング需要に強気。','실적 전 물타기, 쌍둥이 목성 확장 주기가 AI 내러티브에 유리, 장기적으로 컴퓨팅 수요 강세.'),
+      tp: '950', sl: '820', entryPrice: '875', exitPrice: '', rr: '1.7',
+      audit: dnaT('木星双子与NVDA创始星象高度共振。补仓时机选择在财报前的"信息真空期"，符合水星逆行期间"逆向布局"的星象策略。建议：设置820硬止损，若财报不及预期可快速离场。','Jupiter in Gemini highly resonates with NVDA\'s founding astrology. Averaging down timing chosen in the "information vacuum" before earnings, aligning with the "contrarian positioning" strategy during Mercury retrograde. Suggestion: set 820 hard stop loss, quick exit if earnings disappoint.','Júpiter en Géminis resuena altamente con la astrología fundacional de NVDA. El momento de promediar a la baja elegido en el "vacío de información" antes de ganancias, alineado con la estrategia de "posicionamiento contrario" durante el retroceso de Mercurio. Sugerencia: establecer stop loss duro en 820, salida rápida si las ganancias decepcionan.','木星雙子與NVDA創始星象高度共振。補倉時機選擇在財報前的「資訊真空期」，符合水星逆行期間「逆向佈局」的星象策略。建議：設置820硬止損，若財報不及預期可快速離場。','双子座の木星がNVDAの設立占星術と高い共鳴。決算前の「情報の真空」期にナンピンのタイミングを選択、水星逆行中の「逆張りポジショニング」戦略に合致。提案：820のハードストップロスを設定、決算が期待外れの場合は迅速に離脱。','쌍둥이 목성이 NVDA 창립 점성술과 높은 공명. 실적 전 "정보 진공" 기간에 물타기 타이밍 선택, 수성 역행 중 "역추세 포지셔닝" 전략과 일치. 제안: 820 하드 손절 설정, 실적이 기대치 미달 시 신속 청산.')
+    }
+  ];
+}
+
 function loadAndRenderTradeLogs() {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
   
   // Always show sample data unless user has dismissed them
   var dismissed = localStorage.getItem('vibe_tl_samples_dismissed');
   if (!dismissed) {
-    var samples = [
-      {
-        id: 's1', type: 'buy', action: 'buy', symbol: '$BTC',
-        date: '2025.04.14', time: '09:32', vibe: 72,
-        reason: dnaT('4H级别缩量回调至EMA21支撑，RSI超卖反弹信号明确，博短线反弹。','4H volume contraction pullback to EMA21 support, RSI oversold bounce signal clear, playing short-term bounce.','Contracción de volumen en 4H retroceso al soporte EMA21, señal de rebote RSI sobreventa clara, jugando rebote a corto plazo.','4H級別縮量回調至EMA21支撐，RSI超賣反彈信號明確，博短線反彈。','4Hボリューム収縮のEMA21サポートへの戻り、RSI売られ過ぎの反発シグナル明確、ショートターム反発狙い。','4H 거래량 수축 후 EMA21 지지선으로 조정, RSI 과매도 반등 신호 명확, 단기 반등 노림.'),
-        tp: '68000', sl: '62000', entryPrice: '63500', exitPrice: '', rr: '2.5',
-        audit: dnaT('当前火星与你命盘木星形成三分相，进攻性交易决策符合你DNA中的"狙击手"特质。BTC处于金星金牛座的稳定区间，支撑有效。建议：严格执行62000止损，不要产生情感留恋。R/R 2.5为优质交易。','Mars forms a trine with your natal Jupiter — aggressive trading decisions match your DNA\'s "sniper" trait. BTC is in Venus Taurus stability zone, support is valid. Suggestion: strictly execute 62000 stop loss, no emotional attachment. R/R 2.5 is a quality trade.','Marte forma un trino con tu Júpiter natal — las decisiones de trading agresivo coinciden con el rasgo "francotirador" de tu ADN. BTC está en la zona de estabilidad de Venus Tauro, el soporte es válido. Sugerencia: ejecuta estrictamente el stop loss de 62000, sin apego emocional. R/R 2.5 es una operación de calidad.','當前火星與你命盤木星形成三分相，進攻性交易決策符合你DNA中的「狙擊手」特質。BTC處於金星金牛座的穩定區間，支撐有效。建議：嚴格執行62000止損，不要產生情感留戀。R/R 2.5為優質交易。','火星があなたのネイタル木星とトラインを形成 — 攻撃的なトレード決断はあなたのDNAの「スナイパー」特性に一致。BTCは金星牡牛座の安定ゾーンにあり、サポートは有効。提案：62000のストップロスを厳格に実行、感情的な執着なし。R/R 2.5は質の高いトレード。','현재 화성이 내 태어난 목성과 삼분각을 형성 — 공격적 거래 결정은 내 DNA의 "저격수" 특성과 일치. BTC는 금성 황소자리 안정 구간에 있어 지지선이 유효. 제안: 62000 손절을 엄격히 실행, 감정적 집착 금지. R/R 2.5는 양질의 거래.')
-      },
-      {
-        id: 's2', type: 'sell', action: 'stop', symbol: '$SOL',
-        date: '2025.04.13', time: '14:15', vibe: 25,
-        reason: dnaT('跌破关键支撑位，冥王星逆行期间趋势不明，认赔出局保本金。','Broke key support level, trend unclear during Pluto retrograde, cut losses to preserve capital.','Rompió el nivel de soporte clave, tendencia poco clara durante el retroceso de Plutón, cortar pérdidas para preservar capital.','跌破關鍵支撐位，冥王星逆行期間趨勢不明，認賠出局保本金。','重要サポートブレイク、冥王星逆行中でトレンド不明確、損切りで資本保全。','주요 지지선 돌파, 명왕성 역행 중 추세 불명확, 손절로 자본 보호.'),
-        tp: '', sl: '', entryPrice: '148', exitPrice: '142', rr: '',
-        audit: dnaT('土星在双鱼座的对冲能量正在压制SOL的上涨动能。止损决策展现了你命盘中"风象"特质的理性一面——在不确定时期果断退出，比盲目持有更明智。本次亏损约4%，在可控范围内。','Saturn\'s counter-energy in Pisces is suppressing SOL\'s upward momentum. The stop loss decision shows the rational side of your chart\'s "Air" trait — decisive exit during uncertainty is wiser than blind holding. This loss is about 4%, within controllable range.','La energía contraria de Saturno en Piscis está suprimiendo el impulso alcista de SOL. La decisión de stop loss muestra el lado racional del rasgo "Aire" de tu carta — salida decisiva durante la incertidumbre es más sabia que mantener a ciegas. Esta pérdida es de aproximadamente 4%, dentro del rango controlable.','土星在雙魚座的對沖能量正在壓制SOL的上漲動能。止損決策展現了你命盤中「風象」特質的理性一面——在不確定時期果斷退出，比盲目持有更明智。本次虧損約4%，在可控範圍內。','双魚座の土星の対抗エネルギーがSOLの上昇モメンタムを抑制。損切り決断はチャートの「風」特性の理性的な側面を示す — 不確実性の中での決断的な退出は、盲目的なホールドより賢明。今回の損失は約4%、管理可能な範囲。','물병자리 토성의 대립 에너지가 SOL의 상승 모멘텀을 억제. 손절 결정은 내 차트의 "바람" 특성의 이성적 면을 보여줌 — 불확실성 중 결단적 청산은 맹목적 보유보다 현명. 이번 손실은 약 4%, 통제 가능한 범위.')
-      },
-      {
-        id: 's3', type: 'buy', action: 'avg', symbol: '$NVDA',
-        date: '2025.04.12', time: '10:45', vibe: 55,
-        reason: dnaT('财报前补仓，木星双子座的扩张周期利好AI叙事，长期看好算力需求。','Averaging down before earnings, Jupiter in Gemini expansion cycle favors AI narrative, bullish on computing demand long-term.','Promediando a la baja antes de ganancias, el ciclo de expansión de Júpiter en Géminis favorece la narrativa de IA, alcista en la demanda de cómputo a largo plazo.','財報前補倉，木星雙子座的擴張週期利好AI敘事，長期看好算力需求。','決算前のナンピン、双子座の木星拡張サイクルがAIナラティブを支援、長期的にコンピューティング需要に強気。','실적 전 물타기, 쌍둥이 목성 확장 주기가 AI 내러티브에 유리, 장기적으로 컴퓨팅 수요 강세.'),
-        tp: '950', sl: '820', entryPrice: '875', exitPrice: '', rr: '1.7',
-        audit: dnaT('木星双子与NVDA创始星象高度共振。补仓时机选择在财报前的"信息真空期"，符合水星逆行期间"逆向布局"的星象策略。建议：设置820硬止损，若财报不及预期可快速离场。','Jupiter in Gemini highly resonates with NVDA\'s founding astrology. Averaging down timing chosen in the "information vacuum" before earnings, aligning with the "contrarian positioning" strategy during Mercury retrograde. Suggestion: set 820 hard stop loss, quick exit if earnings disappoint.','Júpiter en Géminis resuena altamente con la astrología fundacional de NVDA. El momento de promediar a la baja elegido en el "vacío de información" antes de ganancias, alineado con la estrategia de "posicionamiento contrario" durante el retroceso de Mercurio. Sugerencia: establecer stop loss duro en 820, salida rápida si las ganancias decepcionan.','木星雙子與NVDA創始星象高度共振。補倉時機選擇在財報前的「資訊真空期」，符合水星逆行期間「逆向佈局」的星象策略。建議：設置820硬止損，若財報不及預期可快速離場。','双子座の木星がNVDAの設立占星術と高い共鳴。決算前の「情報の真空」期にナンピンのタイミングを選択、水星逆行中の「逆張りポジショニング」戦略に合致。提案：820のハードストップロスを設定、決算が期待外れの場合は迅速に離脱。','쌍둥이 목성이 NVDA 창립 점성술과 높은 공명. 실적 전 "정보 진공" 기간에 물타기 타이밍 선택, 수성 역행 중 "역추세 포지셔닝" 전략과 일치. 제안: 820 하드 손절 설정, 실적이 기대치 미달 시 신속 청산.')
-      }
-    ];
-    logs = samples.concat(logs);
+    logs = getSampleTradeLogs().concat(logs);
   }
   
   renderTradeLogs(logs);
@@ -10855,7 +10858,15 @@ function renderTradeLogs(logs) {
 
 function editTradeLog(id) {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
-  var log = logs.find(function(l) { return l.id === id; });
+  var log = logs.find(function(l) { return String(l.id) === String(id); });
+  // If not found in localStorage, check sample data
+  if (!log) {
+    var dismissed = localStorage.getItem('vibe_tl_samples_dismissed');
+    if (!dismissed) {
+      var samples = getSampleTradeLogs();
+      log = samples.find(function(l) { return String(l.id) === String(id); });
+    }
+  }
   if (!log) return;
   // Pre-fill and open modal with existing data
   openTradeLogModal();
