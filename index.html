@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-17';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-18';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -8011,13 +8011,61 @@ function switchNav(nav) {
   document.getElementById('welcomeState').classList.add('hidden');
   document.getElementById('chatMessages').classList.add('active');
   const actions = {
-    scanner: () => { addInsightPortalCard(); },
-    dna: () => addDNACard(),
-    calendar: () => addCalendarCard(),
-    log: () => addTradingLogPrompt(),
-    pulse: () => addPulseCard(),
-    transits: () => { addGlobalVibesCard(); },
-    watchlist: () => addWatchlistCard()
+    scanner: () => {
+      if (window._scannerCache) {
+        // Use cached HTML for instant display
+        var container = document.getElementById('chatMessages');
+        var msg = document.createElement('div');
+        msg.className = 'msg ai';
+        msg.innerHTML = window._scannerCache;
+        container.appendChild(msg);
+        scrollChatTop();
+      } else {
+        addInsightPortalCard();
+      }
+    },
+    dna: () => {
+      if (window._dnaCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._dnaCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addDNACard(); }
+    },
+    calendar: () => {
+      if (window._calendarCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._calendarCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addCalendarCard(); }
+    },
+    log: () => {
+      if (window._logCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._logCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addTradingLogPrompt(); }
+    },
+    pulse: () => {
+      if (window._pulseCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._pulseCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addPulseCard(); }
+    },
+    transits: () => {
+      if (window._transitsCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._transitsCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addGlobalVibesCard(); }
+    },
+    watchlist: () => {
+      if (window._watchlistCache) {
+        var c = document.getElementById('chatMessages');
+        var m = document.createElement('div'); m.className = 'msg ai'; m.innerHTML = window._watchlistCache;
+        c.appendChild(m); scrollChatTop();
+      } else { addWatchlistCard(); }
+    }
   };
   if (actions[nav]) {
     try { actions[nav](); } catch(e) {
@@ -10037,6 +10085,7 @@ function addDNACard() {
   '</div>';
 
   container.appendChild(msg);
+  window._dnaCache = msg.innerHTML;
 
   // Collapsible toggle
   document.addEventListener('click', function(e) {
@@ -11201,6 +11250,7 @@ function addCalendarCard() {
   '</div>';
 
   container.appendChild(msg);
+  window._calendarCache = msg.innerHTML;
   applyI18n();
   scrollChatTop();
 }
@@ -11396,6 +11446,7 @@ function addPulseCard() {
     '</div></div></div>';
 
   container.appendChild(msg);
+  window._pulseCache = msg.innerHTML;
   scrollChatTop();
 }
 
@@ -11458,6 +11509,7 @@ function addWatchlistCard() {
   '</div>';
 
   container.appendChild(msg);
+  window._watchlistCache = msg.innerHTML;
   scrollChatTop();
 }
 
@@ -11497,8 +11549,10 @@ function addTradingLogPrompt() {
     '</div>' +
   '</div>';
   
+  // Cache scanner HTML for instant re-opening
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
+  window._logCache = innerHTML;
   scrollChatTop();
   
   loadAndRenderTradeLogs();
@@ -12939,6 +12993,7 @@ async function addInsightPortalCard() {
 
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
+  window._transitsCache = innerHTML;
   scrollChatTop();
 
   // Fetch API reports in background and update if available
