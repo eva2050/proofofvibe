@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-32';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-33';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4104,13 +4104,69 @@ html[lang="ko"] {
 }
 /* ========== FORTUNE K-LINE CHART ========== */
 .ip-fortune-section {
-  padding: 0 20px 16px;
-}
-.ip-fortune-card {
+  display: flex;
+  height: 360px;
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 12px;
   background: var(--card-bg);
   overflow: hidden;
+}
+.ip-fortune-left {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ip-fortune-right {
+  width: 30%;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.ip-fortune-list {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.ip-fortune-list::-webkit-scrollbar {
+  width: 4px;
+}
+.ip-fortune-list::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 2px;
+}
+.ip-fortune-list-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s;
+}
+.ip-fortune-list-item:hover {
+  background: var(--hover-bg);
+}
+.ip-fortune-list-item.active {
+  background: var(--hover-bg);
+}
+.ip-fortune-list-item .item-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex: 1;
+}
+.ip-fortune-list-item .item-type {
+  font-size: 9px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(124,58,237,0.1);
+  color: var(--accent);
+}
+.ip-fortune-list-item .item-score {
+  font-size: 14px;
+  font-weight: 700;
 }
 .ip-fortune-header {
   display: flex;
@@ -4198,8 +4254,8 @@ html[lang="ko"] {
 /* Canvas wrapper */
 .ip-fortune-canvas-wrap {
   position: relative;
-  width: 100%;
-  height: 280px;
+  flex: 1;
+  min-height: 0;
   padding: 0 8px 8px;
 }
 .ip-fortune-canvas-wrap canvas {
@@ -5766,6 +5822,7 @@ const i18n = {
     'mod.macroStrategyText': 'Based on your trading DNA and current transits: <strong style="color:#22C55E;">Increase crypto and AI exposure</strong> — Jupiter-Uranus energy peaks in the next 3 months. <strong style="color:#F59E0B;">Reduce leverage</strong> — Saturn retrograde approaches in June. <strong style="color:var(--text-primary);">Keep 30% cash</strong> to navigate Pluto sign-change volatility.',
     'mod.vibeWatchlist': 'Vibe Watchlist',
     'mod.watchlistSubtitle': 'Resonance Dashboard',
+    'mod.watchlistTitle': 'Watchlist',
     'mod.watchlistDesc': 'Entities you follow will appear here with real-time cosmic sync scores.',
     'mod.addFromScanner': '+ Add Target',
     'mod.addTargetPlaceholder': 'e.g. AAPL, @JackMa, #Alibaba',
@@ -6251,6 +6308,7 @@ const i18n = {
     'mod.waningSquare': 'Cuadratura Menguante',
     'mod.watchlistDesc': 'Las entidades que sigues aparecerán aquí con puntuaciones de sincronía cósmica en tiempo real.',
     'mod.watchlistSubtitle': 'Panel de Resonancia',
+    'mod.watchlistTitle': 'Lista de Observación',
     'mod.water': 'Agua',
     'mod.waterDesc': 'Trading emocional, impulsado por intuición',
     'mod.weakSync': 'Sincronía Débil',
@@ -6637,6 +6695,7 @@ const i18n = {
     'mod.macroStrategyText': '基于你的交易 DNA（复仇交易者画像）和当前天象：<strong style="color:#22C55E;">增加加密货币和 AI 曝仓</strong>，未来 3 个月木星-天王星能量达到峰值。<strong style="color:#F59E0B;">降低杠杆</strong>，6 月土星逆行临近。<strong style="color:var(--text-primary);">保留 30% 现金</strong>应对冥王星换座波动。',
     'mod.vibeWatchlist': '宇宙通讯录',
     'mod.watchlistSubtitle': '共振仪表盘 · 按契合度排名',
+    'mod.watchlistTitle': '观察列表',
     'mod.watchlistDesc': '你关注的标的，按今日与你的盘共振程度动态排名。<span style="color:#22C55E;font-weight:600;">绿色 = 旺你。</span> <span style="color:#EF4444;font-weight:600;">红色 = 谨慎。</span>',
     'mod.addFromScanner': '+ 添加观察标的',
     'mod.addTargetPlaceholder': '例如 AAPL、@马云、#阿里巴巴',
@@ -7186,6 +7245,7 @@ const i18n = {
     'mod.waningSquare': '虧四分',
     'mod.watchlistDesc': '你關注的實體將顯示在這裡，附帶即時宇宙共振評分。',
     'mod.watchlistSubtitle': '共振儀表板',
+    'mod.watchlistTitle': '觀察列表',
     'mod.water': '水',
     'mod.waterDesc': '情緒交易，直覺驅動',
     'mod.weakSync': '弱共振',
@@ -7721,6 +7781,7 @@ const i18n = {
     'mod.waningSquare': '減少スクエア',
     'mod.watchlistDesc': 'フォロー中のエンティティがリアルタイムのコズミックシンクスコアと共にここに表示されます。',
     'mod.watchlistSubtitle': '共鳴ダッシュボード',
+    'mod.watchlistTitle': 'ウォッチリスト',
     'mod.water': '水',
     'mod.waterDesc': '感情的なトレード、直感駆動',
     'mod.weakSync': '弱いシンク',
@@ -8155,6 +8216,7 @@ const i18n = {
     'mod.waningSquare': '감소 사각',
     'mod.watchlistDesc': '팔로우하는 엔티티가 실시간 우주 공명 점수와 함께 여기에 표시됩니다.',
     'mod.watchlistSubtitle': '공명 대시보드',
+    'mod.watchlistTitle': '관찰 목록',
     'mod.water': '수',
     'mod.waterDesc': '감정적 거래, 직감 주도',
     'mod.weakSync': '약한 공명',
@@ -11752,32 +11814,55 @@ function addWatchlistCard() {
     '</div>';
   });
 
-  // --- Fortune K-Line tabs ---
-  var fortuneTabsHTML = '';
+  // --- Fortune K-Line left-right layout ---
+  var listItemsHTML = '';
   for (var fi = 0; fi < FORTUNE_TARGETS.length; fi++) {
     var ft = FORTUNE_TARGETS[fi];
     var ftData = getFortuneData(ft.name);
     var ftLast = ftData.length > 0 ? ftData[ftData.length - 1] : null;
     var ftScore = ftLast ? ftLast.close.toFixed(0) : '--';
+    var ftPrev = ftData.length > 1 ? ftData[ftData.length - 2] : ftLast;
+    var ftDiff = ftLast && ftPrev ? ftLast.close - ftPrev.close : 0;
+    var ftPct = ftPrev && ftPrev.close !== 0 ? ((ftDiff / ftPrev.close) * 100).toFixed(1) : '0.0';
+    var ftColor = ftDiff >= 0 ? '#22C55E' : '#EF4444';
+    var ftSign = ftDiff >= 0 ? '+' : '';
     var isActive = ft.name === _currentFortuneTarget ? ' active' : '';
-    fortuneTabsHTML += '<button class="ip-fortune-tab' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
-      '<span>' + escapeHtml(ft.name) + '</span>' +
-      '<span class="tab-score">' + ftScore + '</span>' +
-    '</button>';
+
+    var prefix = '$';
+    if (ft.type === 'titan') prefix = '@';
+    else if (ft.type === 'institution') prefix = '#';
+    else if (ft.type === 'index') prefix = '';
+
+    var typeLabel = '';
+    if (ft.type === 'titan') typeLabel = t('mod.personality');
+    else if (ft.type === 'institution') typeLabel = t('mod.institution');
+    else if (ft.type === 'crypto') typeLabel = t('mod.crypto');
+    else if (ft.type === 'index') typeLabel = t('mod.index');
+    else typeLabel = t('mod.stockCrypto');
+
+    listItemsHTML += '<div class="ip-fortune-list-item' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
+      '<div style="flex:1;min-width:0;">' +
+        '<div style="font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + prefix + escapeHtml(ft.name) + '</div>' +
+        '<div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">' + typeLabel + '</div>' +
+      '</div>' +
+      '<div style="text-align:right;">' +
+        '<div style="font-size:14px;font-weight:700;color:' + ftColor + ';">' + ftScore + '</div>' +
+        '<div style="font-size:10px;color:' + ftColor + ';">' + ftSign + ftPct + '%</div>' +
+      '</div>' +
+    '</div>';
   }
 
   var fortuneChartHTML = '<div style="margin-top:16px;">' +
     '<div class="ip-section-label">' + t('ip.fortuneChart') + '</div>' +
     '<div class="ip-fortune-section">' +
-      '<div class="ip-fortune-card">' +
+      '<div class="ip-fortune-left">' +
         '<div class="ip-fortune-header">' +
-          '<span class="ip-fortune-title">' + t('ip.fortuneScore') + '</span>' +
+          '<span class="ip-fortune-title" id="fortuneTargetName">' + escapeHtml(_currentFortuneTarget) + '</span>' +
           '<div class="ip-fortune-score-badge">' +
             '<span class="score-value" id="fortuneScoreValue">--</span>' +
             '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
           '</div>' +
         '</div>' +
-        '<div class="ip-fortune-tabs">' + fortuneTabsHTML + '</div>' +
         '<div class="ip-fortune-canvas-wrap">' +
           '<canvas id="fortuneKLineCanvas"></canvas>' +
         '</div>' +
@@ -11785,6 +11870,13 @@ function addWatchlistCard() {
           '<span class="fortune-label">' + t('ip.switchTarget') + '</span>' +
           '<span class="fortune-period" id="fortunePeriod">--</span>' +
         '</div>' +
+      '</div>' +
+      '<div class="ip-fortune-right">' +
+        '<div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">' +
+          '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">' + t('mod.watchlistTitle') + '</span>' +
+          '<span style="width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:16px;border:1px solid var(--border);" onclick="showAddTargetForm()" title="+">+</span>' +
+        '</div>' +
+        '<div class="ip-fortune-list">' + listItemsHTML + '</div>' +
       '</div>' +
     '</div>' +
   '</div>';
@@ -13516,10 +13608,14 @@ function switchFortuneTarget(targetName) {
   var data = getFortuneData(targetName);
   renderFortuneKLine('fortuneKLineCanvas', data, true);
 
-  // Update tab active states
-  var tabs = document.querySelectorAll('.ip-fortune-tab');
-  for (var i = 0; i < tabs.length; i++) {
-    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-target') === targetName);
+  // Update target name display
+  var nameEl = document.getElementById('fortuneTargetName');
+  if (nameEl) nameEl.textContent = targetName;
+
+  // Update list active states
+  var listItems = document.querySelectorAll('.ip-fortune-list-item');
+  for (var i = 0; i < listItems.length; i++) {
+    listItems[i].classList.toggle('active', listItems[i].getAttribute('data-target') === targetName);
   }
 
   // Update score badge
