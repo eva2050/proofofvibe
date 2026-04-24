@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-21';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-22';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -5767,7 +5767,11 @@ const i18n = {
     'mod.vibeWatchlist': 'Vibe Watchlist',
     'mod.watchlistSubtitle': 'Resonance Dashboard',
     'mod.watchlistDesc': 'Entities you follow will appear here with real-time cosmic sync scores.',
-    'mod.addFromScanner': '+ Add from Scanner',
+    'mod.addFromScanner': '+ Add Target',
+    'mod.addTargetPlaceholder': 'e.g. AAPL, @JackMa, #Alibaba',
+    'mod.addTargetHint': 'Use $ for stocks (e.g. $AAPL), @ for people (e.g. @JackMa), # for institutions (e.g. #Alibaba). Plain text defaults to stock ticker.',
+    'mod.confirmAdd': 'Add',
+    'mod.cancel': 'Cancel',
     'mod.top': 'TOP',
     'mod.cosmicRealityCheck': 'Cosmic Reality Check',
     'mod.victoryVibes': 'Victory Vibes',
@@ -6116,7 +6120,11 @@ const i18n = {
     'ip.tech': 'TECNOLOGÍA',
     'ip.trendingVibrations': 'Vibraciones en Tendencia',
     'mod.actionableVerdict': 'Veredicto Accionable',
-    'mod.addFromScanner': '+ Agregar desde Scanner',
+    'mod.addFromScanner': '+ Agregar Objetivo',
+    'mod.addTargetPlaceholder': 'ej. AAPL, @JackMa, #Alibaba',
+    'mod.addTargetHint': 'Usa $ para acciones (ej. $AAPL), @ para personas (ej. @JackMa), # para instituciones (ej. #Alibaba). Texto plano se trata como ticker.',
+    'mod.confirmAdd': 'Agregar',
+    'mod.cancel': 'Cancelar',
     'mod.aiTech': 'IA / Tech',
     'mod.aiTechReason': 'La ola de innovación de Urano impulsa la rotación sectorial',
     'mod.air': 'Aire',
@@ -6630,7 +6638,11 @@ const i18n = {
     'mod.vibeWatchlist': '宇宙通讯录',
     'mod.watchlistSubtitle': '共振仪表盘 · 按契合度排名',
     'mod.watchlistDesc': '你关注的标的，按今日与你的盘共振程度动态排名。<span style="color:#22C55E;font-weight:600;">绿色 = 旺你。</span> <span style="color:#EF4444;font-weight:600;">红色 = 谨慎。</span>',
-    'mod.addFromScanner': '+ 从预言机添加',
+    'mod.addFromScanner': '+ 添加观察标的',
+    'mod.addTargetPlaceholder': '例如 AAPL、@马云、#阿里巴巴',
+    'mod.addTargetHint': '使用 $ 代表股票（如 $AAPL），@ 代表人物（如 @马云），# 代表机构（如 #阿里巴巴）。直接输入默认为股票代码。',
+    'mod.confirmAdd': '添加',
+    'mod.cancel': '取消',
     'mod.top': 'TOP ',
     'mod.cosmicRealityCheck': '宇宙现实检验',
     'mod.victoryVibes': '胜利 Vibe',
@@ -7043,7 +7055,11 @@ const i18n = {
     'login.terms': '继续即表示你同意我们的服务条款和隐私政策。',
     'login.title': '欢迎回来',
     'mod.actionableVerdict': '可執行判斷',
-    'mod.addFromScanner': '+ 從掃描器新增',
+    'mod.addFromScanner': '+ 新增觀察標的',
+    'mod.addTargetPlaceholder': '例如 AAPL、@馬雲、#阿里巴巴',
+    'mod.addTargetHint': '使用 $ 代表股票（如 $AAPL），@ 代表人物（如 @馬雲），# 代表機構（如 #阿里巴巴）。直接輸入預設為股票代碼。',
+    'mod.confirmAdd': '新增',
+    'mod.cancel': '取消',
     'mod.aiTech': 'AI / 科技',
     'mod.aiTechReason': '天王星創新浪潮驅動板塊輪動',
     'mod.air': '風',
@@ -7574,7 +7590,11 @@ const i18n = {
     'ip.tech': 'テクノロジー',
     'ip.trendingVibrations': 'トレンドバイブ',
     'mod.actionableVerdict': 'アクショナブル判定',
-    'mod.addFromScanner': '+ スキャナーから追加',
+    'mod.addFromScanner': '+ 対象を追加',
+    'mod.addTargetPlaceholder': '例: AAPL、@孫正義、#SoftBank',
+    'mod.addTargetHint': '$ で株式（例: $AAPL）、@ で人物（例: @孫正義）、# で機関（例: #SoftBank）。そのまま入力はティッカーとして扱います。',
+    'mod.confirmAdd': '追加',
+    'mod.cancel': 'キャンセル',
     'mod.aiTech': 'AI / テクノロジー',
     'mod.aiTechReason': '天王星のイノベーションウェーブがセクターローテーションを促進',
     'mod.air': '風',
@@ -8004,7 +8024,11 @@ const i18n = {
     'ip.tech': '기술',
     'ip.trendingVibrations': '트렌딩 바이브',
     'mod.actionableVerdict': '실행 가능한 판단',
-    'mod.addFromScanner': '+ 스캐너에서 추가',
+    'mod.addFromScanner': '+ 대상 추가',
+    'mod.addTargetPlaceholder': '예: AAPL, @JackMa, #Alibaba',
+    'mod.addTargetHint': '$는 주식(예: $AAPL), @는 인물(예: @JackMa), #는 기관(예: #Alibaba). 일반 텍스트는 티커로 처리됩니다.',
+    'mod.confirmAdd': '추가',
+    'mod.cancel': '취소',
     'mod.aiTech': 'AI / 기술',
     'mod.aiTechReason': '천왕성 혁신 파도가 섹터 로테이션을 주도',
     'mod.air': '풍',
@@ -11703,7 +11727,8 @@ function addWatchlistCard() {
   let listHTML = '';
   items.forEach((item, idx) => {
     const rankBadge = idx < 2 ? '<span style="font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px;background:rgba(34,197,94,0.1);color:#22C55E;">' + t('mod.top') + ' ' + (idx + 1) + '</span>' : '';
-    listHTML += '<div style="padding:12px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;" onclick="handleChipClick(\'' + item.name + '\')">' +
+    listHTML += '<div style="padding:12px;border-radius:10px;border:1px solid var(--border);margin-bottom:8px;cursor:pointer;position:relative;" onclick="handleChipClick(\'' + item.name + '\')">' +
+      '<div style="position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:14px;opacity:0.5;" onclick="event.stopPropagation();removeWatchlistItem(\'' + item.name + '\')" title="Remove">✕</div>' +
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">' +
         '<div style="flex:1;">' +
           '<div style="display:flex;align-items:center;gap:6px;">' +
@@ -11767,10 +11792,10 @@ function addWatchlistCard() {
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="result-card">' +
       '<div style="padding:16px;">' +
-        '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">' + t('mod.watchlistDesc') + '</div>' +
-        listHTML +
         fortuneChartHTML +
-        '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="handleSearch()">+ ' + t('mod.addFromScanner') + '</div>' +
+        '<div style="font-size:12px;color:var(--text-secondary);margin:16px 0 12px;">' + t('mod.watchlistDesc') + '</div>' +
+        listHTML +
+        '<div id="addTargetArea"></div>' +
       '</div>' +
     '</div>' +
   '</div>';
@@ -11781,6 +11806,12 @@ function addWatchlistCard() {
 
   // Initialize fortune K-line chart
   try { initFortuneChart(); } catch(e) { /* non-critical */ }
+
+  // Render add-target button
+  var addTargetArea = document.getElementById('addTargetArea');
+  if (addTargetArea) {
+    addTargetArea.innerHTML = '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="showAddTargetForm()">+ ' + t('mod.addFromScanner') + '</div>';
+  }
 }
 
 function addTradingLogPrompt() {
@@ -13539,6 +13570,136 @@ function initFortuneChart() {
     var periodEl = document.getElementById('fortunePeriod');
     if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
   }
+}
+
+// =============================================================================
+// Watchlist Management: Add / Remove targets
+// =============================================================================
+
+// User's custom watchlist items (persisted in localStorage)
+function getUserWatchlist() {
+  try {
+    var saved = localStorage.getItem('pov_watchlist');
+    return saved ? JSON.parse(saved) : [];
+  } catch(e) { return []; }
+}
+
+function saveUserWatchlist(items) {
+  localStorage.setItem('pov_watchlist', JSON.stringify(items));
+}
+
+// Show inline add-target form
+function showAddTargetForm() {
+  var area = document.getElementById('addTargetArea');
+  if (!area) return;
+  area.innerHTML =
+    '<div style="padding:12px;border:1px solid var(--accent);border-radius:10px;margin-top:8px;">' +
+      '<div style="display:flex;gap:8px;margin-bottom:10px;">' +
+        '<input type="text" id="newTargetInput" placeholder="' + t('mod.addTargetPlaceholder') + '" style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg-primary);color:var(--text-primary);outline:none;" onkeydown="if(event.key===\'Enter\')confirmAddTarget()">' +
+        '<button class="btn btn-primary" style="padding:8px 16px;font-size:12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;" onclick="confirmAddTarget()">' + t('mod.confirmAdd') + '</button>' +
+        '<button style="padding:8px 12px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">' + t('mod.cancel') + '</button>' +
+      '</div>' +
+      '<div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">' +
+        t('mod.addTargetHint') +
+      '</div>' +
+    '</div>';
+  var input = document.getElementById('newTargetInput');
+  if (input) input.focus();
+}
+
+function cancelAddTarget() {
+  var area = document.getElementById('addTargetArea');
+  if (!area) return;
+  area.innerHTML = '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="showAddTargetForm()">+ ' + t('mod.addFromScanner') + '</div>';
+}
+
+function confirmAddTarget() {
+  var input = document.getElementById('newTargetInput');
+  if (!input) return;
+  var name = input.value.trim();
+  if (!name) return;
+
+  // Determine type and add defaults
+  var type, inception, sunSign;
+  if (name.startsWith('$')) {
+    type = 'stock';
+    inception = '2024-01-01';
+    sunSign = 'Capricorn';
+  } else if (name.startsWith('#')) {
+    type = 'institution';
+    inception = '2000-01-01';
+    sunSign = 'Aquarius';
+  } else if (name.startsWith('@')) {
+    type = 'person';
+    inception = '1970-01-01';
+    sunSign = 'Aries';
+  } else {
+    // Default: treat as stock ticker
+    type = 'stock';
+    name = '$' + name;
+    inception = '2024-01-01';
+    sunSign = 'Capricorn';
+  }
+
+  var watchlist = getUserWatchlist();
+  // Check duplicate
+  for (var i = 0; i < watchlist.length; i++) {
+    if (watchlist[i].name === name) {
+      cancelAddTarget();
+      return;
+    }
+  }
+
+  watchlist.push({ name: name, type: type, inception: inception, sunSign: sunSign });
+  saveUserWatchlist(watchlist);
+
+  // Also add to FORTUNE_TARGETS if not exists
+  var exists = false;
+  for (var j = 0; j < FORTUNE_TARGETS.length; j++) {
+    if (FORTUNE_TARGETS[j].name === name) { exists = true; break; }
+  }
+  if (!exists) {
+    FORTUNE_TARGETS.push({ name: name, type: type, inception: inception, sunSign: sunSign });
+  }
+
+  // Clear cache and re-render watchlist
+  window._watchlistCache = null;
+  cancelAddTarget();
+
+  // Remove old watchlist message and re-add
+  var msgs = document.querySelectorAll('.msg.ai');
+  for (var k = msgs.length - 1; k >= 0; k--) {
+    if (msgs[k].innerHTML.indexOf('addTargetArea') !== -1) {
+      msgs[k].remove();
+      break;
+    }
+  }
+  addWatchlistCard();
+}
+
+function removeWatchlistItem(name) {
+  // Remove from localStorage
+  var watchlist = getUserWatchlist();
+  watchlist = watchlist.filter(function(item) { return item.name !== name; });
+  saveUserWatchlist(watchlist);
+
+  // Remove from FORTUNE_TARGETS (only custom ones)
+  var defaultNames = ['Elon Musk','Warren Buffett','Cathie Wood','Federal Reserve','BlackRock','Citadel','Bitcoin','Ethereum','Solana','S&P 500','Nasdaq'];
+  if (defaultNames.indexOf(name) === -1) {
+    FORTUNE_TARGETS = FORTUNE_TARGETS.filter(function(t) { return t.name !== name; });
+    delete _fortuneCacheData[name];
+  }
+
+  // Re-render
+  window._watchlistCache = null;
+  var msgs = document.querySelectorAll('.msg.ai');
+  for (var k = msgs.length - 1; k >= 0; k--) {
+    if (msgs[k].innerHTML.indexOf('addTargetArea') !== -1) {
+      msgs[k].remove();
+      break;
+    }
+  }
+  addWatchlistCard();
 }
 
 async function addInsightPortalCard() {
