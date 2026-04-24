@@ -69,6 +69,9 @@ async function handleRequest(request) {
     if (path === '/api/trade-logs' && method === 'GET') {
       return await withAuth(request, handleGetTradeLogs);
     }
+    if (path.match(/^\/api\/trade-logs\/\d+$/) && method === 'PUT') {
+      return await withAuth(request, handleUpdateTradeLog);
+    }
     if (path.match(/^\/api\/trade-logs\/\d+$/) && method === 'DELETE') {
       return await withAuth(request, handleDeleteTradeLog);
     }
@@ -651,29 +654,120 @@ async function handleUpdateProfile(request, ctx) {
 
 async function handleCreateTradeLog(request, ctx) {
   const body = await readBody(request);
-  const { date, symbol, sentiment, notes, amount } = body;
+  const { date, time, symbol, type, action, vibe, reason, tp, sl, entryPrice, exitPrice, rr, audit } = body;
 
-  if (!date || !symbol) {
-    return jsonResponse({ error: 'date and symbol are required' }, 400);
+  if (!symbol) {
+    return jsonResponse({ error: 'symbol is required' }, 400);
   }
+
+  // Auto-create table with full schema
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS trade_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    date TEXT,
+    time TEXT,
+    symbol TEXT,
+    type TEXT,
+    action TEXT,
+    vibe INTEGER,
+    reason TEXT,
+    tp TEXT,
+    sl TEXT,
+    entry_price TEXT,
+    exit_price TEXT,
+    rr TEXT,
+    audit TEXT,
+    created_at TEXT,
+    updated_at TEXT
+  )`).run();
 
   const now = new Date().toISOString();
   const result = await env.DB.prepare(
-    'INSERT INTO trade_logs (user_id, date, symbol, sentiment, notes, amount, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
-  ).bind(ctx.user.user_id, date, symbol, sentiment || null, notes || null, amount || null, now).run();
+    `INSERT INTO trade_logs (user_id, date, time, symbol, type, action, vibe, reason, tp, sl, entry_price, exit_price, rr, audit, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(
+    ctx.user.user_id,
+    date || now.split('T')[0],
+    time || null,
+    symbol,
+    type || 'buy',
+    action || 'buy',
+    vibe || null,
+    reason || null,
+    tp || null,
+    sl || null,
+    entryPrice || null,
+    exitPrice || null,
+    rr || null,
+    audit || null,
+    now,
+    now
+  ).run();
 
   return jsonResponse({
     trade_log: {
       id: result.meta.last_row_id,
-      user_id: ctx.user.user_id,
-      date,
+      date: date || now.split('T')[0],
+      time: time || null,
       symbol,
-      sentiment: sentiment || null,
-      notes: notes || null,
-      amount: amount || null,
+      type: type || 'buy',
+      action: action || 'buy',
+      vibe: vibe || null,
+      reason: reason || null,
+      tp: tp || null,
+      sl: sl || null,
+      entryPrice: entryPrice || null,
+      exitPrice: exitPrice || null,
+      rr: rr || null,
+      audit: audit || null,
       created_at: now,
     },
   }, 201);
+}
+
+// =============================================================================
+// PUT /api/trade-logs/:id  (protected)
+// =============================================================================
+
+async function handleUpdateTradeLog(request, ctx) {
+  const url = new URL(request.url);
+  const id = parseInt(url.pathname.split('/').pop(), 10);
+
+  if (!id || isNaN(id)) {
+    return jsonResponse({ error: 'Invalid trade log ID' }, 400);
+  }
+
+  const existing = await env.DB.prepare(
+    'SELECT id FROM trade_logs WHERE rowid = ? AND user_id = ?'
+  ).bind(id, ctx.user.user_id).first();
+
+  if (!existing) {
+    return jsonResponse({ error: 'Trade log not found' }, 404);
+  }
+
+  const body = await readBody(request);
+  const allowedFields = ['date', 'time', 'symbol', 'type', 'action', 'vibe', 'reason', 'tp', 'sl', 'entry_price', 'exit_price', 'rr', 'audit'];
+  const updates = [];
+  const values = [];
+
+  for (const field of allowedFields) {
+    if (body[field] !== undefined) {
+      updates.push(`${field} = ?`);
+      values.push(body[field]);
+    }
+  }
+
+  if (updates.length === 0) {
+    return jsonResponse({ error: 'No valid fields to update' }, 400);
+  }
+
+  updates.push("updated_at = ?");
+  values.push(new Date().toISOString());
+  values.push(id, ctx.user.user_id);
+
+  await env.DB.prepare(`UPDATE trade_logs SET ${updates.join(', ')} WHERE rowid = ? AND user_id = ?`).bind(...values).run();
+
+  return jsonResponse({ message: 'Trade log updated' });
 }
 
 // =============================================================================
@@ -681,11 +775,50 @@ async function handleCreateTradeLog(request, ctx) {
 // =============================================================================
 
 async function handleGetTradeLogs(request, ctx) {
+  // Auto-migrate: create table if not exists
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS trade_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    date TEXT,
+    time TEXT,
+    symbol TEXT,
+    type TEXT,
+    action TEXT,
+    vibe INTEGER,
+    reason TEXT,
+    tp TEXT,
+    sl TEXT,
+    entry_price TEXT,
+    exit_price TEXT,
+    rr TEXT,
+    audit TEXT,
+    created_at TEXT,
+    updated_at TEXT
+  )`).run();
+
   const result = await env.DB.prepare(
-    'SELECT * FROM trade_logs WHERE user_id = ? ORDER BY date DESC, created_at DESC'
+    'SELECT rowid as id, * FROM trade_logs WHERE user_id = ? ORDER BY created_at DESC'
   ).bind(ctx.user.user_id).all();
 
-  return jsonResponse({ trade_logs: result.results || [] });
+  // Map DB columns to frontend field names
+  const logs = (result.results || []).map(row => ({
+    id: String(row.id),
+    date: row.date,
+    time: row.time,
+    symbol: row.symbol,
+    type: row.type || 'buy',
+    action: row.action || 'buy',
+    vibe: row.vibe || 50,
+    reason: row.reason || '',
+    tp: row.tp || '',
+    sl: row.sl || '',
+    entryPrice: row.entry_price || '',
+    exitPrice: row.exit_price || '',
+    rr: row.rr || '',
+    audit: row.audit || '',
+  }));
+
+  return jsonResponse({ trade_logs: logs });
 }
 
 // =============================================================================

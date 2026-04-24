@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-8';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-9';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -11658,7 +11658,8 @@ function submitTradeLog() {
   localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
   backupTradeLogs(logs);
   
-  saveTradeLogToCloud(isBuy ? 'positive' : 'negative', symbol, reason, entry.entryPrice || entry.exitPrice);
+  // Sync to cloud (full entry data)
+  saveTradeLogToCloud(entry);
   
   document.getElementById('tlModal').remove();
   renderTradeLogs(logs);
@@ -11785,7 +11786,32 @@ function getSampleTradeLogs() {
 }
 
 function loadAndRenderTradeLogs() {
-  var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+  // Try loading from cloud first (if logged in)
+  if (authToken) {
+    loadTradeLogsFromCloud().then(function(cloudLogs) {
+      if (cloudLogs && cloudLogs.length > 0) {
+        // Use cloud data as source of truth, merge local-only entries
+        var localLogs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
+        var cloudIds = {};
+        for (var i = 0; i < cloudLogs.length; i++) cloudIds[cloudLogs[i].id] = true;
+        var localOnly = localLogs.filter(function(l) { return !cloudIds[l.id]; });
+        var merged = cloudLogs.concat(localOnly);
+        localStorage.setItem('vibe_trade_logs', JSON.stringify(merged));
+        backupTradeLogs(merged);
+        renderTradeLogsWithSamples(merged);
+      } else {
+        renderTradeLogsWithSamples(null);
+      }
+    }).catch(function() {
+      renderTradeLogsWithSamples(null);
+    });
+  } else {
+    renderTradeLogsWithSamples(null);
+  }
+}
+
+function renderTradeLogsWithSamples(cloudLogs) {
+  var logs = cloudLogs || JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
   
   // Always show sample data unless user has dismissed them
   var dismissed = localStorage.getItem('vibe_tl_samples_dismissed');
@@ -11932,6 +11958,10 @@ function deleteTradeLog(id) {
   logs = logs.filter(function(l) { return String(l.id) !== String(id); });
   localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
   backupTradeLogs(logs);
+  // Sync delete to cloud (only for numeric IDs = cloud entries)
+  if (authToken && !isNaN(parseInt(id))) {
+    deleteTradeLogFromCloud(id);
+  }
   loadAndRenderTradeLogs();
 }
 
@@ -12324,7 +12354,7 @@ async function loadProfileFromCloud() {
   } catch(e) {}
 }
 
-async function saveTradeLogToCloud(sentiment, symbol, notes, amount) {
+async function saveTradeLogToCloud(entry) {
   if (!authToken) return;
   try {
     await fetch(API_BASE + '/api/trade-logs', {
@@ -12333,7 +12363,21 @@ async function saveTradeLogToCloud(sentiment, symbol, notes, amount) {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + authToken
       },
-      body: JSON.stringify({ sentiment, symbol, notes, amount, date: new Date().toISOString() })
+      body: JSON.stringify({
+        date: entry.date,
+        time: entry.time,
+        symbol: entry.symbol,
+        type: entry.type,
+        action: entry.action,
+        vibe: entry.vibe,
+        reason: entry.reason,
+        tp: entry.tp,
+        sl: entry.sl,
+        entryPrice: entry.entryPrice,
+        exitPrice: entry.exitPrice,
+        rr: entry.rr,
+        audit: entry.audit
+      })
     });
   } catch(e) {}
 }
@@ -12344,9 +12388,22 @@ async function loadTradeLogsFromCloud() {
     const res = await fetch(API_BASE + '/api/trade-logs', {
       headers: { 'Authorization': 'Bearer ' + authToken }
     });
-    if (res.ok) return await res.json();
+    if (res.ok) {
+      const data = await res.json();
+      return data.trade_logs || [];
+    }
   } catch(e) {}
   return [];
+}
+
+async function deleteTradeLogFromCloud(id) {
+  if (!authToken) return;
+  try {
+    await fetch(API_BASE + '/api/trade-logs/' + id, {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + authToken }
+    });
+  } catch(e) {}
 }
 
 
