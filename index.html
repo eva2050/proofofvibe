@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-33';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-34';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4102,166 +4102,249 @@ html[lang="ko"] {
   line-height: 1.5;
   opacity: 0.8;
 }
-/* ========== FORTUNE K-LINE CHART ========== */
+/* ===== Fortune K-Line Panel - Professional Trading Style ===== */
 .ip-fortune-section {
   display: flex;
-  height: 360px;
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 12px;
+  height: 380px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--card-bg);
   overflow: hidden;
 }
+
+/* Left: Chart Area */
 .ip-fortune-left {
-  width: 70%;
+  width: 72%;
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
+
+/* Chart header - like TradingView symbol header */
+.ip-fortune-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0,0,0,0.02);
+}
+.ip-fortune-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+.ip-fortune-score-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ip-fortune-score-badge .score-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.ip-fortune-score-badge .score-trend {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.ip-fortune-score-badge .score-trend.up {
+  background: rgba(239,68,68,0.12);
+  color: #EF4444;
+}
+.ip-fortune-score-badge .score-trend.down {
+  background: rgba(34,197,94,0.12);
+  color: #22C55E;
+}
+
+/* Canvas wrapper - fills remaining space */
+.ip-fortune-canvas-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  padding: 4px;
+}
+.ip-fortune-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Footer - time range */
+.ip-fortune-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: rgba(0,0,0,0.015);
+}
+.ip-fortune-footer .fortune-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 9px;
+  opacity: 0.6;
+}
+.ip-fortune-footer .fortune-period {
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* Right: Watchlist Sidebar */
 .ip-fortune-right {
-  width: 30%;
+  width: 28%;
   border-left: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   min-width: 0;
+  background: rgba(0,0,0,0.01);
 }
+
+/* Watchlist header */
+.ip-fortune-right-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0,0,0,0.02);
+}
+.ip-fortune-right-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.ip-fortune-add-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 14px;
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: all 0.15s;
+  line-height: 1;
+}
+.ip-fortune-add-btn:hover {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Column headers in list */
+.ip-fortune-col-headers {
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--border);
+  opacity: 0.7;
+}
+.ip-fortune-col-headers .col-score {
+  margin-left: auto;
+  text-align: right;
+  width: 40px;
+}
+.ip-fortune-col-headers .col-change {
+  text-align: right;
+  width: 50px;
+}
+
+/* Scrollable list */
 .ip-fortune-list {
   flex: 1;
   overflow-y: auto;
   scrollbar-width: thin;
 }
 .ip-fortune-list::-webkit-scrollbar {
-  width: 4px;
+  width: 3px;
 }
 .ip-fortune-list::-webkit-scrollbar-thumb {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0,0,0,0.12);
   border-radius: 2px;
 }
+
+/* List items - compact trading style */
 .ip-fortune-list-item {
-  padding: 10px 12px;
+  padding: 8px 12px;
   cursor: pointer;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: background 0.15s;
+  gap: 6px;
+  transition: background 0.1s;
 }
 .ip-fortune-list-item:hover {
-  background: var(--hover-bg);
+  background: rgba(124,58,237,0.04);
 }
 .ip-fortune-list-item.active {
-  background: var(--hover-bg);
+  background: rgba(124,58,237,0.08);
+  border-left: 2px solid var(--accent);
+  padding-left: 10px;
+}
+
+/* Mini sparkline area (placeholder for future) */
+.ip-fortune-list-item .item-icon {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Item name and type */
+.ip-fortune-list-item .item-info {
+  flex: 1;
+  min-width: 0;
 }
 .ip-fortune-list-item .item-name {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--text-primary);
-  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ip-fortune-list-item .item-type {
-  font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(124,58,237,0.1);
-  color: var(--accent);
+  font-size: 8px;
+  color: var(--text-secondary);
+  margin-top: 1px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
+/* Score and change - right aligned */
 .ip-fortune-list-item .item-score {
-  font-size: 14px;
-  font-weight: 700;
-}
-.ip-fortune-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 14px 16px 0;
-}
-.ip-fortune-title {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--text-primary);
+  text-align: right;
+  width: 36px;
+  font-variant-numeric: tabular-nums;
 }
-.ip-fortune-score-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  color: var(--text-secondary);
-}
-.ip-fortune-score-badge .score-value {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--accent);
-}
-.ip-fortune-score-badge .score-trend {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-.ip-fortune-score-badge .score-trend.up {
-  background: rgba(239,68,68,0.1);
-  color: #EF4444;
-}
-.ip-fortune-score-badge .score-trend.down {
-  background: rgba(34,197,94,0.1);
-  color: #22C55E;
-}
-/* Tab bar */
-.ip-fortune-tabs {
-  display: flex;
-  gap: 6px;
-  padding: 12px 16px;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-.ip-fortune-tabs::-webkit-scrollbar { display: none; }
-.ip-fortune-tab {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: transparent;
-  color: var(--text-secondary);
-  font-size: 11px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: inherit;
-  white-space: nowrap;
-}
-.ip-fortune-tab:hover {
-  background: var(--hover-bg);
-  color: var(--text-primary);
-}
-.ip-fortune-tab.active {
-  background: rgba(139,92,246,0.1);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.ip-fortune-tab .tab-score {
+.ip-fortune-list-item .item-change {
   font-size: 10px;
-  font-weight: 700;
-  padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(0,0,0,0.05);
-}
-.ip-fortune-tab.active .tab-score {
-  background: rgba(139,92,246,0.15);
-}
-/* Canvas wrapper */
-.ip-fortune-canvas-wrap {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-  padding: 0 8px 8px;
-}
-.ip-fortune-canvas-wrap canvas {
-  width: 100%;
-  height: 100%;
-  display: block;
+  font-weight: 600;
+  text-align: right;
+  width: 50px;
+  font-variant-numeric: tabular-nums;
 }
 /* Fortune hover vertical line indicator */
 .fortune-hover-vline {
@@ -4352,22 +4435,24 @@ html[data-theme="light"] .fortune-hover-vline {
   font-size: 11px;
   line-height: 1.6;
 }
-/* Bottom info */
-.ip-fortune-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px 14px;
-  font-size: 10px;
-  color: var(--text-secondary);
+html[data-theme="dark"] .ip-fortune-section {
+  border-color: rgba(255,255,255,0.08);
 }
-.ip-fortune-footer .fortune-label {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+html[data-theme="dark"] .ip-fortune-header,
+html[data-theme="dark"] .ip-fortune-right-header {
+  background: rgba(255,255,255,0.03);
 }
-.ip-fortune-footer .fortune-period {
-  opacity: 0.7;
+html[data-theme="dark"] .ip-fortune-footer {
+  background: rgba(255,255,255,0.02);
+}
+html[data-theme="dark"] .ip-fortune-list-item {
+  border-bottom-color: rgba(255,255,255,0.04);
+}
+html[data-theme="dark"] .ip-fortune-list-item.active {
+  background: rgba(124,58,237,0.12);
+}
+html[data-theme="dark"] .ip-fortune-list-item:hover {
+  background: rgba(124,58,237,0.06);
 }
 .ip-reports-section {
   padding: 0 20px 20px;
@@ -11840,16 +11925,34 @@ function addWatchlistCard() {
     else if (ft.type === 'index') typeLabel = t('mod.index');
     else typeLabel = t('mod.stockCrypto');
 
+    // Color dot by type
+    var dotColor = '#7c3aed'; // default purple
+    if (ft.type === 'titan') dotColor = '#F59E0B';
+    else if (ft.type === 'institution') dotColor = '#3B82F6';
+    else if (ft.type === 'crypto') dotColor = '#F97316';
+    else if (ft.type === 'index') dotColor = '#22C55E';
+
     listItemsHTML += '<div class="ip-fortune-list-item' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
-      '<div style="flex:1;min-width:0;">' +
-        '<div style="font-size:12px;font-weight:600;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + prefix + escapeHtml(ft.name) + '</div>' +
-        '<div style="font-size:9px;color:var(--text-secondary);margin-top:2px;">' + typeLabel + '</div>' +
+      '<div class="item-icon" style="background:' + dotColor + ';"></div>' +
+      '<div class="item-info">' +
+        '<div class="item-name">' + prefix + escapeHtml(ft.name) + '</div>' +
+        '<div class="item-type">' + typeLabel + '</div>' +
       '</div>' +
-      '<div style="text-align:right;">' +
-        '<div style="font-size:14px;font-weight:700;color:' + ftColor + ';">' + ftScore + '</div>' +
-        '<div style="font-size:10px;color:' + ftColor + ';">' + ftSign + ftPct + '%</div>' +
-      '</div>' +
+      '<div class="item-score">' + ftScore + '</div>' +
+      '<div class="item-change" style="color:' + ftColor + ';">' + ftSign + ftPct + '%</div>' +
     '</div>';
+  }
+
+  // Get prefix for current target
+  var currentPrefix = '$';
+  for (var pfi = 0; pfi < FORTUNE_TARGETS.length; pfi++) {
+    if (FORTUNE_TARGETS[pfi].name === _currentFortuneTarget) {
+      var pf = FORTUNE_TARGETS[pfi];
+      if (pf.type === 'titan') currentPrefix = '@';
+      else if (pf.type === 'institution') currentPrefix = '#';
+      else if (pf.type === 'index') currentPrefix = '';
+      break;
+    }
   }
 
   var fortuneChartHTML = '<div style="margin-top:16px;">' +
@@ -11857,7 +11960,7 @@ function addWatchlistCard() {
     '<div class="ip-fortune-section">' +
       '<div class="ip-fortune-left">' +
         '<div class="ip-fortune-header">' +
-          '<span class="ip-fortune-title" id="fortuneTargetName">' + escapeHtml(_currentFortuneTarget) + '</span>' +
+          '<span class="ip-fortune-title" id="fortuneTargetName">' + currentPrefix + ' ' + escapeHtml(_currentFortuneTarget) + '</span>' +
           '<div class="ip-fortune-score-badge">' +
             '<span class="score-value" id="fortuneScoreValue">--</span>' +
             '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
@@ -11867,14 +11970,19 @@ function addWatchlistCard() {
           '<canvas id="fortuneKLineCanvas"></canvas>' +
         '</div>' +
         '<div class="ip-fortune-footer">' +
-          '<span class="fortune-label">' + t('ip.switchTarget') + '</span>' +
+          '<span class="fortune-label">' + t('ip.fortuneChart') + '</span>' +
           '<span class="fortune-period" id="fortunePeriod">--</span>' +
         '</div>' +
       '</div>' +
       '<div class="ip-fortune-right">' +
-        '<div style="padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">' +
-          '<span style="font-size:12px;font-weight:700;color:var(--text-primary);">' + t('mod.watchlistTitle') + '</span>' +
-          '<span style="width:22px;height:22px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-secondary);font-size:16px;border:1px solid var(--border);" onclick="showAddTargetForm()" title="+">+</span>' +
+        '<div class="ip-fortune-right-header">' +
+          '<span class="ip-fortune-right-title">' + t('mod.watchlistTitle') + '</span>' +
+          '<span class="ip-fortune-add-btn" onclick="showAddTargetForm()">+</span>' +
+        '</div>' +
+        '<div class="ip-fortune-col-headers">' +
+          '<span style="flex:1;">名称</span>' +
+          '<span class="col-score">评分</span>' +
+          '<span class="col-change">涨跌</span>' +
         '</div>' +
         '<div class="ip-fortune-list">' + listItemsHTML + '</div>' +
       '</div>' +
@@ -13608,9 +13716,20 @@ function switchFortuneTarget(targetName) {
   var data = getFortuneData(targetName);
   renderFortuneKLine('fortuneKLineCanvas', data, true);
 
-  // Update target name display
+  // Update target name display with prefix
   var nameEl = document.getElementById('fortuneTargetName');
-  if (nameEl) nameEl.textContent = targetName;
+  if (nameEl) {
+    var tgtPrefix = '$';
+    for (var pi = 0; pi < FORTUNE_TARGETS.length; pi++) {
+      if (FORTUNE_TARGETS[pi].name === targetName) {
+        if (FORTUNE_TARGETS[pi].type === 'titan') tgtPrefix = '@';
+        else if (FORTUNE_TARGETS[pi].type === 'institution') tgtPrefix = '#';
+        else if (FORTUNE_TARGETS[pi].type === 'index') tgtPrefix = '';
+        break;
+      }
+    }
+    nameEl.textContent = tgtPrefix + ' ' + targetName;
+  }
 
   // Update list active states
   var listItems = document.querySelectorAll('.ip-fortune-list-item');
