@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-20';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-21';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4206,6 +4206,95 @@ html[lang="ko"] {
   width: 100%;
   height: 100%;
   display: block;
+}
+/* Fortune hover vertical line indicator */
+.fortune-hover-vline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.25);
+  pointer-events: none;
+  z-index: 2;
+  transform: translateX(-0.5px);
+}
+html[data-theme="light"] .fortune-hover-vline {
+  background: rgba(0,0,0,0.2);
+}
+/* Fortune tooltip */
+.fortune-tooltip {
+  position: fixed;
+  z-index: 99999;
+  background: rgba(28,28,30,0.95);
+  border-radius: 12px;
+  padding: 14px;
+  max-width: 260px;
+  font-size: 12px;
+  color: #F5F5F7;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  pointer-events: none;
+  line-height: 1.5;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.fortune-tooltip .ft-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.fortune-tooltip .ft-year {
+  font-weight: 600;
+  font-size: 13px;
+  color: #F5F5F7;
+}
+.fortune-tooltip .ft-age {
+  font-size: 11px;
+  color: #86868B;
+  background: rgba(255,255,255,0.08);
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+.fortune-tooltip .ft-score-row,
+.fortune-tooltip .ft-change-row,
+.fortune-tooltip .ft-aspect-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.fortune-tooltip .ft-score-label,
+.fortune-tooltip .ft-change-label,
+.fortune-tooltip .ft-aspect-label {
+  color: #86868B;
+  font-size: 11px;
+}
+.fortune-tooltip .ft-score-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+.fortune-tooltip .ft-change-value {
+  font-weight: 600;
+  font-size: 13px;
+}
+.fortune-tooltip .ft-aspect-value {
+  font-size: 11px;
+  color: #BF5AF2;
+  font-weight: 500;
+  text-align: right;
+  max-width: 150px;
+}
+.fortune-tooltip .ft-advice {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: #98989D;
+  font-size: 11px;
+  line-height: 1.6;
 }
 /* Bottom info */
 .ip-fortune-footer {
@@ -13054,6 +13143,11 @@ function generateFortuneData(inception, sunSign, totalMonths) {
   var rng = _fortuneSeed(seed);
   var signOff = _sunSignOffset(sunSign);
 
+  // Parse inception date for year/month calculation
+  var incParts = inception.split('-');
+  var incYear = parseInt(incParts[0], 10) || 2000;
+  var incMonth = parseInt(incParts[1], 10) || 1;
+
   // Planetary cycle periods in months
   var jupiterPeriod = 12 * 11.86;   // ~142 months
   var saturnPeriod = 12 * 29.46;    // ~354 months
@@ -13118,17 +13212,57 @@ function generateFortuneData(inception, sunSign, totalMonths) {
     low = Math.min(open, close, low);
     low = Math.max(34, low);
 
-    var year = 2020 + Math.floor(i / 12);
-    var month = (i % 12) + 1;
+    // Year/month from inception
+    var totalMonthsFromInc = (incYear * 12 + (incMonth - 1)) + i;
+    var year = Math.floor(totalMonthsFromInc / 12);
+    var month = (totalMonthsFromInc % 12) + 1;
+    var ageYears = Math.floor(i / 12);
+
+    // Generate aspect description based on planetary cycles
+    var jupiterPhase = Math.floor(i % 142);
+    var saturnPhase = Math.floor(i % 354);
+    var marsPhase = Math.floor(i % 23);
+    var jupiterDesc = '';
+    if (jupiterPhase < 36) jupiterDesc = '\u6728\u661F\u56DE\u5F52\u547D\u5BAB';
+    else if (jupiterPhase < 72) jupiterDesc = '\u6728\u661F\u8FC7\u8D22\u5E1B\u5BAB';
+    else if (jupiterPhase < 108) jupiterDesc = '\u6728\u661F\u8FC7\u4E8B\u4E1A\u5BAB';
+    else jupiterDesc = '\u6728\u661F\u8FC7\u8FC1\u79FB\u5BAB';
+
+    var saturnDesc = '';
+    if (saturnPhase < 89) saturnDesc = '\u571F\u661F\u987A\u884C';
+    else if (saturnPhase < 178) saturnDesc = '\u571F\u661F\u9006\u884C\u671F';
+    else if (saturnPhase < 266) saturnDesc = '\u571F\u661F\u56DE\u5F52';
+    else saturnDesc = '\u571F\u661F\u8003\u9A8C\u671F';
+
+    var marsDesc = '\u706B\u661F\u56DE\u5F52';
+    var aspect = jupiterDesc + ' \xB7 ' + saturnDesc + ' \xB7 ' + marsDesc;
+
+    // Generate advice based on score
+    var scoreVal = Math.round(close * 10) / 10;
+    var advice = '';
+    if (scoreVal >= 80) {
+      advice = '\u8FD0\u52BF\u5927\u5409\uFF0C\u6728\u661F\u5E26\u6765\u6269\u5F20\u673A\u9047\uFF0C\u9002\u5408\u79EF\u6781\u5E03\u5C40\u3002';
+    } else if (scoreVal >= 65) {
+      advice = '\u8FD0\u52BF\u5C1A\u53EF\uFF0C\u53EF\u9002\u5EA6\u8FDB\u653B\uFF0C\u6CE8\u610F\u6B65\u6B65\u4E3A\u8425\u3002';
+    } else if (scoreVal >= 50) {
+      advice = '\u8FD0\u52BF\u5E73\u7A33\uFF0C\u89C2\u671B\u4E3A\u4E3B\uFF0C\u7B49\u5F85\u66F4\u597D\u65F6\u673A\u3002';
+    } else if (scoreVal >= 35) {
+      advice = '\u8FD0\u52BF\u504F\u5F31\uFF0C\u6CE8\u610F\u98CE\u9669\u63A7\u5236\uFF0C\u8C28\u614E\u884C\u4E8B\u3002';
+    } else {
+      advice = '\u8FD0\u52BF\u4F4E\u8FF7\uFF0C\u5B9C\u5B88\u4E0D\u5B9C\u653B\uFF0C\u4FDD\u672C\u4E3A\u4E0A\u3002';
+    }
 
     data.push({
       year: year,
       month: month,
       label: year + '-' + (month < 10 ? '0' : '') + month,
+      age: ageYears,
       open: Math.round(open * 100) / 100,
       high: Math.round(high * 100) / 100,
       low: Math.round(low * 100) / 100,
-      close: Math.round(close * 100) / 100
+      close: Math.round(close * 100) / 100,
+      aspect: aspect,
+      advice: advice
     });
 
     prevClose = close;
@@ -13243,6 +13377,104 @@ function renderFortuneKLine(canvasId, data, animate) {
       ctx.fillText(d.year.toString(), cx, h - 6);
     }
   }
+
+  // Store chart metrics on canvas for hover calculations
+  canvas._chartMetrics = {
+    padLeft: padLeft, padRight: padRight, padTop: padTop, padBottom: padBottom,
+    chartW: chartW, chartH: chartH, totalCandleWidth: totalCandleWidth,
+    yMin: yMin, yMax: yMax, w: w, h: h, isDark: isDark,
+    redColor: redColor, greenColor: greenColor
+  };
+  canvas._fortuneData = data;
+
+  // Create or reuse vertical line indicator (CSS overlay, no canvas redraw)
+  var wrap = canvas.parentElement;
+  var vLine = wrap.querySelector('.fortune-hover-vline');
+  if (!vLine) {
+    vLine = document.createElement('div');
+    vLine.className = 'fortune-hover-vline';
+    vLine.style.display = 'none';
+    wrap.appendChild(vLine);
+  }
+
+  // Mouse move handler
+  canvas.onmousemove = function(e) {
+    var m = canvas._chartMetrics;
+    if (!m || !canvas._fortuneData || canvas._fortuneData.length === 0) return;
+    var rect = canvas.getBoundingClientRect();
+    var mx = e.clientX - rect.left;
+    var idx = Math.round((mx - m.padLeft) / m.totalCandleWidth - 0.5);
+    idx = Math.max(0, Math.min(canvas._fortuneData.length - 1, idx));
+
+    // Position vertical line indicator
+    var lineX = m.padLeft + idx * m.totalCandleWidth + m.totalCandleWidth / 2;
+    vLine.style.display = 'block';
+    vLine.style.left = lineX + 'px';
+
+    // Show tooltip
+    showFortuneTooltip(canvas, canvas._fortuneData[idx], e.clientX, e.clientY);
+  };
+
+  canvas.onmouseleave = function() {
+    vLine.style.display = 'none';
+    hideFortuneTooltip();
+  };
+}
+
+// Show fortune tooltip on hover
+function showFortuneTooltip(canvas, d, clientX, clientY) {
+  var existing = document.getElementById('fortuneTooltip');
+  if (existing) existing.remove();
+
+  var isUp = d.close >= d.open;
+  var diff = d.close - d.open;
+  var pct = d.open !== 0 ? ((diff / d.open) * 100).toFixed(1) : '0.0';
+  var sign = diff >= 0 ? '+' : '';
+  var color = isUp ? '#FF453A' : '#30D158';
+
+  var tooltip = document.createElement('div');
+  tooltip.id = 'fortuneTooltip';
+  tooltip.className = 'fortune-tooltip';
+  tooltip.innerHTML =
+    '<div class="ft-header">' +
+      '<span class="ft-year">' + d.year + '\u5E74' + (d.month < 10 ? '0' : '') + d.month + '\u6708</span>' +
+      '<span class="ft-age">\u7B2C' + d.age + '\u5E74</span>' +
+    '</div>' +
+    '<div class="ft-score-row">' +
+      '<span class="ft-score-label">\u8FD0\u52BF\u8BC4\u5206</span>' +
+      '<span class="ft-score-value">' + d.close.toFixed(1) + '\u5206</span>' +
+    '</div>' +
+    '<div class="ft-change-row">' +
+      '<span class="ft-change-label">\u6DA8\u8DCC\u5E45</span>' +
+      '<span class="ft-change-value" style="color:' + color + '">' + sign + pct + '%</span>' +
+    '</div>' +
+    '<div class="ft-aspect-row">' +
+      '<span class="ft-aspect-label">\u5173\u952E\u661F\u8C61</span>' +
+      '<span class="ft-aspect-value">' + d.aspect + '</span>' +
+    '</div>' +
+    '<div class="ft-advice">' + d.advice + '</div>';
+  document.body.appendChild(tooltip);
+
+  // Position tooltip, keep within viewport
+  var tw = tooltip.offsetWidth;
+  var th = tooltip.offsetHeight;
+  var vw = window.innerWidth;
+  var vh = window.innerHeight;
+  var left = clientX + 12;
+  var top = clientY - 20;
+
+  if (left + tw > vw - 8) left = clientX - tw - 12;
+  if (top + th > vh - 8) top = vh - th - 8;
+  if (top < 8) top = 8;
+
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+}
+
+// Hide fortune tooltip
+function hideFortuneTooltip() {
+  var existing = document.getElementById('fortuneTooltip');
+  if (existing) existing.remove();
 }
 
 // Switch fortune target
