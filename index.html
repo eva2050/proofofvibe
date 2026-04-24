@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-15';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-16';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -12895,16 +12895,20 @@ async function addInsightPortalCard() {
       .then(function(resp) { return resp.json(); })
       .then(function(json) {
         if (json.success && json.data && json.data.length > 0) {
+          var catMap = { 'MARKET OUTLOOK': t('ip.marketOutlook'), 'CRYPTO': t('ip.crypto'), 'TECH': t('ip.tech'), 'GEOPOLITICS': t('ip.geopolitics'), 'MACRO': t('ip.macro') };
           var newReports = json.data.map(function(r) {
             return {
-              category: r.category,
+              category: catMap[r.category] || r.category,
+              categoryRaw: r.category,
               title: r.title,
               desc: r.description || '',
-              date: r.date,
-              readTime: (r.read_time || 5) + ' ' + t('ip.minRead'),
+              content: r.content || '',
+              date: (r.date || '').replace(/-/g, '.'),
+              readTime: r.read_time || 5,
               image_url: r.image_url || ''
             };
           });
+          window.ipReports = newReports;
           var grid = document.getElementById('ipReportsGrid');
           if (grid) {
             var html = '';
@@ -12928,7 +12932,6 @@ async function addInsightPortalCard() {
               '</div>';
             }
             grid.innerHTML = html;
-            window.ipReports = newReports;
           }
         }
       })
