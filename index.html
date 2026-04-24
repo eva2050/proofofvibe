@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-39';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-40';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4445,6 +4445,149 @@ html[data-theme="dark"] .fortune-tooltip .ft-advice {
   border-top-color: rgba(255,255,255,0.08);
 }
 html[data-theme="dark"] .ip-fortune-section {
+  border-color: rgba(255,255,255,0.08);
+}
+.fortune-detail-panel {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card-bg);
+}
+.fortune-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.fortune-detail-score-ring {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+.fortune-detail-score-ring svg {
+  width: 48px;
+  height: 48px;
+}
+.fortune-detail-score-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: 800;
+}
+.fortune-detail-info {
+  flex: 1;
+}
+.fortune-detail-info .detail-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.fortune-detail-info .detail-verdict {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.fortune-detail-info .detail-reason {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  line-height: 1.5;
+}
+.fortune-detail-body {
+  padding: 14px 16px;
+}
+.fortune-detail-section-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  background: var(--hover-bg);
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.fortune-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.fortune-detail-grid-item {
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--hover-bg);
+}
+.fortune-detail-grid-item .grid-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.fortune-detail-grid-item .grid-value {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 2px;
+}
+.fortune-detail-aspects {
+  margin-bottom: 12px;
+}
+.fortune-detail-aspect-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+}
+.fortune-detail-aspect-row:last-child {
+  border-bottom: none;
+}
+.fortune-detail-aspect-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  width: 60px;
+  flex-shrink: 0;
+}
+.fortune-detail-aspect-phase {
+  font-size: 10px;
+  color: var(--text-secondary);
+  width: 70px;
+  flex-shrink: 0;
+}
+.fortune-detail-aspect-bar {
+  flex: 1;
+  height: 5px;
+  background: var(--hover-bg);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.fortune-detail-aspect-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  opacity: 0.8;
+}
+.fortune-detail-aspect-score {
+  font-size: 10px;
+  font-weight: 700;
+  width: 30px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.fortune-detail-advice {
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--hover-bg);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+html[data-theme="dark"] .fortune-detail-panel {
   border-color: rgba(255,255,255,0.08);
 }
 html[data-theme="dark"] .ip-fortune-header,
@@ -12003,6 +12146,7 @@ function addWatchlistCard() {
     '<div class="result-card">' +
       '<div style="padding:16px;">' +
         fortuneChartHTML +
+        '<div id="fortuneDetailPanel" class="fortune-detail-panel"></div>' +
         '<div style="font-size:12px;color:var(--text-secondary);margin:16px 0 12px;">' + t('mod.watchlistDesc') + '</div>' +
         listHTML +
       '</div>' +
@@ -13828,6 +13972,99 @@ function switchFortuneTarget(targetName) {
     var periodEl = document.getElementById('fortunePeriod');
     if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
   }
+
+  // Update detail panel
+  updateFortuneDetail(targetName);
+}
+
+function updateFortuneDetail(targetName) {
+  var panel = document.getElementById('fortuneDetailPanel');
+  if (!panel) return;
+  
+  var data = getFortuneData(targetName);
+  if (!data || data.length === 0) { panel.innerHTML = ''; return; }
+  
+  var last = data[data.length - 1];
+  var prev = data.length > 1 ? data[data.length - 2] : last;
+  var score = last.close;
+  var diff = score - prev.close;
+  var pct = prev.close !== 0 ? ((diff / prev.close) * 100).toFixed(1) : '0.0';
+  var isUp = diff >= 0;
+  var scoreColor = score >= 70 ? '#22C55E' : score >= 50 ? '#F59E0B' : '#EF4444';
+  var trendColor = isUp ? '#22C55E' : '#EF4444';
+  var verdictText = score >= 80 ? (currentLang === 'zh' ? '大吉 · 运势亨通' : 'Excellent · Favorable') : score >= 65 ? (currentLang === 'zh' ? '吉 · 稳中有升' : 'Good · Steady uptrend') : score >= 50 ? (currentLang === 'zh' ? '平 · 观望为主' : 'Neutral · Wait and see') : score >= 35 ? (currentLang === 'zh' ? '凶 · 注意风险' : 'Caution · Risk ahead') : (currentLang === 'zh' ? '大凶 · 谨慎为上' : 'Danger · Stay cautious');
+  
+  // Get target info
+  var tgtInfo = null;
+  for (var i = 0; i < FORTUNE_TARGETS.length; i++) {
+    if (FORTUNE_TARGETS[i].name === targetName) { tgtInfo = FORTUNE_TARGETS[i]; break; }
+  }
+  var displayName = targetName;
+  var typeLabel = '';
+  if (tgtInfo) {
+    if (tgtInfo.type === 'titan') { displayName = '@' + tgtInfo.name; typeLabel = currentLang === 'zh' ? '名人' : 'Titan'; }
+    else if (tgtInfo.type === 'institution') { displayName = '#' + tgtInfo.name; typeLabel = currentLang === 'zh' ? '机构' : 'Institution'; }
+    else if (tgtInfo.type === 'crypto') { displayName = tgtInfo.ticker || tgtInfo.name; typeLabel = currentLang === 'zh' ? '加密货币' : 'Crypto'; }
+    else if (tgtInfo.type === 'index') { displayName = tgtInfo.name; typeLabel = currentLang === 'zh' ? '指数' : 'Index'; }
+    else { displayName = '$' + tgtInfo.name; typeLabel = currentLang === 'zh' ? '股票' : 'Stock'; }
+  }
+  
+  // SVG ring
+  var circumference = 2 * Math.PI * 20;
+  var offset = circumference - (score / 100) * circumference;
+  
+  // Volatility gene
+  var volatility = score >= 60 ? (currentLang === 'zh' ? '偏高' : 'High') : (currentLang === 'zh' ? '偏低' : 'Low');
+  var volColor = score >= 60 ? '#EF4444' : '#22C55E';
+  
+  // Generate aspects from last data point
+  var aspectStr = last.aspect || '--';
+  var adviceStr = last.advice || '--';
+  
+  // Parse aspect string to generate aspect rows
+  var aspects = aspectStr.split(' · ');
+  var aspectRowsHTML = '';
+  var planetNames = ['Jupiter', 'Saturn', 'Mars', 'Venus', 'Mercury'];
+  var planetScores = [];
+  for (var ai = 0; ai < 5; ai++) {
+    planetScores.push(Math.floor(30 + Math.abs(Math.sin(targetName.length * 3 + ai * 7 + score * 0.1)) * 60));
+  }
+  var phases = [currentLang === 'zh' ? '三分相' : 'Trine', currentLang === 'zh' ? '四分相' : 'Square', currentLang === 'zh' ? '六分相' : 'Sextile', currentLang === 'zh' ? '合相' : 'Conjunct', currentLang === 'zh' ? '对冲' : 'Opposition'];
+  
+  for (var pi = 0; pi < 5; pi++) {
+    var ps = planetScores[pi];
+    var pc = ps >= 65 ? '#22C55E' : ps >= 45 ? '#F59E0B' : '#EF4444';
+    aspectRowsHTML += '<div class="fortune-detail-aspect-row">' +
+      '<span class="fortune-detail-aspect-name">' + planetNames[pi] + '</span>' +
+      '<span class="fortune-detail-aspect-phase">' + phases[pi] + '</span>' +
+      '<div class="fortune-detail-aspect-bar"><div class="fortune-detail-aspect-bar-fill" style="width:' + ps + '%;background:' + pc + ';"></div></div>' +
+      '<span class="fortune-detail-aspect-score" style="color:' + pc + ';">' + ps + '</span>' +
+    '</div>';
+  }
+  
+  panel.innerHTML =
+    '<div class="fortune-detail-header">' +
+      '<div class="fortune-detail-score-ring">' +
+        '<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20" fill="none" stroke="var(--border)" stroke-width="4"></circle>' +
+        '<circle cx="24" cy="24" r="20" fill="none" stroke="' + scoreColor + '" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + circumference.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '" style="transition:stroke-dashoffset 0.8s ease"></circle></svg>' +
+        '<div class="fortune-detail-score-text" style="color:' + scoreColor + ';">' + Math.round(score) + '</div>' +
+      '</div>' +
+      '<div class="fortune-detail-info">' +
+        '<div class="detail-name">' + escapeHtml(displayName) + '</div>' +
+        '<div class="detail-verdict" style="color:' + trendColor + ';">' + verdictText + '</div>' +
+        '<div class="detail-reason">' + escapeHtml(aspectStr) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="fortune-detail-body">' +
+      '<div class="fortune-detail-section-title">' + (currentLang === 'zh' ? '标的底色' : 'Asset Profile') + '</div>' +
+      '<div class="fortune-detail-grid">' +
+        '<div class="fortune-detail-grid-item"><div class="grid-label">' + (currentLang === 'zh' ? '波动率基因' : 'Volatility Gene') + '</div><div class="grid-value" style="color:' + volColor + ';">' + volatility + '</div></div>' +
+        '<div class="fortune-detail-grid-item"><div class="grid-label">' + (currentLang === 'zh' ? '标的类型' : 'Asset Type') + '</div><div class="grid-value">' + typeLabel + '</div></div>' +
+      '</div>' +
+      '<div class="fortune-detail-section-title">' + (currentLang === 'zh' ? '当前天象共振' : 'Current Aspects') + '</div>' +
+      '<div class="fortune-detail-aspects">' + aspectRowsHTML + '</div>' +
+      '<div class="fortune-detail-advice">' + (currentLang === 'zh' ? '💡 ' : '') + escapeHtml(adviceStr) + '</div>' +
+    '</div>';
 }
 
 // Initialize fortune chart after DOM ready
@@ -13855,6 +14092,9 @@ function initFortuneChart() {
     var periodEl = document.getElementById('fortunePeriod');
     if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
   }
+
+  // Show initial detail
+  updateFortuneDetail(_currentFortuneTarget);
 }
 
 // =============================================================================
