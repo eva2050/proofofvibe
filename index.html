@@ -11065,7 +11065,7 @@ function addCalendarCard() {
     // Today: full color circle with pulse animation
     let dayCircleStyle, dayNumStyle;
     if (day.isToday) {
-      dayCircleStyle = 'width:28px;height:28px;border-radius:50%;background:' + day.color + ';margin:0 auto;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px ' + day.color + '30;animation:todayPulse 2s ease-in-out infinite;';
+      dayCircleStyle = 'width:28px;height:28px;border-radius:50%;background:' + day.color + ';margin:0 auto;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 3px ' + day.color + '30;--pulse-color:' + day.color + '25;animation:todayPulse 2s ease-in-out infinite;';
       dayNumStyle = 'font-size:11px;font-weight:700;color:#fff;';
     } else {
       dayCircleStyle = 'width:28px;height:28px;border-radius:50%;background:' + day.bg + ';margin:0 auto;display:flex;align-items:center;justify-content:center;transition:transform 0.15s;';
