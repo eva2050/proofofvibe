@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-16';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-17';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4337,26 +4337,32 @@ html[lang="ko"] {
 }
 .rd-content {
   font-size: 15px;
-  line-height: 1.8;
+  line-height: 1.9;
   color: var(--text-primary);
 }
 .rd-content p {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  text-align: justify;
 }
 .rd-content h3 {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 700;
-  margin: 32px 0 12px;
+  margin: 36px 0 16px;
   color: var(--text-primary);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
 }
 .rd-content blockquote {
-  border-left: 3px solid var(--accent);
-  padding: 12px 20px;
-  margin: 20px 0;
+  border-left: 4px solid var(--accent);
+  padding: 16px 24px;
+  margin: 20px 0 28px;
   background: var(--hover-bg);
-  border-radius: 0 8px 8px 0;
-  font-style: italic;
+  border-radius: 0 12px 12px 0;
+  font-size: 16px;
+  line-height: 1.9;
   color: var(--text-secondary);
+  font-style: normal;
 }
 .rd-bottom-share {
   display: flex;
@@ -12630,6 +12636,55 @@ function renderGVTable(gvId) {
 }
 
 // ========== INSIGHT PORTAL ==========
+// Format report content: remove duplicate title, style section headers, highlight intro
+function formatReportContent(content) {
+  if (!content) return '<p>' + t('ip.fullReportComingSoon') + '</p>';
+
+  var lines = content.split('\n');
+  var html = '';
+  var inIntro = false;
+  var isFirstSection = true;
+  var sectionHeaders = ['引言', '天象分析', '市场影响', '投资策略', '时间节点', '结语', '风险提示', '总结'];
+
+  // Skip first line if it's the title (duplicate of header)
+  if (lines.length > 1 && lines[0].length > 10 && !lines[1].trim()) {
+    lines = lines.slice(1);
+  }
+
+  // Trim leading empty lines
+  while (lines.length > 0 && !lines[0].trim()) lines.shift();
+
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i].trim();
+    if (!line) {
+      inIntro = false;
+      continue;
+    }
+
+    // Check if this is a section header
+    var isHeader = false;
+    for (var h = 0; h < sectionHeaders.length; h++) {
+      if (line === sectionHeaders[h]) {
+        isHeader = true;
+        break;
+      }
+    }
+
+    if (isHeader) {
+      inIntro = (line === '引言');
+      isFirstSection = false;
+      html += '<h3>' + escapeHtml(line) + '</h3>';
+    } else if (inIntro && isFirstSection) {
+      // Intro paragraph: use blockquote style
+      html += '<blockquote>' + escapeHtml(line) + '</blockquote>';
+    } else {
+      html += '<p>' + escapeHtml(line) + '</p>';
+    }
+  }
+
+  return html;
+}
+
 function openReportDetail(index) {
   var rp = window.ipReports && window.ipReports[index];
   if (!rp) return;
@@ -12689,9 +12744,7 @@ function openReportDetail(index) {
           '<span>' + escapeHtml(rp.readTime) + ' ' + t('ip.minRead') + '</span>' +
         '</div>' +
         '<div class="rd-desc">' + escapeHtml(rp.desc || rp.description) + '</div>' +
-        '<div class="rd-content">' +
-          (rp.content ? '<p>' + rp.content.replace(/\n\n/g, '</p><p>') + '</p>' : '<p>' + t('ip.fullReportComingSoon') + '</p>') +
-        '</div>' +
+        '<div class="rd-content">' + formatReportContent(rp.content) + '</div>' +
       '</div>' +
       '<div class="rd-bottom-share">' +
         '<span>' + t('ip.share') + '</span>' +
