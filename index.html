@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-38';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-39';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -11994,6 +11994,7 @@ function addWatchlistCard() {
           '<span class="col-change">涨跌</span>' +
         '</div>' +
         '<div class="ip-fortune-list">' + listItemsHTML + '</div>' +
+        '<div id="addTargetArea"></div>' +
       '</div>' +
     '</div>' +
   '</div>';
@@ -12004,7 +12005,6 @@ function addWatchlistCard() {
         fortuneChartHTML +
         '<div style="font-size:12px;color:var(--text-secondary);margin:16px 0 12px;">' + t('mod.watchlistDesc') + '</div>' +
         listHTML +
-        '<div id="addTargetArea"></div>' +
       '</div>' +
     '</div>' +
   '</div>';
@@ -12015,12 +12015,6 @@ function addWatchlistCard() {
 
   // Initialize fortune K-line chart
   try { initFortuneChart(); } catch(e) { /* non-critical */ }
-
-  // Render add-target button
-  var addTargetArea = document.getElementById('addTargetArea');
-  if (addTargetArea) {
-    addTargetArea.innerHTML = '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="showAddTargetForm()">+ ' + t('mod.addFromScanner') + '</div>';
-  }
 }
 
 function addTradingLogPrompt() {
@@ -13884,13 +13878,12 @@ function showAddTargetForm() {
   var area = document.getElementById('addTargetArea');
   if (!area) return;
   area.innerHTML =
-    '<div style="padding:12px;border:1px solid var(--accent);border-radius:10px;margin-top:8px;">' +
-      '<div style="display:flex;gap:8px;margin-bottom:10px;">' +
-        '<input type="text" id="newTargetInput" placeholder="' + t('mod.addTargetPlaceholder') + '" style="flex:1;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:13px;background:var(--bg-primary);color:var(--text-primary);outline:none;" onkeydown="if(event.key===\'Enter\')confirmAddTarget()">' +
-        '<button class="btn btn-primary" style="padding:8px 16px;font-size:12px;border:none;border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;" onclick="confirmAddTarget()">' + t('mod.confirmAdd') + '</button>' +
-        '<button style="padding:8px 12px;font-size:12px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">' + t('mod.cancel') + '</button>' +
+    '<div style="padding:8px 10px;border-top:1px solid var(--accent);background:rgba(124,58,237,0.04);">' +
+      '<div style="display:flex;gap:4px;margin-bottom:6px;">' +
+        '<input type="text" id="newTargetInput" placeholder="' + t('mod.addTargetPlaceholder') + '" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg-primary);color:var(--text-primary);outline:none;min-width:0;" onkeydown="if(event.key===\'Enter\')confirmAddTarget()">' +
+        '<button style="padding:6px 10px;font-size:11px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;white-space:nowrap;" onclick="confirmAddTarget()">' + t('mod.confirmAdd') + '</button>' +
       '</div>' +
-      '<div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">' +
+      '<div style="font-size:9px;color:var(--text-secondary);line-height:1.4;">' +
         t('mod.addTargetHint') +
       '</div>' +
     '</div>';
@@ -13901,7 +13894,7 @@ function showAddTargetForm() {
 function cancelAddTarget() {
   var area = document.getElementById('addTargetArea');
   if (!area) return;
-  area.innerHTML = '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="showAddTargetForm()">+ ' + t('mod.addFromScanner') + '</div>';
+  area.innerHTML = '';
 }
 
 function confirmAddTarget() {
