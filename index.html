@@ -11025,8 +11025,8 @@ function addCalendarCard() {
     const dayNum = d.getDate();
     const monthName = d.toLocaleDateString('en', { month: 'short' });
     const score = AstroEngine.calcDayScore(d, userBirth);
-    const color = score > 20 ? '#22C55E' : score > -20 ? 'var(--text-secondary)' : '#EF4444';
-    const bg = score > 20 ? 'rgba(34,197,94,0.12)' : score > -20 ? 'var(--hover-bg)' : 'rgba(239,68,68,0.12)';
+    const color = score > 20 ? '#22C55E' : score > -20 ? '#9CA3AF' : '#EF4444';
+    const bg = score > 20 ? 'rgba(34,197,94,0.12)' : score > -20 ? 'rgba(156,163,175,0.12)' : 'rgba(239,68,68,0.12)';
     days.push({ dow, dayNum, monthName, score, color, bg, isToday: i === 0 });
   }
 
