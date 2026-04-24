@@ -169,7 +169,7 @@ ${today}
       body: JSON.stringify({
         model: 'openai/gpt-4o-mini',
         messages: [
-          { role: 'system', content: '你是一位专业的金融占星师，精通行星运动与市场周期的关联。你的分析基于严谨的金融占星方法论，而非迷信。请用中文撰写专业、有深度的市场报告。' },
+          { role: 'system', content: '你是一位专业的金融占星师，精通行星运动与市场周期的关联。你的分析基于严谨的金融占星方法论，而非迷信。请用中文撰写专业、有深度的市场报告。注意：不要在文中提及任何平台名称或品牌，保持客观中立的分析师口吻。' },
           { role: 'user', content: prompt }
         ],
         max_tokens: 2000,
