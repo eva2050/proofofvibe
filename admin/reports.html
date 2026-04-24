@@ -211,8 +211,12 @@
                 <input type="text" id="mTitle" value="${esc(data ? data.title : '')}" placeholder="Report title...">
               </div>
               <div class="form-group">
-                <label>Description</label>
-                <textarea id="mDesc" placeholder="Report content...">${esc(data ? data.description : '')}</textarea>
+                <label>Description (摘要)</label>
+                <textarea id="mDesc" placeholder="简短摘要（100字以内）..." style="min-height:60px;">${esc(data ? data.description : '')}</textarea>
+              </div>
+              <div class="form-group">
+                <label>Content (正文)</label>
+                <textarea id="mContent" placeholder="完整文章内容..." style="min-height:300px;">${esc(data ? (data.content || '') : '')}</textarea>
               </div>
               <div style="display:flex;gap:12px;">
                 <div class="form-group" style="flex:1;">
@@ -257,6 +261,7 @@
         category: document.getElementById('mCategory').value,
         title: document.getElementById('mTitle').value,
         description: document.getElementById('mDesc').value,
+        content: document.getElementById('mContent').value,
         date: document.getElementById('mDate').value,
         lang: document.getElementById('mLang').value,
         read_time: parseInt(document.getElementById('mReadTime').value) || 5,

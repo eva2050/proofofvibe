@@ -31,6 +31,7 @@ const CREATE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS reports (
   category TEXT NOT NULL DEFAULT 'MARKET OUTLOOK',
   title TEXT NOT NULL,
   description TEXT NOT NULL DEFAULT '',
+  content TEXT NOT NULL DEFAULT '',
   image_url TEXT NOT NULL DEFAULT '',
   date TEXT NOT NULL DEFAULT '',
   read_time INTEGER NOT NULL DEFAULT 5,
@@ -67,7 +68,7 @@ export async function handleCreateReport(context) {
   await DB.prepare(CREATE_TABLE_SQL).run();
 
   const body = await readBody(context.request);
-  const { category, title, description, image_url, date, read_time, lang } = body;
+  const { category, title, description, content, image_url, date, read_time, lang } = body;
 
   if (!title) {
     return withCors(jsonResponse({ error: 'title is required' }, 400), context.request);
@@ -75,9 +76,9 @@ export async function handleCreateReport(context) {
 
   const now = new Date().toISOString();
   const result = await DB.prepare(
-    'INSERT INTO reports (category, title, description, image_url, date, read_time, lang, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+    'INSERT INTO reports (category, title, description, content, image_url, date, read_time, lang, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
   ).bind(
-    category || 'MARKET OUTLOOK', title, description || '', image_url || '',
+    category || 'MARKET OUTLOOK', title, description || '', content || '', image_url || '',
     date || now.split('T')[0], read_time || 5, lang || 'zh', now, now
   ).run();
 
@@ -100,7 +101,7 @@ export async function handleUpdateReport(context) {
   }
 
   const body = await readBody(context.request);
-  const allowedFields = ['category', 'title', 'description', 'image_url', 'date', 'read_time', 'lang'];
+  const allowedFields = ['category', 'title', 'description', 'content', 'image_url', 'date', 'read_time', 'lang'];
   const updates = [];
   const values = [];
 
