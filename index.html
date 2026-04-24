@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-18';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-19';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4102,6 +4102,128 @@ html[lang="ko"] {
   line-height: 1.5;
   opacity: 0.8;
 }
+/* ========== FORTUNE K-LINE CHART ========== */
+.ip-fortune-section {
+  padding: 0 20px 16px;
+}
+.ip-fortune-card {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  background: var(--card-bg);
+  overflow: hidden;
+}
+.ip-fortune-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 0;
+}
+.ip-fortune-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.ip-fortune-score-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.ip-fortune-score-badge .score-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--accent);
+}
+.ip-fortune-score-badge .score-trend {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.ip-fortune-score-badge .score-trend.up {
+  background: rgba(239,68,68,0.1);
+  color: #EF4444;
+}
+.ip-fortune-score-badge .score-trend.down {
+  background: rgba(34,197,94,0.1);
+  color: #22C55E;
+}
+/* Tab bar */
+.ip-fortune-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 12px 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.ip-fortune-tabs::-webkit-scrollbar { display: none; }
+.ip-fortune-tab {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.ip-fortune-tab:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+.ip-fortune-tab.active {
+  background: rgba(139,92,246,0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.ip-fortune-tab .tab-score {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.05);
+}
+.ip-fortune-tab.active .tab-score {
+  background: rgba(139,92,246,0.15);
+}
+/* Canvas wrapper */
+.ip-fortune-canvas-wrap {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  padding: 0 8px 8px;
+}
+.ip-fortune-canvas-wrap canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Bottom info */
+.ip-fortune-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px 14px;
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+.ip-fortune-footer .fortune-label {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.ip-fortune-footer .fortune-period {
+  opacity: 0.7;
+}
 .ip-reports-section {
   padding: 0 20px 20px;
 }
@@ -5635,6 +5757,9 @@ const i18n = {
     'ip.minRead': 'min read',
     'ip.share': 'Share',
     'ip.fullReportComingSoon': 'Full report content is coming soon. Stay tuned for in-depth cosmic analysis.',
+    'ip.fortuneChart': 'Fortune Chart',
+    'ip.fortuneScore': 'Fortune Score',
+    'ip.switchTarget': 'Switch Target',
     'ip.geopolitics': 'GEOPOLITICS',
     'ip.crypto': 'CRYPTO',
     'ip.tech': 'TECH',
@@ -5890,6 +6015,9 @@ const i18n = {
     'gv.status': 'Estado',
     'ip.crypto': 'CRIPTO',
     'ip.fullReportComingSoon': 'El contenido completo del reporte llegará pronto. Mantente atento para el análisis cósmico en profundidad.',
+    'ip.fortuneChart': 'Carta de Fortuna',
+    'ip.fortuneScore': 'Puntuación',
+    'ip.switchTarget': 'Cambiar Objetivo',
     'ip.geopolitics': 'GEOPOLÍTICA',
     'ip.latestReports': 'Últimos Reportes',
     'ip.macro': 'MACRO',
@@ -6492,6 +6620,9 @@ const i18n = {
     'ip.minRead': '分钟阅读',
     'ip.share': '分享',
     'ip.fullReportComingSoon': '完整报告内容即将上线，敬请期待深度星象分析。',
+    'ip.fortuneChart': '财富运势走势',
+    'ip.fortuneScore': '运势评分',
+    'ip.switchTarget': '切换标的',
     'ip.geopolitics': '地缘政治',
     'ip.crypto': '加密货币',
     'ip.tech': '科技',
@@ -6793,6 +6924,9 @@ const i18n = {
     'invite.totalReferrals': '邀请总数',
     'ip.crypto': '加密貨幣',
     'ip.fullReportComingSoon': '完整報告即將推出。敬請期待深度宇宙分析。',
+    'ip.fortuneChart': '財富運勢走勢',
+    'ip.fortuneScore': '運勢評分',
+    'ip.switchTarget': '切換標的',
     'ip.geopolitics': '地緣政治',
     'ip.latestReports': '最新報告',
     'ip.macro': '宏觀',
@@ -7339,6 +7473,9 @@ const i18n = {
     'gv.status': 'ステータス',
     'ip.crypto': '暗号資産',
     'ip.fullReportComingSoon': '完全なレポートは間もなく公開されます。詳細なコズミック分析をお楽しみに。',
+    'ip.fortuneChart': '運勢チャート',
+    'ip.fortuneScore': '運勢スコア',
+    'ip.switchTarget': '対象を切り替え',
     'ip.geopolitics': '地政学',
     'ip.latestReports': '最新レポート',
     'ip.macro': 'マクロ',
@@ -7766,6 +7903,9 @@ const i18n = {
     'gv.status': '상태',
     'ip.crypto': '암호화폐',
     'ip.fullReportComingSoon': '전체 보고서가 곧 공개됩니다. 심층 우주 분석을 기대해 주세요.',
+    'ip.fortuneChart': '운세 차트',
+    'ip.fortuneScore': '운세 점수',
+    'ip.switchTarget': '대상 전환',
     'ip.geopolitics': '지정학',
     'ip.latestReports': '최신 보고서',
     'ip.macro': '거시',
@@ -12825,6 +12965,309 @@ function getCategoryGradient(cat) {
   return gradients[cat] || '#1a1a2e,#16213e';
 }
 
+// ========== FORTUNE K-LINE DATA & RENDERING ==========
+
+// Fortune targets data
+var FORTUNE_TARGETS = [
+  { name: 'Elon Musk', type: 'titan', inception: '1971-06-28', sunSign: 'Cancer' },
+  { name: 'Warren Buffett', type: 'titan', inception: '1930-08-30', sunSign: 'Virgo' },
+  { name: 'Cathie Wood', type: 'titan', inception: '1955-11-26', sunSign: 'Sagittarius' },
+  { name: 'Federal Reserve', type: 'institution', inception: '1913-12-23', sunSign: 'Capricorn' },
+  { name: 'BlackRock', type: 'institution', inception: '1988-01-01', sunSign: 'Aquarius' },
+  { name: 'Citadel', type: 'institution', inception: '2002-01-01', sunSign: 'Scorpio' },
+  { name: 'Bitcoin', type: 'crypto', inception: '2009-01-03', sunSign: 'Capricorn' },
+  { name: 'Ethereum', type: 'crypto', inception: '2015-07-30', sunSign: 'Leo' },
+  { name: 'Solana', type: 'crypto', inception: '2020-03-16', sunSign: 'Pisces' },
+  { name: 'S&P 500', type: 'index', inception: '1993-01-22', sunSign: 'Libra' },
+  { name: 'Nasdaq', type: 'index', inception: '1999-03-10', sunSign: 'Pisces' }
+];
+
+// Deterministic seeded PRNG (mulberry32)
+function _fortuneSeed(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+// Convert inception date string to numeric seed
+function _inceptionToSeed(inception) {
+  var parts = inception.split('-');
+  var y = parseInt(parts[0], 10) || 2000;
+  var m = parseInt(parts[1], 10) || 1;
+  var d = parseInt(parts[2], 10) || 1;
+  return y * 10000 + m * 100 + d;
+}
+
+// Sun sign to zodiac degree offset (0=Aries, ... 11=Pisces)
+function _sunSignOffset(sign) {
+  var map = { 'Aries':0,'Taurus':1,'Gemini':2,'Cancer':3,'Leo':4,'Virgo':5,'Libra':6,'Scorpio':7,'Sagittarius':8,'Capricorn':9,'Aquarius':10,'Pisces':11 };
+  return (map[sign] || 0) * 30;
+}
+
+// Generate monthly fortune OHLC data
+function generateFortuneData(inception, sunSign, totalMonths) {
+  var seed = _inceptionToSeed(inception);
+  var rng = _fortuneSeed(seed);
+  var signOff = _sunSignOffset(sunSign);
+
+  // Planetary cycle periods in months
+  var jupiterPeriod = 12 * 11.86;   // ~142 months
+  var saturnPeriod = 12 * 29.46;    // ~354 months
+  var marsPeriod = 12 * 1.88;       // ~23 months
+  var venusPeriod = 12 * 0.615;     // ~7.4 months
+
+  // Generate base score from inception seed
+  var baseScore = 55 + rng() * 20; // 55-75 base
+
+  var data = [];
+  var prevClose = baseScore;
+
+  for (var i = 0; i < totalMonths; i++) {
+    // Planetary influences (sinusoidal cycles)
+    var jupiterInfluence = Math.sin(2 * Math.PI * i / jupiterPeriod + signOff * 0.01) * 12;
+    var saturnInfluence = Math.sin(2 * Math.PI * i / saturnPeriod + signOff * 0.02) * 8;
+    var marsInfluence = Math.sin(2 * Math.PI * i / marsPeriod + signOff * 0.03) * 6;
+    var venusInfluence = Math.sin(2 * Math.PI * i / venusPeriod + signOff * 0.05) * 4;
+
+    // Combine planetary forces
+    var planetaryScore = baseScore + jupiterInfluence + saturnInfluence + marsInfluence + venusInfluence;
+
+    // Add deterministic noise
+    var noise = (rng() - 0.5) * 10;
+
+    // Trend component (slow drift)
+    var trend = Math.sin(2 * Math.PI * i / 60) * 5 + Math.sin(2 * Math.PI * i / 120) * 3;
+
+    // Raw close
+    var rawClose = planetaryScore + noise + trend;
+
+    // Clamp to 35-98
+    rawClose = Math.max(35, Math.min(98, rawClose));
+
+    // Generate OHLC from close with some spread
+    var volatility = 2 + rng() * 4;
+    var direction = rng();
+    var open, high, low, close;
+
+    if (direction > 0.45) {
+      // Bullish candle
+      open = rawClose - rng() * volatility * 0.6;
+      close = rawClose + rng() * volatility * 0.4;
+    } else {
+      // Bearish candle
+      open = rawClose + rng() * volatility * 0.6;
+      close = rawClose - rng() * volatility * 0.4;
+    }
+
+    // Wicks
+    high = Math.max(open, close) + rng() * volatility * 0.8;
+    low = Math.min(open, close) - rng() * volatility * 0.8;
+
+    // Slight continuity with previous close
+    open = open * 0.3 + prevClose * 0.7;
+
+    // Final clamp
+    open = Math.max(35, Math.min(98, open));
+    close = Math.max(35, Math.min(98, close));
+    high = Math.max(open, close, high);
+    high = Math.min(99, high);
+    low = Math.min(open, close, low);
+    low = Math.max(34, low);
+
+    var year = 2020 + Math.floor(i / 12);
+    var month = (i % 12) + 1;
+
+    data.push({
+      year: year,
+      month: month,
+      label: year + '-' + (month < 10 ? '0' : '') + month,
+      open: Math.round(open * 100) / 100,
+      high: Math.round(high * 100) / 100,
+      low: Math.round(low * 100) / 100,
+      close: Math.round(close * 100) / 100
+    });
+
+    prevClose = close;
+  }
+
+  return data;
+}
+
+// Pre-generate fortune data for all targets (72 months = 6 years)
+var _fortuneCacheData = {};
+function getFortuneData(targetName) {
+  if (_fortuneCacheData[targetName]) return _fortuneCacheData[targetName];
+  for (var i = 0; i < FORTUNE_TARGETS.length; i++) {
+    var tgt = FORTUNE_TARGETS[i];
+    if (!tgt.name) continue;
+    _fortuneCacheData[tgt.name] = generateFortuneData(tgt.inception, tgt.sunSign, 72);
+  }
+  return _fortuneCacheData[targetName] || [];
+}
+
+// Render K-line chart on canvas
+function renderFortuneKLine(canvasId, data, animate) {
+  var canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var rect = canvas.parentElement.getBoundingClientRect();
+  var w = rect.width;
+  var h = rect.height;
+  canvas.width = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width = w + 'px';
+  canvas.style.height = h + 'px';
+  ctx.scale(dpr, dpr);
+
+  if (!data || data.length === 0) return;
+
+  // Chart area
+  var padLeft = 36, padRight = 12, padTop = 12, padBottom = 28;
+  var chartW = w - padLeft - padRight;
+  var chartH = h - padTop - padBottom;
+
+  // Y range
+  var yMin = 30, yMax = 100;
+
+  // Colors from theme
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  var bgColor = isDark ? '#1C1C1E' : '#FFFFFF';
+  var gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+  var textColor = isDark ? '#86868B' : '#86868B';
+  var redColor = isDark ? '#FF453A' : '#EF4444';
+  var greenColor = isDark ? '#30D158' : '#22C55E';
+
+  // Clear
+  ctx.fillStyle = bgColor;
+  ctx.fillRect(0, 0, w, h);
+
+  // Y grid lines
+  ctx.strokeStyle = gridColor;
+  ctx.lineWidth = 1;
+  ctx.font = '10px DM Sans, sans-serif';
+  ctx.fillStyle = textColor;
+  ctx.textAlign = 'right';
+  for (var yv = 40; yv <= 100; yv += 10) {
+    var yy = padTop + chartH - ((yv - yMin) / (yMax - yMin)) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(padLeft, yy);
+    ctx.lineTo(w - padRight, yy);
+    ctx.stroke();
+    ctx.fillText(yv.toString(), padLeft - 6, yy + 3);
+  }
+
+  // Candle dimensions
+  var candleCount = data.length;
+  var totalCandleWidth = chartW / candleCount;
+  var candleBodyWidth = Math.max(1, totalCandleWidth * 0.6);
+  var wickWidth = 1;
+
+  // Draw candles
+  var drawnYears = {};
+  for (var i = 0; i < candleCount; i++) {
+    var d = data[i];
+    var cx = padLeft + i * totalCandleWidth + totalCandleWidth / 2;
+    var isUp = d.close >= d.open;
+    var color = isUp ? redColor : greenColor;
+
+    // Wick
+    var highY = padTop + chartH - ((d.high - yMin) / (yMax - yMin)) * chartH;
+    var lowY = padTop + chartH - ((d.low - yMin) / (yMax - yMin)) * chartH;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = wickWidth;
+    ctx.beginPath();
+    ctx.moveTo(cx, highY);
+    ctx.lineTo(cx, lowY);
+    ctx.stroke();
+
+    // Body
+    var openY = padTop + chartH - ((d.open - yMin) / (yMax - yMin)) * chartH;
+    var closeY = padTop + chartH - ((d.close - yMin) / (yMax - yMin)) * chartH;
+    var bodyTop = Math.min(openY, closeY);
+    var bodyH = Math.max(1, Math.abs(closeY - openY));
+
+    ctx.fillStyle = color;
+    ctx.fillRect(cx - candleBodyWidth / 2, bodyTop, candleBodyWidth, bodyH);
+
+    // Year labels on X axis
+    if (!drawnYears[d.year] && (d.month === 1 || i === 0)) {
+      drawnYears[d.year] = true;
+      ctx.fillStyle = textColor;
+      ctx.font = '10px DM Sans, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(d.year.toString(), cx, h - 6);
+    }
+  }
+}
+
+// Switch fortune target
+var _currentFortuneTarget = 'Elon Musk';
+function switchFortuneTarget(targetName) {
+  _currentFortuneTarget = targetName;
+  var data = getFortuneData(targetName);
+  renderFortuneKLine('fortuneKLineCanvas', data, true);
+
+  // Update tab active states
+  var tabs = document.querySelectorAll('.ip-fortune-tab');
+  for (var i = 0; i < tabs.length; i++) {
+    tabs[i].classList.toggle('active', tabs[i].getAttribute('data-target') === targetName);
+  }
+
+  // Update score badge
+  if (data.length > 0) {
+    var last = data[data.length - 1];
+    var prev = data.length > 1 ? data[data.length - 2] : last;
+    var scoreEl = document.getElementById('fortuneScoreValue');
+    var trendEl = document.getElementById('fortuneScoreTrend');
+    if (scoreEl) scoreEl.textContent = last.close.toFixed(1);
+    if (trendEl) {
+      var diff = last.close - prev.close;
+      var pct = prev.close !== 0 ? ((diff / prev.close) * 100).toFixed(1) : '0.0';
+      if (diff >= 0) {
+        trendEl.textContent = '+' + pct + '%';
+        trendEl.className = 'score-trend up';
+      } else {
+        trendEl.textContent = pct + '%';
+        trendEl.className = 'score-trend down';
+      }
+    }
+    // Update footer period
+    var periodEl = document.getElementById('fortunePeriod');
+    if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
+  }
+}
+
+// Initialize fortune chart after DOM ready
+function initFortuneChart() {
+  var data = getFortuneData(_currentFortuneTarget);
+  renderFortuneKLine('fortuneKLineCanvas', data, false);
+  // Set initial score
+  if (data.length > 0) {
+    var last = data[data.length - 1];
+    var prev = data.length > 1 ? data[data.length - 2] : last;
+    var scoreEl = document.getElementById('fortuneScoreValue');
+    var trendEl = document.getElementById('fortuneScoreTrend');
+    if (scoreEl) scoreEl.textContent = last.close.toFixed(1);
+    if (trendEl) {
+      var diff = last.close - prev.close;
+      var pct = prev.close !== 0 ? ((diff / prev.close) * 100).toFixed(1) : '0.0';
+      if (diff >= 0) {
+        trendEl.textContent = '+' + pct + '%';
+        trendEl.className = 'score-trend up';
+      } else {
+        trendEl.textContent = pct + '%';
+        trendEl.className = 'score-trend down';
+      }
+    }
+    var periodEl = document.getElementById('fortunePeriod');
+    if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
+  }
+}
+
 async function addInsightPortalCard() {
   var container = document.getElementById('chatMessages');
   var msg = document.createElement('div');
@@ -12978,6 +13421,20 @@ async function addInsightPortalCard() {
     '</div>';
   }
 
+  // --- Fortune K-Line tabs ---
+  var fortuneTabsHTML = '';
+  for (var fi = 0; fi < FORTUNE_TARGETS.length; fi++) {
+    var ft = FORTUNE_TARGETS[fi];
+    var ftData = getFortuneData(ft.name);
+    var ftLast = ftData.length > 0 ? ftData[ftData.length - 1] : null;
+    var ftScore = ftLast ? ftLast.close.toFixed(0) : '--';
+    var isActive = ft.name === _currentFortuneTarget ? ' active' : '';
+    fortuneTabsHTML += '<button class="ip-fortune-tab' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
+      '<span>' + escapeHtml(ft.name) + '</span>' +
+      '<span class="tab-score">' + ftScore + '</span>' +
+    '</button>';
+  }
+
   var innerHTML =
     '<div class="ip-container">' +
       '<div class="ip-ticker-bar">' +
@@ -12985,6 +13442,26 @@ async function addInsightPortalCard() {
       '</div>' +
       '<div class="ip-section-label">' + t('ip.trendingVibrations') + '</div>' +
       '<div class="ip-trending-grid">' + trendingHTML + '</div>' +
+      '<div class="ip-section-label">' + t('ip.fortuneChart') + '</div>' +
+      '<div class="ip-fortune-section">' +
+        '<div class="ip-fortune-card">' +
+          '<div class="ip-fortune-header">' +
+            '<span class="ip-fortune-title">' + t('ip.fortuneScore') + '</span>' +
+            '<div class="ip-fortune-score-badge">' +
+              '<span class="score-value" id="fortuneScoreValue">--</span>' +
+              '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="ip-fortune-tabs">' + fortuneTabsHTML + '</div>' +
+          '<div class="ip-fortune-canvas-wrap">' +
+            '<canvas id="fortuneKLineCanvas"></canvas>' +
+          '</div>' +
+          '<div class="ip-fortune-footer">' +
+            '<span class="fortune-label">' + t('ip.switchTarget') + '</span>' +
+            '<span class="fortune-period" id="fortunePeriod">--</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
       '<div class="ip-section-label">' + t('ip.latestReports') + '</div>' +
       '<div class="ip-reports-section">' +
         '<div class="ip-reports-grid" id="ipReportsGrid">' + reportsHTML + '</div>' +
@@ -12993,8 +13470,12 @@ async function addInsightPortalCard() {
 
   msg.innerHTML = innerHTML;
   container.appendChild(msg);
+  window._scannerCache = innerHTML;
   window._transitsCache = innerHTML;
   scrollChatTop();
+
+  // Initialize fortune K-line chart
+  try { initFortuneChart(); } catch(e) { /* non-critical */ }
 
   // Fetch API reports in background and update if available
   try {
