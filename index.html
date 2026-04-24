@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-36';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-37';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -11922,10 +11922,10 @@ function addWatchlistCard() {
     var ftSign = ftDiff >= 0 ? '+' : '';
     var isActive = ft.name === _currentFortuneTarget ? ' active' : '';
 
-    var prefix = '$';
-    if (ft.type === 'titan') prefix = '@';
-    else if (ft.type === 'institution') prefix = '#';
-    else if (ft.type === 'index') prefix = '';
+    var displayName = ft.name;
+    if (ft.type === 'titan') displayName = '@' + ft.name;
+    else if (ft.type === 'institution') displayName = '#' + ft.name;
+    else if (ft.type === 'crypto' && ft.ticker) displayName = ft.ticker;
 
     var typeLabel = '';
     if (ft.type === 'titan') typeLabel = t('mod.personality');
@@ -11944,7 +11944,7 @@ function addWatchlistCard() {
     listItemsHTML += '<div class="ip-fortune-list-item' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
       '<div class="item-icon" style="background:' + dotColor + ';"></div>' +
       '<div class="item-info">' +
-        '<div class="item-name">' + prefix + escapeHtml(ft.name) + '</div>' +
+        '<div class="item-name">' + escapeHtml(displayName) + '</div>' +
         '<div class="item-type">' + typeLabel + '</div>' +
       '</div>' +
       '<div class="item-score">' + ftScore + '</div>' +
@@ -11952,14 +11952,14 @@ function addWatchlistCard() {
     '</div>';
   }
 
-  // Get prefix for current target
-  var currentPrefix = '$';
+  // Get display name for current target
+  var currentDisplayName = _currentFortuneTarget;
   for (var pfi = 0; pfi < FORTUNE_TARGETS.length; pfi++) {
     if (FORTUNE_TARGETS[pfi].name === _currentFortuneTarget) {
       var pf = FORTUNE_TARGETS[pfi];
-      if (pf.type === 'titan') currentPrefix = '@';
-      else if (pf.type === 'institution') currentPrefix = '#';
-      else if (pf.type === 'index') currentPrefix = '';
+      if (pf.type === 'titan') currentDisplayName = '@' + pf.name;
+      else if (pf.type === 'institution') currentDisplayName = '#' + pf.name;
+      else if (pf.type === 'crypto' && pf.ticker) currentDisplayName = pf.ticker;
       break;
     }
   }
@@ -11969,7 +11969,7 @@ function addWatchlistCard() {
     '<div class="ip-fortune-section">' +
       '<div class="ip-fortune-left">' +
         '<div class="ip-fortune-header">' +
-          '<span class="ip-fortune-title" id="fortuneTargetName">' + currentPrefix + ' ' + escapeHtml(_currentFortuneTarget) + '</span>' +
+          '<span class="ip-fortune-title" id="fortuneTargetName">' + escapeHtml(currentDisplayName) + '</span>' +
           '<div class="ip-fortune-score-badge">' +
             '<span class="score-value" id="fortuneScoreValue">--</span>' +
             '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
@@ -13346,9 +13346,9 @@ var FORTUNE_TARGETS = [
   { name: 'Federal Reserve', type: 'institution', inception: '1913-12-23', sunSign: 'Capricorn' },
   { name: 'BlackRock', type: 'institution', inception: '1988-01-01', sunSign: 'Aquarius' },
   { name: 'Citadel', type: 'institution', inception: '2002-01-01', sunSign: 'Scorpio' },
-  { name: 'Bitcoin', type: 'crypto', inception: '2009-01-03', sunSign: 'Capricorn' },
-  { name: 'Ethereum', type: 'crypto', inception: '2015-07-30', sunSign: 'Leo' },
-  { name: 'Solana', type: 'crypto', inception: '2020-03-16', sunSign: 'Pisces' },
+  { name: 'Bitcoin', ticker: 'BTC', type: 'crypto', inception: '2009-01-03', sunSign: 'Capricorn' },
+  { name: 'Ethereum', ticker: 'ETH', type: 'crypto', inception: '2015-07-30', sunSign: 'Leo' },
+  { name: 'Solana', ticker: 'SOL', type: 'crypto', inception: '2020-03-16', sunSign: 'Pisces' },
   { name: 'S&P 500', type: 'index', inception: '1993-01-22', sunSign: 'Libra' },
   { name: 'Nasdaq', type: 'index', inception: '1999-03-10', sunSign: 'Pisces' }
 ];
@@ -13746,19 +13746,20 @@ function switchFortuneTarget(targetName) {
   var data = getFortuneData(targetName);
   renderFortuneKLine('fortuneKLineCanvas', data, true);
 
-  // Update target name display with prefix
+  // Update target name display
   var nameEl = document.getElementById('fortuneTargetName');
   if (nameEl) {
-    var tgtPrefix = '$';
+    var tgtDisplay = targetName;
     for (var pi = 0; pi < FORTUNE_TARGETS.length; pi++) {
       if (FORTUNE_TARGETS[pi].name === targetName) {
-        if (FORTUNE_TARGETS[pi].type === 'titan') tgtPrefix = '@';
-        else if (FORTUNE_TARGETS[pi].type === 'institution') tgtPrefix = '#';
-        else if (FORTUNE_TARGETS[pi].type === 'index') tgtPrefix = '';
+        var pt = FORTUNE_TARGETS[pi];
+        if (pt.type === 'titan') tgtDisplay = '@' + pt.name;
+        else if (pt.type === 'institution') tgtDisplay = '#' + pt.name;
+        else if (pt.type === 'crypto' && pt.ticker) tgtDisplay = pt.ticker;
         break;
       }
     }
-    nameEl.textContent = tgtPrefix + ' ' + targetName;
+    nameEl.textContent = tgtDisplay;
   }
 
   // Update list active states
