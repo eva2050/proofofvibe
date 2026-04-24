@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-34';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-35';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -13507,10 +13507,17 @@ function generateFortuneData(inception, sunSign, totalMonths) {
 var _fortuneCacheData = {};
 function getFortuneData(targetName) {
   if (_fortuneCacheData[targetName]) return _fortuneCacheData[targetName];
+  var now = new Date();
   for (var i = 0; i < FORTUNE_TARGETS.length; i++) {
     var tgt = FORTUNE_TARGETS[i];
     if (!tgt.name) continue;
-    _fortuneCacheData[tgt.name] = generateFortuneData(tgt.inception, tgt.sunSign, 72);
+    // Calculate months from inception to now
+    var parts = tgt.inception.split('-');
+    var incDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+    var totalMonths = (now.getFullYear() - incDate.getFullYear()) * 12 + (now.getMonth() - incDate.getMonth());
+    if (totalMonths < 1) totalMonths = 1;
+    if (totalMonths > 1200) totalMonths = 1200; // cap at 100 years
+    _fortuneCacheData[tgt.name] = generateFortuneData(tgt.inception, tgt.sunSign, totalMonths);
   }
   return _fortuneCacheData[targetName] || [];
 }
@@ -13531,6 +13538,18 @@ function renderFortuneKLine(canvasId, data, animate) {
   ctx.scale(dpr, dpr);
 
   if (!data || data.length === 0) return;
+
+  // Downsample data if too many points (max ~200 candles for readability)
+  var maxCandles = 200;
+  var displayData = data;
+  if (data.length > maxCandles) {
+    displayData = [];
+    var step = data.length / maxCandles;
+    for (var si = 0; si < data.length; si += step) {
+      var idx = Math.floor(si);
+      displayData.push(data[idx]);
+    }
+  }
 
   // Chart area
   var padLeft = 36, padRight = 12, padTop = 12, padBottom = 28;
@@ -13568,7 +13587,7 @@ function renderFortuneKLine(canvasId, data, animate) {
   }
 
   // Candle dimensions
-  var candleCount = data.length;
+  var candleCount = displayData.length;
   var totalCandleWidth = chartW / candleCount;
   var candleBodyWidth = Math.max(1, totalCandleWidth * 0.6);
   var wickWidth = 1;
@@ -13576,7 +13595,7 @@ function renderFortuneKLine(canvasId, data, animate) {
   // Draw candles
   var drawnYears = {};
   for (var i = 0; i < candleCount; i++) {
-    var d = data[i];
+    var d = displayData[i];
     var cx = padLeft + i * totalCandleWidth + totalCandleWidth / 2;
     var isUp = d.close >= d.open;
     var color = isUp ? redColor : greenColor;
@@ -13618,6 +13637,7 @@ function renderFortuneKLine(canvasId, data, animate) {
     redColor: redColor, greenColor: greenColor
   };
   canvas._fortuneData = data;
+  canvas._displayData = displayData;
 
   // Create or reuse vertical line indicator (CSS overlay, no canvas redraw)
   var wrap = canvas.parentElement;
@@ -13632,19 +13652,20 @@ function renderFortuneKLine(canvasId, data, animate) {
   // Mouse move handler
   canvas.onmousemove = function(e) {
     var m = canvas._chartMetrics;
-    if (!m || !canvas._fortuneData || canvas._fortuneData.length === 0) return;
+    var dd = canvas._displayData || canvas._fortuneData;
+    if (!m || !dd || dd.length === 0) return;
     var rect = canvas.getBoundingClientRect();
     var mx = e.clientX - rect.left;
     var idx = Math.round((mx - m.padLeft) / m.totalCandleWidth - 0.5);
-    idx = Math.max(0, Math.min(canvas._fortuneData.length - 1, idx));
+    idx = Math.max(0, Math.min(dd.length - 1, idx));
 
     // Position vertical line indicator
     var lineX = m.padLeft + idx * m.totalCandleWidth + m.totalCandleWidth / 2;
     vLine.style.display = 'block';
     vLine.style.left = lineX + 'px';
 
-    // Show tooltip
-    showFortuneTooltip(canvas, canvas._fortuneData[idx], e.clientX, e.clientY);
+    // Show tooltip (use displayData item which has all fields)
+    showFortuneTooltip(canvas, dd[idx], e.clientX, e.clientY);
   };
 
   canvas.onmouseleave = function() {
