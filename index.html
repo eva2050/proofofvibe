@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-35';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-36';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -4364,14 +4364,14 @@ html[data-theme="light"] .fortune-hover-vline {
 .fortune-tooltip {
   position: fixed;
   z-index: 99999;
-  background: rgba(28,28,30,0.95);
+  background: var(--card-bg, #fff);
   border-radius: 12px;
   padding: 14px;
   max-width: 260px;
   font-size: 12px;
-  color: #F5F5F7;
+  color: var(--text-primary, #1d1d1f);
   font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px var(--border, rgba(0,0,0,0.08));
   pointer-events: none;
   line-height: 1.5;
   backdrop-filter: blur(12px);
@@ -4383,17 +4383,17 @@ html[data-theme="light"] .fortune-hover-vline {
   align-items: center;
   margin-bottom: 10px;
   padding-bottom: 8px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--border, rgba(0,0,0,0.08));
 }
 .fortune-tooltip .ft-year {
   font-weight: 600;
   font-size: 13px;
-  color: #F5F5F7;
+  color: var(--text-primary, #1d1d1f);
 }
 .fortune-tooltip .ft-age {
   font-size: 11px;
-  color: #86868B;
-  background: rgba(255,255,255,0.08);
+  color: var(--text-secondary, #86868B);
+  background: var(--hover-bg, rgba(0,0,0,0.04));
   padding: 2px 8px;
   border-radius: 6px;
 }
@@ -4408,13 +4408,13 @@ html[data-theme="light"] .fortune-hover-vline {
 .fortune-tooltip .ft-score-label,
 .fortune-tooltip .ft-change-label,
 .fortune-tooltip .ft-aspect-label {
-  color: #86868B;
+  color: var(--text-secondary, #86868B);
   font-size: 11px;
 }
 .fortune-tooltip .ft-score-value {
   font-size: 20px;
   font-weight: 700;
-  color: #F5F5F7;
+  color: var(--text-primary, #1d1d1f);
 }
 .fortune-tooltip .ft-change-value {
   font-weight: 600;
@@ -4430,10 +4430,19 @@ html[data-theme="light"] .fortune-hover-vline {
 .fortune-tooltip .ft-advice {
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  color: #98989D;
+  border-top: 1px solid var(--border, rgba(0,0,0,0.08));
+  color: var(--text-secondary, #86868B);
   font-size: 11px;
   line-height: 1.6;
+}
+html[data-theme="dark"] .fortune-tooltip {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+}
+html[data-theme="dark"] .fortune-tooltip .ft-header {
+  border-bottom-color: rgba(255,255,255,0.1);
+}
+html[data-theme="dark"] .fortune-tooltip .ft-advice {
+  border-top-color: rgba(255,255,255,0.08);
 }
 html[data-theme="dark"] .ip-fortune-section {
   border-color: rgba(255,255,255,0.08);
