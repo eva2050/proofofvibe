@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-12';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-13';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -3849,8 +3849,6 @@ html[data-theme="dark"] .pricing-card:hover {
   }
   .gv-table .gv-narrative { min-width: 100px; }
   .gv-table .gv-verdict { min-width: 120px; }
-  .gv-table th:nth-child(4),
-  .gv-table td:nth-child(4) { display: none; }
   .invite-modal { width: 100%; max-width: 100vw; }
   .upgrade-modal { width: 100%; max-width: 100vw; }
 }
@@ -12505,7 +12503,6 @@ function addGlobalVibesCard() {
             '<th>' + t('gv.coreNarrative') + '</th>' +
             '<th>' + t('gv.inception') + '</th>' +
             '<th>' + t('gv.cosmicDNAVerdict') + '</th>' +
-            '<th>' + t('gv.status') + '</th>' +
           '</tr></thead>' +
           '<tbody data-gvid="' + gvId + '"></tbody>' +
         '</table>' +
@@ -12622,14 +12619,11 @@ function renderGVTable(gvId) {
   for (var j = 0; j < filtered.length; j++) {
     var item = filtered[j];
     var tickerHTML = (showTicker && item.ticker) ? '<span class="gv-ticker">' + escapeHtml(item.ticker) + '</span>' : '';
-    var statusDot = item.status === 'active' ? 'gv-status-dot active' : 'gv-status-dot dormant';
-    var statusLabel = item.status === 'active' ? t('gv.active').toUpperCase() : t('gv.dormant').toUpperCase();
     rows += '<tr>' +
       '<td><span class="gv-name">' + escapeHtml(item.name) + '</span>' + tickerHTML + '</td>' +
       '<td class="gv-narrative">' + escapeHtml(gvT(item, 'narrative')) + '</td>' +
       '<td class="gv-date">' + escapeHtml(item.inception) + '</td>' +
       '<td class="gv-verdict">' + escapeHtml(gvT(item, 'verdict')) + '</td>' +
-      '<td class="gv-status"><span class="' + statusDot + '"></span><span class="gv-status-text">' + statusLabel + '</span></td>' +
     '</tr>';
   }
   tbody.innerHTML = rows;
