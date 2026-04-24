@@ -4396,6 +4396,20 @@ html[lang="ko"] {
 </head>
 <body>
 
+<script>
+// Cache-bust: force reload if a newer version is detected
+(function(){
+  var VER = '20260424-5';
+  var stored = localStorage.getItem('pov_ver');
+  if (stored && stored !== VER) {
+    localStorage.setItem('pov_ver', VER);
+    window.location.reload(true);
+    return;
+  }
+  localStorage.setItem('pov_ver', VER);
+})();
+</script>
+
 <div class="app-container">
   <!-- Sidebar Overlay (mobile) -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
