@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-19';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-20';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -11638,11 +11638,49 @@ function addWatchlistCard() {
     '</div>';
   });
 
+  // --- Fortune K-Line tabs ---
+  var fortuneTabsHTML = '';
+  for (var fi = 0; fi < FORTUNE_TARGETS.length; fi++) {
+    var ft = FORTUNE_TARGETS[fi];
+    var ftData = getFortuneData(ft.name);
+    var ftLast = ftData.length > 0 ? ftData[ftData.length - 1] : null;
+    var ftScore = ftLast ? ftLast.close.toFixed(0) : '--';
+    var isActive = ft.name === _currentFortuneTarget ? ' active' : '';
+    fortuneTabsHTML += '<button class="ip-fortune-tab' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
+      '<span>' + escapeHtml(ft.name) + '</span>' +
+      '<span class="tab-score">' + ftScore + '</span>' +
+    '</button>';
+  }
+
+  var fortuneChartHTML = '<div style="margin-top:16px;">' +
+    '<div class="ip-section-label">' + t('ip.fortuneChart') + '</div>' +
+    '<div class="ip-fortune-section">' +
+      '<div class="ip-fortune-card">' +
+        '<div class="ip-fortune-header">' +
+          '<span class="ip-fortune-title">' + t('ip.fortuneScore') + '</span>' +
+          '<div class="ip-fortune-score-badge">' +
+            '<span class="score-value" id="fortuneScoreValue">--</span>' +
+            '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ip-fortune-tabs">' + fortuneTabsHTML + '</div>' +
+        '<div class="ip-fortune-canvas-wrap">' +
+          '<canvas id="fortuneKLineCanvas"></canvas>' +
+        '</div>' +
+        '<div class="ip-fortune-footer">' +
+          '<span class="fortune-label">' + t('ip.switchTarget') + '</span>' +
+          '<span class="fortune-period" id="fortunePeriod">--</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+
   msg.innerHTML = '<div class="msg-bubble" style="padding:0;overflow:hidden;border:none;">' +
     '<div class="result-card">' +
       '<div style="padding:16px;">' +
         '<div style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">' + t('mod.watchlistDesc') + '</div>' +
         listHTML +
+        fortuneChartHTML +
         '<div style="text-align:center;padding:12px;border:1px dashed var(--border);border-radius:10px;margin-top:8px;cursor:pointer;color:var(--text-secondary);font-size:12px;" onclick="handleSearch()">+ ' + t('mod.addFromScanner') + '</div>' +
       '</div>' +
     '</div>' +
@@ -11651,6 +11689,9 @@ function addWatchlistCard() {
   container.appendChild(msg);
   window._watchlistCache = msg.innerHTML;
   scrollChatTop();
+
+  // Initialize fortune K-line chart
+  try { initFortuneChart(); } catch(e) { /* non-critical */ }
 }
 
 function addTradingLogPrompt() {
@@ -13421,20 +13462,6 @@ async function addInsightPortalCard() {
     '</div>';
   }
 
-  // --- Fortune K-Line tabs ---
-  var fortuneTabsHTML = '';
-  for (var fi = 0; fi < FORTUNE_TARGETS.length; fi++) {
-    var ft = FORTUNE_TARGETS[fi];
-    var ftData = getFortuneData(ft.name);
-    var ftLast = ftData.length > 0 ? ftData[ftData.length - 1] : null;
-    var ftScore = ftLast ? ftLast.close.toFixed(0) : '--';
-    var isActive = ft.name === _currentFortuneTarget ? ' active' : '';
-    fortuneTabsHTML += '<button class="ip-fortune-tab' + isActive + '" data-target="' + escapeHtml(ft.name) + '" onclick="switchFortuneTarget(\'' + escapeHtml(ft.name).replace(/'/g, "\\'") + '\')">' +
-      '<span>' + escapeHtml(ft.name) + '</span>' +
-      '<span class="tab-score">' + ftScore + '</span>' +
-    '</button>';
-  }
-
   var innerHTML =
     '<div class="ip-container">' +
       '<div class="ip-ticker-bar">' +
@@ -13442,26 +13469,6 @@ async function addInsightPortalCard() {
       '</div>' +
       '<div class="ip-section-label">' + t('ip.trendingVibrations') + '</div>' +
       '<div class="ip-trending-grid">' + trendingHTML + '</div>' +
-      '<div class="ip-section-label">' + t('ip.fortuneChart') + '</div>' +
-      '<div class="ip-fortune-section">' +
-        '<div class="ip-fortune-card">' +
-          '<div class="ip-fortune-header">' +
-            '<span class="ip-fortune-title">' + t('ip.fortuneScore') + '</span>' +
-            '<div class="ip-fortune-score-badge">' +
-              '<span class="score-value" id="fortuneScoreValue">--</span>' +
-              '<span class="score-trend" id="fortuneScoreTrend">--</span>' +
-            '</div>' +
-          '</div>' +
-          '<div class="ip-fortune-tabs">' + fortuneTabsHTML + '</div>' +
-          '<div class="ip-fortune-canvas-wrap">' +
-            '<canvas id="fortuneKLineCanvas"></canvas>' +
-          '</div>' +
-          '<div class="ip-fortune-footer">' +
-            '<span class="fortune-label">' + t('ip.switchTarget') + '</span>' +
-            '<span class="fortune-period" id="fortunePeriod">--</span>' +
-          '</div>' +
-        '</div>' +
-      '</div>' +
       '<div class="ip-section-label">' + t('ip.latestReports') + '</div>' +
       '<div class="ip-reports-section">' +
         '<div class="ip-reports-grid" id="ipReportsGrid">' + reportsHTML + '</div>' +
@@ -13473,9 +13480,6 @@ async function addInsightPortalCard() {
   window._scannerCache = innerHTML;
   window._transitsCache = innerHTML;
   scrollChatTop();
-
-  // Initialize fortune K-line chart
-  try { initFortuneChart(); } catch(e) { /* non-critical */ }
 
   // Fetch API reports in background and update if available
   try {
