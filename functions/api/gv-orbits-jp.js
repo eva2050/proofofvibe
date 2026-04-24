@@ -12,7 +12,7 @@ export async function onRequest(context) {
       'Access-Control-Allow-Origin': context.request.headers.get('Origin') || '*',
       'Access-Control-Allow-Methods': 'GET, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Cache-Control': 'public, max-age=3600',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
     },
   });
 }
