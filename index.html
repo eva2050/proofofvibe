@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-37';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-38';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -13548,15 +13548,37 @@ function renderFortuneKLine(canvasId, data, animate) {
 
   if (!data || data.length === 0) return;
 
-  // Downsample data if too many points (max ~200 candles for readability)
+  // Downsample with OHLC aggregation (max ~200 candles)
   var maxCandles = 200;
   var displayData = data;
   if (data.length > maxCandles) {
     displayData = [];
-    var step = data.length / maxCandles;
-    for (var si = 0; si < data.length; si += step) {
-      var idx = Math.floor(si);
-      displayData.push(data[idx]);
+    var bucketSize = data.length / maxCandles;
+    for (var si = 0; si < data.length; si += bucketSize) {
+      var end = Math.min(Math.floor(si + bucketSize), data.length);
+      var aggOpen = data[Math.floor(si)].open;
+      var aggClose = data[end - 1].close;
+      var aggHigh = -Infinity, aggLow = Infinity;
+      var aggYear = data[Math.floor(si)].year;
+      var aggMonth = data[Math.floor(si)].month;
+      var aggLabel = data[Math.floor(si)].label;
+      var aggAge = data[Math.floor(si)].age;
+      var aggAspect = data[Math.floor(si)].aspect;
+      var aggAdvice = data[Math.floor(si)].advice;
+      for (var bi = Math.floor(si); bi < end; bi++) {
+        if (data[bi].high > aggHigh) aggHigh = data[bi].high;
+        if (data[bi].low < aggLow) aggLow = data[bi].low;
+      }
+      if (aggHigh === -Infinity) aggHigh = aggClose;
+      if (aggLow === Infinity) aggLow = aggOpen;
+      displayData.push({
+        year: aggYear, month: aggMonth, label: aggLabel, age: aggAge,
+        open: Math.round(aggOpen * 100) / 100,
+        high: Math.round(aggHigh * 100) / 100,
+        low: Math.round(aggLow * 100) / 100,
+        close: Math.round(aggClose * 100) / 100,
+        aspect: aggAspect, advice: aggAdvice
+      });
     }
   }
 
@@ -13565,8 +13587,14 @@ function renderFortuneKLine(canvasId, data, animate) {
   var chartW = w - padLeft - padRight;
   var chartH = h - padTop - padBottom;
 
-  // Y range
+  // Y range - auto-fit to data
   var yMin = 30, yMax = 100;
+  for (var yi = 0; yi < displayData.length; yi++) {
+    if (displayData[yi].low < yMin) yMin = Math.floor(displayData[yi].low / 10) * 10;
+    if (displayData[yi].high > yMax) yMax = Math.ceil(displayData[yi].high / 10) * 10;
+  }
+  // Ensure range is at least 20
+  if (yMax - yMin < 20) { yMin = yMax - 20; }
 
   // Colors from theme
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -13586,7 +13614,9 @@ function renderFortuneKLine(canvasId, data, animate) {
   ctx.font = '10px DM Sans, sans-serif';
   ctx.fillStyle = textColor;
   ctx.textAlign = 'right';
-  for (var yv = 40; yv <= 100; yv += 10) {
+  var yStep = 10;
+  if (yMax - yMin > 60) yStep = 20;
+  for (var yv = Math.ceil(yMin / yStep) * yStep; yv <= yMax; yv += yStep) {
     var yy = padTop + chartH - ((yv - yMin) / (yMax - yMin)) * chartH;
     ctx.beginPath();
     ctx.moveTo(padLeft, yy);
@@ -13598,8 +13628,8 @@ function renderFortuneKLine(canvasId, data, animate) {
   // Candle dimensions
   var candleCount = displayData.length;
   var totalCandleWidth = chartW / candleCount;
-  var candleBodyWidth = Math.max(1, totalCandleWidth * 0.6);
-  var wickWidth = 1;
+  var candleBodyWidth = Math.max(1, totalCandleWidth * 0.65);
+  var wickWidth = Math.max(1, candleBodyWidth * 0.15);
 
   // Draw candles
   var drawnYears = {};
@@ -13628,13 +13658,27 @@ function renderFortuneKLine(canvasId, data, animate) {
     ctx.fillStyle = color;
     ctx.fillRect(cx - candleBodyWidth / 2, bodyTop, candleBodyWidth, bodyH);
 
-    // Year labels on X axis
-    if (!drawnYears[d.year] && (d.month === 1 || i === 0)) {
-      drawnYears[d.year] = true;
-      ctx.fillStyle = textColor;
-      ctx.font = '10px DM Sans, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(d.year.toString(), cx, h - 6);
+    // X axis labels - smart spacing based on candle count
+    var labelInterval = 1;
+    if (candleCount > 100) labelInterval = Math.ceil(candleCount / 8);
+    else if (candleCount > 50) labelInterval = Math.ceil(candleCount / 6);
+    else if (candleCount > 20) labelInterval = Math.ceil(candleCount / 5);
+
+    if (i % labelInterval === 0 || i === candleCount - 1) {
+      var yearStr = d.year.toString();
+      // Show month if candles are few enough
+      if (candleCount <= 60) {
+        yearStr = d.year + '-' + (d.month < 10 ? '0' : '') + d.month;
+      }
+      // Avoid duplicate years
+      var labelKey = yearStr.substring(0, 4);
+      if (!drawnYears[labelKey] || candleCount <= 24) {
+        drawnYears[labelKey] = true;
+        ctx.fillStyle = textColor;
+        ctx.font = candleCount <= 60 ? '9px DM Sans, sans-serif' : '10px DM Sans, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(yearStr, cx, h - 6);
+      }
     }
   }
 
