@@ -45,6 +45,9 @@ export async function handleGetReports(context) {
   const DB = context.env.DB;
   await DB.prepare(CREATE_TABLE_SQL).run();
 
+  // Migrate: add content column if missing
+  try { await DB.prepare('ALTER TABLE reports ADD COLUMN content TEXT NOT NULL DEFAULT \'\'').run(); } catch(e) {}
+
   const url = new URL(context.request.url);
   const lang = url.searchParams.get('lang') || '';
   const category = url.searchParams.get('category') || '';

@@ -101,6 +101,9 @@ async function generateDailyReports(env) {
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     )`).run();
 
+    // Migrate: add content column if missing
+    try { await DB.prepare("ALTER TABLE reports ADD COLUMN content TEXT NOT NULL DEFAULT ''").run(); } catch(e) {}
+
     // Check if today's reports already exist
     const today = new Date().toISOString().split('T')[0];
     const existing = await DB.prepare(
