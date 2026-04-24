@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-6';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-7';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -8015,7 +8015,13 @@ function switchNav(nav) {
     transits: () => { addGlobalVibesCard(); },
     watchlist: () => addWatchlistCard()
   };
-  if (actions[nav]) { actions[nav](); scrollChatTop(); }
+  if (actions[nav]) {
+    try { actions[nav](); } catch(e) {
+      document.getElementById('chatMessages').innerHTML =
+        '<div style="padding:20px;color:#EF4444;font-size:13px;white-space:pre-wrap;">[Nav Error: ' + nav + '] ' + e.message + '\n' + e.stack + '</div>';
+    }
+    scrollChatTop();
+  }
 }
 
 // ========== NEW CHAT / HISTORY ==========
