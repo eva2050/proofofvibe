@@ -87,6 +87,20 @@ async function handleRequest(request) {
       return await withAuth(request, handleDeleteBookmark);
     }
 
+    // ── Report routes (public GET, admin POST/PUT/DELETE) ──────────────────
+    if (path === '/api/reports' && method === 'GET') {
+      return await handleGetReports(request);
+    }
+    if (path === '/api/reports' && method === 'POST') {
+      return await handleCreateReport(request);
+    }
+    if (path.match(/^\/api\/reports\/\d+$/) && method === 'PUT') {
+      return await handleUpdateReport(request);
+    }
+    if (path.match(/^\/api\/reports\/\d+$/) && method === 'DELETE') {
+      return await handleDeleteReport(request);
+    }
+
     // ── 404 ───────────────────────────────────────────────────────────────
     return jsonResponse({ error: 'Not found' }, 404);
   } catch (err) {
@@ -915,6 +929,141 @@ async function handleDeleteBookmark(request, ctx) {
   return jsonResponse({ message: 'Bookmark deleted' });
 }
 
+
+// =============================================================================
+// GET /api/reports  (public)
+// =============================================================================
+
+async function handleGetReports(request) {
+  // Auto-create table
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL DEFAULT 'MARKET OUTLOOK',
+    title TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    image_url TEXT NOT NULL DEFAULT '',
+    date TEXT NOT NULL DEFAULT '',
+    read_time INTEGER NOT NULL DEFAULT 5,
+    lang TEXT NOT NULL DEFAULT 'zh',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )`).run();
+
+  const url = new URL(request.url);
+  const lang = url.searchParams.get('lang') || '';
+  const category = url.searchParams.get('category') || '';
+  const limit = parseInt(url.searchParams.get('limit') || '50');
+  const offset = parseInt(url.searchParams.get('offset') || '0');
+
+  let query = 'SELECT rowid as id, * FROM reports WHERE 1=1';
+  const params = [];
+  if (lang) { query += ' AND lang = ?'; params.push(lang); }
+  if (category) { query += ' AND category = ?'; params.push(category); }
+  query += ' ORDER BY date DESC, created_at DESC LIMIT ? OFFSET ?';
+  params.push(limit, offset);
+
+  const result = await env.DB.prepare(query).bind(...params).all();
+  return withCors(jsonResponse({ success: true, data: result.results || [] }), request);
+}
+
+// =============================================================================
+// POST /api/reports  (create report)
+// =============================================================================
+
+async function handleCreateReport(request) {
+  await env.DB.prepare(`CREATE TABLE IF NOT EXISTS reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL DEFAULT 'MARKET OUTLOOK',
+    title TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    image_url TEXT NOT NULL DEFAULT '',
+    date TEXT NOT NULL DEFAULT '',
+    read_time INTEGER NOT NULL DEFAULT 5,
+    lang TEXT NOT NULL DEFAULT 'zh',
+    created_at TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )`).run();
+
+  const body = await readBody(request);
+  const { category, title, description, image_url, date, read_time, lang } = body;
+
+  if (!title) {
+    return withCors(jsonResponse({ error: 'title is required' }, 400), request);
+  }
+
+  const now = new Date().toISOString();
+  const result = await env.DB.prepare(
+    'INSERT INTO reports (category, title, description, image_url, date, read_time, lang, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)'
+  ).bind(
+    category || 'MARKET OUTLOOK', title, description || '', image_url || '',
+    date || now.split('T')[0], read_time || 5, lang || 'zh', now, now
+  ).run();
+
+  return withCors(jsonResponse({ success: true, id: result.meta.last_row_id }, 201), request);
+}
+
+// =============================================================================
+// PUT /api/reports/:id  (update report)
+// =============================================================================
+
+async function handleUpdateReport(request) {
+  const url = new URL(request.url);
+  const id = parseInt(url.pathname.split('/').pop(), 10);
+
+  if (!id || isNaN(id)) {
+    return withCors(jsonResponse({ error: 'Invalid report ID' }, 400), request);
+  }
+
+  const existing = await env.DB.prepare('SELECT id FROM reports WHERE rowid = ?').bind(id).first();
+  if (!existing) {
+    return withCors(jsonResponse({ error: 'Report not found' }, 404), request);
+  }
+
+  const body = await readBody(request);
+  const allowedFields = ['category', 'title', 'description', 'image_url', 'date', 'read_time', 'lang'];
+  const updates = [];
+  const values = [];
+
+  for (const field of allowedFields) {
+    if (body[field] !== undefined) {
+      updates.push(`${field} = ?`);
+      values.push(body[field]);
+    }
+  }
+
+  if (updates.length === 0) {
+    return withCors(jsonResponse({ error: 'No valid fields to update' }, 400), request);
+  }
+
+  updates.push("updated_at = datetime('now')");
+  values.push(id);
+
+  await env.DB.prepare(`UPDATE reports SET ${updates.join(', ')} WHERE rowid = ?`).bind(...values).run();
+
+  return withCors(jsonResponse({ success: true, message: 'Report updated' }), request);
+}
+
+// =============================================================================
+// DELETE /api/reports/:id  (delete report)
+// =============================================================================
+
+async function handleDeleteReport(request) {
+  const url = new URL(request.url);
+  const id = parseInt(url.pathname.split('/').pop(), 10);
+
+  if (!id || isNaN(id)) {
+    return withCors(jsonResponse({ error: 'Invalid report ID' }, 400), request);
+  }
+
+  const existing = await env.DB.prepare('SELECT id FROM reports WHERE rowid = ?').bind(id).first();
+  if (!existing) {
+    return withCors(jsonResponse({ error: 'Report not found' }, 404), request);
+  }
+
+  await env.DB.prepare('DELETE FROM reports WHERE rowid = ?').bind(id).run();
+
+  return withCors(jsonResponse({ success: true, message: 'Report deleted' }), request);
+}
 
 // =============================================================================
 // GET /api/global-vibes  (public — global vibes data from 万级数据库)

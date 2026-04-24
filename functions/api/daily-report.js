@@ -57,17 +57,17 @@ async function generateDailyReports(env) {
       return { status: 200, body: { message: 'Today\'s reports already exist', count: existing.cnt } };
     }
 
-    // Generate 1 report in English (translations handled by frontend)
+    // Generate 1 report in Chinese (default language, translate when publishing)
     const reportConfigs = [
-      { lang: 'en', category: 'MARKET OUTLOOK' },
+      { lang: 'zh', category: 'MARKET OUTLOOK' },
     ];
 
     const results = [];
 
     for (const config of reportConfigs) {
       const langInstruction = config.lang === 'zh'
-        ? '用中文撰写。标题和内容都用中文。'
-        : 'Write in English.';
+        ? '用中文撰写。标题和内容都用中文。风格要融合金融分析与占星学评论，语言生动有趣。'
+        : 'Write in English. Blend financial analysis with astrological commentary in an engaging tone.';
 
       const prompt = `You are a financial astrologer writing a daily market report for ProofOfVibe. ${langInstruction}
 
