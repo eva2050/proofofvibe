@@ -57,10 +57,9 @@ async function generateDailyReports(env) {
       return { status: 200, body: { message: 'Today\'s reports already exist', count: existing.cnt } };
     }
 
-    // Generate 2 reports: one in English, one in Chinese
+    // Generate 1 report in English (translations handled by frontend)
     const reportConfigs = [
       { lang: 'en', category: 'MARKET OUTLOOK' },
-      { lang: 'zh', category: 'MARKET OUTLOOK' },
     ];
 
     const results = [];

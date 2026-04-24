@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProofOfVibe — Admin: Reports</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f7; color: #1a1a2e; min-height: 100vh; }
+    .header { background: #fff; border-bottom: 1px solid #e5e5ea; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 10; }
+    .header h1 { font-size: 18px; font-weight: 700; }
+    .header a { color: #7c3aed; text-decoration: none; font-size: 13px; }
+    .header a:hover { text-decoration: underline; }
+    .toolbar { padding: 16px 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .toolbar input, .toolbar select { padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; background: #fff; }
+    .toolbar input { flex: 1; min-width: 200px; }
+    .btn { padding: 8px 16px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+    .btn-primary { background: #7c3aed; color: #fff; }
+    .btn-primary:hover { background: #6d28d9; }
+    .btn-danger { background: #ef4444; color: #fff; }
+    .btn-danger:hover { background: #dc2626; }
+    .btn-secondary { background: #fff; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { background: #f9fafb; }
+    .btn-sm { padding: 4px 10px; font-size: 11px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px 24px; }
+    .table-wrap { background: #fff; border-radius: 12px; border: 1px solid #e5e5ea; overflow: hidden; }
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; padding: 12px 16px; text-align: left; border-bottom: 1px solid #e5e5ea; background: #fafafa; }
+    td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f3f4f6; vertical-align: top; }
+    tr:hover td { background: #fafafa; }
+    .td-title { font-weight: 600; max-width: 300px; }
+    .td-desc { color: #6b7280; font-size: 12px; max-width: 400px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .td-category { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; display: inline-block; }
+    .cat-MARKET { background: #ede9fe; color: #7c3aed; }
+    .cat-CRYPTO { background: #fef3c7; color: #d97706; }
+    .cat-TECH { background: #dbeafe; color: #2563eb; }
+    .cat-GEOPOLITICS { background: #fee2e2; color: #dc2626; }
+    .cat-MACRO { background: #d1fae5; color: #059669; }
+    .actions { display: flex; gap: 6px; }
+    .count-bar { padding: 8px 24px; font-size: 12px; color: #6b7280; }
+    .empty { text-align: center; padding: 48px; color: #9ca3af; }
+    /* Modal */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+    .modal { background: #fff; border-radius: 16px; width: 100%; max-width: 640px; max-height: 90vh; overflow-y: auto; }
+    .modal-header { padding: 20px 24px; border-bottom: 1px solid #e5e5ea; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h2 { font-size: 16px; font-weight: 700; }
+    .modal-body { padding: 24px; }
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: #374151; margin-bottom: 4px; }
+    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; }
+    .form-group textarea { min-height: 200px; resize: vertical; }
+    .modal-footer { padding: 16px 24px; border-top: 1px solid #e5e5ea; display: flex; justify-content: flex-end; gap: 8px; }
+    .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 13px; z-index: 200; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateX(-50%) translateY(10px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>📰 Report Manager</h1>
+    <a href="/">← Back to ProofOfVibe</a>
+  </div>
+
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="Search reports..." oninput="loadReports()">
+    <select id="filterLang" onchange="loadReports()">
+      <option value="">All Languages</option>
+      <option value="en">English</option>
+      <option value="zh">Chinese</option>
+      <option value="es">Spanish</option>
+      <option value="ja">Japanese</option>
+      <option value="ko">Korean</option>
+    </select>
+    <select id="filterCategory" onchange="loadReports()">
+      <option value="">All Categories</option>
+      <option value="MARKET OUTLOOK">Market Outlook</option>
+      <option value="CRYPTO">Crypto</option>
+      <option value="TECH">Tech</option>
+      <option value="GEOPOLITICS">Geopolitics</option>
+      <option value="MACRO">Macro</option>
+    </select>
+    <button class="btn btn-primary" onclick="openCreateModal()">+ New Report</button>
+    <button class="btn btn-secondary" onclick="triggerDailyReport()">⚡ Generate Daily</button>
+  </div>
+
+  <div class="count-bar" id="countBar">Loading...</div>
+
+  <div class="container">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Category</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Lang</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="reportTable"></tbody>
+      </table>
+      <div class="empty" id="emptyMsg" style="display:none;">No reports found</div>
+    </div>
+  </div>
+
+  <div id="modalContainer"></div>
+
+  <script>
+    const API_BASE = window.location.origin;
+    let allReports = [];
+
+    function showToast(msg) {
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 3000);
+    }
+
+    async function loadReports() {
+      const search = document.getElementById('searchInput').value;
+      const lang = document.getElementById('filterLang').value;
+      const category = document.getElementById('filterCategory').value;
+      let url = API_BASE + '/api/reports?limit=100';
+      if (lang) url += '&lang=' + lang;
+      if (category) url += '&category=' + encodeURIComponent(category);
+
+      try {
+        const res = await fetch(url);
+        const json = await res.json();
+        allReports = json.data || [];
+        if (search) {
+          const q = search.toLowerCase();
+          allReports = allReports.filter(r =>
+            (r.title || '').toLowerCase().includes(q) ||
+            (r.description || '').toLowerCase().includes(q)
+          );
+        }
+        renderTable();
+      } catch(e) {
+        document.getElementById('reportTable').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#ef4444;">Failed to load reports: ' + e.message + '</td></tr>';
+      }
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('reportTable');
+      const empty = document.getElementById('emptyMsg');
+      document.getElementById('countBar').textContent = allReports.length + ' report(s)';
+
+      if (allReports.length === 0) {
+        tbody.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      const catClass = { 'MARKET OUTLOOK': 'cat-MARKET', 'CRYPTO': 'cat-CRYPTO', 'TECH': 'cat-TECH', 'GEOPOLITICS': 'cat-GEOPOLITICS', 'MACRO': 'cat-MACRO' };
+
+      tbody.innerHTML = allReports.map(r => `
+        <tr>
+          <td style="white-space:nowrap;font-size:12px;color:#6b7280;">${esc(r.date || '')}</td>
+          <td><span class="td-category ${catClass[r.category] || 'cat-MARKET'}">${esc(r.category || '')}</span></td>
+          <td class="td-title">${esc(r.title || '')}</td>
+          <td class="td-desc" title="${esc(r.description || '')}">${esc((r.description || '').substring(0, 120))}${(r.description || '').length > 120 ? '...' : ''}</td>
+          <td style="font-size:12px;">${esc(r.lang || '')}</td>
+          <td>
+            <div class="actions">
+              <button class="btn btn-secondary btn-sm" onclick="openEditModal(${r.id})">Edit</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteReport(${r.id})">Delete</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+    function openCreateModal() {
+      openModal('Create Report', null);
+    }
+
+    function openEditModal(id) {
+      const r = allReports.find(x => x.id === id);
+      if (!r) return;
+      openModal('Edit Report', r);
+    }
+
+    function openModal(title, data) {
+      const isEdit = !!data;
+      const container = document.getElementById('modalContainer');
+      container.innerHTML = `
+        <div class="modal-overlay" onclick="if(event.target===this)closeModal()">
+          <div class="modal">
+            <div class="modal-header">
+              <h2>${title}</h2>
+              <button class="btn btn-secondary btn-sm" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label>Category</label>
+                <select id="mCategory">
+                  <option value="MARKET OUTLOOK" ${data && data.category === 'MARKET OUTLOOK' ? 'selected' : ''}>Market Outlook</option>
+                  <option value="CRYPTO" ${data && data.category === 'CRYPTO' ? 'selected' : ''}>Crypto</option>
+                  <option value="TECH" ${data && data.category === 'TECH' ? 'selected' : ''}>Tech</option>
+                  <option value="GEOPOLITICS" ${data && data.category === 'GEOPOLITICS' ? 'selected' : ''}>Geopolitics</option>
+                  <option value="MACRO" ${data && data.category === 'MACRO' ? 'selected' : ''}>Macro</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Title</label>
+                <input type="text" id="mTitle" value="${esc(data ? data.title : '')}" placeholder="Report title...">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <textarea id="mDesc" placeholder="Report content...">${esc(data ? data.description : '')}</textarea>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div class="form-group" style="flex:1;">
+                  <label>Date</label>
+                  <input type="date" id="mDate" value="${data ? data.date : new Date().toISOString().split('T')[0]}">
+                </div>
+                <div class="form-group" style="flex:1;">
+                  <label>Language</label>
+                  <select id="mLang">
+                    <option value="en" ${data && data.lang === 'en' ? 'selected' : ''}>English</option>
+                    <option value="zh" ${data && data.lang === 'zh' ? 'selected' : ''}>Chinese</option>
+                    <option value="es" ${data && data.lang === 'es' ? 'selected' : ''}>Spanish</option>
+                    <option value="ja" ${data && data.lang === 'ja' ? 'selected' : ''}>Japanese</option>
+                    <option value="ko" ${data && data.lang === 'ko' ? 'selected' : ''}>Korean</option>
+                  </select>
+                </div>
+                <div class="form-group" style="flex:1;">
+                  <label>Read Time (min)</label>
+                  <input type="number" id="mReadTime" value="${data ? data.read_time : 5}" min="1" max="30">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Image URL (optional)</label>
+                <input type="text" id="mImage" value="${esc(data ? data.image_url : '')}" placeholder="/assets/report-outlook-1.jpg">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+              <button class="btn btn-primary" onclick="saveReport(${isEdit ? data.id : 'null'})">${isEdit ? 'Save Changes' : 'Create'}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeModal() {
+      document.getElementById('modalContainer').innerHTML = '';
+    }
+
+    async function saveReport(id) {
+      const body = {
+        category: document.getElementById('mCategory').value,
+        title: document.getElementById('mTitle').value,
+        description: document.getElementById('mDesc').value,
+        date: document.getElementById('mDate').value,
+        lang: document.getElementById('mLang').value,
+        read_time: parseInt(document.getElementById('mReadTime').value) || 5,
+        image_url: document.getElementById('mImage').value,
+      };
+
+      if (!body.title) { alert('Title is required'); return; }
+
+      try {
+        const url = id
+          ? API_BASE + '/api/reports/' + id
+          : API_BASE + '/api/reports';
+        const res = await fetch(url, {
+          method: id ? 'PUT' : 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const json = await res.json();
+        if (json.success || json.id) {
+          showToast(id ? 'Report updated!' : 'Report created!');
+          closeModal();
+          loadReports();
+        } else {
+          alert('Error: ' + (json.error || 'Unknown error'));
+        }
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function deleteReport(id) {
+      if (!confirm('Delete this report? This cannot be undone.')) return;
+      try {
+        const res = await fetch(API_BASE + '/api/reports/' + id, { method: 'DELETE' });
+        const json = await res.json();
+        if (json.success) {
+          showToast('Report deleted');
+          loadReports();
+        } else {
+          alert('Error: ' + (json.error || 'Unknown error'));
+        }
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    async function triggerDailyReport() {
+      if (!confirm('Generate today\'s daily report via AI?')) return;
+      try {
+        const res = await fetch(API_BASE + '/api/daily-report', { method: 'POST' });
+        const json = await res.json();
+        if (json.success) {
+          showToast('Generated ' + json.generated + ' report(s)!');
+          loadReports();
+        } else {
+          alert('Result: ' + JSON.stringify(json));
+        }
+      } catch(e) {
+        alert('Error: ' + e.message);
+      }
+    }
+
+    loadReports();
+  </script>
+</body>
+</html>

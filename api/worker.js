@@ -118,12 +118,15 @@ async function handleRequest(request) {
       return await withAuth(request, handleDeleteBookmark);
     }
 
-    // ── Reports routes (public GET, admin POST/DELETE) ─────────────────────
+    // ── Reports routes (public GET, admin POST/PUT/DELETE) ──────────────────
     if (path === '/api/reports' && method === 'GET') {
       return await handleGetReports(request);
     }
     if (path === '/api/reports' && method === 'POST') {
       return await handleCreateReport(request);
+    }
+    if (path.match(/^\/api\/reports\/\d+$/) && method === 'PUT') {
+      return await handleUpdateReport(request);
     }
     if (path.match(/^\/api\/reports\/\d+$/) && method === 'DELETE') {
       return await handleDeleteReport(request);
@@ -301,6 +304,47 @@ async function handleSignup(request) {
     }),
     request
   );
+}
+
+// =============================================================================
+// PUT /api/reports/:id  (admin - update report)
+// =============================================================================
+
+async function handleUpdateReport(request) {
+  const url = new URL(request.url);
+  const id = parseInt(url.pathname.split('/').pop(), 10);
+
+  if (!id || isNaN(id)) {
+    return withCors(jsonResponse({ error: 'Invalid report ID' }, 400), request);
+  }
+
+  const existing = await d1First('SELECT id FROM reports WHERE rowid = ?', [id]);
+  if (!existing) {
+    return withCors(jsonResponse({ error: 'Report not found' }, 404), request);
+  }
+
+  const body = await readBody(request);
+  const allowedFields = ['category', 'title', 'description', 'image_url', 'date', 'read_time', 'lang'];
+  const updates = [];
+  const values = [];
+
+  for (const field of allowedFields) {
+    if (body[field] !== undefined) {
+      updates.push(`${field} = ?`);
+      values.push(body[field]);
+    }
+  }
+
+  if (updates.length === 0) {
+    return withCors(jsonResponse({ error: 'No valid fields to update' }, 400), request);
+  }
+
+  updates.push("updated_at = datetime('now')");
+  values.push(id);
+
+  await d1Run(`UPDATE reports SET ${updates.join(', ')} WHERE rowid = ?`, values);
+
+  return withCors(jsonResponse({ success: true, message: 'Report updated' }), request);
 }
 
 // =============================================================================
