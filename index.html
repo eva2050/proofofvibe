@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-7';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-8';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -11656,6 +11656,7 @@ function submitTradeLog() {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
   logs.unshift(entry);
   localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  backupTradeLogs(logs);
   
   saveTradeLogToCloud(isBuy ? 'positive' : 'negative', symbol, reason, entry.entryPrice || entry.exitPrice);
   
@@ -11800,7 +11801,10 @@ function renderTradeLogs(logs) {
   if (!timeline) return;
   
   if (logs.length === 0) {
-    timeline.innerHTML = '<div class="tl-empty">' + t('tl.empty') + '</div>';
+    var hasBackup = !!localStorage.getItem('vibe_trade_logs_backup');
+    timeline.innerHTML = '<div class="tl-empty">' + t('tl.empty') +
+      (hasBackup ? '<br><br><button onclick="restoreTradeLogs()" style="background:var(--accent);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:12px;">Restore from Backup</button>' : '') +
+      '</div>';
     return;
   }
   
@@ -11927,7 +11931,44 @@ function deleteTradeLog(id) {
   var logs = JSON.parse(localStorage.getItem('vibe_trade_logs') || '[]');
   logs = logs.filter(function(l) { return String(l.id) !== String(id); });
   localStorage.setItem('vibe_trade_logs', JSON.stringify(logs));
+  backupTradeLogs(logs);
   loadAndRenderTradeLogs();
+}
+
+// ========== TRADE LOG BACKUP / RESTORE ==========
+function backupTradeLogs(logs) {
+  try {
+    var backup = {
+      timestamp: new Date().toISOString(),
+      count: logs.length,
+      data: logs
+    };
+    localStorage.setItem('vibe_trade_logs_backup', JSON.stringify(backup));
+    // Keep last 3 backups
+    for (var i = 2; i >= 1; i--) {
+      var prev = localStorage.getItem('vibe_trade_logs_backup_' + i);
+      if (prev) localStorage.setItem('vibe_trade_logs_backup_' + (i + 1), prev);
+    }
+    var last = localStorage.getItem('vibe_trade_logs_backup');
+    if (last) localStorage.setItem('vibe_trade_logs_backup_1', last);
+  } catch(e) {}
+}
+
+function restoreTradeLogs() {
+  try {
+    var backup = localStorage.getItem('vibe_trade_logs_backup');
+    if (!backup) { showToast('No backup found'); return; }
+    var parsed = JSON.parse(backup);
+    if (parsed.data && parsed.data.length > 0) {
+      localStorage.setItem('vibe_trade_logs', JSON.stringify(parsed.data));
+      loadAndRenderTradeLogs();
+      showToast('Restored ' + parsed.data.length + ' trade logs from backup (' + new Date(parsed.timestamp).toLocaleString() + ')');
+    } else {
+      showToast('Backup is empty');
+    }
+  } catch(e) {
+    showToast('Restore failed: ' + e.message);
+  }
 }
 
 function addTradingLogCard(sentiment) {
