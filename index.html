@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-43';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-44';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -13734,7 +13734,7 @@ function renderFortuneKLine(canvasId, data, animate) {
   }
 
   // Chart area
-  var padLeft = 40, padRight = 16, padTop = 16, padBottom = 30;
+  var padLeft = 44, padRight = 48, padTop = 12, padBottom = 28;
   var chartW = w - padLeft - padRight;
   var chartH = h - padTop - padBottom;
 
@@ -13744,25 +13744,23 @@ function renderFortuneKLine(canvasId, data, animate) {
     if (displayData[yi].low < yMin) yMin = displayData[yi].low;
     if (displayData[yi].high > yMax) yMax = displayData[yi].high;
   }
-  var yPad = Math.max(3, (yMax - yMin) * 0.08);
+  var yPad = Math.max(3, (yMax - yMin) * 0.1);
   yMin = Math.floor((yMin - yPad) / 5) * 5;
   yMax = Math.ceil((yMax + yPad) / 5) * 5;
   if (yMax - yMin < 20) { yMin = yMax - 20; }
 
   // Colors from theme
   var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  var bgColor = isDark ? '#1C1C1E' : '#FAFAFA';
-  var gridColor = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
-  var gridColorStrong = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)';
-  var textColor = isDark ? '#636366' : '#AEAEB2';
-  var redColor = isDark ? '#FF453A' : '#EF4444';
-  var greenColor = isDark ? '#30D158' : '#22C55E';
-  var areaColorTop = isDark ? 'rgba(124,58,237,0.15)' : 'rgba(124,58,237,0.08)';
-  var areaColorBot = isDark ? 'rgba(124,58,237,0.0)' : 'rgba(124,58,237,0.0)';
+  var bgColor = isDark ? '#1C1C1E' : '#FFFFFF';
+  var gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+  var textColor = isDark ? '#48484A' : '#C7C7CC';
+  var redColor = isDark ? '#FF6961' : '#E5484D';
+  var greenColor = isDark ? '#4DDB7E' : '#30A46C';
   var lastClose = displayData[displayData.length - 1].close;
-  var lastColor = lastClose >= displayData[0].open ? redColor : greenColor;
+  var firstOpen = displayData[0].open;
+  var lastColor = lastClose >= firstOpen ? redColor : greenColor;
 
-  // Clear with background
+  // Clear
   ctx.fillStyle = bgColor;
   ctx.fillRect(0, 0, w, h);
 
@@ -13771,7 +13769,7 @@ function renderFortuneKLine(canvasId, data, animate) {
     return padTop + chartH - ((val - yMin) / (yMax - yMin)) * chartH;
   }
 
-  // Draw horizontal grid lines with Y labels
+  // Y grid lines
   ctx.textAlign = 'right';
   ctx.textBaseline = 'middle';
   var yStep = 10;
@@ -13781,55 +13779,25 @@ function renderFortuneKLine(canvasId, data, animate) {
 
   for (var yv = Math.ceil(yMin / yStep) * yStep; yv <= yMax; yv += yStep) {
     var yy = yPos(yv);
-    var isMajor = (yv % (yStep * 2) === 0);
-    ctx.strokeStyle = isMajor ? gridColorStrong : gridColor;
+    ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(padLeft, yy);
     ctx.lineTo(w - padRight, yy);
     ctx.stroke();
-
-    // Y label
     ctx.fillStyle = textColor;
     ctx.font = '10px DM Sans, sans-serif';
     ctx.fillText(yv.toString(), padLeft - 8, yy);
   }
 
-  // Draw area fill under close line (subtle gradient)
-  ctx.beginPath();
-  ctx.moveTo(padLeft, yPos(displayData[0].close));
-  for (var ai = 1; ai < displayData.length; ai++) {
-    var ax = padLeft + ai * (chartW / displayData.length) + (chartW / displayData.length) / 2;
-    ctx.lineTo(ax, yPos(displayData[ai].close));
-  }
-  ctx.lineTo(padLeft + (displayData.length - 0.5) * (chartW / displayData.length), padTop + chartH);
-  ctx.lineTo(padLeft + 0.5 * (chartW / displayData.length), padTop + chartH);
-  ctx.closePath();
-
-  var areaGrad = ctx.createLinearGradient(0, padTop, 0, padTop + chartH);
-  areaGrad.addColorStop(0, areaColorTop);
-  areaGrad.addColorStop(1, areaColorBot);
-  ctx.fillStyle = areaGrad;
-  ctx.fill();
-
-  // Draw close line (thin, subtle)
-  ctx.beginPath();
-  ctx.moveTo(padLeft + 0.5 * (chartW / displayData.length), yPos(displayData[0].close));
-  for (var li = 1; li < displayData.length; li++) {
-    var lx = padLeft + li * (chartW / displayData.length) + (chartW / displayData.length) / 2;
-    ctx.lineTo(lx, yPos(displayData[li].close));
-  }
-  ctx.strokeStyle = isDark ? 'rgba(124,58,237,0.3)' : 'rgba(124,58,237,0.2)';
-  ctx.lineWidth = 1;
-  ctx.stroke();
-
   // Candle dimensions
   var candleCount = displayData.length;
   var totalCandleWidth = chartW / candleCount;
-  var candleBodyWidth = Math.max(1.5, totalCandleWidth * 0.6);
-  var wickWidth = Math.max(1, candleBodyWidth * 0.12);
+  var gap = Math.max(1, totalCandleWidth * 0.2);
+  var candleBodyWidth = Math.max(1, totalCandleWidth - gap);
+  var wickWidth = 1;
 
-  // Draw candles with subtle gradient
+  // Draw candles
   var drawnYears = {};
   for (var i = 0; i < candleCount; i++) {
     var d = displayData[i];
@@ -13837,47 +13805,35 @@ function renderFortuneKLine(canvasId, data, animate) {
     var isUp = d.close >= d.open;
     var color = isUp ? redColor : greenColor;
 
-    // Wick (thin line)
+    // Wick
     var highY = yPos(d.high);
     var lowY = yPos(d.low);
     ctx.strokeStyle = color;
     ctx.lineWidth = wickWidth;
-    ctx.globalAlpha = 0.7;
     ctx.beginPath();
     ctx.moveTo(cx, highY);
     ctx.lineTo(cx, lowY);
     ctx.stroke();
-    ctx.globalAlpha = 1;
 
-    // Body with rounded corners
+    // Body - hollow for up, filled for down (classic style)
     var openY = yPos(d.open);
     var closeY = yPos(d.close);
     var bodyTop = Math.min(openY, closeY);
     var bodyH = Math.max(1, Math.abs(closeY - openY));
     var bodyLeft = cx - candleBodyWidth / 2;
-    var bodyR = Math.min(2, candleBodyWidth / 3); // border radius
 
-    // Draw rounded rect body
-    ctx.fillStyle = color;
-    ctx.globalAlpha = 0.9;
-    ctx.beginPath();
-    if (bodyH > bodyR * 2) {
-      ctx.moveTo(bodyLeft + bodyR, bodyTop);
-      ctx.lineTo(bodyLeft + candleBodyWidth - bodyR, bodyTop);
-      ctx.arcTo(bodyLeft + candleBodyWidth, bodyTop, bodyLeft + candleBodyWidth, bodyTop + bodyR, bodyR);
-      ctx.lineTo(bodyLeft + candleBodyWidth, bodyTop + bodyH - bodyR);
-      ctx.arcTo(bodyLeft + candleBodyWidth, bodyTop + bodyH, bodyLeft + candleBodyWidth - bodyR, bodyTop + bodyH, bodyR);
-      ctx.lineTo(bodyLeft + bodyR, bodyTop + bodyH);
-      ctx.arcTo(bodyLeft, bodyTop + bodyH, bodyLeft, bodyTop + bodyH - bodyR, bodyR);
-      ctx.lineTo(bodyLeft, bodyTop + bodyR);
-      ctx.arcTo(bodyLeft, bodyTop, bodyLeft + bodyR, bodyTop, bodyR);
+    if (isUp) {
+      // Hollow candle (up/bullish)
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1;
+      ctx.strokeRect(bodyLeft, bodyTop, candleBodyWidth, bodyH);
     } else {
-      ctx.rect(bodyLeft, bodyTop, candleBodyWidth, bodyH);
+      // Filled candle (down/bearish)
+      ctx.fillStyle = color;
+      ctx.fillRect(bodyLeft, bodyTop, candleBodyWidth, bodyH);
     }
-    ctx.fill();
-    ctx.globalAlpha = 1;
 
-    // X axis labels - smart spacing
+    // X axis labels
     var labelInterval = 1;
     if (candleCount > 100) labelInterval = Math.ceil(candleCount / 8);
     else if (candleCount > 50) labelInterval = Math.ceil(candleCount / 6);
@@ -13900,12 +13856,12 @@ function renderFortuneKLine(canvasId, data, animate) {
     }
   }
 
-  // Draw last price line (dashed horizontal)
+  // Last price dashed line
   var lastY = yPos(lastClose);
-  ctx.setLineDash([4, 3]);
+  ctx.setLineDash([3, 3]);
   ctx.strokeStyle = lastColor;
   ctx.lineWidth = 1;
-  ctx.globalAlpha = 0.5;
+  ctx.globalAlpha = 0.4;
   ctx.beginPath();
   ctx.moveTo(padLeft, lastY);
   ctx.lineTo(w - padRight, lastY);
@@ -13913,18 +13869,35 @@ function renderFortuneKLine(canvasId, data, animate) {
   ctx.setLineDash([]);
   ctx.globalAlpha = 1;
 
-  // Last price label (right side)
-  var labelW = 36, labelH = 16;
-  var labelX = w - padRight + 2;
+  // Last price label (right side, pill shape)
+  var priceText = lastClose.toFixed(1);
+  ctx.font = 'bold 10px DM Sans, sans-serif';
+  var tw = ctx.measureText(priceText).width;
+  var labelW = tw + 12;
+  var labelH = 20;
+  var labelX = w - padRight + 4;
+  var labelY = lastY - labelH / 2;
+
+  // Pill background
   ctx.fillStyle = lastColor;
   ctx.beginPath();
-  ctx.roundRect(labelX, lastY - labelH / 2, labelW, labelH, 3);
+  ctx.moveTo(labelX + 4, labelY);
+  ctx.lineTo(labelX + labelW - 4, labelY);
+  ctx.quadraticCurveTo(labelX + labelW, labelY, labelX + labelW, labelY + 4);
+  ctx.lineTo(labelX + labelW, labelY + labelH - 4);
+  ctx.quadraticCurveTo(labelX + labelW, labelY + labelH, labelX + labelW - 4, labelY + labelH);
+  ctx.lineTo(labelX + 4, labelY + labelH);
+  ctx.quadraticCurveTo(labelX, labelY + labelH, labelX, labelY + labelH - 4);
+  ctx.lineTo(labelX, labelY + 4);
+  ctx.quadraticCurveTo(labelX, labelY, labelX + 4, labelY);
+  ctx.closePath();
   ctx.fill();
+
+  // Price text
   ctx.fillStyle = '#FFFFFF';
-  ctx.font = 'bold 9px DM Sans, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(lastClose.toFixed(0), labelX + labelW / 2, lastY);
+  ctx.fillText(priceText, labelX + labelW / 2, lastY);
 
   // Store chart metrics on canvas for hover calculations
   canvas._chartMetrics = {
