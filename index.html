@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-46';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-47';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -6081,6 +6081,17 @@ const i18n = {
     'mod.addTargetHint': 'Use $ for stocks (e.g. $AAPL), @ for people (e.g. @JackMa), # for institutions (e.g. #Alibaba). Plain text defaults to stock ticker.',
     'mod.confirmAdd': 'Add',
     'mod.cancel': 'Cancel',
+    'mod.previewAdd': 'Preview',
+    'mod.addTargetEmpty': 'Please enter a target name',
+    'mod.addTargetExists': 'Already in watchlist',
+    'mod.addTargetType': 'Type',
+    'mod.addTargetInception': 'Inception',
+    'mod.addTargetSunSign': 'Sun Sign',
+    'mod.addTargetConfirm': 'Confirm Add',
+    'mod.typeStock': 'Stock',
+    'mod.typeCrypto': 'Crypto',
+    'mod.typeTitan': 'Person',
+    'mod.typeInstitution': 'Institution',
     'mod.top': 'TOP',
     'mod.cosmicRealityCheck': 'Cosmic Reality Check',
     'mod.victoryVibes': 'Victory Vibes',
@@ -6954,6 +6965,17 @@ const i18n = {
     'mod.addTargetHint': '使用 $ 代表股票（如 $AAPL），@ 代表人物（如 @马云），# 代表机构（如 #阿里巴巴）。直接输入默认为股票代码。',
     'mod.confirmAdd': '添加',
     'mod.cancel': '取消',
+    'mod.previewAdd': '预览',
+    'mod.addTargetEmpty': '请输入标的名称',
+    'mod.addTargetExists': '已在观察列表中',
+    'mod.addTargetType': '类型',
+    'mod.addTargetInception': '创世日期',
+    'mod.addTargetSunSign': '太阳星座',
+    'mod.addTargetConfirm': '确认添加',
+    'mod.typeStock': '股票',
+    'mod.typeCrypto': '加密货币',
+    'mod.typeTitan': '人物',
+    'mod.typeInstitution': '机构',
     'mod.top': 'TOP ',
     'mod.cosmicRealityCheck': '宇宙现实检验',
     'mod.victoryVibes': '胜利 Vibe',
@@ -14358,14 +14380,16 @@ function showAddTargetForm() {
   var area = document.getElementById('addTargetArea');
   if (!area) return;
   area.innerHTML =
-    '<div style="padding:8px 10px;border-top:1px solid var(--accent);background:rgba(124,58,237,0.04);">' +
+    '<div id="addTargetFormWrap" style="padding:8px 10px;border-top:1px solid var(--accent);background:rgba(124,58,237,0.04);">' +
       '<div style="display:flex;gap:4px;margin-bottom:6px;">' +
-        '<input type="text" id="newTargetInput" placeholder="' + t('mod.addTargetPlaceholder') + '" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg-primary);color:var(--text-primary);outline:none;min-width:0;" onkeydown="if(event.key===\'Enter\')confirmAddTarget()">' +
-        '<button style="padding:6px 10px;font-size:11px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;white-space:nowrap;" onclick="confirmAddTarget()">' + t('mod.confirmAdd') + '</button>' +
+        '<input type="text" id="newTargetInput" placeholder="' + t('mod.addTargetPlaceholder') + '" style="flex:1;padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:11px;background:var(--bg-primary);color:var(--text-primary);outline:none;min-width:0;" onkeydown="if(event.key===\'Enter\')previewAddTarget()">' +
+        '<button style="padding:6px 8px;font-size:10px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;white-space:nowrap;" onclick="previewAddTarget()">' + t('mod.previewAdd') + '</button>' +
+        '<button style="padding:6px 8px;font-size:10px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">✕</button>' +
       '</div>' +
       '<div style="font-size:9px;color:var(--text-secondary);line-height:1.4;">' +
         t('mod.addTargetHint') +
       '</div>' +
+      '<div id="addTargetPreview"></div>' +
     '</div>';
   var input = document.getElementById('newTargetInput');
   if (input) input.focus();
@@ -14377,38 +14401,83 @@ function cancelAddTarget() {
   area.innerHTML = '';
 }
 
+function previewAddTarget() {
+  var input = document.getElementById('newTargetInput');
+  var preview = document.getElementById('addTargetPreview');
+  if (!input || !preview) return;
+  var raw = input.value.trim();
+  if (!raw) {
+    preview.innerHTML = '<div style="font-size:10px;color:#EF4444;margin-top:4px;">' + t('mod.addTargetEmpty') + '</div>';
+    return;
+  }
+
+  // Parse prefix
+  var name = raw, type = 'stock', prefix = '$';
+  if (raw.startsWith('@')) { type = 'titan'; name = raw.substring(1); prefix = '@'; }
+  else if (raw.startsWith('#')) { type = 'institution'; name = raw.substring(1); prefix = '#'; }
+  else { name = raw; prefix = '$'; }
+
+  // Check duplicate
+  var watchlist = getUserWatchlist();
+  var allTargets = FORTUNE_TARGETS.concat(watchlist);
+  for (var i = 0; i < allTargets.length; i++) {
+    if (allTargets[i].name.toLowerCase() === name.toLowerCase()) {
+      preview.innerHTML = '<div style="font-size:10px;color:#F59E0B;margin-top:4px;">⚠ ' + t('mod.addTargetExists') + '</div>';
+      return;
+    }
+  }
+
+  // Determine display info
+  var typeLabel = type === 'titan' ? t('mod.typeTitan') : type === 'institution' ? t('mod.typeInstitution') : t('mod.typeStock');
+  var dotColor = type === 'titan' ? '#F59E0B' : type === 'institution' ? '#3B82F6' : '#22C55E';
+  var displayName = prefix + name;
+
+  // Show preview card
+  preview.innerHTML =
+    '<div style="margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--hover-bg);">' +
+      '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">' +
+        '<div style="width:7px;height:7px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
+        '<span style="font-size:12px;font-weight:600;color:var(--text-primary);">' + escapeHtml(displayName) + '</span>' +
+        '<span style="font-size:9px;color:var(--text-secondary);background:var(--card-bg);padding:2px 6px;border-radius:4px;">' + typeLabel + '</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:6px;">' +
+        '<button style="flex:1;padding:5px;font-size:10px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;" onclick="confirmAddTarget()">' + t('mod.addTargetConfirm') + '</button>' +
+        '<button style="padding:5px 10px;font-size:10px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">' + t('mod.cancel') + '</button>' +
+      '</div>' +
+    '</div>';
+}
+
 function confirmAddTarget() {
   var input = document.getElementById('newTargetInput');
   if (!input) return;
-  var name = input.value.trim();
-  if (!name) return;
+  var raw = input.value.trim();
+  if (!raw) return;
 
   // Determine type and add defaults
   var type, inception, sunSign;
-  if (name.startsWith('$')) {
-    type = 'stock';
-    inception = '2024-01-01';
-    sunSign = 'Capricorn';
-  } else if (name.startsWith('#')) {
-    type = 'institution';
-    inception = '2000-01-01';
-    sunSign = 'Aquarius';
-  } else if (name.startsWith('@')) {
-    type = 'person';
+  if (raw.startsWith('@')) {
+    type = 'titan';
+    raw = raw.substring(1);
     inception = '1970-01-01';
     sunSign = 'Aries';
+  } else if (raw.startsWith('#')) {
+    type = 'institution';
+    raw = raw.substring(1);
+    inception = '2000-01-01';
+    sunSign = 'Aquarius';
   } else {
-    // Default: treat as stock ticker
     type = 'stock';
-    name = '$' + name;
+    if (raw.startsWith('$')) raw = raw.substring(1);
     inception = '2024-01-01';
     sunSign = 'Capricorn';
   }
 
+  var name = raw;
+
   var watchlist = getUserWatchlist();
   // Check duplicate
   for (var i = 0; i < watchlist.length; i++) {
-    if (watchlist[i].name === name) {
+    if (watchlist[i].name.toLowerCase() === name.toLowerCase()) {
       cancelAddTarget();
       return;
     }
@@ -14420,11 +14489,14 @@ function confirmAddTarget() {
   // Also add to FORTUNE_TARGETS if not exists
   var exists = false;
   for (var j = 0; j < FORTUNE_TARGETS.length; j++) {
-    if (FORTUNE_TARGETS[j].name === name) { exists = true; break; }
+    if (FORTUNE_TARGETS[j].name.toLowerCase() === name.toLowerCase()) { exists = true; break; }
   }
   if (!exists) {
     FORTUNE_TARGETS.push({ name: name, type: type, inception: inception, sunSign: sunSign });
   }
+
+  // Clear fortune cache for new target
+  _fortuneCacheData[name] = null;
 
   // Clear cache and re-render watchlist
   window._watchlistCache = null;
