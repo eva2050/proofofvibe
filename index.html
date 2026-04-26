@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-49';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-50';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -14569,6 +14569,7 @@ function previewAddTarget() {
   if (raw.startsWith('@')) { type = 'titan'; name = raw.substring(1); prefix = '@'; }
   else if (raw.startsWith('#')) { type = 'institution'; name = raw.substring(1); prefix = '#'; }
   else { name = raw; prefix = '$'; }
+  if (!name) return;
 
   // Check duplicate
   var watchlist = getUserWatchlist();
@@ -14580,24 +14581,39 @@ function previewAddTarget() {
     }
   }
 
-  // Determine display info
-  var typeLabel = type === 'titan' ? t('mod.typeTitan') : type === 'institution' ? t('mod.typeInstitution') : t('mod.typeStock');
-  var dotColor = type === 'titan' ? '#F59E0B' : type === 'institution' ? '#3B82F6' : '#22C55E';
-  var displayName = prefix + name;
+  // Search Global Vibes database
+  function showResult(item) {
+    if (!item) {
+      preview.innerHTML = '<div style="font-size:10px;color:#EF4444;margin-top:4px;">⚠ ' +
+        (currentLang === 'zh' ? '该标的暂未收录，无法添加' : 'Not in database, cannot add') + '</div>';
+      return;
+    }
+    var typeLabel = type === 'titan' ? t('mod.typeTitan') : type === 'institution' ? t('mod.typeInstitution') : t('mod.typeStock');
+    var dotColor = type === 'titan' ? '#F59E0B' : type === 'institution' ? '#3B82F6' : '#22C55E';
+    var displayName = prefix + name;
+    var dbInfo = (item.ticker ? item.ticker + ' · ' : '') + (item.sector || item.category || '');
+    preview.innerHTML =
+      '<div style="margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--hover-bg);">' +
+        '<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">' +
+          '<div style="width:7px;height:7px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
+          '<span style="font-size:12px;font-weight:600;color:var(--text-primary);">' + escapeHtml(displayName) + '</span>' +
+          '<span style="font-size:9px;color:var(--text-secondary);background:var(--card-bg);padding:2px 6px;border-radius:4px;">' + typeLabel + '</span>' +
+        '</div>' +
+        (dbInfo ? '<div style="font-size:9px;color:var(--text-secondary);margin-bottom:6px;padding-left:13px;">' + escapeHtml(dbInfo) + '</div>' : '') +
+        '<div style="display:flex;gap:6px;">' +
+          '<button style="flex:1;padding:5px;font-size:10px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;" onclick="confirmAddTarget()">' + t('mod.addTargetConfirm') + '</button>' +
+          '<button style="padding:5px 10px;font-size:10px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">' + t('mod.cancel') + '</button>' +
+        '</div>' +
+      '</div>';
+  }
 
-  // Show preview card
-  preview.innerHTML =
-    '<div style="margin-top:8px;padding:8px;border:1px solid var(--border);border-radius:8px;background:var(--hover-bg);">' +
-      '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px;">' +
-        '<div style="width:7px;height:7px;border-radius:50%;background:' + dotColor + ';flex-shrink:0;"></div>' +
-        '<span style="font-size:12px;font-weight:600;color:var(--text-primary);">' + escapeHtml(displayName) + '</span>' +
-        '<span style="font-size:9px;color:var(--text-secondary);background:var(--card-bg);padding:2px 6px;border-radius:4px;">' + typeLabel + '</span>' +
-      '</div>' +
-      '<div style="display:flex;gap:6px;">' +
-        '<button style="flex:1;padding:5px;font-size:10px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-weight:600;" onclick="confirmAddTarget()">' + t('mod.addTargetConfirm') + '</button>' +
-        '<button style="padding:5px 10px;font-size:10px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--text-secondary);cursor:pointer;" onclick="cancelAddTarget()">' + t('mod.cancel') + '</button>' +
-      '</div>' +
-    '</div>';
+  if (gvDataLoaded) {
+    showResult(searchGVDatabase(name));
+  } else {
+    preview.innerHTML = '<div style="font-size:10px;color:var(--text-secondary);margin-top:4px;">' +
+      (currentLang === 'zh' ? '正在查询数据库…' : 'Searching database…') + '</div>';
+    loadGVData(function() { showResult(searchGVDatabase(name)); });
+  }
 }
 
 function confirmAddTarget() {
@@ -14606,64 +14622,74 @@ function confirmAddTarget() {
   var raw = input.value.trim();
   if (!raw) return;
 
-  // Determine type and add defaults
-  var type, inception, sunSign;
-  if (raw.startsWith('@')) {
-    type = 'titan';
-    raw = raw.substring(1);
-    inception = '1970-01-01';
-    sunSign = 'Aries';
-  } else if (raw.startsWith('#')) {
-    type = 'institution';
-    raw = raw.substring(1);
-    inception = '2000-01-01';
-    sunSign = 'Aquarius';
-  } else {
-    type = 'stock';
-    if (raw.startsWith('$')) raw = raw.substring(1);
-    inception = '2024-01-01';
-    sunSign = 'Capricorn';
-  }
+  // Determine type and clean name
+  var type, prefix = '$';
+  if (raw.startsWith('@')) { type = 'titan'; prefix = '@'; raw = raw.substring(1); }
+  else if (raw.startsWith('#')) { type = 'institution'; prefix = '#'; raw = raw.substring(1); }
+  else { type = 'stock'; if (raw.startsWith('$')) raw = raw.substring(1); }
 
   var name = raw;
+  if (!name) return;
 
+  // Check duplicate in watchlist
   var watchlist = getUserWatchlist();
-  // Check duplicate
   for (var i = 0; i < watchlist.length; i++) {
     if (watchlist[i].name.toLowerCase() === name.toLowerCase()) {
       cancelAddTarget();
       return;
     }
   }
-
-  watchlist.push({ name: name, type: type, inception: inception, sunSign: sunSign });
-  saveUserWatchlist(watchlist);
-
-  // Also add to FORTUNE_TARGETS if not exists
-  var exists = false;
+  // Check duplicate in FORTUNE_TARGETS
   for (var j = 0; j < FORTUNE_TARGETS.length; j++) {
-    if (FORTUNE_TARGETS[j].name.toLowerCase() === name.toLowerCase()) { exists = true; break; }
-  }
-  if (!exists) {
-    FORTUNE_TARGETS.push({ name: name, type: type, inception: inception, sunSign: sunSign });
-  }
-
-  // Clear fortune cache for new target
-  _fortuneCacheData[name] = null;
-
-  // Clear cache and re-render watchlist
-  window._watchlistCache = null;
-  cancelAddTarget();
-
-  // Remove old watchlist message and re-add
-  var msgs = document.querySelectorAll('.msg.ai');
-  for (var k = msgs.length - 1; k >= 0; k--) {
-    if (msgs[k].innerHTML.indexOf('addTargetArea') !== -1) {
-      msgs[k].remove();
-      break;
+    if (FORTUNE_TARGETS[j].name.toLowerCase() === name.toLowerCase()) {
+      cancelAddTarget();
+      return;
     }
   }
-  addWatchlistCard();
+
+  // Validate against Global Vibes database
+  var preview = document.getElementById('addTargetPreview');
+  function doAdd(item) {
+    var inception = item.inception || '2024-01-01';
+    var sunSign = item.sun_sign || 'Capricorn';
+    var ticker = item.ticker || null;
+    watchlist.push({ name: name, type: type, inception: inception, sunSign: sunSign, ticker: ticker });
+    saveUserWatchlist(watchlist);
+    if (!ticker && type === 'crypto') ticker = name.toUpperCase();
+    FORTUNE_TARGETS.push({ name: name, type: type, inception: inception, sunSign: sunSign, ticker: ticker });
+    _fortuneCacheData[name] = null;
+    window._watchlistCache = null;
+    cancelAddTarget();
+    // Re-render
+    var msgs = document.querySelectorAll('.msg.ai');
+    for (var k = msgs.length - 1; k >= 0; k--) {
+      if (msgs[k].innerHTML.indexOf('addTargetArea') !== -1) {
+        msgs[k].remove();
+        break;
+      }
+    }
+    addWatchlistCard();
+  }
+
+  function showNotFound() {
+    if (preview) {
+      preview.innerHTML = '<div style="font-size:10px;color:#EF4444;margin-top:4px;">⚠ ' +
+        (currentLang === 'zh' ? '该标的暂未收录到全球频率数据库中，无法添加' : 'This target is not in the Global Vibes database, cannot add') + '</div>';
+    }
+  }
+
+  // Search database
+  if (gvDataLoaded) {
+    var match = searchGVDatabase(name);
+    if (match) { doAdd(match); } else { showNotFound(); }
+  } else {
+    if (preview) preview.innerHTML = '<div style="font-size:10px;color:var(--text-secondary);margin-top:4px;">' +
+      (currentLang === 'zh' ? '正在查询数据库…' : 'Searching database…') + '</div>';
+    loadGVData(function() {
+      var match2 = searchGVDatabase(name);
+      if (match2) { doAdd(match2); } else { showNotFound(); }
+    });
+  }
 }
 
 function removeWatchlistItem(name) {
