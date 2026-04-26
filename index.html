@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-47';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-48';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -9442,7 +9442,10 @@ function handleSearch() {
           if (!deductCredits(5, 'Scan ' + matchKey)) return;
           addScannerCard(matchKey, matchData);
         } else {
-          addChatMessage('ai', t('toast.noVibeData') + query + '". ' + (currentLang === 'zh' ? '试试扫描 $NVDA、@ElonMusk 或 #Citadel。' : 'Try scanning $NVDA, @ElonMusk, or #Citadel.'));
+          // Dynamic generate scanner data for unknown targets
+          if (!deductCredits(5, 'Scan ' + query)) return;
+          var dynData = generateDynamicScannerData(query);
+          addScannerCard(query, dynData);
         }
       }
     }
@@ -9457,6 +9460,72 @@ function addChatMessage(type, content) {
   msg.innerHTML = '<div class="msg-bubble">' + escapeHtml(content) + '</div>';
   container.appendChild(msg);
   scrollChatBottom();
+}
+
+// Generate scanner data dynamically for any target using astrology engine
+function generateDynamicScannerData(query) {
+  var name = query.replace(/^[\$@#]/, '');
+  var type = 'stock', prefix = '$';
+  if (query.startsWith('@')) { type = 'titan'; prefix = '@'; }
+  else if (query.startsWith('#')) { type = 'institution'; prefix = '#'; }
+
+  // Use current date as inception for unknown targets (or a reasonable default)
+  var inception = '2020-01-01';
+  var sunSign = 'Capricorn';
+
+  // Try to determine type from name heuristics
+  var nameUpper = name.toUpperCase();
+  var knownCrypto = ['BTC','ETH','SOL','BNB','XRP','ADA','DOGE','DOT','AVAX','MATIC','LINK','UNI','ATOM','FTM','SAND','MANA','AXS','APE','SHIB','LUNC'];
+  if (knownCrypto.indexOf(nameUpper) !== -1) { type = 'crypto'; inception = '2020-01-01'; }
+  var knownIndex = ['SPX','DJI','NDX','RUT','VIX','DXY','TNX','GLD','SLV','USO','QQQ','SPY','DIA','IWM','TLT','HYG','LQD','AGG','XLF','XLE','XLK','XLV','XLY','XLP','XLI','XLB','XLU','XLRE'];
+  if (knownIndex.indexOf(nameUpper) !== -1) { type = 'index'; inception = '2000-01-01'; }
+
+  // Generate fortune data using the astrology engine
+  var fortuneData = generateFortuneData(inception, sunSign, 72);
+  var lastPoint = fortuneData[fortuneData.length - 1];
+  var score = Math.round(lastPoint.close);
+
+  // Determine verdict based on score
+  var verdict, verdictColor, volatility;
+  if (score >= 75) { verdict = currentLang === 'zh' ? '强势看涨' : 'Strong Bullish'; verdictColor = '#22C55E'; volatility = currentLang === 'zh' ? '偏高' : 'High'; }
+  else if (score >= 60) { verdict = currentLang === 'zh' ? '温和看涨' : 'Moderate Bullish'; verdictColor = '#22C55E'; volatility = currentLang === 'zh' ? '中等' : 'Medium'; }
+  else if (score >= 45) { verdict = currentLang === 'zh' ? '中性震荡' : 'Neutral'; verdictColor = '#F59E0B'; volatility = currentLang === 'zh' ? '中等' : 'Medium'; }
+  else if (score >= 30) { verdict = currentLang === 'zh' ? '偏弱看跌' : 'Moderate Bearish'; verdictColor = '#EF4444'; volatility = currentLang === 'zh' ? '偏高' : 'High'; }
+  else { verdict = currentLang === 'zh' ? '强势看跌' : 'Strong Bearish'; verdictColor = '#EF4444'; volatility = currentLang === 'zh' ? '极高' : 'Very High'; }
+
+  // Generate aspects
+  var planetNames = ['Jupiter', 'Saturn', 'Mars', 'Venus', 'Mercury'];
+  var phases = [currentLang === 'zh' ? '三分相' : 'Trine', currentLang === 'zh' ? '四分相' : 'Square', currentLang === 'zh' ? '六分相' : 'Sextile', currentLang === 'zh' ? '合相' : 'Conjunct', currentLang === 'zh' ? '对冲' : 'Opposition'];
+  var aspects = [];
+  for (var i = 0; i < 5; i++) {
+    var ps = Math.floor(30 + Math.abs(Math.sin(name.length * 3 + i * 7 + score * 0.1)) * 60);
+    aspects.push({ planet: planetNames[i], phase: phases[i], score: ps });
+  }
+
+  // Generate reason and advice
+  var reasons = currentLang === 'zh'
+    ? ['当前星象显示该标的存在较强的上行动能', '土星回归周期带来结构性变化', '木星三分相提供扩张机遇', '天王星扰动导致短期波动加大', '火星逆行期间建议谨慎操作']
+    : ['Current transits suggest strong upward momentum', 'Saturn return brings structural changes', 'Jupiter trine provides expansion opportunities', 'Uranus disruption causes short-term volatility', 'Mars retrograde suggests caution'];
+  var advices = currentLang === 'zh'
+    ? ['建议等待更好入场时机', '可适度建仓，控制仓位', '适合积极布局，注意止损', '观望为主，保持耐心', '风险较大，建议回避']
+    : ['Wait for better entry point', 'Consider small position with stops', 'Favorable for accumulation', 'Stay on sidelines', 'High risk, consider avoiding'];
+
+  var reason = reasons[Math.abs(name.charCodeAt(0)) % reasons.length] + ' — ' + lastPoint.aspect;
+  var advice = advices[Math.floor(score / 20)];
+
+  return {
+    score: score,
+    verdict: verdict,
+    verdictColor: verdictColor,
+    reason: reason,
+    insight: advice,
+    volatility: volatility,
+    type: type === 'titan' ? 'person' : type === 'institution' ? 'institution' : 'ticker',
+    aspects: aspects,
+    advice: advice,
+    tags: score >= 60 ? ['Favorable', 'Growth'] : score >= 40 ? ['Neutral', 'Mixed'] : ['Caution', 'Volatile'],
+    match: Math.floor(40 + Math.abs(Math.sin(name.length * 2.7)) * 50)
+  };
 }
 
 function addScannerCard(query, data) {
