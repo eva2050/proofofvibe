@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-45';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-46';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -13533,115 +13533,236 @@ function _sunSignOffset(sign) {
 function generateFortuneData(inception, sunSign, totalMonths) {
   var seed = _inceptionToSeed(inception);
   var rng = _fortuneSeed(seed);
-  var signOff = _sunSignOffset(sunSign);
+  var signDeg = _sunSignOffset(sunSign); // 0-330 degrees
 
-  // Parse inception date for year/month calculation
+  // Parse inception date
   var incParts = inception.split('-');
   var incYear = parseInt(incParts[0], 10) || 2000;
   var incMonth = parseInt(incParts[1], 10) || 1;
+  var incDay = parseInt(incParts[2], 10) || 1;
 
-  // Planetary cycle periods in months
-  var jupiterPeriod = 12 * 11.86;   // ~142 months
-  var saturnPeriod = 12 * 29.46;    // ~354 months
-  var marsPeriod = 12 * 1.88;       // ~23 months
-  var venusPeriod = 12 * 0.615;     // ~7.4 months
+  // ===== PLANETARY EPHEMERIS (simplified but meaningful) =====
+  // Each planet: { period (months), initialPhase (degrees at epoch 2000-01-01), meanMotion (deg/month) }
+  var planets = {
+    mercury:  { period: 3.0,    phase: 0,   motion: 360 / 3.0 },     // ~88 days
+    venus:    { period: 7.4,    phase: 45,  motion: 360 / 7.4 },     // ~225 days
+    mars:     { period: 22.7,   phase: 90,  motion: 360 / 22.7 },    // ~687 days
+    jupiter:  { period: 142.3,  phase: 120, motion: 360 / 142.3 },   // ~11.86 years
+    saturn:   { period: 353.5,  phase: 200, motion: 360 / 353.5 },   // ~29.46 years
+    uranus:   { period: 1012,   phase: 280, motion: 360 / 1012 },    // ~84 years
+    neptune:  { period: 1976,   phase: 320, motion: 360 / 1976 },    // ~164.8 years
+    pluto:    { period: 2962,   phase: 250, motion: 360 / 2962 }     // ~247 years
+  };
 
-  // Generate base score from inception seed
-  var baseScore = 55 + rng() * 20; // 55-75 base
+  // North & South Node (Rahu/Ketu) - ~18.6 year cycle
+  var nodePeriod = 223; // months
+  var nodePhase = 150;
 
+  // ===== ASPECT ORBS & WEIGHTS =====
+  // Aspect: angle between two planets, weight = influence strength
+  var aspects = [
+    { name: 'conjunction',  angle: 0,   orb: 8,  weight: 1.0 },
+    { name: 'sextile',     angle: 60,  orb: 6,  weight: 0.6 },
+    { name: 'square',      angle: 90,  orb: 7,  weight: -0.8 },
+    { name: 'trine',       angle: 120, orb: 8,  weight: 0.9 },
+    { name: 'opposition',  angle: 180, orb: 8,  weight: -0.7 },
+    { name: 'quincunx',    angle: 150, orb: 4,  weight: -0.4 }
+  ];
+
+  // Planet natal positions (based on inception date as "birth chart")
+  var monthsSinceEpoch = (incYear - 2000) * 12 + (incMonth - 1);
+  var natalPositions = {};
+  for (var pName in planets) {
+    var pl = planets[pName];
+    natalPositions[pName] = (pl.phase + pl.motion * monthsSinceEpoch) % 360;
+  }
+  var natalNode = (nodePhase + (360 / nodePeriod) * monthsSinceEpoch) % 360;
+
+  // ===== HELPER: Calculate planet position at month i =====
+  function planetPos(name, monthOffset) {
+    var pl = planets[name];
+    var totalMonths = monthsSinceEpoch + monthOffset;
+    return (pl.phase + pl.motion * totalMonths) % 360;
+  }
+
+  // ===== HELPER: Calculate aspect between two angles =====
+  function getAspect(angle1, angle2) {
+    var diff = Math.abs(angle1 - angle2) % 360;
+    if (diff > 180) diff = 360 - diff;
+    var bestAspect = null;
+    var bestOrb = 999;
+    for (var a = 0; a < aspects.length; a++) {
+      var asp = aspects[a];
+      var orb = Math.abs(diff - asp.angle);
+      if (orb < asp.orb && orb < bestOrb) {
+        bestOrb = orb;
+        bestAspect = asp;
+      }
+    }
+    return bestAspect ? { aspect: bestAspect, orb: bestOrb, exactness: 1 - bestOrb / bestAspect.orb } : null;
+  }
+
+  // ===== HELPER: Is planet retrograde? (simplified) =====
+  function isRetrograde(name, monthOffset) {
+    // Mercury retrograde ~3 times/year, Mars ~every 2 years, etc.
+    // Simplified: use sinusoidal model of apparent retrograde
+    var retroPeriods = { mercury: 7.4, venus: 19.2, mars: 22.7, jupiter: 142.3, saturn: 353.5 };
+    var rp = retroPeriods[name];
+    if (!rp) return false;
+    var phase = (monthOffset / rp) * 2 * Math.PI + _inceptionToSeed(inception) * 0.001;
+    return Math.sin(phase) > 0.7; // ~20% of time in retrograde
+  }
+
+  // ===== GENERATE DATA =====
   var data = [];
-  var prevClose = baseScore;
+  var prevClose = 55;
 
   for (var i = 0; i < totalMonths; i++) {
-    // Planetary influences (sinusoidal cycles)
-    var jupiterInfluence = Math.sin(2 * Math.PI * i / jupiterPeriod + signOff * 0.01) * 12;
-    var saturnInfluence = Math.sin(2 * Math.PI * i / saturnPeriod + signOff * 0.02) * 8;
-    var marsInfluence = Math.sin(2 * Math.PI * i / marsPeriod + signOff * 0.03) * 6;
-    var venusInfluence = Math.sin(2 * Math.PI * i / venusPeriod + signOff * 0.05) * 4;
+    var score = 50; // Base neutral score
+    var aspectDesc = [];
+    var dominantAspect = '';
 
-    // Combine planetary forces
-    var planetaryScore = baseScore + jupiterInfluence + saturnInfluence + marsInfluence + venusInfluence;
+    // 1. Transiting planets aspecting natal planets
+    var keyPairs = [
+      ['jupiter', 'natal_sun'], ['saturn', 'natal_sun'],
+      ['pluto', 'natal_sun'], ['uranus', 'natal_sun'],
+      ['jupiter', 'natal_jupiter'], ['saturn', 'natal_saturn'],
+      ['mars', 'natal_mars'], ['node', 'natal_sun']
+    ];
 
-    // Add deterministic noise
-    var noise = (rng() - 0.5) * 10;
+    for (var pi = 0; pi < keyPairs.length; pi++) {
+      var pair = keyPairs[pi];
+      var transAngle, natalAngle;
 
-    // Trend component (slow drift)
-    var trend = Math.sin(2 * Math.PI * i / 60) * 5 + Math.sin(2 * Math.PI * i / 120) * 3;
+      if (pair[1].indexOf('natal_') === 0) {
+        var natalName = pair[1].replace('natal_', '');
+        if (pair[0] === 'node') {
+          transAngle = (nodePhase + (360 / nodePeriod) * (monthsSinceEpoch + i)) % 360;
+        } else {
+          transAngle = planetPos(pair[0], i);
+        }
+        natalAngle = natalPositions[natalName] || signDeg;
+      } else {
+        continue;
+      }
 
-    // Raw close
-    var rawClose = planetaryScore + noise + trend;
+      var result = getAspect(transAngle, natalAngle);
+      if (result) {
+        var influence = result.aspect.weight * result.exactness;
+        // Jupiter and Venus aspects are stronger
+        if (pair[0] === 'jupiter') influence *= 1.5;
+        if (pair[0] === 'venus') influence *= 1.2;
+        // Saturn, Mars, Pluto hard aspects are more severe
+        if (pair[0] === 'saturn' && influence < 0) influence *= 1.3;
+        if (pair[0] === 'pluto' && influence < 0) influence *= 1.4;
+        if (pair[0] === 'mars' && influence < 0) influence *= 1.1;
+        // Node aspects
+        if (pair[0] === 'node') influence *= 0.8;
 
-    // Clamp to 35-98
-    rawClose = Math.max(35, Math.min(98, rawClose));
+        score += influence * 5;
 
-    // Generate OHLC from close with some spread
-    var volatility = 2 + rng() * 4;
+        if (Math.abs(influence) > 0.3) {
+          var planetLabel = pair[0] === 'node' ? 'Rahu' : pair[0].charAt(0).toUpperCase() + pair[0].slice(1);
+          aspectDesc.push(planetLabel + ' ' + result.aspect.name);
+        }
+      }
+    }
+
+    // 2. Saturn Return detection (every ~29.5 years)
+    var satTransit = planetPos('saturn', i);
+    var satDiff = Math.abs(satTransit - natalPositions['saturn']) % 360;
+    if (satDiff > 180) satDiff = 360 - satDiff;
+    if (satDiff < 5) {
+      score -= 8 * (1 - satDiff / 5); // Saturn return is challenging
+      aspectDesc.push('土星回归');
+    }
+
+    // 3. Jupiter Return detection (every ~12 years)
+    var jupTransit = planetPos('jupiter', i);
+    var jupDiff = Math.abs(jupTransit - natalPositions['jupiter']) % 360;
+    if (jupDiff > 180) jupDiff = 360 - jupDiff;
+    if (jupDiff < 5) {
+      score += 6 * (1 - jupDiff / 5); // Jupiter return is fortunate
+      aspectDesc.push('木星回归');
+    }
+
+    // 4. Retrograde effects
+    if (isRetrograde('mercury', i)) score -= 2;
+    if (isRetrograde('mars', i)) score -= 4;
+    if (isRetrograde('jupiter', i)) score -= 3;
+    if (isRetrograde('saturn', i)) score -= 5;
+
+    // 5. Long-term outer planet transits through natal houses (simplified)
+    // Uranus opposition (~age 42): major life change
+    var ageMonths = i;
+    var uranusOppAge = 42 * 12;
+    if (Math.abs(ageMonths - uranusOppAge) < 12) {
+      score -= 5 * (1 - Math.abs(ageMonths - uranusOppAge) / 12);
+      if (Math.abs(ageMonths - uranusOppAge) < 3) aspectDesc.push('天王星对冲');
+    }
+
+    // 6. Small deterministic noise (much less than before)
+    var noise = (rng() - 0.5) * 4;
+
+    // 7. Combine
+    var rawClose = score + noise;
+
+    // Clamp
+    rawClose = Math.max(15, Math.min(98, rawClose));
+
+    // Generate OHLC
+    var volatility = 1.5 + rng() * 3;
+    // Higher volatility during hard aspects
+    if (score < 40) volatility *= 1.5;
+    if (score > 75) volatility *= 1.2;
+
     var direction = rng();
     var open, high, low, close;
 
     if (direction > 0.45) {
-      // Bullish candle
-      open = rawClose - rng() * volatility * 0.6;
-      close = rawClose + rng() * volatility * 0.4;
+      open = rawClose - rng() * volatility * 0.5;
+      close = rawClose + rng() * volatility * 0.3;
     } else {
-      // Bearish candle
-      open = rawClose + rng() * volatility * 0.6;
-      close = rawClose - rng() * volatility * 0.4;
+      open = rawClose + rng() * volatility * 0.5;
+      close = rawClose - rng() * volatility * 0.3;
     }
 
-    // Wicks
-    high = Math.max(open, close) + rng() * volatility * 0.8;
-    low = Math.min(open, close) - rng() * volatility * 0.8;
+    high = Math.max(open, close) + rng() * volatility * 0.6;
+    low = Math.min(open, close) - rng() * volatility * 0.6;
 
-    // Slight continuity with previous close
-    open = open * 0.3 + prevClose * 0.7;
+    // Continuity with previous
+    open = open * 0.4 + prevClose * 0.6;
 
-    // Final clamp
-    open = Math.max(35, Math.min(98, open));
-    close = Math.max(35, Math.min(98, close));
+    open = Math.max(15, Math.min(98, open));
+    close = Math.max(15, Math.min(98, close));
     high = Math.max(open, close, high);
     high = Math.min(99, high);
     low = Math.min(open, close, low);
-    low = Math.max(34, low);
+    low = Math.max(14, low);
 
-    // Year/month from inception
+    // Year/month
     var totalMonthsFromInc = (incYear * 12 + (incMonth - 1)) + i;
     var year = Math.floor(totalMonthsFromInc / 12);
     var month = (totalMonthsFromInc % 12) + 1;
     var ageYears = Math.floor(i / 12);
 
-    // Generate aspect description based on planetary cycles
-    var jupiterPhase = Math.floor(i % 142);
-    var saturnPhase = Math.floor(i % 354);
-    var marsPhase = Math.floor(i % 23);
-    var jupiterDesc = '';
-    if (jupiterPhase < 36) jupiterDesc = '\u6728\u661F\u56DE\u5F52\u547D\u5BAB';
-    else if (jupiterPhase < 72) jupiterDesc = '\u6728\u661F\u8FC7\u8D22\u5E1B\u5BAB';
-    else if (jupiterPhase < 108) jupiterDesc = '\u6728\u661F\u8FC7\u4E8B\u4E1A\u5BAB';
-    else jupiterDesc = '\u6728\u661F\u8FC7\u8FC1\u79FB\u5BAB';
+    // Aspect description
+    if (aspectDesc.length === 0) aspectDesc.push('平稳运行');
+    dominantAspect = aspectDesc.slice(0, 3).join(' \xB7 ');
 
-    var saturnDesc = '';
-    if (saturnPhase < 89) saturnDesc = '\u571F\u661F\u987A\u884C';
-    else if (saturnPhase < 178) saturnDesc = '\u571F\u661F\u9006\u884C\u671F';
-    else if (saturnPhase < 266) saturnDesc = '\u571F\u661F\u56DE\u5F52';
-    else saturnDesc = '\u571F\u661F\u8003\u9A8C\u671F';
-
-    var marsDesc = '\u706B\u661F\u56DE\u5F52';
-    var aspect = jupiterDesc + ' \xB7 ' + saturnDesc + ' \xB7 ' + marsDesc;
-
-    // Generate advice based on score
+    // Advice based on score
     var scoreVal = Math.round(close * 10) / 10;
     var advice = '';
     if (scoreVal >= 80) {
-      advice = '\u8FD0\u52BF\u5927\u5409\uFF0C\u6728\u661F\u5E26\u6765\u6269\u5F20\u673A\u9047\uFF0C\u9002\u5408\u79EF\u6781\u5E03\u5C40\u3002';
+      advice = '运势大吉，木星带来扩张机遇，适合积极布局。';
     } else if (scoreVal >= 65) {
-      advice = '\u8FD0\u52BF\u5C1A\u53EF\uFF0C\u53EF\u9002\u5EA6\u8FDB\u653B\uFF0C\u6CE8\u610F\u6B65\u6B65\u4E3A\u8425\u3002';
+      advice = '运势尚可，可适度进攻，注意步步为营。';
     } else if (scoreVal >= 50) {
-      advice = '\u8FD0\u52BF\u5E73\u7A33\uFF0C\u89C2\u671B\u4E3A\u4E3B\uFF0C\u7B49\u5F85\u66F4\u597D\u65F6\u673A\u3002';
+      advice = '运势平稳，观望为主，等待更好时机。';
     } else if (scoreVal >= 35) {
-      advice = '\u8FD0\u52BF\u504F\u5F31\uFF0C\u6CE8\u610F\u98CE\u9669\u63A7\u5236\uFF0C\u8C28\u614E\u884C\u4E8B\u3002';
+      advice = '运势偏弱，注意风险控制，谨慎行事。';
     } else {
-      advice = '\u8FD0\u52BF\u4F4E\u8FF7\uFF0C\u5B9C\u5B88\u4E0D\u5B9C\u653B\uFF0C\u4FDD\u672C\u4E3A\u4E0A\u3002';
+      advice = '运势低迷，宜守不宜攻，保本为上。';
     }
 
     data.push({
@@ -13653,7 +13774,7 @@ function generateFortuneData(inception, sunSign, totalMonths) {
       high: Math.round(high * 100) / 100,
       low: Math.round(low * 100) / 100,
       close: Math.round(close * 100) / 100,
-      aspect: aspect,
+      aspect: dominantAspect,
       advice: advice
     });
 
