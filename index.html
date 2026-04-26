@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <script>/*cache-bust*/var _V='20260424-44';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
+  <script>/*cache-bust*/var _V='20260424-45';if(localStorage.getItem('pov_ver')!==_V){localStorage.setItem('pov_ver',_V);location.replace(location.pathname+'?_v='+Date.now())}</script>
   <title>ProofOfVibe</title>
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_32x32.png">
@@ -13676,6 +13676,7 @@ function getFortuneData(targetName) {
     var incDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
     var totalMonths = (now.getFullYear() - incDate.getFullYear()) * 12 + (now.getMonth() - incDate.getMonth());
     if (totalMonths < 1) totalMonths = 1;
+    totalMonths += 240; // extend 20 years into the future
     if (totalMonths > 1200) totalMonths = 1200; // cap at 100 years
     _fortuneCacheData[tgt.name] = generateFortuneData(tgt.inception, tgt.sunSign, totalMonths);
   }
@@ -13899,6 +13900,39 @@ function renderFortuneKLine(canvasId, data, animate) {
   ctx.textBaseline = 'middle';
   ctx.fillText(priceText, labelX + labelW / 2, lastY);
 
+  // "Now" vertical line - separate history from prediction
+  var now = new Date();
+  var nowYear = now.getFullYear();
+  var nowMonth = now.getMonth() + 1;
+  // Find the displayData index closest to now
+  var nowIdx = -1;
+  for (var ni = 0; ni < displayData.length; ni++) {
+    if (displayData[ni].year > nowYear || (displayData[ni].year === nowYear && displayData[ni].month > nowMonth)) {
+      nowIdx = ni;
+      break;
+    }
+  }
+  if (nowIdx > 0) {
+    var nowX = padLeft + nowIdx * totalCandleWidth + totalCandleWidth / 2;
+    ctx.setLineDash([4, 4]);
+    ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.2)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(nowX, padTop);
+    ctx.lineTo(nowX, padTop + chartH);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    // "NOW" label
+    ctx.fillStyle = isDark ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.35)';
+    ctx.font = 'bold 8px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('NOW', nowX, padTop - 2);
+    // Subtle tint on prediction area
+    ctx.fillStyle = isDark ? 'rgba(124,58,237,0.03)' : 'rgba(124,58,237,0.02)';
+    ctx.fillRect(nowX, padTop, w - padRight - nowX, chartH);
+  }
+
   // Store chart metrics on canvas for hover calculations
   canvas._chartMetrics = {
     padLeft: padLeft, padRight: padRight, padTop: padTop, padBottom: padBottom,
@@ -14049,7 +14083,10 @@ function switchFortuneTarget(targetName) {
     }
     // Update footer period
     var periodEl = document.getElementById('fortunePeriod');
-    if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
+    if (periodEl) {
+      var nowLabel = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+      periodEl.textContent = data[0].label + ' ~ ' + last.label + '  (→' + nowLabel + ' 实际 | ' + nowLabel + '→ 预测)';
+    }
   }
 
   // Update detail panel
@@ -14169,7 +14206,10 @@ function initFortuneChart() {
       }
     }
     var periodEl = document.getElementById('fortunePeriod');
-    if (periodEl) periodEl.textContent = data[0].label + ' ~ ' + last.label;
+    if (periodEl) {
+      var nowLabel2 = new Date().getFullYear() + '-' + String(new Date().getMonth() + 1).padStart(2, '0');
+      periodEl.textContent = data[0].label + ' ~ ' + last.label + '  (→' + nowLabel2 + ' 实际 | ' + nowLabel2 + '→ 预测)';
+    }
   }
 
   // Show initial detail
